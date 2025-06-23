@@ -29,7 +29,7 @@ export default function Home() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-primary/20 hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-medium font-headline">AI Competitions</CardTitle>
             <Shield className="h-6 w-6 text-primary" />
@@ -46,7 +46,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-primary/20 hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-medium font-headline">Leaderboards</CardTitle>
             <Trophy className="h-6 w-6 text-primary" />
@@ -63,7 +63,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-primary/20 hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-medium font-headline">Join a Guild</CardTitle>
             <Users className="h-6 w-6 text-primary" />
@@ -81,7 +81,7 @@ export default function Home() {
         </Card>
       </div>
 
-       <div className="mt-16 md:mt-24 rounded-xl bg-card p-8 md:p-12 border flex flex-col md:flex-row items-center gap-8">
+       <div className="mt-16 md:mt-24 rounded-xl bg-card p-8 md:p-12 border flex flex-col md:flex-row items-center gap-8 overflow-hidden">
             <div className="flex-1">
                 <h2 className="text-3xl font-bold font-headline text-primary">Personalized Learning Paths</h2>
                 <p className="mt-4 text-muted-foreground">
@@ -94,7 +94,7 @@ export default function Home() {
                 </Button>
             </div>
             <div className="flex-1 w-full h-64 md:h-auto">
-                 <Image src="https://placehold.co/600x400.png" alt="Personalized Learning" width={600} height={400} className="rounded-lg object-cover w-full h-full" data-ai-hint="learning path" />
+                 <Image src="https://placehold.co/600x400.png" alt="Personalized Learning" width={600} height={400} className="rounded-lg object-cover w-full h-full hover:scale-105 transition-transform duration-300" data-ai-hint="learning path" />
             </div>
        </div>
 

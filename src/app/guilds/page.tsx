@@ -25,7 +25,7 @@ export default function GuildsPage() {
         {guilds.map((guild) => {
             const GuildIcon = guild.icon;
             return (
-                <Card key={guild.name} className="flex flex-col overflow-hidden hover:shadow-primary/20 hover:shadow-lg transition-shadow duration-300">
+                <Card key={guild.name} className="flex flex-col hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
                     <CardHeader className="p-0">
                        <Image src={guild.image} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" data-ai-hint={guild.dataAiHint}/>
                     </CardHeader>

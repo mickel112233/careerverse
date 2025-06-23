@@ -62,7 +62,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         <SidebarFooter>
             <div className="flex items-center gap-3 p-2 rounded-md transition-colors hover:bg-sidebar-accent">
                 <Avatar className="h-10 w-10">
-                    <AvatarImage src="https://placehold.co/100x100.png" alt="@username" data-ai-hint="user avatar" />
+                    <AvatarImage src="https://placehold.co/100x100.png" alt="@username" data-ai-hint="woman face" />
                     <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col overflow-hidden">

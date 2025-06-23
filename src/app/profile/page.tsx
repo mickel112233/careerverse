@@ -9,10 +9,10 @@ import Image from "next/image";
 
 const achievements = [
     { name: 'React Pro', icon: Star, color: 'text-yellow-400' },
-    { name: 'AI Guru', icon: Zap, color: 'text-blue-400' },
+    { name: 'AI Guru', icon: Zap, color: 'text-sky-400' },
     { name: 'TS Wizard', icon: ShieldCheck, color: 'text-green-400' },
     { name: 'Master Coder', icon: Award, color: 'text-purple-400' },
-    { name: '5 Wins Streak', icon: Swords, color: 'text-red-400' },
+    { name: '5 Wins Streak', icon: Swords, color: 'text-red-500' },
     { name: 'Top 10 Player', icon: Trophy, color: 'text-orange-400' },
 ];
 
@@ -82,7 +82,7 @@ export default function ProfilePage() {
                         {achievements.map(ach => {
                             const Icon = ach.icon;
                             return (
-                                <div key={ach.name} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg">
+                                <div key={ach.name} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg hover:bg-muted transition-all hover:scale-105">
                                     <Icon className={`h-10 w-10 mb-2 ${ach.color}`} />
                                     <p className="text-sm font-semibold">{ach.name}</p>
                                 </div>
@@ -113,7 +113,7 @@ export default function ProfilePage() {
                                     <TableCell>
                                         <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'}>{battle.result}</Badge>
                                     </TableCell>
-                                    <TableCell className={`text-right font-mono ${battle.result === 'Win' ? 'text-green-400' : 'text-red-400'}`}>{battle.xp}</TableCell>
+                                    <TableCell className={`text-right font-mono ${battle.result === 'Win' ? 'text-lime-400' : 'text-red-500'}`}>{battle.xp}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

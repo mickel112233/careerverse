@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Trophy } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const leaderboardData = [
   { rank: 1, name: 'QuantumLeap', xp: 9850, avatar: 'https://placehold.co/100x100.png?a=1', dataAiHint: 'woman face', badges: ['Master Coder', 'AI Guru'] },
@@ -30,7 +31,7 @@ export default function LeaderboardPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-headline">
-            <Trophy className="text-primary" />
+            <Trophy className="text-yellow-400" />
             Top Players
           </CardTitle>
         </CardHeader>
@@ -46,17 +47,17 @@ export default function LeaderboardPage() {
             </TableHeader>
             <TableBody>
               {leaderboardData.map((player) => (
-                <TableRow key={player.rank}>
+                <TableRow key={player.rank} className={cn(player.rank <= 3 && "bg-primary/5")}>
                   <TableCell className="text-center">
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold ${
-                      player.rank <= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                    }`}>
+                    <div className={cn(`flex items-center justify-center w-8 h-8 rounded-full font-bold`,
+                      player.rank <= 3 ? 'bg-primary text-primary-foreground ring-2 ring-primary/50' : 'bg-muted'
+                    )}>
                       {player.rank}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <Avatar>
+                      <Avatar className={cn(player.rank <= 3 && "ring-2 ring-primary")}>
                         <AvatarImage src={player.avatar} alt={player.name} data-ai-hint={player.dataAiHint} />
                         <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
                       </Avatar>
