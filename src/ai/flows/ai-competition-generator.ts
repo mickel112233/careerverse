@@ -46,8 +46,7 @@ const generateAiCompetitionQuizPrompt = ai.definePrompt({
   Make sure the options are distinct, and that only one of them is correct.
   The quiz should be challenging and test the user's knowledge of the job role.
 
-  Return the quiz in the following JSON format:
-  {{$type: GenerateAiCompetitionQuizOutput}}
+  Return the quiz in a JSON format.
   `,
 });
 
