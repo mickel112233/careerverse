@@ -16,7 +16,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Home, Swords, Trophy, BookOpen, Users, UserCircle, Settings, LogOut } from "lucide-react";
+import { Home, Swords, Trophy, BookOpen, Users, UserCircle, Settings, LogOut, ShoppingCart } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
@@ -29,6 +29,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
     { href: "/learning", label: "Learning", icon: BookOpen },
     { href: "/guilds", label: "Guilds", icon: Users },
+    { href: "/shop", label: "Shop", icon: ShoppingCart },
     { href: "/profile", label: "Profile", icon: UserCircle },
   ];
 
