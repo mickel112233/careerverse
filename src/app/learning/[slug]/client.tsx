@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -12,7 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, BarChart, FileQuestion, HelpCircle } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type LearningState = 'loading' | 'studying' | 'quizzing';
@@ -36,6 +37,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [learningData, setLearningData] = useState<GenerateLearningContentOutput | null>(null);
     const router = useRouter();
     const { toast } = useToast();
+    const [levelXp, setLevelXp] = useState(0);
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -44,6 +46,16 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 const streamName = localStorage.getItem('careerClashStream') || 'general knowledge';
                 const data = await generateLearningContent({ topicTitle: topic, streamName });
                 setLearningData(data);
+                
+                const storedRoadmap = localStorage.getItem('careerClashRoadmap');
+                if (storedRoadmap) {
+                    const roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
+                    const currentNode = roadmap.find(node => node.slug === slug);
+                    if (currentNode) {
+                        setLevelXp(currentNode.xp || 0);
+                    }
+                }
+                
                 setState('studying');
             } catch (error) {
                 console.error("Failed to generate learning content:", error);
@@ -56,7 +68,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             }
         };
         fetchContent();
-    }, [topic, router, toast]);
+    }, [topic, slug, router, toast]);
 
     const handleQuizComplete = (finalScore: number, totalQuestions: number) => {
         const percentage = (finalScore / totalQuestions) * 100;
@@ -71,17 +83,17 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                         roadmap[currentIndex + 1].status = 'unlocked';
                     }
 
-                    const levelXp = roadmap[currentIndex].xp || 0;
                     const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
                     const newTotalXp = currentTotalXp + levelXp;
                     localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+                    window.dispatchEvent(new Event('currencyChange'));
 
                     localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
                 }
             }
             toast({
                 title: "Level Complete!",
-                description: "You've unlocked the next level.",
+                description: `You earned ${levelXp} XP and unlocked the next level.`,
                 className: "bg-green-500 text-white border-green-600",
             });
         } else {
@@ -107,7 +119,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     }
 
     if (state === 'quizzing') {
-        return <QuizView quizData={learningData.quiz} onQuizComplete={handleQuizComplete} />;
+        return <QuizView quizData={learningData.quiz} levelXp={levelXp} onQuizComplete={handleQuizComplete} />;
     }
 
     return null;
@@ -133,7 +145,7 @@ const StudyView = ({ content, onStartQuiz }: { content: string, onStartQuiz: () 
     </Card>
 );
 
-const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], onQuizComplete: (score: number, total: number) => void }) => {
+const QuizView = ({ quizData, levelXp, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, onQuizComplete: (score: number, total: number) => void }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -144,12 +156,10 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
     const totalQuestions = quizData.questions.length;
 
     const handleNext = () => {
-        setSelectedOption(null);
-        
         const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
         if (isLastQuestion) {
-            const finalAnswers = {...userAnswers, [currentQuestionIndex]: selectedOption};
+            const finalAnswers = {...userAnswers, [currentQuestionIndex]: selectedOption!};
             const results: QuizResult[] = quizData.questions.map((q, index) => ({
                 question: q.question,
                 yourAnswer: finalAnswers[index] || "Not Answered",
@@ -163,6 +173,7 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
             setIsFinished(true);
         } else {
             setCurrentQuestionIndex(prev => prev + 1);
+            setSelectedOption(null);
         }
     };
     
@@ -174,7 +185,7 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
     
     useEffect(() => {
         if (selectedOption) {
-            const timer = setTimeout(handleNext, 1500);
+            const timer = setTimeout(handleNext, 1200);
             return () => clearTimeout(timer);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,17 +209,21 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
         return (
             <Card>
                  <CardHeader>
-                    <CardTitle className="font-headline text-2xl text-center">Challenge Complete!</CardTitle>
+                    <CardTitle className="font-headline text-3xl text-center">Challenge Complete!</CardTitle>
                     <CardDescription className="text-center">{passed ? "Congratulations, you passed!" : "You can do better. Review your answers and try again."}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div className="flex flex-col items-center">
-                            <p className="text-lg font-medium">Your Score</p>
-                             <p className={cn("text-7xl font-bold my-2", passed ? "text-green-400" : "text-destructive")}>
+                        <div className="flex flex-col items-center justify-center gap-2">
+                             <p className={cn("text-7xl font-bold font-headline my-2", passed ? "text-green-400" : "text-destructive")}>
                                 {score}<span className="text-3xl text-muted-foreground">/{totalQuestions}</span>
                             </p>
                             <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
+                             {passed && (
+                                <div className="flex items-center text-lg text-yellow-400 font-bold mt-2 bg-yellow-400/10 px-4 py-2 rounded-md">
+                                    <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
+                                </div>
+                            )}
                         </div>
                         <ChartContainer config={chartConfig} className="mx-auto aspect-square h-48">
                             <PieChart>
@@ -234,10 +249,10 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
                                                 <span>{result.question}</span>
                                             </div>
                                          </AccordionTrigger>
-                                         <AccordionContent className="space-y-2">
+                                         <AccordionContent className="space-y-2 p-4">
                                              <p className="text-sm"><strong className="text-red-400">Your Answer:</strong> {result.yourAnswer}</p>
                                              <p className="text-sm"><strong className="text-green-400">Correct Answer:</strong> {result.correctAnswer}</p>
-                                             <div className="p-3 bg-muted/50 rounded-md">
+                                             <div className="p-3 bg-muted/50 rounded-md mt-2">
                                                 <h4 className="font-semibold text-primary">Explanation</h4>
                                                 <p className="text-muted-foreground text-sm">{result.explanation}</p>
                                              </div>
@@ -248,7 +263,7 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
                         </div>
                     )}
                 </CardContent>
-                <CardFooter className="justify-center gap-4">
+                <CardFooter className="justify-center gap-4 pt-6">
                     <Button asChild>
                         <Link href="/dashboard">
                             Back to Roadmap
@@ -273,37 +288,45 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
                 <Progress value={((currentQuestionIndex + 1) / totalQuestions) * 100} className="w-full" />
             </CardHeader>
             <CardContent>
-                <p className="font-semibold mb-4 text-lg">{question.question}</p>
+                <p className="font-semibold mb-6 text-lg text-center">{question.question}</p>
                 <div className="space-y-3">
                     {question.options.map((option, index) => {
                         const isSelected = selectedOption === option;
                         const isCorrect = question.correctAnswer === option;
 
                         return (
-                            <div key={index} 
-                                 className={cn(
-                                     "flex items-center space-x-3 p-3 rounded-md border transition-all",
-                                     selectedOption ? "cursor-not-allowed" : "cursor-pointer hover:bg-muted/50",
-                                     selectedOption && isCorrect && isSelected && "bg-green-900/50 border-green-500",
-                                     selectedOption && !isCorrect && isSelected && "bg-red-900/50 border-red-500",
-                                     selectedOption && isCorrect && !isSelected && "border-green-500",
-                                 )}
-                                 onClick={() => handleAnswer(option)}
+                            <Button
+                                key={index} 
+                                variant="outline"
+                                size="lg"
+                                className={cn(
+                                    "h-auto py-4 justify-start text-left whitespace-normal transition-all duration-300",
+                                    selectedOption ? "cursor-not-allowed" : "hover:bg-primary/10 hover:border-primary",
+                                    selectedOption && isCorrect && "bg-green-500/20 border-green-500 text-foreground animate-pulse",
+                                    selectedOption && !isCorrect && isSelected && "bg-destructive/20 border-destructive text-foreground"
+                                )}
+                                onClick={() => handleAnswer(option)}
+                                disabled={!!selectedOption}
                             >
-                                {selectedOption && isCorrect && <CheckCircle className="h-5 w-5 text-green-400 shrink-0" />}
-                                {selectedOption && !isCorrect && isSelected && <XCircle className="h-5 w-5 text-red-400 shrink-0" />}
-                                {!selectedOption && <div className="h-5 w-5 shrink-0 border-2 border-muted rounded-full"></div>}
-                                {(selectedOption && !isSelected && !isCorrect) && <div className="h-5 w-5 shrink-0 border-2 border-muted rounded-full"></div>}
-
-                                <Label htmlFor={`option-${index}`} className={cn("flex-1", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
-                            </div>
+                                <div className="flex items-center w-full">
+                                    <div className="flex items-center mr-4">
+                                        {selectedOption && isCorrect && isSelected && <CheckCircle className="h-6 w-6 text-green-400 shrink-0" />}
+                                        {selectedOption && isCorrect && !isSelected && <div className="h-6 w-6 shrink-0"/>}
+                                        {selectedOption && !isCorrect && isSelected && <XCircle className="h-6 w-6 text-red-400 shrink-0" />}
+                                        {!selectedOption && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full group-hover:border-primary"></div>}
+                                        {(selectedOption && !isSelected && !isCorrect) && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full"></div>}
+                                    </div>
+                                    <Label className={cn("flex-1 text-base", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
+                                </div>
+                            </Button>
                         )
                     })}
                 </div>
             </CardContent>
-            <CardFooter>
-                <Button onClick={handleNext} disabled={!selectedOption || currentQuestionIndex === totalQuestions}>
+             <CardFooter className="justify-end">
+                <Button onClick={handleNext} disabled={!selectedOption || isFinished}>
                    {currentQuestionIndex === totalQuestions - 1 ? 'Finish Challenge' : 'Next Question'}
+                   <ArrowRight className="ml-2 h-4 w-4"/>
                 </Button>
             </CardFooter>
         </Card>
