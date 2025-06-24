@@ -46,6 +46,8 @@ type RoadmapNode = {
   xp: number;
 };
 
+const roadmapIcons = [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2];
+
 const NodeIcon = ({ icon, status }: { icon: React.ElementType, status: string }) => {
   const Icon = icon;
   const colors = {
@@ -76,7 +78,13 @@ export default function DashboardClient() {
 
     if (storedStream && storedRoadmap) {
         setSelectedStream(storedStream);
-        setRoadmapNodes(JSON.parse(storedRoadmap));
+        const parsedRoadmap = JSON.parse(storedRoadmap);
+        // Re-hydrate the icon components after parsing from localStorage
+        const hydratedNodes = parsedRoadmap.map((node: any) => ({
+            ...node,
+            icon: roadmapIcons[node.iconIndex] || roadmapIcons[0],
+        }));
+        setRoadmapNodes(hydratedNodes);
     } else {
         setIsDialogOpen(true); // Force selection on first visit
     }
@@ -95,15 +103,25 @@ export default function DashboardClient() {
         const newNodes: RoadmapNode[] = result.roadmap.map((node, index) => ({
             title: node.title,
             slug: node.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
-            icon: [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2][index % 7],
+            icon: roadmapIcons[index % roadmapIcons.length],
             status: index === 0 ? 'unlocked' : 'locked',
             description: node.description,
             xp: node.xp,
         }));
         
         setRoadmapNodes(newNodes);
+        
+        // Create a serializable version for localStorage by storing the icon index instead of the component
+        const serializableNodes = newNodes.map((node, index) => {
+            const { icon, ...rest } = node;
+            return {
+                ...rest,
+                iconIndex: index % roadmapIcons.length
+            };
+        });
+
         localStorage.setItem('careerClashStream', streamName);
-        localStorage.setItem('careerClashRoadmap', JSON.stringify(newNodes));
+        localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableNodes));
     } catch (error) {
         console.error("Failed to generate roadmap:", error);
         toast({
