@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Shield, Star, Zap, PaintBrush, FileText, ShoppingCart } from "lucide-react";
+import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
 const cosmetics = [
   { name: 'Cosmic Avatar Frame', price: 500, type: 'Frame', icon: Star, image: 'https://placehold.co/400x400.png', dataAiHint: 'avatar frame' },
   { name: 'Neon Glow FX', price: 750, type: 'Animation', icon: Zap, image: 'https://placehold.co/400x400.png', dataAiHint: 'neon animation' },
   { name: 'Legendary Title', price: 1000, type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
-  { name: 'Futuristic Theme', price: 1500, type: 'Theme', icon: PaintBrush, image: 'https://placehold.co/400x400.png', dataAiHint: 'dark theme' },
+  { name: 'Futuristic Theme', price: 1500, type: 'Theme', icon: Paintbrush, image: 'https://placehold.co/400x400.png', dataAiHint: 'dark theme' },
 ];
 
 const powerUps = [
