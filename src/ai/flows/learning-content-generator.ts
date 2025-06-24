@@ -44,7 +44,7 @@ Topic to Cover: '{{{topicTitle}}}'
 INSTRUCTIONS:
 
 1.  **Generate Learning Content**:
-    *   Create a detailed and engaging lesson about the '{{{topicTitle}}}'.
+    *   Create a detailed and engaging lesson about the '{{{topicTitle}}}'. The content should be comprehensive enough to serve as a one-page study guide.
     *   The content should be structured logically, starting with an introduction, covering core concepts with examples, and ending with a summary.
     *   The entire lesson must be formatted as a **single HTML string**. Use tags like <h3>, <h4>, <p>, <ul>, <li>, <strong>, and <em> to create a well-structured and readable page. DO NOT use markdown.
 
@@ -54,6 +54,7 @@ INSTRUCTIONS:
     *   The quiz must contain between 8 and 10 multiple-choice questions.
     *   Each question must have exactly 4 options.
     *   For each question, specify the correct answer and a brief explanation for why it's correct.
+    *   **Crucially, ensure the position of the correct answer within the 'options' array is randomized for each question.** Do not consistently place the correct answer in the first position.
 
 Return the entire output as a single JSON object matching the defined schema.
 `,

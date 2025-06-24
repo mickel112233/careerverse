@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, BarChart, FileQuestion, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type LearningState = 'loading' | 'studying' | 'quizzing';
@@ -18,6 +21,14 @@ type RoadmapNode = {
     title: string;
     slug: string;
     status: 'completed' | 'unlocked' | 'locked';
+    xp: number;
+};
+type QuizResult = {
+    question: string;
+    yourAnswer: string;
+    correctAnswer: string;
+    explanation: string;
+    isCorrect: boolean;
 };
 
 export default function LearningFlowClient({ topic, slug }: { topic: string, slug: string }) {
@@ -54,11 +65,17 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             if (storedRoadmap) {
                 const roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
                 const currentIndex = roadmap.findIndex(node => node.slug === slug);
-                if (currentIndex !== -1) {
+                if (currentIndex !== -1 && roadmap[currentIndex].status !== 'completed') {
                     roadmap[currentIndex].status = 'completed';
                     if (currentIndex + 1 < roadmap.length) {
                         roadmap[currentIndex + 1].status = 'unlocked';
                     }
+
+                    const levelXp = roadmap[currentIndex].xp || 0;
+                    const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+                    const newTotalXp = currentTotalXp + levelXp;
+                    localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+
                     localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
                 }
             }
@@ -121,60 +138,115 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
     const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isFinished, setIsFinished] = useState(false);
-    const [score, setScore] = useState(0);
-    const [showExplanation, setShowExplanation] = useState(false);
+    const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
 
     const question = quizData.questions[currentQuestionIndex];
     const totalQuestions = quizData.questions.length;
 
     const handleNext = () => {
-        setShowExplanation(false);
         setSelectedOption(null);
         
         const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
         if (isLastQuestion) {
-            let finalScore = 0;
-            // Recalculate score based on the final state of userAnswers
             const finalAnswers = {...userAnswers, [currentQuestionIndex]: selectedOption};
-             quizData.questions.forEach((q, index) => {
-                if (finalAnswers[index] === q.correctAnswer) {
-                    finalScore++;
-                }
-            });
-            setScore(finalScore);
-            setIsFinished(true);
+            const results: QuizResult[] = quizData.questions.map((q, index) => ({
+                question: q.question,
+                yourAnswer: finalAnswers[index] || "Not Answered",
+                correctAnswer: q.correctAnswer,
+                explanation: q.explanation,
+                isCorrect: finalAnswers[index] === q.correctAnswer,
+            }));
+            const finalScore = results.filter(r => r.isCorrect).length;
+            setQuizResults(results);
             onQuizComplete(finalScore, totalQuestions);
+            setIsFinished(true);
         } else {
             setCurrentQuestionIndex(prev => prev + 1);
         }
     };
     
     const handleAnswer = (answer: string) => {
-        if(showExplanation) return;
+        if(selectedOption) return;
         setSelectedOption(answer);
         setUserAnswers(prev => ({...prev, [currentQuestionIndex]: answer}));
-        setShowExplanation(true);
     };
+    
+    useEffect(() => {
+        if (selectedOption) {
+            const timer = setTimeout(handleNext, 1500);
+            return () => clearTimeout(timer);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedOption]);
 
     if (isFinished) {
+        const score = quizResults.filter(r => r.isCorrect).length;
         const percentage = (score / totalQuestions) * 100;
         const passed = percentage >= 60;
+        const incorrectAnswers = quizResults.filter(r => !r.isCorrect);
+
+        const chartData = [
+            { name: 'Correct', value: score, fill: 'hsl(var(--chart-1))' },
+            { name: 'Incorrect', value: totalQuestions - score, fill: 'hsl(var(--destructive))' },
+        ];
+        const chartConfig = {
+            correct: { label: 'Correct', color: 'hsl(var(--chart-1))' },
+            incorrect: { label: 'Incorrect', color: 'hsl(var(--destructive))' },
+        };
 
         return (
-            <Card className="text-center">
+            <Card>
                  <CardHeader>
-                    <CardTitle className="font-headline text-2xl">Challenge Complete!</CardTitle>
-                    <CardDescription>{passed ? "Congratulations, you passed!" : "You can do better. Try again!"}</CardDescription>
+                    <CardTitle className="font-headline text-2xl text-center">Challenge Complete!</CardTitle>
+                    <CardDescription className="text-center">{passed ? "Congratulations, you passed!" : "You can do better. Review your answers and try again."}</CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-col items-center">
-                     <p className="text-lg">Your score:</p>
-                    <p className={cn("text-6xl font-bold my-4", passed ? "text-green-400" : "text-destructive")}>
-                        {score} <span className="text-2xl text-muted-foreground">/ {totalQuestions}</span>
-                    </p>
-                    <div className="w-full bg-muted rounded-full h-4 my-4">
-                        <div className={cn("h-4 rounded-full", passed ? "bg-green-400" : "bg-destructive")} style={{ width: `${percentage}%` }}></div>
+                <CardContent className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div className="flex flex-col items-center">
+                            <p className="text-lg font-medium">Your Score</p>
+                             <p className={cn("text-7xl font-bold my-2", passed ? "text-green-400" : "text-destructive")}>
+                                {score}<span className="text-3xl text-muted-foreground">/{totalQuestions}</span>
+                            </p>
+                            <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
+                        </div>
+                        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-48">
+                            <PieChart>
+                                <Tooltip content={<ChartTooltipContent hideLabel />} />
+                                <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={70} strokeWidth={2}>
+                                    {chartData.map((entry) => (
+                                       <Cell key={`cell-${entry.name}`} fill={entry.fill} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                        </ChartContainer>
                     </div>
+
+                    {incorrectAnswers.length > 0 && (
+                        <div>
+                             <h3 className="text-xl font-semibold font-headline flex items-center mb-4"><FileQuestion className="mr-2 h-5 w-5 text-primary"/>Review Your Mistakes</h3>
+                            <Accordion type="single" collapsible className="w-full">
+                                {incorrectAnswers.map((result, index) => (
+                                     <AccordionItem value={`item-${index}`} key={index}>
+                                         <AccordionTrigger>
+                                            <div className="flex items-start text-left gap-2">
+                                                <HelpCircle className="h-5 w-5 text-destructive shrink-0 mt-1"/>
+                                                <span>{result.question}</span>
+                                            </div>
+                                         </AccordionTrigger>
+                                         <AccordionContent className="space-y-2">
+                                             <p className="text-sm"><strong className="text-red-400">Your Answer:</strong> {result.yourAnswer}</p>
+                                             <p className="text-sm"><strong className="text-green-400">Correct Answer:</strong> {result.correctAnswer}</p>
+                                             <div className="p-3 bg-muted/50 rounded-md">
+                                                <h4 className="font-semibold text-primary">Explanation</h4>
+                                                <p className="text-muted-foreground text-sm">{result.explanation}</p>
+                                             </div>
+                                         </AccordionContent>
+                                     </AccordionItem>
+                                ))}
+                            </Accordion>
+                        </div>
+                    )}
                 </CardContent>
                 <CardFooter className="justify-center gap-4">
                     <Button asChild>
@@ -182,12 +254,10 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
                             Back to Roadmap
                         </Link>
                     </Button>
-                    {!passed && (
-                         <Button variant="outline" onClick={() => window.location.reload()}>
-                             <Repeat className="mr-2 h-4 w-4" />
-                            Try Again
-                         </Button>
-                    )}
+                     <Button variant="outline" onClick={() => window.location.reload()}>
+                         <Repeat className="mr-2 h-4 w-4" />
+                        {passed ? 'Practice Again' : 'Try Again'}
+                     </Button>
                 </CardFooter>
             </Card>
         )
@@ -213,29 +283,26 @@ const QuizView = ({ quizData, onQuizComplete }: { quizData: GenerateLearningCont
                             <div key={index} 
                                  className={cn(
                                      "flex items-center space-x-3 p-3 rounded-md border transition-all",
-                                     showExplanation ? "cursor-not-allowed" : "cursor-pointer hover:bg-muted/50",
-                                     showExplanation && isCorrect && "bg-green-900/50 border-green-500",
-                                     showExplanation && isSelected && !isCorrect && "bg-red-900/50 border-red-500",
+                                     selectedOption ? "cursor-not-allowed" : "cursor-pointer hover:bg-muted/50",
+                                     selectedOption && isCorrect && isSelected && "bg-green-900/50 border-green-500",
+                                     selectedOption && !isCorrect && isSelected && "bg-red-900/50 border-red-500",
+                                     selectedOption && isCorrect && !isSelected && "border-green-500",
                                  )}
                                  onClick={() => handleAnswer(option)}
                             >
-                                {showExplanation && isCorrect && <CheckCircle className="h-5 w-5 text-green-400" />}
-                                {showExplanation && isSelected && !isCorrect && <XCircle className="h-5 w-5 text-red-400" />}
-                                {!showExplanation && <div className="h-5 w-5 shrink-0"></div>}
-                                <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">{option}</Label>
+                                {selectedOption && isCorrect && <CheckCircle className="h-5 w-5 text-green-400 shrink-0" />}
+                                {selectedOption && !isCorrect && isSelected && <XCircle className="h-5 w-5 text-red-400 shrink-0" />}
+                                {!selectedOption && <div className="h-5 w-5 shrink-0 border-2 border-muted rounded-full"></div>}
+                                {(selectedOption && !isSelected && !isCorrect) && <div className="h-5 w-5 shrink-0 border-2 border-muted rounded-full"></div>}
+
+                                <Label htmlFor={`option-${index}`} className={cn("flex-1", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
                             </div>
                         )
                     })}
                 </div>
-                {showExplanation && (
-                    <div className="mt-4 p-4 bg-muted/50 rounded-lg">
-                        <h4 className="font-semibold text-primary">Explanation</h4>
-                        <p className="text-muted-foreground text-sm">{question.explanation}</p>
-                    </div>
-                )}
             </CardContent>
             <CardFooter>
-                <Button onClick={handleNext} disabled={!showExplanation}>
+                <Button onClick={handleNext} disabled={!selectedOption || currentQuestionIndex === totalQuestions}>
                    {currentQuestionIndex === totalQuestions - 1 ? 'Finish Challenge' : 'Next Question'}
                 </Button>
             </CardFooter>
