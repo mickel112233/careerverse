@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
+import { motion } from 'framer-motion';
 
 type GuildData = {
     guildName: string;
@@ -19,11 +20,11 @@ type GuildData = {
 };
 
 const mockMembers = [
-    { name: 'QuantumLeap', role: 'Leader', xp: 9850, avatarHint: 'woman face' },
-    { name: 'SynthWave', role: 'Officer', xp: 9500, avatarHint: 'man portrait' },
-    { name: 'CodeNinja', role: 'Member', xp: 9200, avatarHint: 'person glasses' },
-    { name: 'DataDynamo', role: 'Member', xp: 8900, avatarHint: 'woman smiling' },
-    { name: 'PixelPerfect', role: 'Member', xp: 8750, avatarHint: 'man serious' },
+    { name: 'QuantumLeap', role: 'Leader', xp: 9850, avatarHint: 'cyberpunk woman portrait' },
+    { name: 'SynthWave', role: 'Officer', xp: 9500, avatarHint: 'cyberpunk man portrait' },
+    { name: 'CodeNinja', role: 'Member', xp: 9200, avatarHint: 'hacker with glasses' },
+    { name: 'DataDynamo', role: 'Member', xp: 8900, avatarHint: 'data scientist smiling' },
+    { name: 'PixelPerfect', role: 'Member', xp: 8750, avatarHint: 'designer serious' },
 ];
 
 const mockAnnouncements = [
@@ -44,15 +45,17 @@ const roleIcons: { [key: string]: React.ElementType } = {
 };
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
-    <Card className="bg-muted/50">
-        <CardContent className="p-4 flex items-center gap-4">
-            <Icon className="h-8 w-8 text-primary" />
-            <div>
-                <p className="text-sm text-muted-foreground">{label}</p>
-                <p className="text-2xl font-bold font-headline">{value}</p>
-            </div>
-        </CardContent>
-    </Card>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <Card className="bg-muted/50 h-full">
+            <CardContent className="p-4 flex items-center gap-4">
+                <Icon className="h-8 w-8 text-primary" />
+                <div>
+                    <p className="text-sm text-muted-foreground">{label}</p>
+                    <p className="text-2xl font-bold font-headline">{value}</p>
+                </div>
+            </CardContent>
+        </Card>
+    </motion.div>
 );
 
 export default function MyGuildClient() {
@@ -60,26 +63,33 @@ export default function MyGuildClient() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const storedGuild = localStorage.getItem('userGuild');
-        if (storedGuild) {
-            setGuild(JSON.parse(storedGuild));
+        const fetchGuild = () => {
+            const storedGuild = localStorage.getItem('userGuild');
+            if (storedGuild) {
+                setGuild(JSON.parse(storedGuild));
+            }
+            setIsLoading(false);
         }
-        setIsLoading(false);
+        
+        fetchGuild();
+        
+        window.addEventListener('guildChange', fetchGuild);
+        return () => window.removeEventListener('guildChange', fetchGuild);
     }, []);
 
     if (isLoading) {
         return (
             <div className="space-y-8">
-                <Skeleton className="h-48 w-full" />
+                <Skeleton className="h-48 w-full rounded-lg" />
                 <div className="flex items-end gap-4 -mt-20 ml-8">
                     <Skeleton className="h-32 w-32 rounded-lg border-4 border-background" />
-                    <div className="pb-4">
-                        <Skeleton className="h-10 w-64 mb-2" />
+                    <div className="pb-4 space-y-2">
+                        <Skeleton className="h-10 w-64" />
                         <Skeleton className="h-6 w-96" />
                     </div>
                 </div>
-                 <Skeleton className="h-12 w-full" />
-                 <Skeleton className="h-96 w-full" />
+                 <Skeleton className="h-12 w-full max-w-md" />
+                 <Skeleton className="h-96 w-full rounded-lg" />
             </div>
         );
     }
@@ -112,14 +122,14 @@ export default function MyGuildClient() {
         <div>
             <Card className="mb-8 overflow-hidden">
                 <div className="relative h-48 bg-muted">
-                    <AiImage prompt="abstract pattern" alt="Guild Banner" layout="fill" objectFit="cover" />
+                    <AiImage prompt="abstract futuristic guild banner" alt="Guild Banner" layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     <div className="absolute bottom-4 right-4">
                         <Button variant="secondary" size="sm"><Settings className="mr-2 h-4 w-4"/>Manage Guild</Button>
                     </div>
                 </div>
                 <div className="flex items-end gap-6 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                     <AiImage prompt="guild crest" width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
+                     <AiImage prompt="futuristic guild crest emblem" width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
                      <div>
                         <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
                         <p className="text-muted-foreground max-w-xl">{guild.description}</p>

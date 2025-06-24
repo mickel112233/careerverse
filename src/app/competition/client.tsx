@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { AiAvatar } from "@/components/ui/ai-avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // --- Data ---
 const streams = [
@@ -50,11 +51,12 @@ export default function CompetitionClient() {
   const [scores, setScores] = useState<Scores>({ player: 0, opponent: 0 });
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isOpponentAnswering, setIsOpponentAnswering] = useState(false);
+  const [opponentFound, setOpponentFound] = useState(false);
 
   const { toast } = useToast();
 
-  const player: Player = { name: 'QuantumLeap', avatarHint: 'woman face', type: 'human' };
-  const opponent: Player = { name: 'AI Bot', avatarHint: 'robot face', type: 'bot' };
+  const player: Player = { name: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', type: 'human' };
+  const opponent: Player = { name: 'AI Bot', avatarHint: 'cyberpunk robot face', type: 'bot' };
 
   const handleStreamSelect = (streamName: string) => {
     setSelectedStream(streamName);
@@ -64,6 +66,7 @@ export default function CompetitionClient() {
   const handleStartBattle = async () => {
     if (!selectedStream) return;
     setStep("matching");
+    setOpponentFound(false);
     try {
       const quiz = await generateAiCompetitionQuiz({ jobRole: selectedStream, numQuestions: battleConfig.questions });
       setQuizData(quiz);
@@ -71,6 +74,7 @@ export default function CompetitionClient() {
       setScores({ player: 0, opponent: 0 });
       setSelectedAnswer(null);
       // Simulate matching time
+      setTimeout(() => setOpponentFound(true), 1500);
       setTimeout(() => {
         setStep("active");
       }, 2500);
@@ -193,7 +197,7 @@ export default function CompetitionClient() {
                     >
                         {questionCounts.map(count => (
                             <ToggleGroupItem key={count} value={String(count)}>{count}</ToggleGroupItem>
-                        ))}
+))}
                     </ToggleGroup>
                 </div>
                 <div 
@@ -234,16 +238,18 @@ export default function CompetitionClient() {
                 <p className="font-bold text-lg">{player.name}</p>
             </div>
             <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
-             <div className="flex flex-col items-center gap-2 opacity-50">
-                <Avatar className="w-24 h-24">
-                    <AvatarFallback>?</AvatarFallback>
-                </Avatar>
-                <p className="font-bold text-lg">Finding Opponent...</p>
+             <div className="flex flex-col items-center gap-2">
+                {opponentFound ? (
+                    <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
+                ) : (
+                    <Skeleton className="w-24 h-24 rounded-full" />
+                )}
+                <p className="font-bold text-lg">{opponentFound ? opponent.name : 'Finding Opponent...'}</p>
             </div>
         </div>
         <div className="flex items-center gap-4 mt-6">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <h2 className="text-2xl font-headline">Matching...</h2>
+            <h2 className="text-2xl font-headline">{opponentFound ? "Opponent Found! Starting..." : "Matching..."}</h2>
         </div>
       </Card>
     );
@@ -325,13 +331,14 @@ export default function CompetitionClient() {
   if (step === "finished" && quizData) {
     const playerWon = scores.player > scores.opponent;
     const isDraw = scores.player === scores.opponent;
+    const resultText = isDraw ? "It's a Draw!" : playerWon ? "Victory!" : "Defeat!";
     return (
         <Card className="text-center">
             <CardHeader>
-                <CardTitle className={cn("font-headline text-4xl", playerWon && "text-green-400", !playerWon && !isDraw && "text-destructive")}>
-                    {isDraw ? "It's a Draw!" : playerWon ? "You Win!" : "You Lose!"}
+                <CardTitle className={cn("font-headline text-5xl", playerWon && "text-green-400", !playerWon && !isDraw && "text-destructive")}>
+                    {resultText}
                 </CardTitle>
-                <CardDescription>You competed in the {quizData.quizTitle} challenge.</CardDescription>
+                <CardDescription>You competed in the "{quizData.quizTitle}" challenge.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-6">
                  <div className="flex items-end gap-8">
@@ -351,7 +358,7 @@ export default function CompetitionClient() {
                 </div>
             </CardContent>
             <CardFooter className="justify-center gap-4">
-                <Button variant="outline">
+                <Button variant="outline" disabled>
                     <Heart className="mr-2 h-4 w-4" />
                     Rematch
                 </Button>

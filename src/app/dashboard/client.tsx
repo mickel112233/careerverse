@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -222,7 +223,7 @@ export default function DashboardClient() {
             {roadmapNodes.map((node, index) => (
               <div key={index} className="relative flex items-center">
                 <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'text-right' : 'order-2 text-left'}`}>
-                  <Card className={cn('inline-block text-left border-2', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
+                  <Card className={cn('inline-block text-left border-2', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
                     <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
                       <NodeIcon icon={node.icon} status={node.status} />
                       <div>

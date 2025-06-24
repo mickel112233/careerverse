@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -40,7 +41,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden font-headline text-white">
+    <div className="relative min-h-screen w-full overflow-hidden text-white">
       <GridBackground />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4 text-center">
@@ -49,10 +50,10 @@ export default function Home() {
         </header>
 
         <main className="flex flex-col items-center">
-          <h1 className="text-5xl font-black tracking-tighter sm:text-7xl md:text-8xl bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">
+          <h1 className="font-headline text-5xl font-black tracking-tighter sm:text-7xl md:text-8xl bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">
             CAREER CLASH
           </h1>
-          <p className="font-body mt-4 max-w-2xl text-lg text-slate-300 md:text-xl">
+          <p className="mt-4 max-w-2xl text-lg text-slate-300 md:text-xl">
             Enter the Ultimate Career Arena. <br className="hidden sm:block" /> Where Learning Meets Gaming • Forge Your Future
           </p>
 
@@ -65,16 +66,13 @@ export default function Home() {
 
           <div className="mt-8 flex items-center gap-2 rounded-full border border-border bg-card/50 p-2 px-4 text-sm text-slate-300 backdrop-blur-sm">
             <Target className="h-5 w-5 text-lime-400 animate-pulse" />
-            <span className="font-body">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
+            <span className="">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
           </div>
         </main>
 
         <footer className="absolute bottom-4 w-full px-4">
-          <div className="relative flex justify-center items-center text-center text-xs text-slate-500 font-body">
+          <div className="relative flex justify-center items-center text-center text-xs text-slate-500">
             <p>Powered by Next-Gen EdTech · Built for Future Leaders</p>
-            <div className="absolute bottom-0 right-4 text-xs hidden md:block">
-              Edit with ❤️ Lovable
-            </div>
           </div>
         </footer>
       </div>

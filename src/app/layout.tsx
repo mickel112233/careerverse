@@ -1,7 +1,21 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/main-layout';
+import { Inter, Poppins } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const fontSans = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
+const fontHeading = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+  variable: '--font-heading',
+});
 
 export const metadata: Metadata = {
   title: 'Career Clash',
@@ -14,13 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={cn("font-sans antialiased", fontSans.variable, fontHeading.variable)}>
         <MainLayout>
           {children}
         </MainLayout>

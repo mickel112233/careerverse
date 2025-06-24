@@ -12,12 +12,13 @@ import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
 import { AiAvatar } from '@/components/ui/ai-avatar';
+import { motion } from 'framer-motion';
 
 const baseUserData = {
     name: 'QuantumLeap',
     title: 'Senior AI Engineer',
-    avatarHint: 'woman face',
-    bannerHint: 'abstract background',
+    avatarHint: 'cyberpunk woman portrait',
+    bannerHint: 'abstract purple and blue nebula',
     guild: {
         name: 'AI Vanguard',
         icon: Zap,
@@ -36,25 +37,27 @@ const baseUserData = {
         { name: 'React Pro', icon: Star, color: 'text-yellow-400' },
     ],
     battleHistory: [
-        { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatarHint: 'man portrait' }, result: 'Win', xp: '+150 XP' },
-        { id: 2, challenge: 'Node.js Performance Battle', opponent: { name: 'CodeNinja', avatarHint: 'person glasses' }, result: 'Win', xp: '+200 XP' },
-        { id: 3, challenge: 'CSS Specificity Simulation', opponent: { name: 'PixelPerfect', avatarHint: 'man serious' }, result: 'Loss', xp: '-50 XP' },
-        { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatarHint: 'woman smiling' }, result: 'Win', xp: '+180 XP' },
+        { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatarHint: 'cyberpunk man portrait' }, result: 'Win', xp: '+150 XP' },
+        { id: 2, challenge: 'Node.js Performance Battle', opponent: { name: 'CodeNinja', avatarHint: 'hacker with glasses' }, result: 'Win', xp: '+200 XP' },
+        { id: 3, challenge: 'CSS Specificity Simulation', opponent: { name: 'PixelPerfect', avatarHint: 'designer serious' }, result: 'Loss', xp: '-50 XP' },
+        { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatarHint: 'data scientist smiling' }, result: 'Win', xp: '+180 XP' },
     ],
 };
 
 
 const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementType, label: string, value: string | number, subValue?: string }) => (
-    <Card className="bg-muted/30">
-        <CardContent className="p-4 flex items-center gap-4">
-            <Icon className="h-8 w-8 text-primary" />
-            <div>
-                <p className="text-sm text-muted-foreground">{label}</p>
-                <p className="text-2xl font-bold font-headline">{value}</p>
-                {subValue && <p className="text-xs text-muted-foreground">{subValue}</p>}
-            </div>
-        </CardContent>
-    </Card>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <Card className="bg-muted/30 h-full">
+            <CardContent className="p-4 flex items-center gap-4">
+                <Icon className="h-8 w-8 text-primary" />
+                <div>
+                    <p className="text-sm text-muted-foreground">{label}</p>
+                    <p className="text-2xl font-bold font-headline">{value}</p>
+                    {subValue && <p className="text-xs text-muted-foreground">{subValue}</p>}
+                </div>
+            </CardContent>
+        </Card>
+    </motion.div>
 );
 
 export default function ProfileClient() {
@@ -67,7 +70,7 @@ export default function ProfileClient() {
     const [achievements, setAchievements] = useState(baseUserData.achievements);
     const [userData, setUserData] = useState(baseUserData);
 
-    const { winRate, avatarRingClass, levelName } = useMemo(() => {
+    const { winRate, avatarRingClass, levelName, levelTooltip } = useMemo(() => {
         const { wins, losses } = userData.stats;
         const totalGames = wins + losses;
         const rate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
@@ -82,52 +85,63 @@ export default function ProfileClient() {
             winRate: rate.toFixed(1) + '%',
             avatarRingClass: ringClass,
             levelName: lvlName,
+            levelTooltip: `Your avatar's frame evolves as you level up. Current tier: ${lvlName}.`,
         };
     }, [level, userData.stats]);
-
-    useEffect(() => {
-        const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
-        setTotalXp(storedXp);
-
-        const currentLevel = Math.floor(storedXp / 1000) + 1;
-        setLevel(currentLevel);
-
-        const xpBaseForCurrentLevel = (currentLevel - 1) * 1000;
-        const xpInCurrentLevel = storedXp - xpBaseForCurrentLevel;
-        setXpForCurrentLevel(xpInCurrentLevel);
-        
-        const xpNeededForNextLevel = 1000;
-        setXpToNextLevel(xpNeededForNextLevel);
-        setXpProgress((xpInCurrentLevel / xpNeededForNextLevel) * 100);
-
-        const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
-        setMembership(storedMembership);
-
-        const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-        const purchasedTitles = inventory
-            .filter((name: string) => name.toLowerCase().includes('title'))
-            .map((name: string) => ({ name, icon: Award, color: 'text-cyan-400' }));
     
-        const allAchievements = [...baseUserData.achievements];
-        purchasedTitles.forEach((purchased: any) => {
-            if (!allAchievements.some(existing => existing.name === purchased.name)) {
-                allAchievements.push(purchased);
-            }
-        });
-        setAchievements(allAchievements);
+    useEffect(() => {
+        const updateAllStats = () => {
+            const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
+            setTotalXp(storedXp);
 
-        const storedGuild = localStorage.getItem('userGuild');
-        if (storedGuild) {
-            const guildData = JSON.parse(storedGuild);
-            setUserData(prev => ({
-                ...prev,
-                guild: {
-                    ...prev.guild,
-                    name: guildData.guildName,
+            const currentLevel = Math.floor(storedXp / 1000) + 1;
+            setLevel(currentLevel);
+
+            const xpBaseForCurrentLevel = (currentLevel - 1) * 1000;
+            const xpInCurrentLevel = storedXp - xpBaseForCurrentLevel;
+            setXpForCurrentLevel(xpInCurrentLevel);
+            
+            const xpNeededForNextLevel = 1000;
+            setXpToNextLevel(xpNeededForNextLevel);
+            setXpProgress((xpInCurrentLevel / xpNeededForNextLevel) * 100);
+
+            const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
+            setMembership(storedMembership);
+
+            const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
+            const purchasedTitles = inventory
+                .filter((name: string) => name.toLowerCase().includes('title'))
+                .map((name: string) => ({ name, icon: Award, color: 'text-cyan-400' }));
+        
+            const allAchievements = [...baseUserData.achievements];
+            purchasedTitles.forEach((purchased: any) => {
+                if (!allAchievements.some(existing => existing.name === purchased.name)) {
+                    allAchievements.push(purchased);
                 }
-            }));
-        }
+            });
+            setAchievements(allAchievements);
 
+            const storedGuild = localStorage.getItem('userGuild');
+            if (storedGuild) {
+                const guildData = JSON.parse(storedGuild);
+                setUserData(prev => ({
+                    ...prev,
+                    guild: {
+                        ...prev.guild,
+                        name: guildData.guildName,
+                    }
+                }));
+            }
+        };
+
+        updateAllStats();
+        window.addEventListener('currencyChange', updateAllStats);
+        window.addEventListener('guildChange', updateAllStats);
+
+        return () => {
+            window.removeEventListener('currencyChange', updateAllStats);
+            window.removeEventListener('guildChange', updateAllStats);
+        }
     }, []);
 
   return (
@@ -144,12 +158,12 @@ export default function ProfileClient() {
                  <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className={cn("w-32 h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4", avatarRingClass)}>
+                            <div className={cn("w-32 h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}>
                                 <AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" />
                             </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p>Your avatar evolves as you level up!</p>
+                            <p>{levelTooltip}</p>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -167,12 +181,12 @@ export default function ProfileClient() {
                     {membership !== 'Free' && (
                          <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
                             <Star className="h-3 w-3 mr-1" />
-                            {membership}
+                            {membership} Member
                         </Badge>
                     )}
                 </div>
                 
-                <Button className="mt-4 w-full">
+                <Button className="mt-4 w-full" disabled>
                     <Linkedin className="mr-2 h-4 w-4" />
                     Share on LinkedIn
                 </Button>
@@ -221,13 +235,19 @@ export default function ProfileClient() {
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {achievements.map(ach => {
+                        {achievements.map((ach, i) => {
                             const Icon = ach.icon;
                             return (
-                                <div key={ach.name} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg hover:bg-muted transition-all hover:scale-105 cursor-pointer">
+                                <motion.div 
+                                    key={ach.name} 
+                                    className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg hover:bg-muted transition-all hover:scale-105 cursor-pointer"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                                >
                                     <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
                                     <p className="text-sm font-semibold">{ach.name}</p>
-                                </div>
+                                </motion.div>
                             )
                         })}
                     </div>
@@ -260,7 +280,7 @@ export default function ProfileClient() {
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-center">
-                                        <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'}>{battle.result}</Badge>
+                                        <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'} className={cn(battle.result === 'Win' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>{battle.result}</Badge>
                                     </TableCell>
                                     <TableCell className={cn("text-right font-mono", battle.result === 'Win' ? 'text-lime-400' : 'text-red-500')}>{battle.xp}</TableCell>
                                 </TableRow>
