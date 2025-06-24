@@ -5,10 +5,10 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 
-export const GenerateImageInputSchema = z.string();
+const GenerateImageInputSchema = z.string();
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
 
-export const GenerateImageOutputSchema = z.string().describe('A data URI for the generated image.');
+const GenerateImageOutputSchema = z.string().describe('A data URI for the generated image.');
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
 
 export async function generateImage(prompt: GenerateImageInput): Promise<GenerateImageOutput> {
