@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Users, Swords, UserCircle } from "lucide-react";
+import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ const menuItems = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
   { href: "/guilds", label: "Guilds", icon: Users },
   { href: "/competition", label: "Battle", icon: Swords },
+  { href: "/shop", label: "Shop", icon: ShoppingCart },
   { href: "/profile", label: "Profile", icon: UserCircle },
 ];
 
@@ -61,7 +62,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-card border-t border-border p-2 z-50">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-5 gap-2">
            {menuItems.map((item) => (
               <NavLink key={item.label} {...item} pathname={pathname} />
             ))}
