@@ -22,9 +22,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  
+  // Do not render the main layout on the landing page
+  if (pathname === '/') {
+    return <>{children}</>;
+  }
 
   const menuItems = [
-    { href: "/", label: "Home", icon: Home },
+    { href: "/competition", label: "Dashboard", icon: Home },
     { href: "/competition", label: "Competition", icon: Swords },
     { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
     { href: "/learning", label: "Learning", icon: BookOpen },
@@ -37,10 +42,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-             <Logo />
-             <h1 className="text-xl font-semibold font-headline">CareerVerse</h1>
-          </div>
+          <Link href="/competition" className="flex items-center gap-2">
+             <Logo className="h-8 w-8"/>
+             <h1 className="text-xl font-semibold font-headline">Career Clash</h1>
+          </Link>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
@@ -48,7 +53,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               <SidebarMenuItem key={item.label}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={{ children: item.label }}
                 >
                   <Link href={item.href}>
@@ -79,7 +84,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <SidebarInset>
         <header className="flex items-center justify-between p-4 border-b md:p-2 md:border-none">
           <div className="md:hidden">
-            <Logo />
+            <Link href="/competition" className="flex items-center gap-2">
+                <Logo className="h-8 w-8"/>
+            </Link>
           </div>
           <SidebarTrigger />
         </header>

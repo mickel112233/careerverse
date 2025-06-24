@@ -1,103 +1,74 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, BookOpen, Shield, Swords, Trophy, Users } from "lucide-react";
+import Logo from "@/components/icons/logo";
 import Link from "next/link";
-import Image from "next/image";
+import { MoveRight, Target } from "lucide-react";
+
+const GridBackground = () => (
+  <div className="absolute inset-0 -z-10 h-full w-full bg-background">
+    <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(139,92,246,0.15),rgba(255,255,255,0))]"></div>
+    <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.15),rgba(255,255,255,0))]"></div>
+     <svg
+      className="absolute inset-0 -z-10 h-full w-full stroke-border/50 [mask-image:radial-gradient(100%_100%_at_top_center,white,transparent)]"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id="grid-pattern"
+          width="80"
+          height="80"
+          x="50%"
+          y="-1"
+          patternUnits="userSpaceOnUse"
+        >
+          <path d="M.5 80V.5H80" fill="none" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" strokeWidth="0" fill="url(#grid-pattern)" />
+    </svg>
+  </div>
+);
+
 
 export default function Home() {
   return (
-    <div className="container mx-auto p-4 sm:p-6 md:p-8">
-      <div className="flex flex-col items-center justify-center text-center py-16 md:py-24">
-        <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight text-primary">
-          Welcome to CareerVerse
-        </h1>
-        <p className="mt-4 max-w-2xl text-lg md:text-xl text-muted-foreground">
-          Level up your career with AI-powered skill battles, personalized learning paths, and community guilds. Prove your expertise and climb the ranks.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-          <Button asChild size="lg" className="font-bold">
+    <div className="relative min-h-screen w-full overflow-hidden font-headline text-white">
+      <GridBackground />
+
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4 text-center">
+        <header className="mb-8">
+          <Logo className="h-20 w-20 md:h-24 md:w-24"/>
+        </header>
+
+        <main className="flex flex-col items-center">
+          <h1 className="text-5xl font-black tracking-tighter sm:text-7xl md:text-8xl bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">
+            CAREER CLASH
+          </h1>
+          <p className="font-body mt-4 max-w-2xl text-lg text-slate-300 md:text-xl">
+            Enter the Ultimate Career Arena. <br className="hidden sm:block" /> Where Learning Meets Gaming • Forge Your Future
+          </p>
+
+          <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-[0_0_20px_theme(colors.primary)] hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_40px_theme(colors.primary)] transition-all duration-300">
             <Link href="/competition">
-              <Swords className="mr-2 h-5 w-5" /> Start a Battle
+              BEGIN ADVENTURE
+              <MoveRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="secondary" className="font-bold">
-            <Link href="/learning">
-              <BookOpen className="mr-2 h-5 w-5" /> Find Your Path
-            </Link>
-          </Button>
-        </div>
-      </div>
 
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium font-headline">AI Competitions</CardTitle>
-            <Shield className="h-6 w-6 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Challenge our AI in simulated skill battles tailored to your desired job role.
-            </p>
-            <Button variant="link" asChild className="p-0 h-auto mt-4 font-bold">
-                <Link href="/competition">
-                    Generate Quiz <ArrowRight className="ml-2 h-4 w-4"/>
-                </Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium font-headline">Leaderboards</CardTitle>
-            <Trophy className="h-6 w-6 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              See how you stack up against other professionals. Earn XP and climb the ranks.
-            </p>
-            <Button variant="link" asChild className="p-0 h-auto mt-4 font-bold">
-                <Link href="/leaderboard">
-                    View Rankings <ArrowRight className="ml-2 h-4 w-4"/>
-                </Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium font-headline">Join a Guild</CardTitle>
-            <Users className="h-6 w-6 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Team up with peers, participate in team battles, and collaborate on projects.
-            </p>
-             <Button variant="link" asChild className="p-0 h-auto mt-4 font-bold">
-                <Link href="/guilds">
-                    Explore Guilds <ArrowRight className="ml-2 h-4 w-4"/>
-                </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-       <div className="mt-16 md:mt-24 rounded-xl bg-card p-8 md:p-12 border flex flex-col md:flex-row items-center gap-8 overflow-hidden">
-            <div className="flex-1">
-                <h2 className="text-3xl font-bold font-headline text-primary">Personalized Learning Paths</h2>
-                <p className="mt-4 text-muted-foreground">
-                    Don't just compete, grow. Our AI analyzes your goals and performance to recommend tailored learning modules and resources, helping you turn weaknesses into strengths.
-                </p>
-                 <Button asChild className="mt-6 font-bold">
-                    <Link href="/learning">
-                        Get my learning path
-                    </Link>
-                </Button>
+          <div className="mt-8 flex items-center gap-2 rounded-full border border-border bg-card/50 p-2 px-4 text-sm text-slate-300 backdrop-blur-sm">
+            <Target className="h-5 w-5 text-lime-400 animate-pulse" />
+            <span className="font-body">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
+          </div>
+        </main>
+        
+        <footer className="absolute bottom-4 w-full px-4">
+          <div className="relative flex justify-center items-center text-center text-xs text-slate-500 font-body">
+            <p>Powered by Next-Gen EdTech · Built for Future Leaders</p>
+            <div className="absolute bottom-0 right-4 text-xs hidden md:block">
+              Edit with ❤️ Lovable
             </div>
-            <div className="flex-1 w-full h-64 md:h-auto">
-                 <Image src="https://placehold.co/600x400.png" alt="Personalized Learning" width={600} height={400} className="rounded-lg object-cover w-full h-full hover:scale-105 transition-transform duration-300" data-ai-hint="learning path" />
-            </div>
-       </div>
-
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

@@ -4,8 +4,8 @@ import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/main-layout';
 
 export const metadata: Metadata = {
-  title: 'CareerVerse',
-  description: 'Level up your career with AI-powered skill battles and personalized learning paths.',
+  title: 'Career Clash',
+  description: 'Enter the Ultimate Career Arena. Where Learning Meets Gaming • Forge Your Future.',
 };
 
 export default function RootLayout({
