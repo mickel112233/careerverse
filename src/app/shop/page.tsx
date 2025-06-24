@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -129,8 +130,9 @@ const CurrencyDisplay = ({ amount, type }: { amount: number, type: 'coins' | 'ge
     </div>
 )
 
-export default function ShopPage({ searchParams }: { searchParams: { tab: string }}) {
-  const defaultTab = searchParams.tab || 'memberships';
+export default function ShopPage() {
+  const searchParams = useSearchParams();
+  const defaultTab = searchParams.get('tab') || 'memberships';
   const { toast } = useToast();
 
   const [coins, setCoins] = useState(0);
