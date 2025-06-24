@@ -5,15 +5,15 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Code, PenTool, Database, BarChart2, Shield, PlusCircle } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { AiImage } from '@/components/ui/ai-image';
 
 const guilds = [
-  { name: 'Frontend Forces', slug: 'frontend-forces', description: 'Masters of UI/UX, React, and modern web technologies.', members: 128, icon: Code, image: 'https://placehold.co/600x400.png?t=1', dataAiHint: 'abstract code' },
-  { name: 'Backend Brigade', slug: 'backend-brigade', description: 'Architects of scalable APIs, databases, and server-side logic.', members: 92, icon: Database, image: 'https://placehold.co/600x400.png?t=2', dataAiHint: 'server room' },
-  { name: 'Design Dynasty', slug: 'design-dynasty', description: 'Creators of stunning visuals and intuitive user experiences.', members: 74, icon: PenTool, image: 'https://placehold.co/600x400.png?t=3', dataAiHint: 'design sketch' },
-  { name: 'Data Mavericks', slug: 'data-mavericks', description: 'Experts in data science, machine learning, and analytics.', members: 68, icon: BarChart2, image: 'https://placehold.co/600x400.png?t=4', dataAiHint: 'data visualization' },
-  { name: 'Cyber Sentinels', slug: 'cyber-sentinels', description: 'Guardians of digital fortresses and cybersecurity experts.', members: 45, icon: Shield, image: 'https://placehold.co/600x400.png?t=5', dataAiHint: 'cyber security' },
+  { name: 'Frontend Forces', slug: 'frontend-forces', description: 'Masters of UI/UX, React, and modern web technologies.', members: 128, icon: Code, imageHint: 'abstract code' },
+  { name: 'Backend Brigade', slug: 'backend-brigade', description: 'Architects of scalable APIs, databases, and server-side logic.', members: 92, icon: Database, imageHint: 'server room' },
+  { name: 'Design Dynasty', slug: 'design-dynasty', description: 'Creators of stunning visuals and intuitive user experiences.', members: 74, icon: PenTool, imageHint: 'design sketch' },
+  { name: 'Data Mavericks', slug: 'data-mavericks', description: 'Experts in data science, machine learning, and analytics.', members: 68, icon: BarChart2, imageHint: 'data visualization' },
+  { name: 'Cyber Sentinels', slug: 'cyber-sentinels', description: 'Guardians of digital fortresses and cybersecurity experts.', members: 45, icon: Shield, imageHint: 'cyber security' },
 ];
 
 export default function GuildsPage() {
@@ -58,7 +58,7 @@ export default function GuildsPage() {
             return (
                 <Card key={guild.name} className="flex flex-col hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
                     <CardHeader className="p-0">
-                       <Image src={guild.image} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" data-ai-hint={guild.dataAiHint}/>
+                       <AiImage prompt={guild.imageHint} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" />
                     </CardHeader>
                     <CardContent className="p-6 flex-grow">
                         <div className="flex items-start gap-4">

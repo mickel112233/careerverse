@@ -2,22 +2,22 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users } from "lucide-react";
-import Image from "next/image";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AiImage } from '@/components/ui/ai-image';
+import { AiAvatar } from '@/components/ui/ai-avatar';
 
 const baseUserData = {
     name: 'QuantumLeap',
     title: 'Senior AI Engineer',
-    avatarUrl: 'https://placehold.co/200x200.png',
-    bannerUrl: 'https://placehold.co/1200x300.png',
+    avatarHint: 'woman face',
+    bannerHint: 'abstract background',
     guild: {
         name: 'AI Vanguard',
         icon: Zap,
@@ -36,10 +36,10 @@ const baseUserData = {
         { name: 'React Pro', icon: Star, color: 'text-yellow-400' },
     ],
     battleHistory: [
-        { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatar: 'https://placehold.co/100x100.png?a=2' }, result: 'Win', xp: '+150 XP' },
-        { id: 2, challenge: 'Node.js Performance Battle', opponent: { name: 'CodeNinja', avatar: 'https://placehold.co/100x100.png?a=3' }, result: 'Win', xp: '+200 XP' },
-        { id: 3, challenge: 'CSS Specificity Simulation', opponent: { name: 'PixelPerfect', avatar: 'https://placehold.co/100x100.png?a=5' }, result: 'Loss', xp: '-50 XP' },
-        { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatar: 'https://placehold.co/100x100.png?a=4' }, result: 'Win', xp: '+180 XP' },
+        { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatarHint: 'man portrait' }, result: 'Win', xp: '+150 XP' },
+        { id: 2, challenge: 'Node.js Performance Battle', opponent: { name: 'CodeNinja', avatarHint: 'person glasses' }, result: 'Win', xp: '+200 XP' },
+        { id: 3, challenge: 'CSS Specificity Simulation', opponent: { name: 'PixelPerfect', avatarHint: 'man serious' }, result: 'Loss', xp: '-50 XP' },
+        { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatarHint: 'woman smiling' }, result: 'Win', xp: '+180 XP' },
     ],
 };
 
@@ -133,7 +133,7 @@ export default function ProfileClient() {
   return (
     <>
        <div className="relative mb-8 h-48 rounded-lg overflow-hidden">
-            <Image src={userData.bannerUrl} alt="Profile banner" layout="fill" objectFit="cover" data-ai-hint="abstract background"/>
+            <AiImage prompt={userData.bannerHint} alt="Profile banner" layout="fill" objectFit="cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
        </div>
        
@@ -144,10 +144,9 @@ export default function ProfileClient() {
                  <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Avatar className={cn("w-32 h-32 mx-auto mb-4 border-4 border-background ring-4", avatarRingClass)}>
-                                <AvatarImage src={userData.avatarUrl} alt={userData.name} data-ai-hint="woman face"/>
-                                <AvatarFallback>{userData.name.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
+                            <div className={cn("w-32 h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4", avatarRingClass)}>
+                                <AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" />
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>Your avatar evolves as you level up!</p>
@@ -256,10 +255,7 @@ export default function ProfileClient() {
                                     <TableCell className="font-medium">{battle.challenge}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
-                                            <Avatar className="w-6 h-6">
-                                                <AvatarImage src={battle.opponent.avatar} alt={battle.opponent.name} />
-                                                <AvatarFallback>{battle.opponent.name.substring(0,1)}</AvatarFallback>
-                                            </Avatar>
+                                            <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-6 h-6" />
                                             <span>{battle.opponent.name}</span>
                                         </div>
                                     </TableCell>

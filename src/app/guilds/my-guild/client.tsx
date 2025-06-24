@@ -3,15 +3,15 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AiAvatar } from '@/components/ui/ai-avatar';
+import { AiImage } from '@/components/ui/ai-image';
 
 type GuildData = {
     guildName: string;
@@ -19,11 +19,11 @@ type GuildData = {
 };
 
 const mockMembers = [
-    { name: 'QuantumLeap', role: 'Leader', xp: 9850, avatar: 'https://placehold.co/100x100.png?a=1', dataAiHint: 'woman face' },
-    { name: 'SynthWave', role: 'Officer', xp: 9500, avatar: 'https://placehold.co/100x100.png?a=2', dataAiHint: 'man portrait' },
-    { name: 'CodeNinja', role: 'Member', xp: 9200, avatar: 'https://placehold.co/100x100.png?a=3', dataAiHint: 'person glasses' },
-    { name: 'DataDynamo', role: 'Member', xp: 8900, avatar: 'https://placehold.co/100x100.png?a=4', dataAiHint: 'woman smiling' },
-    { name: 'PixelPerfect', role: 'Member', xp: 8750, avatar: 'https://placehold.co/100x100.png?a=5', dataAiHint: 'man serious' },
+    { name: 'QuantumLeap', role: 'Leader', xp: 9850, avatarHint: 'woman face' },
+    { name: 'SynthWave', role: 'Officer', xp: 9500, avatarHint: 'man portrait' },
+    { name: 'CodeNinja', role: 'Member', xp: 9200, avatarHint: 'person glasses' },
+    { name: 'DataDynamo', role: 'Member', xp: 8900, avatarHint: 'woman smiling' },
+    { name: 'PixelPerfect', role: 'Member', xp: 8750, avatarHint: 'man serious' },
 ];
 
 const mockAnnouncements = [
@@ -112,14 +112,14 @@ export default function MyGuildClient() {
         <div>
             <Card className="mb-8 overflow-hidden">
                 <div className="relative h-48 bg-muted">
-                    <Image src="https://placehold.co/1200x300.png" alt="Guild Banner" layout="fill" objectFit="cover" data-ai-hint="abstract pattern" />
+                    <AiImage prompt="abstract pattern" alt="Guild Banner" layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                     <div className="absolute bottom-4 right-4">
                         <Button variant="secondary" size="sm"><Settings className="mr-2 h-4 w-4"/>Manage Guild</Button>
                     </div>
                 </div>
                 <div className="flex items-end gap-6 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                     <Image src="https://placehold.co/200x200.png" width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" data-ai-hint="guild crest" />
+                     <AiImage prompt="guild crest" width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
                      <div>
                         <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
                         <p className="text-muted-foreground max-w-xl">{guild.description}</p>
@@ -168,10 +168,7 @@ export default function MyGuildClient() {
                                 return (
                                     <li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                                         <div className="flex items-center gap-4">
-                                            <Avatar>
-                                                <AvatarImage src={member.avatar} data-ai-hint={member.dataAiHint}/>
-                                                <AvatarFallback>{member.name.substring(0,2)}</AvatarFallback>
-                                            </Avatar>
+                                            <AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0,2)} />
                                             <div>
                                                 <p className="font-semibold">{member.name}</p>
                                                 <TooltipProvider>

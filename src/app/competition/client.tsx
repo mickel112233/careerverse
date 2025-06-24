@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
+import { AiAvatar } from "@/components/ui/ai-avatar";
 
 // --- Data ---
 const streams = [
@@ -36,7 +37,7 @@ type BattleConfig = {
   questions: number;
 };
 type Scores = { player: number; opponent: number };
-type Player = { name: string; avatar: string; type: 'human' | 'bot' };
+type Player = { name: string; avatarHint: string; type: 'human' | 'bot' };
 
 // --- Main Component ---
 export default function CompetitionClient() {
@@ -52,8 +53,8 @@ export default function CompetitionClient() {
 
   const { toast } = useToast();
 
-  const player: Player = { name: 'QuantumLeap', avatar: 'https://placehold.co/100x100.png?a=1', type: 'human' };
-  const opponent: Player = { name: 'AI Bot', avatar: 'https://placehold.co/100x100.png?a=11', type: 'bot' };
+  const player: Player = { name: 'QuantumLeap', avatarHint: 'woman face', type: 'human' };
+  const opponent: Player = { name: 'AI Bot', avatarHint: 'robot face', type: 'bot' };
 
   const handleStreamSelect = (streamName: string) => {
     setSelectedStream(streamName);
@@ -229,10 +230,7 @@ export default function CompetitionClient() {
       <Card className="flex flex-col items-center justify-center p-20 gap-6">
         <div className="flex items-center gap-8">
             <div className="flex flex-col items-center gap-2">
-                <Avatar className="w-24 h-24 ring-4 ring-primary">
-                    <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="woman face"/>
-                    <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
-                </Avatar>
+                <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-24 h-24 ring-4 ring-primary" />
                 <p className="font-bold text-lg">{player.name}</p>
             </div>
             <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
@@ -260,10 +258,7 @@ export default function CompetitionClient() {
             <Card>
                 <CardContent className="p-4 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Avatar>
-                            <AvatarImage src={player.avatar} data-ai-hint="woman face"/>
-                            <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
+                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} />
                         <div>
                             <p className="font-bold">{player.name}</p>
                             <p className="text-2xl font-bold text-primary">{scores.player}</p>
@@ -278,10 +273,7 @@ export default function CompetitionClient() {
                             <p className="font-bold">{opponent.name}</p>
                             <p className="text-2xl font-bold text-primary">{scores.opponent}</p>
                         </div>
-                        <Avatar>
-                           <AvatarImage src={opponent.avatar} data-ai-hint="robot face"/>
-                           <AvatarFallback>{opponent.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
+                        <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} />
                     </div>
                 </CardContent>
                 <Progress value={((currentQuestionIndex + 1) / quizData.questions.length) * 100} />
@@ -344,18 +336,12 @@ export default function CompetitionClient() {
             <CardContent className="flex flex-col items-center gap-6">
                  <div className="flex items-end gap-8">
                     <div className="flex flex-col items-center gap-2">
-                        <Avatar className="w-20 h-20">
-                            <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="woman face"/>
-                            <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
+                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-20 h-20" />
                         <p className="font-bold text-lg">{scores.player}</p>
                     </div>
                     <p className="text-4xl font-bold text-muted-foreground pb-6">vs</p>
                      <div className="flex flex-col items-center gap-2">
-                        <Avatar className="w-20 h-20">
-                            <AvatarImage src={opponent.avatar} alt={opponent.name} data-ai-hint="robot face"/>
-                           <AvatarFallback>{opponent.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
+                         <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-20 h-20" />
                         <p className="font-bold text-lg">{scores.opponent}</p>
                     </div>
                 </div>

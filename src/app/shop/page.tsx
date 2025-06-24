@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy } from "lucide-react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
+import { AiImage } from '@/components/ui/ai-image';
 
 const memberships = [
     {
@@ -71,14 +71,14 @@ const memberships = [
 ];
 
 const addOns = [
-  { name: 'Cosmic Avatar Frame', price: 500, currency: 'coins', type: 'Frame', icon: Star, image: 'https://placehold.co/400x400.png', dataAiHint: 'avatar frame' },
-  { name: 'Neon Glow Profile FX', price: 750, currency: 'coins', type: 'Animation', icon: Zap, image: 'https://placehold.co/400x400.png', dataAiHint: 'neon animation' },
-  { name: 'Dark Matter Profile Theme', price: 150, currency: 'gems', type: 'Theme', icon: Paintbrush, image: 'https://placehold.co/400x400.png', dataAiHint: 'dark theme' },
-  { name: 'Holographic Card Back', price: 600, currency: 'coins', type: 'Cosmetic', icon: Sparkles, image: 'https://placehold.co/400x400.png', dataAiHint: 'holographic texture' },
-  { name: 'The Newbie Title', price: 100, currency: 'coins', type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
-  { name: 'The Apprentice Title', price: 500, currency: 'coins', type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
-  { name: 'The Legend Title', price: 200, currency: 'gems', type: 'Title', icon: Trophy, image: 'https://placehold.co/400x400.png', dataAiHint: 'trophy banner' },
-  { name: 'God-Tier Title', price: 500, currency: 'gems', type: 'Title', icon: Crown, image: 'https://placehold.co/400x400.png', dataAiHint: 'crown banner' },
+  { name: 'Cosmic Avatar Frame', price: 500, currency: 'coins', type: 'Frame', icon: Star, imageHint: 'avatar frame' },
+  { name: 'Neon Glow Profile FX', price: 750, currency: 'coins', type: 'Animation', icon: Zap, imageHint: 'neon animation' },
+  { name: 'Dark Matter Profile Theme', price: 150, currency: 'gems', type: 'Theme', icon: Paintbrush, imageHint: 'dark theme' },
+  { name: 'Holographic Card Back', price: 600, currency: 'coins', type: 'Cosmetic', icon: Sparkles, imageHint: 'holographic texture' },
+  { name: 'The Newbie Title', price: 100, currency: 'coins', type: 'Title', icon: Shield, imageHint: 'title banner' },
+  { name: 'The Apprentice Title', price: 500, currency: 'coins', type: 'Title', icon: Shield, imageHint: 'title banner' },
+  { name: 'The Legend Title', price: 200, currency: 'gems', type: 'Title', icon: Trophy, imageHint: 'trophy banner' },
+  { name: 'God-Tier Title', price: 500, currency: 'gems', type: 'Title', icon: Crown, imageHint: 'crown banner' },
 ];
 
 const powerUps = [
@@ -256,7 +256,7 @@ export default function ShopPage() {
                     return (
                         <Card key={item.name} className="flex flex-col hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
                              <CardHeader className="p-0 relative">
-                               <Image src={item.image} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" data-ai-hint={item.dataAiHint}/>
+                               <AiImage prompt={item.imageHint} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
                                <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>
                             </CardHeader>
                             <CardContent className="p-4 flex-grow">
