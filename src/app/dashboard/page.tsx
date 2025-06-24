@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, Lock, Star, Code, PenTool, Swords, Trophy, BookOpenCheck } from 'lucide-react';
+import { Check, Lock, Star, Code, PenTool, Swords, Trophy } from 'lucide-react';
+import { SubjectSelector } from './client';
 
 const roadmapNodes = [
   { title: 'Web Development Basics', icon: Code, status: 'completed' },
@@ -32,10 +33,7 @@ export default function DashboardPage() {
   return (
     <div className="container mx-auto max-w-2xl p-4 sm:p-6 md:p-8 relative">
       <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8">
-        <Button variant="outline">
-          <BookOpenCheck className="mr-2 h-4 w-4" />
-          Choose Subject
-        </Button>
+        <SubjectSelector />
       </div>
 
       <div className="mb-8 text-center">
