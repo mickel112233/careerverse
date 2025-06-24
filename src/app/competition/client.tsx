@@ -1,28 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { generateAiCompetitionQuiz, GenerateAiCompetitionQuizOutput } from "@/ai/flows/ai-competition-generator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const formSchema = z.object({
-  jobRole: z.string().min(2, "Job role must be at least 2 characters.").max(50, "Job role is too long."),
-});
+// --- Data ---
+const streams = [
+    { name: 'Software Development', icon: Code },
+    { name: 'Data Science & AI', icon: BrainCircuit },
+    { name: 'Digital Marketing', icon: Megaphone },
+    { name: 'Business & Finance', icon: Briefcase },
+    { name: 'Graphic Design', icon: Palette },
+    { name: 'AI Prompt Engineering', icon: Bot },
+    { name: 'Game Development', icon: Gamepad2 },
+    { name: 'Content Creation', icon: PenSquare },
+];
+const questionCounts = [10, 20, 25, 30, 35, 40];
 
-type QuizState = "idle" | "generating" | "active" | "finished";
+// --- Types ---
+type BattleStep = "select_stream" | "select_mode" | "generating" | "active" | "finished";
+type BattleMode = "fixed" | "rush";
+type BattleConfig = {
+  mode: BattleMode;
+  questions: number;
+};
 type UserAnswers = { [key: number]: string };
 
+// --- Main Component ---
 export default function CompetitionClient() {
-  const [quizState, setQuizState] = useState<QuizState>("idle");
+  const [step, setStep] = useState<BattleStep>("select_stream");
+  const [selectedStream, setSelectedStream] = useState<string | null>(null);
+  const [battleConfig, setBattleConfig] = useState<BattleConfig>({ mode: "fixed", questions: 10 });
+  
   const [quizData, setQuizData] = useState<GenerateAiCompetitionQuizOutput | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
@@ -30,32 +46,31 @@ export default function CompetitionClient() {
 
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      jobRole: "",
-    },
-  });
+  const handleStreamSelect = (streamName: string) => {
+    setSelectedStream(streamName);
+    setStep("select_mode");
+  };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setQuizState("generating");
+  const handleStartBattle = async () => {
+    if (!selectedStream) return;
+    setStep("generating");
     try {
-      const quiz = await generateAiCompetitionQuiz({ jobRole: values.jobRole, numQuestions: 5 });
+      const quiz = await generateAiCompetitionQuiz({ jobRole: selectedStream, numQuestions: battleConfig.questions });
       setQuizData(quiz);
-      setQuizState("active");
       setCurrentQuestionIndex(0);
       setUserAnswers({});
       setScore(0);
+      setStep("active");
     } catch (error) {
       console.error("Failed to generate quiz:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate the quiz. Please try again.",
+        description: "Failed to generate the battle. Please try again.",
       });
-      setQuizState("idle");
+      setStep("select_mode");
     }
-  }
+  };
 
   const handleAnswerChange = (value: string) => {
     setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: value }));
@@ -65,7 +80,6 @@ export default function CompetitionClient() {
     if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Finish quiz and calculate score
       let finalScore = 0;
       quizData?.questions.forEach((q, index) => {
         if (userAnswers[index] === q.correctAnswer) {
@@ -73,62 +87,122 @@ export default function CompetitionClient() {
         }
       });
       setScore(finalScore);
-      setQuizState("finished");
+      setStep("finished");
     }
   };
 
   const handleRestart = () => {
-    setQuizState("idle");
+    setStep("select_stream");
+    setSelectedStream(null);
     setQuizData(null);
-    form.reset();
-  }
+  };
+  
+  // -- RENDER LOGIC --
 
-  if (quizState === "idle" || quizState === "generating") {
+  if (step === "select_stream") {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Generate Your Challenge</CardTitle>
-          <CardDescription>Enter a job role to create a custom quiz.</CardDescription>
+          <CardTitle className="font-headline">Step 1: Choose Your Arena</CardTitle>
+          <CardDescription>Select a subject to prove your expertise.</CardDescription>
         </CardHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent>
-              <FormField
-                control={form.control}
-                name="jobRole"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Job Role</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Senior Frontend Developer" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-            <CardFooter>
-              <Button type="submit" disabled={quizState === "generating"}>
-                {quizState === "generating" ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="mr-2 h-4 w-4" />
-                    Generate Quiz
-                  </>
-                )}
-              </Button>
-            </CardFooter>
-          </form>
-        </Form>
+        <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {streams.map((stream) => {
+            const Icon = stream.icon;
+            return (
+              <button
+                key={stream.name}
+                onClick={() => handleStreamSelect(stream.name)}
+                className="p-4 border rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary/10 hover:border-primary transition-colors text-center"
+              >
+                <Icon className="h-10 w-10 text-primary" />
+                <span className="font-semibold">{stream.name}</span>
+              </button>
+            );
+          })}
+        </CardContent>
       </Card>
     );
   }
+  
+  if (step === "select_mode") {
+    return (
+        <Card>
+            <CardHeader>
+                <Button variant="ghost" size="sm" className="absolute top-4 left-4" onClick={() => setStep("select_stream")}>
+                    <ArrowLeft className="mr-2 h-4 w-4"/> Back
+                </Button>
+                <CardTitle className="font-headline text-center pt-8">Step 2: Select Your Challenge</CardTitle>
+                <CardDescription className="text-center">How do you want to battle?</CardDescription>
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-6">
+                <div 
+                    className={cn(
+                        "p-6 border-2 rounded-lg cursor-pointer transition-all",
+                        battleConfig.mode === 'fixed' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-border'
+                    )}
+                    onClick={() => setBattleConfig(prev => ({...prev, mode: 'fixed'}))}
+                >
+                    <div className="flex items-center gap-4 mb-4">
+                        <Target className="h-8 w-8 text-primary"/>
+                        <h3 className="text-xl font-bold font-headline">Quick Clash</h3>
+                    </div>
+                    <p className="text-muted-foreground mb-4">A standard quiz with a fixed number of questions. Accuracy is key.</p>
+                    <Label className="font-semibold">Number of Questions</Label>
+                     <ToggleGroup 
+                        type="single"
+                        value={String(battleConfig.questions)}
+                        onValueChange={(value) => {
+                            if (value) {
+                                setBattleConfig({ mode: 'fixed', questions: Number(value) });
+                            }
+                        }}
+                        className="grid grid-cols-3 sm:grid-cols-6 gap-1 mt-2"
+                        disabled={battleConfig.mode !== 'fixed'}
+                    >
+                        {questionCounts.map(count => (
+                            <ToggleGroupItem key={count} value={String(count)}>{count}</ToggleGroupItem>
+                        ))}
+                    </ToggleGroup>
+                </div>
+                <div 
+                     className={cn(
+                        "p-6 border-2 rounded-lg cursor-pointer transition-all",
+                        battleConfig.mode === 'rush' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-border/50'
+                    )}
+                    onClick={() => setBattleConfig(prev => ({...prev, mode: 'rush', questions: 50}))}
+                >
+                    <div className="flex items-center gap-4 mb-4">
+                        <Timer className="h-8 w-8 text-primary"/>
+                        <h3 className="text-xl font-bold font-headline">Time Rush (PvP)</h3>
+                    </div>
+                    <p className="text-muted-foreground mb-4">Answer as many questions as you can before the timer runs out. Speed and correctness win.</p>
+                    <div className="mt-4 text-center p-4 bg-muted rounded-md">
+                        <p className="font-bold text-lg">Coming Soon!</p>
+                    </div>
+                </div>
+            </CardContent>
+             <CardFooter className="justify-center">
+                <Button size="lg" onClick={handleStartBattle} disabled={battleConfig.mode === 'rush'}>
+                    <Swords className="mr-2 h-5 w-5" />
+                    Start Battle
+                </Button>
+            </CardFooter>
+        </Card>
+    )
+  }
 
-  if (quizState === "active" && quizData) {
+  if (step === "generating") {
+    return (
+      <Card className="flex flex-col items-center justify-center p-20 gap-4">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <h2 className="text-2xl font-headline">Generating Your Battle...</h2>
+        <p className="text-muted-foreground">The AI is crafting your challenge.</p>
+      </Card>
+    );
+  }
+  
+  if (step === "active" && quizData) {
     const question = quizData.questions[currentQuestionIndex];
     return (
       <Card>
@@ -151,14 +225,14 @@ export default function CompetitionClient() {
         </CardContent>
         <CardFooter>
           <Button onClick={handleNextQuestion} disabled={!userAnswers[currentQuestionIndex]}>
-            {currentQuestionIndex === quizData.questions.length - 1 ? "Finish Quiz" : "Next Question"}
+            {currentQuestionIndex === quizData.questions.length - 1 ? "Finish Battle" : "Next Question"}
           </Button>
         </CardFooter>
       </Card>
     );
   }
 
-  if (quizState === "finished" && quizData) {
+  if (step === "finished" && quizData) {
     return (
         <Card className="text-center">
             <CardHeader>
@@ -177,7 +251,7 @@ export default function CompetitionClient() {
             <CardFooter className="justify-center">
                 <Button onClick={handleRestart}>
                     <RotateCw className="mr-2 h-4 w-4" />
-                    Take Another Quiz
+                    Start Another Battle
                 </Button>
             </CardFooter>
         </Card>
