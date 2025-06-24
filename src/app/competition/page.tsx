@@ -6,7 +6,7 @@ export default function CompetitionPage() {
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Battle Arena</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Choose your subject, select your challenge, and climb the ranks.
+          Face off against other players in real-time quiz battles. Choose your subject, select your challenge, and climb the ranks.
         </p>
       </div>
       <CompetitionClient />

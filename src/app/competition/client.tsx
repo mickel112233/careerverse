@@ -1,17 +1,19 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generateAiCompetitionQuiz, GenerateAiCompetitionQuizOutput } from "@/ai/flows/ai-competition-generator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, User, Shield, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 // --- Data ---
 const streams = [
@@ -24,29 +26,34 @@ const streams = [
     { name: 'Game Development', icon: Gamepad2 },
     { name: 'Content Creation', icon: PenSquare },
 ];
-const questionCounts = [10, 20, 25, 30, 35, 40];
+const questionCounts = [5, 10, 15, 20];
 
 // --- Types ---
-type BattleStep = "select_stream" | "select_mode" | "generating" | "active" | "finished";
+type BattleStep = "select_stream" | "select_mode" | "matching" | "active" | "finished";
 type BattleMode = "fixed" | "rush";
 type BattleConfig = {
   mode: BattleMode;
   questions: number;
 };
-type UserAnswers = { [key: number]: string };
+type Scores = { player: number; opponent: number };
+type Player = { name: string; avatar: string; type: 'human' | 'bot' };
 
 // --- Main Component ---
 export default function CompetitionClient() {
   const [step, setStep] = useState<BattleStep>("select_stream");
   const [selectedStream, setSelectedStream] = useState<string | null>(null);
-  const [battleConfig, setBattleConfig] = useState<BattleConfig>({ mode: "fixed", questions: 10 });
+  const [battleConfig, setBattleConfig] = useState<BattleConfig>({ mode: "fixed", questions: 5 });
   
   const [quizData, setQuizData] = useState<GenerateAiCompetitionQuizOutput | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
-  const [score, setScore] = useState(0);
+  const [scores, setScores] = useState<Scores>({ player: 0, opponent: 0 });
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [isOpponentAnswering, setIsOpponentAnswering] = useState(false);
 
   const { toast } = useToast();
+
+  const player: Player = { name: 'QuantumLeap', avatar: 'https://placehold.co/100x100.png?a=1', type: 'human' };
+  const opponent: Player = { name: 'AI Bot', avatar: 'https://placehold.co/100x100.png?a=11', type: 'bot' };
 
   const handleStreamSelect = (streamName: string) => {
     setSelectedStream(streamName);
@@ -55,14 +62,17 @@ export default function CompetitionClient() {
 
   const handleStartBattle = async () => {
     if (!selectedStream) return;
-    setStep("generating");
+    setStep("matching");
     try {
       const quiz = await generateAiCompetitionQuiz({ jobRole: selectedStream, numQuestions: battleConfig.questions });
       setQuizData(quiz);
       setCurrentQuestionIndex(0);
-      setUserAnswers({});
-      setScore(0);
-      setStep("active");
+      setScores({ player: 0, opponent: 0 });
+      setSelectedAnswer(null);
+      // Simulate matching time
+      setTimeout(() => {
+        setStep("active");
+      }, 2500);
     } catch (error) {
       console.error("Failed to generate quiz:", error);
       toast({
@@ -74,23 +84,41 @@ export default function CompetitionClient() {
     }
   };
 
-  const handleAnswerChange = (value: string) => {
-    setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: value }));
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      let finalScore = 0;
-      quizData?.questions.forEach((q, index) => {
-        if (userAnswers[index] === q.correctAnswer) {
-          finalScore++;
+  // Simulate opponent's turn
+  useEffect(() => {
+    if (step === 'active' && quizData && !selectedAnswer && !isOpponentAnswering) {
+      setIsOpponentAnswering(true);
+      const opponentAnswerTime = Math.random() * 3000 + 1000; // 1-4 seconds
+      setTimeout(() => {
+        const question = quizData.questions[currentQuestionIndex];
+        // 75% chance for bot to be correct
+        const isCorrect = Math.random() < 0.75;
+        if (isCorrect) {
+            setScores(s => ({...s, opponent: s.opponent + 1}));
         }
-      });
-      setScore(finalScore);
-      setStep("finished");
+        setIsOpponentAnswering(false);
+      }, opponentAnswerTime);
     }
+  }, [step, quizData, currentQuestionIndex, selectedAnswer, isOpponentAnswering]);
+
+  const handleAnswerSelect = (answer: string) => {
+    if(selectedAnswer) return; // Prevent changing answer
+    setSelectedAnswer(answer);
+
+    const question = quizData!.questions[currentQuestionIndex];
+    if (answer === question.correctAnswer) {
+      setScores(s => ({...s, player: s.player + 1}));
+    }
+    
+    // Auto-advance to next question or finish
+    setTimeout(() => {
+        if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setSelectedAnswer(null);
+          } else {
+            setStep("finished");
+          }
+    }, 1500);
   };
 
   const handleRestart = () => {
@@ -159,7 +187,7 @@ export default function CompetitionClient() {
                                 setBattleConfig({ mode: 'fixed', questions: Number(value) });
                             }
                         }}
-                        className="grid grid-cols-3 sm:grid-cols-6 gap-1 mt-2"
+                        className="grid grid-cols-2 sm:grid-cols-4 gap-1 mt-2"
                         disabled={battleConfig.mode !== 'fixed'}
                     >
                         {questionCounts.map(count => (
@@ -196,66 +224,159 @@ export default function CompetitionClient() {
     )
   }
 
-  if (step === "generating") {
+  if (step === "matching") {
     return (
-      <Card className="flex flex-col items-center justify-center p-20 gap-4">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        <h2 className="text-2xl font-headline">Generating Your Battle...</h2>
-        <p className="text-muted-foreground">The AI is crafting your challenge.</p>
+      <Card className="flex flex-col items-center justify-center p-20 gap-6">
+        <div className="flex items-center gap-8">
+            <div className="flex flex-col items-center gap-2">
+                <Avatar className="w-24 h-24 ring-4 ring-primary">
+                    <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="woman face"/>
+                    <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <p className="font-bold text-lg">{player.name}</p>
+            </div>
+            <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
+             <div className="flex flex-col items-center gap-2 opacity-50">
+                <Avatar className="w-24 h-24">
+                    <AvatarFallback>?</AvatarFallback>
+                </Avatar>
+                <p className="font-bold text-lg">Finding Opponent...</p>
+            </div>
+        </div>
+        <div className="flex items-center gap-4 mt-6">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <h2 className="text-2xl font-headline">Matching...</h2>
+        </div>
       </Card>
     );
   }
   
   if (step === "active" && quizData) {
     const question = quizData.questions[currentQuestionIndex];
+    const isCorrect = selectedAnswer === question.correctAnswer;
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="font-headline">{quizData.quizTitle}</CardTitle>
-          <CardDescription>
-            Question {currentQuestionIndex + 1} of {quizData.questions.length}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="font-semibold mb-4 text-lg">{question.question}</p>
-          <RadioGroup onValueChange={handleAnswerChange} value={userAnswers[currentQuestionIndex]}>
-            {question.options.map((option, index) => (
-              <div key={index} className="flex items-center space-x-2 p-2 rounded-md hover:bg-muted/50 transition-colors">
-                <RadioGroupItem value={option} id={`option-${index}`} />
-                <Label htmlFor={`option-${index}`} className="flex-1 cursor-pointer">{option}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleNextQuestion} disabled={!userAnswers[currentQuestionIndex]}>
-            {currentQuestionIndex === quizData.questions.length - 1 ? "Finish Battle" : "Next Question"}
-          </Button>
-        </CardFooter>
-      </Card>
+        <div className="space-y-4">
+            {/* Scoreboard */}
+            <Card>
+                <CardContent className="p-4 flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                        <Avatar>
+                            <AvatarImage src={player.avatar} data-ai-hint="woman face"/>
+                            <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="font-bold">{player.name}</p>
+                            <p className="text-2xl font-bold text-primary">{scores.player}</p>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <p className="font-mono text-sm text-muted-foreground">Question</p>
+                        <p className="font-bold text-2xl">{currentQuestionIndex + 1}/{quizData.questions.length}</p>
+                    </div>
+                     <div className="flex items-center gap-4">
+                        <div className="text-right">
+                            <p className="font-bold">{opponent.name}</p>
+                            <p className="text-2xl font-bold text-primary">{scores.opponent}</p>
+                        </div>
+                        <Avatar>
+                           <AvatarImage src={opponent.avatar} data-ai-hint="robot face"/>
+                           <AvatarFallback>{opponent.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                    </div>
+                </CardContent>
+                <Progress value={((currentQuestionIndex + 1) / quizData.questions.length) * 100} />
+            </Card>
+
+            {/* Question Card */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-center">{quizData.quizTitle}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="font-semibold mb-6 text-center text-lg">{question.question}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {question.options.map((option, index) => (
+                        <Button
+                            key={index}
+                            variant="outline"
+                            size="lg"
+                            className={cn(
+                                "h-auto py-4 justify-start text-left whitespace-normal",
+                                selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
+                                selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
+                            )}
+                            onClick={() => handleAnswerSelect(option)}
+                            disabled={!!selectedAnswer}
+                        >
+                            {option}
+                        </Button>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+
+             {/* Power-ups Section */}
+            <Card>
+                <CardHeader className="p-3">
+                    <CardTitle className="text-sm font-semibold">Power-ups</CardTitle>
+                </CardHeader>
+                <CardContent className="p-3 flex justify-center gap-4">
+                    <Button variant="outline" size="icon" disabled><Timer className="h-5 w-5" /></Button>
+                    <Button variant="outline" size="icon" disabled><Zap className="h-5 w-5" /></Button>
+                    <Button variant="outline" size="icon" disabled><Shield className="h-5 w-5" /></Button>
+                </CardContent>
+            </Card>
+        </div>
     );
   }
 
   if (step === "finished" && quizData) {
+    const playerWon = scores.player > scores.opponent;
+    const isDraw = scores.player === scores.opponent;
     return (
         <Card className="text-center">
             <CardHeader>
-                <CardTitle className="font-headline text-2xl">Battle Complete!</CardTitle>
+                <CardTitle className={cn("font-headline text-4xl", playerWon && "text-green-400", !playerWon && !isDraw && "text-destructive")}>
+                    {isDraw ? "It's a Draw!" : playerWon ? "You Win!" : "You Lose!"}
+                </CardTitle>
                 <CardDescription>You competed in the {quizData.quizTitle} challenge.</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col items-center">
-                <p className="text-lg">Your score:</p>
-                <p className="text-6xl font-bold text-primary my-4">
-                    {score} <span className="text-2xl text-muted-foreground">/ {quizData.questions.length}</span>
-                </p>
-                <div className="w-full bg-muted rounded-full h-2.5 my-4">
-                    <div className="bg-primary h-2.5 rounded-full" style={{ width: `${(score / quizData.questions.length) * 100}%` }}></div>
+            <CardContent className="flex flex-col items-center gap-6">
+                 <div className="flex items-end gap-8">
+                    <div className="flex flex-col items-center gap-2">
+                        <Avatar className="w-20 h-20">
+                            <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="woman face"/>
+                            <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <p className="font-bold text-lg">{scores.player}</p>
+                    </div>
+                    <p className="text-4xl font-bold text-muted-foreground pb-6">vs</p>
+                     <div className="flex flex-col items-center gap-2">
+                        <Avatar className="w-20 h-20">
+                            <AvatarImage src={opponent.avatar} alt={opponent.name} data-ai-hint="robot face"/>
+                           <AvatarFallback>{opponent.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <p className="font-bold text-lg">{scores.opponent}</p>
+                    </div>
+                </div>
+                <div className="text-center">
+                    <p className="text-lg">You earned:</p>
+                    <p className="text-4xl font-bold text-yellow-400 my-2">+150 XP</p>
                 </div>
             </CardContent>
-            <CardFooter className="justify-center">
+            <CardFooter className="justify-center gap-4">
+                <Button variant="outline">
+                    <Heart className="mr-2 h-4 w-4" />
+                    Rematch
+                </Button>
                 <Button onClick={handleRestart}>
                     <RotateCw className="mr-2 h-4 w-4" />
-                    Start Another Battle
+                    New Battle
+                </Button>
+                 <Button asChild variant="secondary">
+                   <Link href="/dashboard">
+                        Go to Dashboard
+                   </Link>
                 </Button>
             </CardFooter>
         </Card>

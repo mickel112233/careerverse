@@ -14,6 +14,7 @@ import {z} from 'genkit';
 const GenerateAiCompetitionQuizInputSchema = z.object({
   jobRole: z.string().describe('The job role for which to generate the quiz.'),
   numQuestions: z.number().describe('The number of questions to generate for the quiz.').default(5),
+  difficulty: z.enum(['easy', 'medium', 'hard']).describe('The difficulty of the quiz questions.').default('medium'),
 });
 export type GenerateAiCompetitionQuizInput = z.infer<typeof GenerateAiCompetitionQuizInputSchema>;
 
@@ -41,10 +42,11 @@ const generateAiCompetitionQuizPrompt = ai.definePrompt({
 
   Job Role: {{{jobRole}}}
   Number of Questions: {{{numQuestions}}}
+  Difficulty: {{{difficulty}}}
 
   The quiz should have a title, and a list of questions. Each question should have a question, a list of options, and a correct answer.
   Make sure the options are distinct, and that only one of them is correct.
-  The quiz should be challenging and test the user's knowledge of the job role.
+  The quiz should be challenging and test the user's knowledge of the job role according to the specified difficulty.
 
   Return the quiz in a JSON format.
   `,
