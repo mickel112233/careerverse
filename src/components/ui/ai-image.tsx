@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -14,7 +15,7 @@ interface AiImageProps extends Omit<ImageProps, 'src' | 'alt'> {
 export function AiImage({ prompt, alt, width, height, className, ...props }: AiImageProps) {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     
-    const placeholderUrl = `https://placehold.co/${width}x${height}.png`;
+    const placeholderUrl = `https://placehold.co/${width || 600}x${height || 400}.png`;
 
     useEffect(() => {
         let isCancelled = false;
@@ -42,10 +43,16 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
         return () => {
             isCancelled = true;
         };
-    }, [prompt, width, height, placeholderUrl]);
+    }, [prompt, placeholderUrl]);
 
     if (!imageUrl) {
-        return <Skeleton className={cn(className)} style={{ width: Number(width), height: Number(height) }} />;
+        const w = Number(width);
+        const h = Number(height);
+        if (isNaN(w) || isNaN(h)) {
+            // This branch is taken for layout="fill" where width/height are undefined
+            return <Skeleton className={cn('w-full h-full', className)} />;
+        }
+        return <Skeleton className={cn(className)} style={{ width: w, height: h }} />;
     }
 
     return (
