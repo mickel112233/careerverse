@@ -116,6 +116,18 @@ export default function ProfileClient() {
         });
         setAchievements(allAchievements);
 
+        const storedGuild = localStorage.getItem('userGuild');
+        if (storedGuild) {
+            const guildData = JSON.parse(storedGuild);
+            setUserData(prev => ({
+                ...prev,
+                guild: {
+                    ...prev.guild,
+                    name: guildData.guildName,
+                }
+            }));
+        }
+
     }, []);
 
   return (

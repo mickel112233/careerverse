@@ -173,11 +173,15 @@ export default function ShopPage() {
     setInventory(newInventory);
     localStorage.setItem('careerClashInventory', JSON.stringify(newInventory));
 
+    // Dispatch event to update header
+    window.dispatchEvent(new Event('currencyChange'));
+
     toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${itemName}.` });
   };
 
   const handleMembershipPurchase = (planName: string) => {
     localStorage.setItem('careerClashMembership', planName);
+    window.dispatchEvent(new Event('currencyChange'));
     toast({ title: 'Subscription Activated!', description: `You are now subscribed to the ${planName} plan.` });
   };
 
@@ -193,14 +197,6 @@ export default function ShopPage() {
             <p className="mt-2 max-w-2xl text-muted-foreground">
             Purchase cosmetics, power-ups, memberships, and career-boosting tools.
             </p>
-        </div>
-        <div className="flex items-center gap-4">
-            <CurrencyDisplay amount={coins} type="coins" />
-            <CurrencyDisplay amount={gems} type="gems" />
-            <Button onClick={handleBuyCurrencies}>
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                Buy Currencies
-            </Button>
         </div>
       </div>
 

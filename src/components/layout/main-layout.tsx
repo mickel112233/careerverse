@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -6,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { cn } from "@/lib/utils";
+import CurrencyHeader from "@/components/ui/currency-header";
 
 const menuItems = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
@@ -55,6 +57,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
       {/* Main Content */}
       <div className="flex-1 md:pl-60">
+        <CurrencyHeader />
         <main className="pb-20 md:pb-0">
           {children}
         </main>
