@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,9 +21,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare } from 'lucide-react';
-import { Check, Lock, Star, Swords, PenTool, Trophy } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
+import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap } from 'lucide-react';
 
 const streams = [
   { name: 'Software Development', icon: Code },
@@ -36,15 +37,14 @@ const streams = [
   { name: 'Content Creation', icon: PenSquare },
 ];
 
-const initialRoadmapNodes = [
-  { title: 'Web Development Basics', slug: 'web-development-basics', icon: Code, status: 'completed' },
-  { title: 'HTML & CSS Challenge', slug: 'html-css-challenge', icon: Swords, status: 'completed' },
-  { title: 'JavaScript Fundamentals', slug: 'javascript-fundamentals', icon: Code, status: 'unlocked' },
-  { title: 'The DOM Arena', slug: 'the-dom-arena', icon: Swords, status: 'unlocked' },
-  { title: 'API Guild Quest', slug: 'api-guild-quest', icon: PenTool, status: 'locked' },
-  { title: 'React.js Mastery', slug: 'reactjs-mastery', icon: Star, status: 'locked' },
-  { title: 'Final Project: The Grand Clash', slug: 'final-project-grand-clash', icon: Trophy, status: 'locked' },
-];
+type RoadmapNode = {
+  title: string;
+  slug: string;
+  icon: React.ElementType;
+  status: 'completed' | 'unlocked' | 'locked';
+  description: string;
+  xp: number;
+};
 
 const NodeIcon = ({ icon, status }: { icon: React.ElementType, status: string }) => {
   const Icon = icon;
@@ -64,18 +64,58 @@ const NodeStatusIcon = ({ status }: { status: string }) => {
 
 export default function DashboardClient() {
   const [selectedStream, setSelectedStream] = useState<string | null>(null);
-  const [roadmapNodes, setRoadmapNodes] = useState(initialRoadmapNodes);
+  const [roadmapNodes, setRoadmapNodes] = useState<RoadmapNode[]>([]);
   const [streamToConfirm, setStreamToConfirm] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoadingRoadmap, setIsLoadingRoadmap] = useState(true);
+  const { toast } = useToast();
 
-  const handleStreamChange = (streamName: string) => {
-    console.log(`Setting new learning path for: ${streamName}`);
-    setSelectedStream(streamName);
-    // TODO: Here you would call the AI to generate a new roadmap
-    setRoadmapNodes(initialRoadmapNodes); 
-    setIsDialogOpen(false); 
+  useEffect(() => {
+    const storedStream = localStorage.getItem('careerClashStream');
+    const storedRoadmap = localStorage.getItem('careerClashRoadmap');
+
+    if (storedStream && storedRoadmap) {
+        setSelectedStream(storedStream);
+        setRoadmapNodes(JSON.parse(storedRoadmap));
+    } else {
+        setIsDialogOpen(true); // Force selection on first visit
+    }
+    setIsLoadingRoadmap(false);
+  }, []);
+
+  const handleStreamChange = async (streamName: string) => {
     setStreamToConfirm(null);
-  };
+    setIsDialogOpen(false); 
+    setIsLoadingRoadmap(true);
+    setSelectedStream(streamName);
+    setRoadmapNodes([]);
+
+    try {
+        const result = await generateLearningRoadmap({ streamName });
+        const newNodes: RoadmapNode[] = result.roadmap.map((node, index) => ({
+            title: node.title,
+            slug: node.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+            icon: [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2][index % 7],
+            status: index === 0 ? 'unlocked' : 'locked',
+            description: node.description,
+            xp: node.xp,
+        }));
+        
+        setRoadmapNodes(newNodes);
+        localStorage.setItem('careerClashStream', streamName);
+        localStorage.setItem('careerClashRoadmap', JSON.stringify(newNodes));
+    } catch (error) {
+        console.error("Failed to generate roadmap:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to generate your learning path. Please try again.",
+        });
+        setSelectedStream(null);
+    } finally {
+        setIsLoadingRoadmap(false);
+    }
+};
 
   const openConfirmation = (streamName: string) => {
     setStreamToConfirm(streamName);
@@ -84,6 +124,17 @@ export default function DashboardClient() {
   const cancelConfirmation = () => {
     setStreamToConfirm(null);
   };
+
+  if (isLoadingRoadmap) {
+    return (
+        <div className="flex flex-col justify-center items-center py-20 gap-4">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <p className="text-lg text-muted-foreground">
+                {selectedStream ? `Generating your ${selectedStream} roadmap...` : 'Loading your dashboard...'}
+            </p>
+        </div>
+    );
+  }
 
   return (
     <>
@@ -141,7 +192,9 @@ export default function DashboardClient() {
 
       {!selectedStream ? (
         <div className="text-center py-20">
-          <p className="text-lg text-muted-foreground">Please select a subject to see your roadmap.</p>
+          <h2 className="text-2xl font-bold font-headline">Welcome to Career Clash!</h2>
+          <p className="mt-2 text-lg text-muted-foreground">Choose your subject to generate a personalized learning roadmap.</p>
+          <Button className="mt-6" onClick={() => setIsDialogOpen(true)}>Choose Your Path</Button>
         </div>
       ) : (
         <div className="relative">
@@ -152,10 +205,14 @@ export default function DashboardClient() {
               <div key={index} className="relative flex items-center">
                 <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'text-right' : 'order-2 text-left'}`}>
                   <Card className={`inline-block text-left border-2 ${node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent'}`}>
-                    <CardHeader className="flex-row items-center gap-4 space-y-0 p-4">
+                    <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
                       <NodeIcon icon={node.icon} status={node.status} />
                       <div>
                         <CardTitle className="text-base font-semibold">{node.title}</CardTitle>
+                        <CardDescription className="text-xs mt-1">{node.description}</CardDescription>
+                        <div className="flex items-center text-sm text-yellow-400 font-bold mt-2">
+                           <Zap className="h-4 w-4 mr-1" /> {node.xp} XP
+                        </div>
                       </div>
                     </CardHeader>
                     {node.status !== 'locked' && (
