@@ -32,16 +32,6 @@ body {
     --chart-3: 100 83% 40%; /* Electric Mint */
     --chart-4: 320 90% 60%; /* Pink */
     --chart-5: 215 20% 65%;
-    
-    /* Dark sidebar for both themes */
-    --sidebar-background: 258 46% 11%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 221 92% 60%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 258 46% 18%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 258 46% 25%;
-    --sidebar-ring: 221 92% 60%;
   }
   .dark {
     --background: 258 46% 8%; /* Dark Indigo */

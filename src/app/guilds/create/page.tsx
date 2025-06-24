@@ -53,7 +53,7 @@ export default function CreateGuildPage() {
     });
     // In a real app, you'd save this to a database
     localStorage.setItem('userGuild', JSON.stringify(values));
-    router.push('/guilds');
+    router.push('/guilds/my-guild');
   }
 
   if (isLoading) {

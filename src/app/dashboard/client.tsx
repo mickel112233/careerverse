@@ -25,6 +25,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
 import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const streams = [
   { name: 'Software Development', icon: Code },
@@ -55,7 +56,7 @@ const NodeIcon = ({ icon, status }: { icon: React.ElementType, status: string })
     unlocked: 'text-primary bg-primary/10',
     locked: 'text-muted-foreground bg-muted/20',
   }
-  return <Icon className={`h-8 w-8 ${colors[status]}`} />
+  return <Icon className={cn('h-8 w-8 p-1.5 rounded-md', colors[status])} />
 }
 
 const NodeStatusIcon = ({ status }: { status: string }) => {
@@ -111,7 +112,6 @@ export default function DashboardClient() {
         
         setRoadmapNodes(newNodes);
         
-        // Create a serializable version for localStorage by storing the icon index instead of the component
         const serializableNodes = newNodes.map((node, index) => {
             const { icon, ...rest } = node;
             return {
@@ -222,7 +222,7 @@ export default function DashboardClient() {
             {roadmapNodes.map((node, index) => (
               <div key={index} className="relative flex items-center">
                 <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'text-right' : 'order-2 text-left'}`}>
-                  <Card className={`inline-block text-left border-2 ${node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent'}`}>
+                  <Card className={cn('inline-block text-left border-2', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
                     <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
                       <NodeIcon icon={node.icon} status={node.status} />
                       <div>
@@ -237,7 +237,7 @@ export default function DashboardClient() {
                       <CardContent className="p-4 pt-0">
                          <Button asChild size="sm" className="w-full" disabled={node.status === 'completed'}>
                            <Link href={`/learning/${node.slug}`}>
-                            {node.status === 'completed' ? 'Review' : 'Start Challenge'}
+                            {node.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
                            </Link>
                          </Button>
                       </CardContent>
@@ -246,7 +246,7 @@ export default function DashboardClient() {
                 </div>
 
                 <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border'}`}>
+                  <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border')}>
                      <NodeStatusIcon status={node.status} />
                   </div>
                 </div>
