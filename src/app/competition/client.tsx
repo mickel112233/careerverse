@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -8,8 +9,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 // --- Data ---
 const streams = [
@@ -177,8 +179,10 @@ export default function CompetitionClient() {
                         <h3 className="text-xl font-bold font-headline">Time Rush (PvP)</h3>
                     </div>
                     <p className="text-muted-foreground mb-4">Answer as many questions as you can before the timer runs out. Speed and correctness win.</p>
-                    <div className="mt-4 text-center p-4 bg-muted rounded-md">
-                        <p className="font-bold text-lg">Coming Soon!</p>
+                     <div className="mt-4 space-y-2 p-4 bg-muted/50 rounded-md">
+                        <Label htmlFor="coin-bet" className="font-semibold flex items-center gap-2"><Coins className="h-4 w-4 text-yellow-400" /> Place Your Bet</Label>
+                        <Input id="coin-bet" type="number" placeholder="Enter coin amount..." className="bg-background" disabled/>
+                        <p className="text-xs text-center text-muted-foreground pt-2">Winner-takes-all coin betting is coming soon!</p>
                     </div>
                 </div>
             </CardContent>

@@ -1,14 +1,15 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check } from "lucide-react";
+import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const memberships = [
     {
         name: 'Premium',
-        price: '₹99/mo',
+        price: '₹149/mo',
         icon: Star,
         color: 'text-cyan-400',
         features: [
@@ -16,13 +17,13 @@ const memberships = [
             'Exclusive Profile Badge',
             'Ad-Free Experience',
             '5% Shop Discount',
-            'Monthly 500 Coins',
+            'Monthly 1,000 Coins',
         ],
         highlight: false,
     },
     {
         name: 'Premium+',
-        price: '₹199/mo',
+        price: '₹299/mo',
         icon: Sparkles,
         color: 'text-fuchsia-400',
         features: [
@@ -30,13 +31,13 @@ const memberships = [
             'Golden Username Effect',
             'Exclusive Animated Avatar Frame',
             '10% Shop Discount',
-            'Monthly 1,200 Coins',
+            'Monthly 2,500 Coins',
         ],
         highlight: true,
     },
     {
         name: 'Elite',
-        price: '₹349/mo',
+        price: '₹499/mo',
         icon: Crown,
         color: 'text-yellow-400',
         features: [
@@ -44,13 +45,13 @@ const memberships = [
             'Exclusive Profile Theme',
             'Beta Access to New Features',
             '15% Shop Discount',
-            'Monthly 2,500 Coins',
+            'Monthly 6,000 Coins',
         ],
         highlight: false,
     },
     {
         name: 'Super',
-        price: '₹499/mo',
+        price: '₹799/mo',
         icon: Wand2,
         color: 'text-purple-400',
         features: [
@@ -58,62 +59,96 @@ const memberships = [
             'Unique "Super" Title & Badge',
             'Direct line to support',
             '20% Shop Discount',
-            'Monthly 5,000 Coins',
+            'Monthly 15,000 Coins',
         ],
         highlight: false,
     },
 ];
 
-const cosmetics = [
-  { name: 'Cosmic Avatar Frame', price: 500, type: 'Frame', icon: Star, image: 'https://placehold.co/400x400.png', dataAiHint: 'avatar frame' },
-  { name: 'Neon Glow Profile FX', price: 750, type: 'Animation', icon: Zap, image: 'https://placehold.co/400x400.png', dataAiHint: 'neon animation' },
-  { name: 'Legendary "The Visionary" Title', price: 1000, type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
-  { name: 'Dark Matter Profile Theme', price: 1500, type: 'Theme', icon: Paintbrush, image: 'https://placehold.co/400x400.png', dataAiHint: 'dark theme' },
-  { name: 'Holographic Card Back', price: 600, type: 'Cosmetic', icon: Sparkles, image: 'https://placehold.co/400x400.png', dataAiHint: 'holographic texture' },
-  { name: '8-Bit Victory Animation', price: 800, type: 'Animation', icon: Wand2, image: 'https://placehold.co/400x400.png', dataAiHint: 'pixel art explosion' },
+const addOns = [
+  { name: 'Cosmic Avatar Frame', price: 500, currency: 'coins', type: 'Frame', icon: Star, image: 'https://placehold.co/400x400.png', dataAiHint: 'avatar frame' },
+  { name: 'Neon Glow Profile FX', price: 750, currency: 'coins', type: 'Animation', icon: Zap, image: 'https://placehold.co/400x400.png', dataAiHint: 'neon animation' },
+  { name: 'Dark Matter Profile Theme', price: 150, currency: 'gems', type: 'Theme', icon: Paintbrush, image: 'https://placehold.co/400x400.png', dataAiHint: 'dark theme' },
+  { name: 'Holographic Card Back', price: 600, currency: 'coins', type: 'Cosmetic', icon: Sparkles, image: 'https://placehold.co/400x400.png', dataAiHint: 'holographic texture' },
+  { name: 'The Newbie Title', price: 100, currency: 'coins', type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
+  { name: 'The Apprentice Title', price: 500, currency: 'coins', type: 'Title', icon: Shield, image: 'https://placehold.co/400x400.png', dataAiHint: 'title banner' },
+  { name: 'The Legend Title', price: 200, currency: 'gems', type: 'Title', icon: Trophy, image: 'https://placehold.co/400x400.png', dataAiHint: 'trophy banner' },
+  { name: 'God-Tier Title', price: 500, currency: 'gems', type: 'Title', icon: Crown, image: 'https://placehold.co/400x400.png', dataAiHint: 'crown banner' },
 ];
 
 const powerUps = [
-  { name: 'XP Booster (x2)', description: 'Double your XP gain for 3 battles.', price: 200, icon: Percent },
-  { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 300, icon: Shield },
+  { name: 'XP Booster (x2)', description: 'Double your XP gain for 3 battles.', price: 20, currency: 'gems', icon: Percent },
+  { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 30, currency: 'gems', icon: Shield },
+  { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 40, currency: 'gems', icon: FileText },
+  { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 60, currency: 'gems', icon: FileText },
 ];
 
-const careerPacks = [
-    { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 400, icon: FileText },
-    { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 600, icon: FileText },
-]
+const guildTiers = [
+    {
+      name: 'Starter',
+      price: '₹49',
+      members: 100,
+      features: ['Basic Guild Management', 'Public/Private Listing', 'Team Battles'],
+      highlight: false,
+    },
+    {
+      name: 'Growing',
+      price: '₹69',
+      members: 200,
+      features: ['All Starter Features', 'Custom Guild Banner', 'Priority Support'],
+      highlight: false,
+    },
+    {
+      name: 'Established',
+      price: '₹99',
+      members: 300,
+      features: ['All Growing Features', 'Advanced Moderation Tools', 'Guild Analytics'],
+      highlight: true,
+    },
+    {
+      name: 'Empire',
+      price: '₹149',
+      members: 500,
+      features: ['All Established Features', 'Exclusive Guild Events', 'Dedicated Discord Role'],
+      highlight: false,
+    },
+];
 
-export default function ShopPage() {
+const CurrencyDisplay = ({ amount, type }: { amount: string, type: 'coins' | 'gems' }) => (
+    <div className="flex items-center gap-2 text-lg font-semibold bg-muted/50 p-2 px-4 rounded-md">
+        {type === 'coins' ? <span className="text-yellow-400">🟡</span> : <Gem className="text-primary"/>}
+        <span>{amount}</span>
+    </div>
+)
+
+export default function ShopPage({ searchParams }: { searchParams: { tab: string }}) {
+  const defaultTab = searchParams.tab || 'memberships';
+
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Purchase cosmetics, power-ups, memberships, and career-boosting tools.
-        </p>
-      </div>
-
-        <div className="flex justify-end gap-4 mb-8">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-                <span className="text-yellow-400">🟡</span>
-                <span>1,250 Coins</span>
-            </div>
-            <div className="flex items-center gap-2 text-lg font-semibold">
-                <Gem className="text-primary"/>
-                <span>100 ClashGems</span>
-            </div>
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div>
+            <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+            Purchase cosmetics, power-ups, memberships, and career-boosting tools.
+            </p>
+        </div>
+        <div className="flex items-center gap-4">
+            <CurrencyDisplay amount="1,250" type="coins" />
+            <CurrencyDisplay amount="100" type="gems" />
             <Button>
                 <ShoppingCart className="mr-2 h-5 w-5" />
-                Buy Gems & Coins
+                Buy Currencies
             </Button>
         </div>
+      </div>
 
-      <Tabs defaultValue="memberships" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
+      <Tabs defaultValue={defaultTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
           <TabsTrigger value="memberships">Memberships</TabsTrigger>
-          <TabsTrigger value="cosmetics">Cosmetics</TabsTrigger>
+          <TabsTrigger value="addons">Add-ons</TabsTrigger>
           <TabsTrigger value="power-ups">Power-Ups</TabsTrigger>
-          <TabsTrigger value="career">Career Packs</TabsTrigger>
+          <TabsTrigger value="guilds">Guilds</TabsTrigger>
         </TabsList>
         
         <TabsContent value="memberships">
@@ -151,14 +186,14 @@ export default function ShopPage() {
             </div>
         </TabsContent>
 
-        <TabsContent value="cosmetics">
+        <TabsContent value="addons">
            <div className="mb-6 p-4 bg-muted/50 rounded-lg">
                 <p className="text-sm text-muted-foreground text-center">
-                    Note: This is just a sample of our 1000+ items! The shop rotates daily with new and exciting cosmetics.
+                    Note: This is just a sample of our 1000+ items! The shop rotates daily with new and exciting add-ons.
                 </p>
             </div>
            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {cosmetics.map((item) => {
+                {addOns.map((item) => {
                     const ItemIcon = item.icon;
                     return (
                         <Card key={item.name} className="flex flex-col hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
@@ -172,8 +207,8 @@ export default function ShopPage() {
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4">
                                <Button className="w-full">
-                                   <span className="text-yellow-400 mr-2">🟡</span>
-                                   {item.price.toLocaleString()} Coins
+                                   {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
+                                   {item.price.toLocaleString()} {item.currency}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -198,8 +233,8 @@ export default function ShopPage() {
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4">
                                 <Button className="w-full">
-                                    <span className="text-yellow-400 mr-2">🟡</span>
-                                    {item.price.toLocaleString()} Coins
+                                    {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
+                                    {item.price.toLocaleString()} {item.currency}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -207,30 +242,36 @@ export default function ShopPage() {
                 })}
             </div>
         </TabsContent>
-        <TabsContent value="career">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {careerPacks.map((item) => {
-                    const ItemIcon = item.icon;
-                    return (
-                        <Card key={item.name} className="flex flex-col">
-                            <CardHeader>
-                                <div className="flex items-center gap-4">
-                                    <ItemIcon className="h-8 w-8 text-primary"/>
-                                    <CardTitle className="font-headline text-lg">{item.name}</CardTitle>
+        <TabsContent value="guilds">
+             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                {guildTiers.map((tier) => (
+                    <Card key={tier.name} className={cn("flex flex-col", tier.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20")}>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-xl">{tier.name}</CardTitle>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-4xl font-bold">{tier.price}</span>
+                                <span className="text-muted-foreground">/month</span>
+                            </div>
+                            <CardDescription className="flex items-center gap-2 pt-2">
+                                <Users className="h-4 w-4" />
+                                Up to {tier.members} members
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex-grow space-y-2">
+                            {tier.features.map(feature => (
+                                <div key={feature} className="flex items-start gap-2">
+                                    <Check className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
+                                    <p className="text-muted-foreground text-sm">{feature}</p>
                                 </div>
-                            </CardHeader>
-                             <CardContent className="flex-grow">
-                                <p className="text-muted-foreground">{item.description}</p>
-                            </CardContent>
-                            <CardFooter className="bg-card-foreground/5 p-4">
-                                <Button className="w-full">
-                                   <span className="text-yellow-400 mr-2">🟡</span>
-                                   {item.price.toLocaleString()} Coins
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    )
-                })}
+                            ))}
+                        </CardContent>
+                        <CardFooter>
+                            <Button className="w-full" variant={tier.highlight ? 'default' : 'outline'}>
+                                Choose {tier.name}
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                ))}
             </div>
         </TabsContent>
       </Tabs>
