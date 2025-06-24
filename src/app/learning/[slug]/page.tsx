@@ -11,7 +11,7 @@ export default function LearningPage({ params }: { params: { slug: string } }) {
           Study the material below, then prepare for the challenge.
         </p>
       </div>
-      <LearningFlowClient topic={topicTitle} />
+      <LearningFlowClient topic={topicTitle} slug={params.slug} />
     </div>
   );
 }
