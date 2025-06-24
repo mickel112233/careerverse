@@ -1,13 +1,17 @@
-import { Button } from "@/components/ui/button";
-import Logo from "@/components/icons/logo";
-import Link from "next/link";
-import { MoveRight, Target } from "lucide-react";
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import Logo from '@/components/icons/logo';
+import Link from 'next/link';
+import { MoveRight, Target } from 'lucide-react';
+import SplashScreen from '@/components/splash-screen';
 
 const GridBackground = () => (
   <div className="absolute inset-0 -z-10 h-full w-full bg-background">
     <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(139,92,246,0.15),rgba(255,255,255,0))]"></div>
     <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.15),rgba(255,255,255,0))]"></div>
-     <svg
+    <svg
       className="absolute inset-0 -z-10 h-full w-full stroke-border/50 [mask-image:radial-gradient(100%_100%_at_top_center,white,transparent)]"
       aria-hidden="true"
     >
@@ -28,15 +32,20 @@ const GridBackground = () => (
   </div>
 );
 
-
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  if (showSplash) {
+    return <SplashScreen onFinished={() => setShowSplash(false)} />;
+  }
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden font-headline text-white">
       <GridBackground />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4 text-center">
         <header className="mb-8">
-          <Logo className="h-20 w-20 md:h-24 md:w-24"/>
+          <Logo className="h-20 w-20 md:h-24 md:w-24" />
         </header>
 
         <main className="flex flex-col items-center">
@@ -48,7 +57,7 @@ export default function Home() {
           </p>
 
           <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-[0_0_20px_theme(colors.primary)] hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_40px_theme(colors.primary)] transition-all duration-300">
-            <Link href="/competition">
+            <Link href="/dashboard">
               BEGIN ADVENTURE
               <MoveRight className="ml-2 h-5 w-5" />
             </Link>
@@ -59,7 +68,7 @@ export default function Home() {
             <span className="font-body">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
           </div>
         </main>
-        
+
         <footer className="absolute bottom-4 w-full px-4">
           <div className="relative flex justify-center items-center text-center text-xs text-slate-500 font-body">
             <p>Powered by Next-Gen EdTech · Built for Future Leaders</p>
