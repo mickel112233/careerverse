@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Code, PenTool, Database, BarChart2, Shield } from "lucide-react";
+import { Users, Code, PenTool, Database, BarChart2, Shield, PlusCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const guilds = [
   { name: 'Frontend Forces', description: 'Masters of UI/UX, React, and modern web technologies.', members: 128, icon: Code, image: 'https://placehold.co/600x400.png?t=1', dataAiHint: 'abstract code' },
@@ -14,11 +15,19 @@ const guilds = [
 export default function GuildsPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Explore Guilds</h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Find your tribe. Join a guild to collaborate, compete in team battles, and grow with your peers.
-        </p>
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Explore Guilds</h1>
+          <p className="mt-2 max-w-2xl text-muted-foreground">
+            Find your tribe. Join a guild to collaborate, compete in team battles, and grow with your peers.
+          </p>
+        </div>
+        <Button asChild size="lg">
+            <Link href="/guilds/create">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Create Guild
+            </Link>
+        </Button>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
