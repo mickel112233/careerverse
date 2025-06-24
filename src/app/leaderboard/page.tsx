@@ -1,3 +1,7 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +23,23 @@ const leaderboardData = [
 ];
 
 export default function LeaderboardPage() {
+  const [leaderboard, setLeaderboard] = useState(leaderboardData);
+
+    useEffect(() => {
+        const userXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
+        
+        const updatedLeaderboard = leaderboardData.map(player => 
+            player.name === 'QuantumLeap' ? { ...player, xp: userXp } : player
+        );
+        
+        updatedLeaderboard.sort((a, b) => b.xp - a.xp);
+        
+        const rankedLeaderboard = updatedLeaderboard.map((player, index) => ({ ...player, rank: index + 1 }));
+        
+        setLeaderboard(rankedLeaderboard);
+    }, []);
+
+
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
       <div className="mb-8">
@@ -46,7 +67,7 @@ export default function LeaderboardPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {leaderboardData.map((player) => (
+              {leaderboard.map((player) => (
                 <TableRow key={player.rank} className={cn(player.rank <= 3 && "bg-primary/5")}>
                   <TableCell className="text-center">
                     <div className={cn(`flex items-center justify-center w-8 h-8 rounded-full font-bold`,

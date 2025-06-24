@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -12,7 +13,7 @@ import Image from "next/image";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-const userData = {
+const baseUserData = {
     name: 'QuantumLeap',
     title: 'Senior AI Engineer',
     avatarUrl: 'https://placehold.co/200x200.png',
@@ -62,6 +63,9 @@ export default function ProfileClient() {
     const [xpProgress, setXpProgress] = useState(0);
     const [xpForCurrentLevel, setXpForCurrentLevel] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
+    const [membership, setMembership] = useState('Free');
+    const [achievements, setAchievements] = useState(baseUserData.achievements);
+    const [userData, setUserData] = useState(baseUserData);
 
     const { winRate, avatarRingClass, levelName } = useMemo(() => {
         const { wins, losses } = userData.stats;
@@ -79,7 +83,7 @@ export default function ProfileClient() {
             avatarRingClass: ringClass,
             levelName: lvlName,
         };
-    }, [level]);
+    }, [level, userData.stats]);
 
     useEffect(() => {
         const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
@@ -95,6 +99,23 @@ export default function ProfileClient() {
         const xpNeededForNextLevel = 1000;
         setXpToNextLevel(xpNeededForNextLevel);
         setXpProgress((xpInCurrentLevel / xpNeededForNextLevel) * 100);
+
+        const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
+        setMembership(storedMembership);
+
+        const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
+        const purchasedTitles = inventory
+            .filter((name: string) => name.toLowerCase().includes('title'))
+            .map((name: string) => ({ name, icon: Award, color: 'text-cyan-400' }));
+    
+        const allAchievements = [...baseUserData.achievements];
+        purchasedTitles.forEach((purchased: any) => {
+            if (!allAchievements.some(existing => existing.name === purchased.name)) {
+                allAchievements.push(purchased);
+            }
+        });
+        setAchievements(allAchievements);
+
     }, []);
 
   return (
@@ -124,12 +145,21 @@ export default function ProfileClient() {
 
                 <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
                 <p className="text-muted-foreground">{userData.title}</p>
-                {userData.guild && (
-                    <div className="flex items-center justify-center gap-2 mt-2 text-sm text-accent">
-                        <Users className="h-4 w-4" />
-                        <span>{userData.guild.name}</span>
-                    </div>
-                )}
+                
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
+                    {userData.guild && (
+                        <Badge variant="secondary" className="text-accent">
+                            <Users className="h-3 w-3 mr-1" />
+                            {userData.guild.name}
+                        </Badge>
+                    )}
+                    {membership !== 'Free' && (
+                         <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
+                            <Star className="h-3 w-3 mr-1" />
+                            {membership}
+                        </Badge>
+                    )}
+                </div>
                 
                 <Button className="mt-4 w-full">
                     <Linkedin className="mr-2 h-4 w-4" />
@@ -180,7 +210,7 @@ export default function ProfileClient() {
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {userData.achievements.map(ach => {
+                        {achievements.map(ach => {
                             const Icon = ach.icon;
                             return (
                                 <div key={ach.name} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg hover:bg-muted transition-all hover:scale-105 cursor-pointer">

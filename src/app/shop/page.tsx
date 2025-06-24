@@ -1,10 +1,14 @@
 
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useToast } from '@/hooks/use-toast';
 
 const memberships = [
     {
@@ -86,43 +90,98 @@ const powerUps = [
 const guildTiers = [
     {
       name: 'Starter',
-      price: '₹49',
+      price: 50,
+      currency: 'gems',
       members: 100,
       features: ['Basic Guild Management', 'Public/Private Listing', 'Team Battles'],
       highlight: false,
     },
     {
       name: 'Growing',
-      price: '₹69',
+      price: 70,
+      currency: 'gems',
       members: 200,
       features: ['All Starter Features', 'Custom Guild Banner', 'Priority Support'],
       highlight: false,
     },
     {
       name: 'Established',
-      price: '₹99',
+      price: 100,
+      currency: 'gems',
       members: 300,
       features: ['All Growing Features', 'Advanced Moderation Tools', 'Guild Analytics'],
       highlight: true,
     },
     {
       name: 'Empire',
-      price: '₹149',
+      price: 150,
+      currency: 'gems',
       members: 500,
       features: ['All Established Features', 'Exclusive Guild Events', 'Dedicated Discord Role'],
       highlight: false,
     },
 ];
 
-const CurrencyDisplay = ({ amount, type }: { amount: string, type: 'coins' | 'gems' }) => (
+const CurrencyDisplay = ({ amount, type }: { amount: number, type: 'coins' | 'gems' }) => (
     <div className="flex items-center gap-2 text-lg font-semibold bg-muted/50 p-2 px-4 rounded-md">
         {type === 'coins' ? <span className="text-yellow-400">🟡</span> : <Gem className="text-primary"/>}
-        <span>{amount}</span>
+        <span>{amount.toLocaleString()}</span>
     </div>
 )
 
 export default function ShopPage({ searchParams }: { searchParams: { tab: string }}) {
   const defaultTab = searchParams.tab || 'memberships';
+  const { toast } = useToast();
+
+  const [coins, setCoins] = useState(0);
+  const [gems, setGems] = useState(0);
+  const [inventory, setInventory] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCoins(parseInt(localStorage.getItem('careerClashCoins') || '1250', 10));
+    setGems(parseInt(localStorage.getItem('careerClashGems') || '100', 10));
+    setInventory(JSON.parse(localStorage.getItem('careerClashInventory') || '[]'));
+  }, []);
+
+  const handlePurchase = (cost: number, currency: 'coins' | 'gems', itemName: string) => {
+    if (inventory.includes(itemName)) {
+        toast({ variant: 'destructive', title: 'Already Owned', description: `You already own ${itemName}.` });
+        return;
+    }
+
+    if (currency === 'coins') {
+        if (coins < cost) {
+            toast({ variant: 'destructive', title: 'Insufficient Coins', description: 'You do not have enough coins to purchase this item.' });
+            return;
+        }
+        const newBalance = coins - cost;
+        setCoins(newBalance);
+        localStorage.setItem('careerClashCoins', newBalance.toString());
+    } else {
+        if (gems < cost) {
+            toast({ variant: 'destructive', title: 'Insufficient Gems', description: 'You do not have enough gems to purchase this item.' });
+            return;
+        }
+        const newBalance = gems - cost;
+        setGems(newBalance);
+        localStorage.setItem('careerClashGems', newBalance.toString());
+    }
+    
+    const newInventory = [...inventory, itemName];
+    setInventory(newInventory);
+    localStorage.setItem('careerClashInventory', JSON.stringify(newInventory));
+
+    toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${itemName}.` });
+  };
+
+  const handleMembershipPurchase = (planName: string) => {
+    localStorage.setItem('careerClashMembership', planName);
+    toast({ title: 'Subscription Activated!', description: `You are now subscribed to the ${planName} plan.` });
+  };
+
+  const handleBuyCurrencies = () => {
+    toast({ title: 'Coming Soon!', description: 'The currency store is not yet available.' });
+  }
 
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
@@ -134,9 +193,9 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
             </p>
         </div>
         <div className="flex items-center gap-4">
-            <CurrencyDisplay amount="1,250" type="coins" />
-            <CurrencyDisplay amount="100" type="gems" />
-            <Button>
+            <CurrencyDisplay amount={coins} type="coins" />
+            <CurrencyDisplay amount={gems} type="gems" />
+            <Button onClick={handleBuyCurrencies}>
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Buy Currencies
             </Button>
@@ -176,7 +235,7 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
                                 ))}
                             </CardContent>
                             <CardFooter>
-                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'}>
+                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)}>
                                     Subscribe
                                 </Button>
                             </CardFooter>
@@ -195,6 +254,7 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {addOns.map((item) => {
                     const ItemIcon = item.icon;
+                    const isOwned = inventory.includes(item.name);
                     return (
                         <Card key={item.name} className="flex flex-col hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
                              <CardHeader className="p-0 relative">
@@ -206,9 +266,17 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
                                 <CardDescription>{item.type}</CardDescription>
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4">
-                               <Button className="w-full">
-                                   {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
-                                   {item.price.toLocaleString()} {item.currency}
+                               <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)} disabled={isOwned}>
+                                   {isOwned ? (
+                                       <>
+                                        <Check className="mr-2" /> Owned
+                                       </>
+                                   ) : (
+                                       <>
+                                        {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
+                                        {item.price.toLocaleString()}
+                                       </>
+                                   )}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -220,6 +288,7 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {powerUps.map((item) => {
                     const ItemIcon = item.icon;
+                    const isOwned = inventory.includes(item.name);
                     return (
                         <Card key={item.name} className="flex flex-col">
                             <CardHeader>
@@ -232,9 +301,9 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
                                 <p className="text-muted-foreground">{item.description}</p>
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4">
-                                <Button className="w-full">
+                                <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)}>
                                     {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
-                                    {item.price.toLocaleString()} {item.currency}
+                                    {item.price.toLocaleString()}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -248,10 +317,10 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
                     <Card key={tier.name} className={cn("flex flex-col", tier.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20")}>
                         <CardHeader>
                             <CardTitle className="font-headline text-xl">{tier.name}</CardTitle>
-                            <div className="flex items-baseline gap-2">
+                             <div className="flex items-center gap-2">
+                                <Gem className="h-6 w-6 text-primary"/>
                                 <span className="text-4xl font-bold">{tier.price}</span>
-                                <span className="text-muted-foreground">/month</span>
-                            </div>
+                             </div>
                             <CardDescription className="flex items-center gap-2 pt-2">
                                 <Users className="h-4 w-4" />
                                 Up to {tier.members} members
@@ -266,7 +335,7 @@ export default function ShopPage({ searchParams }: { searchParams: { tab: string
                             ))}
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" variant={tier.highlight ? 'default' : 'outline'}>
+                            <Button className="w-full" variant={tier.highlight ? 'default' : 'outline'} onClick={() => handlePurchase(tier.price, tier.currency as 'gems', `${tier.name} Guild Plan`)}>
                                 Choose {tier.name}
                             </Button>
                         </CardFooter>

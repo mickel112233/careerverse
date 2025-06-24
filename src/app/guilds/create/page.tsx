@@ -1,10 +1,24 @@
 
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Crown, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { cn } from '@/lib/utils';
 
 export default function CreateGuildPage() {
+  const [isPremium, setIsPremium] = useState(false);
+
+  useEffect(() => {
+    const membership = localStorage.getItem('careerClashMembership');
+    // Any membership tier other than the default 'Free' is considered premium
+    if (membership && membership !== 'Free') {
+        setIsPremium(true);
+    }
+  }, []);
+
   return (
     <div className="container mx-auto max-w-2xl p-4 sm:p-6 md:p-8">
       <div className="mb-8 text-center">
@@ -14,17 +28,21 @@ export default function CreateGuildPage() {
         </p>
       </div>
 
-      <Card className="mb-8 bg-primary/10 border-primary/20 text-center">
+      <Card className={cn("mb-8 text-center transition-all", isPremium ? "bg-primary/10 border-2 border-primary shadow-lg shadow-primary/20" : "bg-muted/30")}>
         <CardHeader>
             <Crown className="h-12 w-12 text-yellow-400 mx-auto" />
             <CardTitle>Premium Subscriber Perk</CardTitle>
             <CardDescription>
-                Premium subscribers automatically get the <strong className="text-primary">Empire</strong> tier (500 members) included with their membership! No separate guild plan needed.
+                {isPremium
+                    ? "As a Premium subscriber, the Empire tier (500 members) is included with your membership!"
+                    : "Premium subscribers automatically get the Empire tier (500 members) included with their membership!"}
             </CardDescription>
         </CardHeader>
         <CardContent>
             <Button asChild>
-                <Link href="/shop">Explore Memberships</Link>
+                <Link href="/shop">
+                    {isPremium ? 'Manage Membership' : 'Explore Memberships'}
+                </Link>
             </Button>
         </CardContent>
       </Card>
