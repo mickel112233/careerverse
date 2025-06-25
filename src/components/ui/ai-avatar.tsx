@@ -30,7 +30,7 @@ export function AiAvatar({ prompt, alt, fallback, className }: AiAvatarProps) {
 
     return (
         <Avatar className={className}>
-            {imageUrl && <AvatarImage src={imageUrl} alt={alt} unoptimized={true} />}
+            {imageUrl && <AvatarImage src={imageUrl} alt={alt} />}
             <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>
     )
