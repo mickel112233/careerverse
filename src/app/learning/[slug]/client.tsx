@@ -13,7 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -142,6 +142,10 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     if (state === 'loading' || !learningData) {
         return (
             <>
+                <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Roadmap
+                </Button>
                 <div className="mb-8">
                     <Skeleton className="h-10 w-3/4 capitalize" />
                     <Skeleton className="h-6 w-full max-w-lg mt-3" />
@@ -153,6 +157,10 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     
     return (
         <>
+            <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Roadmap
+            </Button>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{topic}</h1>
                 <p className="mt-2 text-muted-foreground">

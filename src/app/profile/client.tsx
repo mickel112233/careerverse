@@ -2,12 +2,13 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -58,6 +59,7 @@ const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementT
 );
 
 export default function ProfileClient() {
+    const router = useRouter();
     const [totalXp, setTotalXp] = useState(0);
     const [level, setLevel] = useState(1);
     const [xpProgress, setXpProgress] = useState(0);
@@ -147,6 +149,12 @@ export default function ProfileClient() {
 
   return (
     <>
+       <div className="mb-4">
+            <Button variant="ghost" onClick={() => router.back()}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+            </Button>
+       </div>
        <div className="relative mb-8 h-48 rounded-lg overflow-hidden">
             <AiImage prompt={userData.bannerHint} alt="Profile banner" layout="fill" objectFit="cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />

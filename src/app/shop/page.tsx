@@ -2,11 +2,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy } from "lucide-react";
+import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy, ArrowLeft, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { AiImage } from '@/components/ui/ai-image';
@@ -135,6 +135,7 @@ const currencyPacks = [
 
 
 export default function ShopPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get('tab') || 'memberships';
   const { toast } = useToast();
@@ -198,6 +199,10 @@ export default function ShopPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
+      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
       <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
         <div>
             <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>

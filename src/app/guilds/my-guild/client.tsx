@@ -3,11 +3,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog } from 'lucide-react';
+import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
@@ -85,6 +86,7 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 );
 
 export default function MyGuildClient() {
+    const router = useRouter();
     const [guild, setGuild] = useState<GuildData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isPremium, setIsPremium] = useState(false);
@@ -187,6 +189,10 @@ export default function MyGuildClient() {
 
     return (
         <div>
+            <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Guilds
+            </Button>
             <Dialog onOpenChange={(isOpen) => !isOpen && setManagingMember(null)}>
                 <DialogContent>
                     <DialogHeader>

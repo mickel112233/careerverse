@@ -2,10 +2,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Trophy } from "lucide-react";
+import { Trophy, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 
@@ -25,6 +27,7 @@ const leaderboardData = [
 const USER_NAME = 'QuantumLeap';
 
 export default function LeaderboardPage() {
+  const router = useRouter();
   const [leaderboard, setLeaderboard] = useState(leaderboardData);
 
   useEffect(() => {
@@ -49,6 +52,10 @@ export default function LeaderboardPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
+      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Leaderboard</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">

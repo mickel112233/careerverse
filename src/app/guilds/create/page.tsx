@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Crown, ArrowRight, Loader2, Users, Lock, Globe } from "lucide-react";
+import { Crown, ArrowRight, Loader2, Users, Lock, Globe, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -120,6 +120,10 @@ export default function CreateGuildPage() {
   if (!isPremium) {
     return (
         <div className="container mx-auto max-w-2xl p-4 sm:p-6 md:p-8">
+            <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+            </Button>
             <div className="mb-8 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Create Your Guild</h1>
                 <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">
@@ -149,6 +153,10 @@ export default function CreateGuildPage() {
 
   return (
     <div className="container mx-auto max-w-2xl p-4 sm:p-6 md:p-8">
+      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+        <ArrowLeft className="mr-2 h-4 w-4" />
+        Back
+      </Button>
       <div className="mb-8 text-center">
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Found Your Guild</h1>
         <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">
