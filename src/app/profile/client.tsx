@@ -1,5 +1,5 @@
 
-"use client";
+'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import { Badge } from "@/components/ui/badge";
@@ -19,10 +19,7 @@ const baseUserData = {
     title: 'Senior AI Engineer',
     avatarHint: 'cyberpunk woman portrait',
     bannerHint: 'abstract purple and blue nebula',
-    guild: {
-        name: 'AI Vanguard',
-        icon: Zap,
-    },
+    guild: null as { name: string; role: string; icon: React.ElementType; } | null,
     stats: {
         wins: 128,
         losses: 34,
@@ -124,13 +121,17 @@ export default function ProfileClient() {
             const storedGuild = localStorage.getItem('userGuild');
             if (storedGuild) {
                 const guildData = JSON.parse(storedGuild);
+                const userMemberData = guildData.members.find((m: any) => m.name === 'QuantumLeap');
                 setUserData(prev => ({
                     ...prev,
                     guild: {
-                        ...prev.guild,
                         name: guildData.guildName,
+                        role: userMemberData?.role || 'Member',
+                        icon: Zap
                     }
                 }));
+            } else {
+                 setUserData(prev => ({ ...prev, guild: null }));
             }
         };
 
@@ -175,7 +176,7 @@ export default function ProfileClient() {
                     {userData.guild && (
                         <Badge variant="secondary" className="text-accent">
                             <Users className="h-3 w-3 mr-1" />
-                            {userData.guild.name}
+                            {userData.guild.name} ({userData.guild.role})
                         </Badge>
                     )}
                     {membership !== 'Free' && (

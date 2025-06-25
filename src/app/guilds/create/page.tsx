@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Crown, ArrowRight, Loader2 } from "lucide-react";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Crown, ArrowRight, Loader2, Users, Lock, Globe } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -20,6 +21,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 const formSchema = z.object({
   guildName: z.string().min(3, "Guild name must be at least 3 characters.").max(30, "Guild name cannot exceed 30 characters."),
   description: z.string().min(10, "Description must be at least 10 characters.").max(200, "Description cannot exceed 200 characters."),
+  requirements: z.string().max(200, "Requirements cannot exceed 200 characters.").optional(),
+  type: z.enum(["public", "private"], { required_error: "You must select a guild type." }),
+  password: z.string().optional(),
+}).refine(data => {
+    if (data.type === 'private' && (!data.password || data.password.length < 4)) {
+        return false;
+    }
+    return true;
+}, {
+    message: "Private guilds require a password of at least 4 characters.",
+    path: ["password"],
 });
 
 const LoadingSkeleton = () => (
@@ -38,18 +50,6 @@ const LoadingSkeleton = () => (
                 <Skeleton className="h-10 w-44" />
             </CardContent>
         </Card>
-         <Card>
-            <CardHeader>
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-6 w-3/4 mt-2" />
-            </CardHeader>
-            <CardContent>
-                 <Skeleton className="h-10 w-full" />
-            </CardContent>
-            <CardFooter>
-                <Skeleton className="h-10 w-full" />
-            </CardFooter>
-        </Card>
     </div>
 );
 
@@ -57,6 +57,7 @@ const LoadingSkeleton = () => (
 export default function CreateGuildPage() {
   const [isPremium, setIsPremium] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [memberCapacity, setMemberCapacity] = useState(50);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -65,25 +66,49 @@ export default function CreateGuildPage() {
     defaultValues: {
       guildName: "",
       description: "",
+      requirements: "",
+      type: "public",
+      password: "",
     },
   });
 
+  const guildType = form.watch("type");
+
   useEffect(() => {
-    const membership = localStorage.getItem('careerClashMembership');
-    if (membership && membership !== 'Free') {
+    const membership = localStorage.getItem('careerClashMembership') || 'Free';
+    let capacity = 50;
+    if (membership === 'Premium') capacity = 100;
+    if (membership === 'Premium+') capacity = 200;
+    if (membership === 'Elite' || membership === 'Super') capacity = 500;
+    
+    if (membership !== 'Free') {
         setIsPremium(true);
     }
+    setMemberCapacity(capacity);
     setIsLoading(false);
   }, []);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const guildId = `GUILD-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const newGuild = {
+        ...values,
+        id: guildId,
+        capacity: memberCapacity,
+        bannerHint: "abstract futuristic guild banner",
+        crestHint: "futuristic guild crest emblem",
+        owner: 'QuantumLeap',
+        members: [
+            { name: 'QuantumLeap', role: 'Leader', xp: parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10), avatarHint: 'cyberpunk woman portrait' }
+        ]
+    };
+
     toast({
-      title: "Guild Created!",
-      description: `Your guild "${values.guildName}" has been successfully founded.`,
+      title: "Guild Founded!",
+      description: `Your guild "${values.guildName}" has been successfully established.`,
       className: "bg-green-500 text-white border-green-600",
     });
-    // In a real app, you'd save this to a database
-    localStorage.setItem('userGuild', JSON.stringify(values));
+    
+    localStorage.setItem('userGuild', JSON.stringify(newGuild));
     window.dispatchEvent(new Event('guildChange'));
     router.push('/guilds/my-guild');
   }
@@ -98,43 +123,25 @@ export default function CreateGuildPage() {
             <div className="mb-8 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Create Your Guild</h1>
                 <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">
-                Forge your legacy. Choose a plan that fits your guild's ambitions and start recruiting today.
+                Forge your legacy. A premium membership is required to lead a guild.
                 </p>
             </div>
 
-            <Card className="mb-8 text-center bg-muted/30 border-primary/20">
+            <Card className="text-center bg-muted/30 border-primary/20">
                 <CardHeader>
                     <Crown className="h-12 w-12 text-yellow-400 mx-auto" />
                     <CardTitle>A Premium Subscriber Perk</CardTitle>
                     <CardDescription>
-                        Premium members automatically get the powerful Empire tier (500 members) included with their subscription!
+                        Unlock the ability to create and manage your own guild with any premium membership plan.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Button asChild>
                         <Link href="/shop">
-                            Explore Memberships
+                            Explore Memberships <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
                 </CardContent>
-            </Card>
-            
-            <Card>
-                <CardHeader>
-                    <CardTitle>Standard Guild Plans</CardTitle>
-                    <CardDescription>Not a premium subscriber? No problem. Purchase a guild plan from our shop to get started.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-muted-foreground">Choose from a variety of tiers to match the size of your community. You can start small and upgrade anytime from the Item Shop.</p>
-                </CardContent>
-                <CardFooter>
-                    <Button asChild className="w-full">
-                        <Link href="/shop?tab=guilds">
-                            View Guild Plans
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                    </Button>
-                </CardFooter>
             </Card>
         </div>
     );
@@ -150,12 +157,12 @@ export default function CreateGuildPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Guild Details</CardTitle>
-          <CardDescription>Define your guild's identity. This information will be visible to all players across the realm.</CardDescription>
-        </CardHeader>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
+                <CardHeader>
+                  <CardTitle>Guild Foundation</CardTitle>
+                  <CardDescription>Define your guild's identity. This information will be visible to all players.</CardDescription>
+                </CardHeader>
                 <CardContent className="space-y-6">
                     <FormField
                         control={form.control}
@@ -170,22 +177,93 @@ export default function CreateGuildPage() {
                         </FormItem>
                         )}
                     />
-                     <FormField
+                    <FormField
                         control={form.control}
                         name="description"
                         render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Guild Description</FormLabel>
+                            <FormLabel>Public Description</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="A short, epic description of what your guild is all about." {...field} />
                             </FormControl>
+                             <FormDescription>This is your guild's public motto or summary.</FormDescription>
                             <FormMessage />
                         </FormItem>
                         )}
                     />
+                     <FormField
+                        control={form.control}
+                        name="requirements"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Recruitment Requirements</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="e.g., Level 20+, active daily, must join Discord." {...field} />
+                            </FormControl>
+                            <FormDescription>Let potential recruits know what you're looking for.</FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                     <FormField
+                        control={form.control}
+                        name="type"
+                        render={({ field }) => (
+                            <FormItem className="space-y-3">
+                            <FormLabel>Guild Privacy</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col space-y-1"
+                                >
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="public" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal flex items-center gap-2"><Globe className="h-4 w-4"/> Public - Anyone can find and join.</FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="private" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal flex items-center gap-2"><Lock className="h-4 w-4"/> Private - Only joinable via ID and password.</FormLabel>
+                                </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    {guildType === 'private' && (
+                         <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Guild Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" placeholder="Enter a secret password" {...field} />
+                                </FormControl>
+                                <FormDescription>Only players with this password can join.</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                            )}
+                        />
+                    )}
+
+                    <div className="p-4 bg-muted/50 rounded-lg flex items-center justify-between">
+                        <p className="font-semibold">Member Capacity</p>
+                        <div className="flex items-center gap-2 text-primary font-bold">
+                            <Users className="h-5 w-5" />
+                            <span>{memberCapacity} Members</span>
+                        </div>
+                    </div>
+
                 </CardContent>
                 <CardFooter>
-                    <Button type="submit" disabled={form.formState.isSubmitting}>
+                    <Button type="submit" disabled={form.formState.isSubmitting} size="lg">
                         {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         Found Guild
                     </Button>

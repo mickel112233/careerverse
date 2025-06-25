@@ -7,20 +7,40 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings } from 'lucide-react';
+import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
-type GuildData = {
-    guildName: string;
-    description: string;
+type GuildMember = {
+    name: string;
+    role: string;
+    xp: number;
+    avatarHint: string;
 };
 
-const mockMembers = [
-    { name: 'QuantumLeap', role: 'Leader', xp: 9850, avatarHint: 'cyberpunk woman portrait' },
+type GuildData = {
+    id: string;
+    guildName: string;
+    description: string;
+    requirements: string;
+    type: 'public' | 'private';
+    password?: string;
+    capacity: number;
+    bannerHint: string;
+    crestHint: string;
+    owner: string;
+    members: GuildMember[];
+};
+
+const mockInitialMembers = [
     { name: 'SynthWave', role: 'Officer', xp: 9500, avatarHint: 'cyberpunk man portrait' },
     { name: 'CodeNinja', role: 'Member', xp: 9200, avatarHint: 'hacker with glasses' },
     { name: 'DataDynamo', role: 'Member', xp: 8900, avatarHint: 'data scientist smiling' },
@@ -41,8 +61,14 @@ const mockBattleHistory = [
 const roleIcons: { [key: string]: React.ElementType } = {
     Leader: Crown,
     Officer: Star,
+    Don: Shield,
+    Hacker: Shield,
+    Ghost: Shield,
+    Admin: Shield,
     Member: Shield,
 };
+
+const premiumRoles = ['Admin', 'Friend', 'Don', 'Ghost', 'Hacker'];
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -61,21 +87,62 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 export default function MyGuildClient() {
     const [guild, setGuild] = useState<GuildData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isPremium, setIsPremium] = useState(false);
+    const [managingMember, setManagingMember] = useState<GuildMember | null>(null);
+    const [selectedRole, setSelectedRole] = useState('');
+    const { toast } = useToast();
 
     useEffect(() => {
-        const fetchGuild = () => {
-            const storedGuild = localStorage.getItem('userGuild');
-            if (storedGuild) {
-                setGuild(JSON.parse(storedGuild));
-            }
-            setIsLoading(false);
+        const membership = localStorage.getItem('careerClashMembership');
+        if (membership && membership !== 'Free') {
+            setIsPremium(true);
         }
-        
+    }, []);
+
+    const fetchGuild = () => {
+        const storedGuild = localStorage.getItem('userGuild');
+        if (storedGuild) {
+            let guildData = JSON.parse(storedGuild);
+            // Ensure mock members are added if the guild is newly created
+            if (guildData.members.length === 1 && guildData.owner === 'QuantumLeap') {
+                guildData.members.push(...mockInitialMembers);
+                localStorage.setItem('userGuild', JSON.stringify(guildData));
+            }
+            setGuild(guildData);
+        }
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
         fetchGuild();
-        
         window.addEventListener('guildChange', fetchGuild);
         return () => window.removeEventListener('guildChange', fetchGuild);
     }, []);
+
+    const handleRoleChange = () => {
+        if (!guild || !managingMember || !selectedRole) return;
+
+        const updatedMembers = guild.members.map(member =>
+            member.name === managingMember.name ? { ...member, role: selectedRole } : member
+        );
+
+        const updatedGuild = { ...guild, members: updatedMembers };
+        setGuild(updatedGuild);
+        localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+        setManagingMember(null);
+        toast({ title: "Role Updated", description: `${managingMember.name} is now a ${selectedRole}.` });
+    };
+
+    const handleKickMember = () => {
+        if (!guild || !managingMember) return;
+        
+        const updatedMembers = guild.members.filter(member => member.name !== managingMember.name);
+        const updatedGuild = { ...guild, members: updatedMembers };
+        setGuild(updatedGuild);
+        localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+        setManagingMember(null);
+        toast({ title: "Member Removed", description: `${managingMember.name} has been removed from the guild.`, variant: 'destructive' });
+    }
 
     if (isLoading) {
         return (
@@ -120,35 +187,83 @@ export default function MyGuildClient() {
 
     return (
         <div>
-            <Card className="mb-8 overflow-hidden">
-                <div className="relative h-48 bg-muted">
-                    <AiImage prompt="abstract futuristic guild banner" alt="Guild Banner" layout="fill" objectFit="cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    <div className="absolute bottom-4 right-4">
-                        <Button variant="secondary" size="sm"><Settings className="mr-2 h-4 w-4"/>Manage Guild</Button>
+            <Dialog onOpenChange={(isOpen) => !isOpen && setManagingMember(null)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Manage {managingMember?.name}</DialogTitle>
+                        <DialogDescription>Assign a new role or remove this member from the guild.</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="role-select">Assign Role</Label>
+                             <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <div className={cn(!isPremium && "cursor-not-allowed")}>
+                                            <Select
+                                                onValueChange={setSelectedRole}
+                                                defaultValue={managingMember?.role}
+                                                disabled={!isPremium}
+                                            >
+                                                <SelectTrigger id="role-select" className="w-full">
+                                                    <SelectValue placeholder="Select a role" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="Member">Member</SelectItem>
+                                                    <SelectItem value="Officer">Officer</SelectItem>
+                                                    {premiumRoles.map(role => (
+                                                        <SelectItem key={role} value={role}>{role}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </TooltipTrigger>
+                                    {!isPremium && <TooltipContent><p>Upgrade your membership to assign premium roles.</p></TooltipContent>}
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
+                         <Button onClick={handleRoleChange} disabled={!selectedRole || selectedRole === managingMember?.role}>Update Role</Button>
                     </div>
-                </div>
-                <div className="flex items-end gap-6 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                     <AiImage prompt="futuristic guild crest emblem" width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
-                     <div>
-                        <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
-                        <p className="text-muted-foreground max-w-xl">{guild.description}</p>
-                     </div>
-                </div>
-            </Card>
+                     <div className="border-t pt-4">
+                        <Button variant="destructive" className="w-full" onClick={handleKickMember}>
+                            <Trash2 className="mr-2 h-4 w-4"/> Kick {managingMember?.name}
+                        </Button>
+                    </div>
+                </DialogContent>
+
+                <Card className="mb-8 overflow-hidden">
+                    <div className="relative h-48 bg-muted">
+                        <AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                    </div>
+                    <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
+                        <div className="flex items-end gap-6">
+                            <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
+                            <div>
+                                <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
+                                <p className="text-muted-foreground max-w-xl">{guild.description}</p>
+                            </div>
+                        </div>
+                        <DialogTrigger asChild>
+                             <Button variant="secondary" size="sm"><Settings className="mr-2 h-4 w-4"/>Manage Guild</Button>
+                        </DialogTrigger>
+                    </div>
+                </Card>
+            </Dialog>
 
             <Tabs defaultValue="dashboard" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
                     <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="battles">Battles</TabsTrigger>
                     <TabsTrigger value="chat">Chat</TabsTrigger>
+                    <TabsTrigger value="settings">Settings</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard" className="mt-6">
                    <div className="grid md:grid-cols-3 gap-6 mb-6">
                        <StatCard icon={Trophy} label="Guild Rank" value="#12" />
-                       <StatCard icon={BarChart3} label="Total XP" value="1,240,500" />
-                       <StatCard icon={Users} label="Members" value="47 / 100" />
+                       <StatCard icon={BarChart3} label="Total XP" value="1.2M" />
+                       <StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} />
                    </div>
                     <Card>
                         <CardHeader>
@@ -173,7 +288,7 @@ export default function MyGuildClient() {
                         </CardHeader>
                         <CardContent>
                            <ul className="space-y-4">
-                            {mockMembers.map((member) => {
+                            {guild.members.map((member) => {
                                 const RoleIcon = roleIcons[member.role] || Shield;
                                 return (
                                     <li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
@@ -195,7 +310,16 @@ export default function MyGuildClient() {
                                                 </TooltipProvider>
                                             </div>
                                         </div>
-                                        <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
+                                        <div className="flex items-center gap-4">
+                                            <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
+                                            {guild.owner === 'QuantumLeap' && member.name !== 'QuantumLeap' && (
+                                                <DialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon" onClick={() => setManagingMember(member)}>
+                                                        <UserCog className="h-5 w-5"/>
+                                                    </Button>
+                                                </DialogTrigger>
+                                            )}
+                                        </div>
                                     </li>
                                 )
                             })}
@@ -247,6 +371,19 @@ export default function MyGuildClient() {
                         <CardContent>
                            <div className="h-80 w-full bg-muted/50 rounded-lg flex items-center justify-center">
                             <p className="text-muted-foreground">Chat interface will be here.</p>
+                           </div>
+                        </CardContent>
+                     </Card>
+                </TabsContent>
+                <TabsContent value="settings" className="mt-6">
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle>
+                            <CardDescription>Manage your guild's public information. (Feature coming soon)</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                           <div className="h-80 w-full bg-muted/50 rounded-lg flex items-center justify-center">
+                            <p className="text-muted-foreground">Settings management interface will be here.</p>
                            </div>
                         </CardContent>
                      </Card>
