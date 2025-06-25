@@ -66,6 +66,7 @@ export default function CompetitionClient() {
   const [timer, setTimer] = useState<number | null>(null);
   const [playerCoins, setPlayerCoins] = useState(0);
   const [isLeaveConfirmOpen, setIsLeaveConfirmOpen] = useState(false);
+  const [rewardsGiven, setRewardsGiven] = useState(false);
 
   const { toast } = useToast();
   const isCancelledRef = useRef(false);
@@ -86,6 +87,7 @@ export default function CompetitionClient() {
   const handleStartBattle = async () => {
     if (!selectedStream) return;
     
+    setRewardsGiven(false);
     isCancelledRef.current = false;
 
     if (battleConfig.mode === 'rush') {
@@ -172,6 +174,32 @@ export default function CompetitionClient() {
     }
   }, [step, quizData, currentQuestionIndex, selectedAnswer, battleConfig.mode]);
 
+  // Effect to handle rewards only once on finish
+  useEffect(() => {
+    if (step === 'finished' && quizData && !rewardsGiven) {
+        const playerWon = scores.player > scores.opponent;
+        const xpGained = playerWon ? 150 : (scores.player === scores.opponent ? 50 : 25);
+
+        let coinReward = 0;
+        if (battleConfig.mode === 'rush' && playerWon) {
+            coinReward = battleConfig.betAmount * 2;
+        }
+
+        const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+        const newTotalXp = currentTotalXp + xpGained;
+        localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+        
+        if (coinReward > 0) {
+            const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+            const newTotalCoins = currentCoins + coinReward;
+            localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+        }
+        
+        window.dispatchEvent(new Event('currencyChange'));
+        setRewardsGiven(true);
+    }
+  }, [step, quizData, scores, battleConfig, rewardsGiven]);
+
   const handleAnswerSelect = (answer: string) => {
     if(selectedAnswer && battleConfig.mode === 'fixed') return;
 
@@ -203,6 +231,7 @@ export default function CompetitionClient() {
     setSelectedStream(null);
     setQuizData(null);
     setTimer(null);
+    setRewardsGiven(false);
   };
   
   const handleCancelMatchmaking = () => {
@@ -511,22 +540,6 @@ export default function CompetitionClient() {
     if (battleConfig.mode === 'rush' && playerWon) {
         coinReward = battleConfig.betAmount * 2;
     }
-
-    // Effect to handle rewards only once on finish
-    useEffect(() => {
-        const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
-        const newTotalXp = currentTotalXp + xpGained;
-        localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
-        
-        if (coinReward > 0) {
-            const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
-            const newTotalCoins = currentCoins + coinReward;
-            localStorage.setItem('careerClashCoins', newTotalCoins.toString());
-        }
-        
-        window.dispatchEvent(new Event('currencyChange'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <Card className="text-center">
