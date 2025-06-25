@@ -16,6 +16,7 @@ import { AiAvatar } from "@/components/ui/ai-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { motion } from 'framer-motion';
 
 // --- Data ---
 const streams = [
@@ -390,7 +391,12 @@ export default function CompetitionClient() {
                     <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-24 h-24 ring-4 ring-primary" />
                     <p className="font-bold text-lg">{player.name}</p>
                 </div>
-                <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
+                <motion.div
+                    animate={{ y: [0, -10, 0], scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity }}
+                >
+                    <Swords className="h-12 w-12 text-muted-foreground"/>
+                </motion.div>
                 <div className="flex flex-col items-center gap-2">
                     {opponentFound ? (
                         <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />

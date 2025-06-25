@@ -27,6 +27,9 @@ import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
 import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import { motion } from 'framer-motion';
+
 
 const streams = [
   { name: 'Software Development', icon: Code },
@@ -66,6 +69,25 @@ const NodeStatusIcon = ({ status }: { status: string }) => {
   if (status === 'locked') return <Lock className="h-5 w-5 text-muted-foreground" />;
   return null;
 }
+
+const RoadmapSkeleton = () => (
+    <div className="relative pt-8">
+        <div className="absolute left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
+        <div className="space-y-16">
+            {[...Array(3)].map((_, index) => (
+                <div key={index} className="relative flex items-center">
+                    <div className={`w-[calc(50%-2rem)] flex ${index % 2 === 0 ? 'justify-end' : 'justify-start order-2'}`}>
+                        <Skeleton className="h-36 w-full max-w-sm" />
+                    </div>
+                    <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background">
+                         <Skeleton className="h-10 w-10 rounded-full" />
+                    </div>
+                    <div className={`w-[calc(50%-2rem)] ${index % 2 !== 0 && 'order-1'}`} />
+                </div>
+            ))}
+        </div>
+    </div>
+);
 
 export default function DashboardClient() {
   const [selectedStream, setSelectedStream] = useState<string | null>(null);
@@ -146,13 +168,10 @@ export default function DashboardClient() {
     setStreamToConfirm(null);
   };
 
-  if (isLoadingRoadmap) {
+  if (isLoadingRoadmap && !selectedStream) {
     return (
         <div className="flex flex-col justify-center items-center py-20 gap-4">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-lg text-muted-foreground">
-                {selectedStream ? `Generating your ${selectedStream} roadmap...` : 'Loading your dashboard...'}
-            </p>
+            <p className="text-lg text-muted-foreground">Loading your dashboard...</p>
         </div>
     );
   }
@@ -217,6 +236,8 @@ export default function DashboardClient() {
           <p className="mt-2 text-lg text-muted-foreground">Choose your subject to generate a personalized learning roadmap.</p>
           <Button className="mt-6" onClick={() => setIsDialogOpen(true)}>Choose Your Path</Button>
         </div>
+      ) : isLoadingRoadmap ? (
+          <RoadmapSkeleton />
       ) : (
         <div className="relative">
           <div className="absolute left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
@@ -225,35 +246,49 @@ export default function DashboardClient() {
             {roadmapNodes.map((node, index) => (
               <div key={index} className="relative flex items-center">
                 <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'text-right' : 'order-2 text-left'}`}>
-                  <Card className={cn('inline-block text-left border-2', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
-                    <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
-                      <NodeIcon icon={node.icon} status={node.status} />
-                      <div>
-                        <CardTitle className="text-base font-semibold">{node.title}</CardTitle>
-                        <CardDescription className="text-xs mt-1">{node.description}</CardDescription>
-                        <div className="flex items-center gap-4 text-sm font-bold mt-2">
-                           <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {node.xp} XP</span>
-                           <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {node.coins}</span>
+                  <motion.div
+                     initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                     whileInView={{ opacity: 1, x: 0 }}
+                     viewport={{ once: true }}
+                     transition={{ duration: 0.5, delay: 0.1 }}
+                     className="inline-block"
+                  >
+                    <Card className={cn('inline-block text-left border-2 w-full max-w-sm', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
+                        <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
+                        <NodeIcon icon={node.icon} status={node.status} />
+                        <div>
+                            <CardTitle className="text-base font-semibold">{node.title}</CardTitle>
+                            <CardDescription className="text-xs mt-1">{node.description}</CardDescription>
+                            <div className="flex items-center gap-4 text-sm font-bold mt-2">
+                            <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {node.xp} XP</span>
+                            <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {node.coins}</span>
+                            </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    {node.status !== 'locked' && (
-                      <CardContent className="p-4 pt-0">
-                         <Button asChild size="sm" className="w-full" disabled={node.status === 'completed'}>
-                           <Link href={`/learning/${node.slug}`}>
-                            {node.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
-                           </Link>
-                         </Button>
-                      </CardContent>
-                    )}
-                  </Card>
+                        </CardHeader>
+                        {node.status !== 'locked' && (
+                        <CardContent className="p-4 pt-0">
+                            <Button asChild size="sm" className="w-full" disabled={node.status === 'completed'}>
+                            <Link href={`/learning/${node.slug}`}>
+                                {node.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
+                            </Link>
+                            </Button>
+                        </CardContent>
+                        )}
+                    </Card>
+                  </motion.div>
                 </div>
 
-                <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background">
+                <motion.div 
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background"
+                >
                   <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border')}>
                      <NodeStatusIcon status={node.status} />
                   </div>
-                </div>
+                </motion.div>
 
                 <div className={`w-[calc(50%-2rem)] ${index % 2 !== 0 && 'order-1'}`} />
               </div>

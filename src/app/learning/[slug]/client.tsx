@@ -15,8 +15,10 @@ import { useToast } from '@/hooks/use-toast';
 import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
 import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import { motion, AnimatePresence } from 'framer-motion';
 
-type LearningState = 'loading' | 'studying' | 'quizzing';
+type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
 type RoadmapNode = {
     title: string;
@@ -33,6 +35,26 @@ type QuizResult = {
     isCorrect: boolean;
 };
 
+const LearningContentSkeleton = () => (
+    <Card>
+        <CardHeader>
+            <Skeleton className="h-8 w-48" />
+        </CardHeader>
+        <CardContent className="prose dark:prose-invert max-w-none space-y-4">
+            <Skeleton className="h-8 w-3/4" />
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="h-5 w-5/6" />
+            <Skeleton className="h-8 w-1/2 mt-6" />
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="h-5 w-4/5" />
+        </CardContent>
+        <CardFooter>
+            <Skeleton className="h-12 w-72" />
+        </CardFooter>
+    </Card>
+);
+
 export default function LearningFlowClient({ topic, slug }: { topic: string, slug: string }) {
     const [state, setState] = useState<LearningState>('loading');
     const [learningData, setLearningData] = useState<GenerateLearningContentOutput | null>(null);
@@ -40,6 +62,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const { toast } = useToast();
     const [levelXp, setLevelXp] = useState(0);
     const [levelCoins, setLevelCoins] = useState(0);
+    const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -73,8 +96,11 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         fetchContent();
     }, [topic, slug, router, toast]);
 
-    const handleQuizComplete = (finalScore: number, totalQuestions: number) => {
+    const handleQuizComplete = (finalScore: number, totalQuestions: number, results: QuizResult[]) => {
         const percentage = (finalScore / totalQuestions) * 100;
+        setQuizResults(results);
+        setState('results');
+
         if (percentage >= 60) {
             const storedRoadmap = localStorage.getItem('careerClashRoadmap');
             if (storedRoadmap) {
@@ -115,22 +141,39 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
     if (state === 'loading' || !learningData) {
         return (
-            <div className="flex flex-col justify-center items-center py-20 gap-4">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                <p className="text-lg text-muted-foreground">Crafting your lesson on "{topic}"...</p>
-            </div>
+            <>
+                <div className="mb-8">
+                    <Skeleton className="h-10 w-3/4 capitalize" />
+                    <Skeleton className="h-6 w-full max-w-lg mt-3" />
+                </div>
+                <LearningContentSkeleton />
+            </>
         );
     }
     
-    if (state === 'studying') {
-        return <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />;
-    }
-
-    if (state === 'quizzing') {
-        return <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
-    }
-
-    return null;
+    return (
+        <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
+                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{topic}</h1>
+                <p className="mt-2 text-muted-foreground">
+                    Study the material below, then prepare for the challenge.
+                </p>
+            </motion.div>
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={state}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    {state === 'studying' && <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />}
+                    {state === 'quizzing' && <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />}
+                    {state === 'results' && <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} />}
+                </motion.div>
+            </AnimatePresence>
+        </>
+    );
 }
 
 const StudyView = ({ content, onStartQuiz }: { content: string, onStartQuiz: () => void }) => (
@@ -153,12 +196,10 @@ const StudyView = ({ content, onStartQuiz }: { content: string, onStartQuiz: () 
     </Card>
 );
 
-const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number) => void }) => {
+const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number, results: QuizResult[]) => void }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
-    const [isFinished, setIsFinished] = useState(false);
-    const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
 
     const question = quizData.questions[currentQuestionIndex];
     const totalQuestions = quizData.questions.length;
@@ -176,9 +217,7 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
                 isCorrect: finalAnswers[index] === q.correctAnswer,
             }));
             const finalScore = results.filter(r => r.isCorrect).length;
-            setQuizResults(results);
-            onQuizComplete(finalScore, totalQuestions);
-            setIsFinished(true);
+            onQuizComplete(finalScore, totalQuestions, results);
         } else {
             setCurrentQuestionIndex(prev => prev + 1);
             setSelectedOption(null);
@@ -198,98 +237,6 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedOption]);
-
-    if (isFinished) {
-        const score = quizResults.filter(r => r.isCorrect).length;
-        const percentage = (score / totalQuestions) * 100;
-        const passed = percentage >= 60;
-        const incorrectAnswers = quizResults.filter(r => !r.isCorrect);
-
-        const chartData = [
-            { name: 'Correct', value: score, fill: 'hsl(var(--chart-1))' },
-            { name: 'Incorrect', value: totalQuestions - score, fill: 'hsl(var(--destructive))' },
-        ];
-        const chartConfig = {
-            correct: { label: 'Correct', color: 'hsl(var(--chart-1))' },
-            incorrect: { label: 'Incorrect', color: 'hsl(var(--destructive))' },
-        };
-
-        return (
-            <Card>
-                 <CardHeader>
-                    <CardTitle className="font-headline text-3xl text-center">Challenge Complete!</CardTitle>
-                    <CardDescription className="text-center">{passed ? "Congratulations, you passed!" : "You can do better. Review your answers and try again."}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div className="flex flex-col items-center justify-center gap-2">
-                             <p className={cn("text-7xl font-bold font-headline my-2", passed ? "text-green-400" : "text-destructive")}>
-                                {score}<span className="text-3xl text-muted-foreground">/{totalQuestions}</span>
-                            </p>
-                            <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
-                             {passed && (
-                                <div className="space-y-2 mt-2">
-                                    <div className="flex items-center text-lg text-yellow-400 font-bold bg-yellow-400/10 px-4 py-2 rounded-md">
-                                        <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
-                                    </div>
-                                    <div className="flex items-center text-lg text-amber-500 font-bold bg-amber-500/10 px-4 py-2 rounded-md">
-                                        <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Coins Gained
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-48">
-                            <PieChart>
-                                <Tooltip content={<ChartTooltipContent hideLabel />} />
-                                <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={70} strokeWidth={2}>
-                                    {chartData.map((entry) => (
-                                       <Cell key={`cell-${entry.name}`} fill={entry.fill} />
-                                    ))}
-                                </Pie>
-                            </PieChart>
-                        </ChartContainer>
-                    </div>
-
-                    {incorrectAnswers.length > 0 && (
-                        <div>
-                             <h3 className="text-xl font-semibold font-headline flex items-center mb-4"><FileQuestion className="mr-2 h-5 w-5 text-primary"/>Review Your Mistakes</h3>
-                            <Accordion type="single" collapsible className="w-full">
-                                {incorrectAnswers.map((result, index) => (
-                                     <AccordionItem value={`item-${index}`} key={index}>
-                                         <AccordionTrigger>
-                                            <div className="flex items-start text-left gap-2">
-                                                <HelpCircle className="h-5 w-5 text-destructive shrink-0 mt-1"/>
-                                                <span>{result.question}</span>
-                                            </div>
-                                         </AccordionTrigger>
-                                         <AccordionContent className="space-y-2 p-4">
-                                             <p className="text-sm"><strong className="text-red-400">Your Answer:</strong> {result.yourAnswer}</p>
-                                             <p className="text-sm"><strong className="text-green-400">Correct Answer:</strong> {result.correctAnswer}</p>
-                                             <div className="p-3 bg-muted/50 rounded-md mt-2">
-                                                <h4 className="font-semibold text-primary">Explanation</h4>
-                                                <p className="text-muted-foreground text-sm">{result.explanation}</p>
-                                             </div>
-                                         </AccordionContent>
-                                     </AccordionItem>
-                                ))}
-                            </Accordion>
-                        </div>
-                    )}
-                </CardContent>
-                <CardFooter className="justify-center gap-4 pt-6">
-                    <Button asChild>
-                        <Link href="/dashboard">
-                            Back to Roadmap
-                        </Link>
-                    </Button>
-                     <Button variant="outline" onClick={() => window.location.reload()}>
-                         <Repeat className="mr-2 h-4 w-4" />
-                        {passed ? 'Practice Again' : 'Try Again'}
-                     </Button>
-                </CardFooter>
-            </Card>
-        )
-    }
 
     return (
         <Card>
@@ -337,7 +284,7 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
                 </div>
             </CardContent>
              <CardFooter className="justify-end">
-                <Button onClick={handleNext} disabled={!selectedOption || isFinished}>
+                <Button onClick={handleNext} disabled={!selectedOption}>
                    {currentQuestionIndex === totalQuestions - 1 ? 'Finish Challenge' : 'Next Question'}
                    <ArrowRight className="ml-2 h-4 w-4"/>
                 </Button>
@@ -345,3 +292,96 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
         </Card>
     );
 };
+
+const ResultsView = ({ results, levelXp, levelCoins }: { results: QuizResult[], levelXp: number, levelCoins: number }) => {
+    const score = results.filter(r => r.isCorrect).length;
+    const totalQuestions = results.length;
+    const percentage = (score / totalQuestions) * 100;
+    const passed = percentage >= 60;
+    const incorrectAnswers = results.filter(r => !r.isCorrect);
+
+    const chartData = [
+        { name: 'Correct', value: score, fill: 'hsl(var(--chart-1))' },
+        { name: 'Incorrect', value: totalQuestions - score, fill: 'hsl(var(--destructive))' },
+    ];
+    const chartConfig = {
+        correct: { label: 'Correct', color: 'hsl(var(--chart-1))' },
+        incorrect: { label: 'Incorrect', color: 'hsl(var(--destructive))' },
+    };
+
+    return (
+        <Card>
+                <CardHeader>
+                <CardTitle className="font-headline text-3xl text-center">Challenge Complete!</CardTitle>
+                <CardDescription className="text-center">{passed ? "Congratulations, you passed!" : "You can do better. Review your answers and try again."}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                            <p className={cn("text-7xl font-bold font-headline my-2", passed ? "text-green-400" : "text-destructive")}>
+                            {score}<span className="text-3xl text-muted-foreground">/{totalQuestions}</span>
+                        </p>
+                        <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
+                            {passed && (
+                            <div className="space-y-2 mt-2">
+                                <div className="flex items-center text-lg text-yellow-400 font-bold bg-yellow-400/10 px-4 py-2 rounded-md">
+                                    <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
+                                </div>
+                                <div className="flex items-center text-lg text-amber-500 font-bold bg-amber-500/10 px-4 py-2 rounded-md">
+                                    <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Coins Gained
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <ChartContainer config={chartConfig} className="mx-auto aspect-square h-48">
+                        <PieChart>
+                            <Tooltip content={<ChartTooltipContent hideLabel />} />
+                            <Pie data={chartData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={70} strokeWidth={2}>
+                                {chartData.map((entry) => (
+                                    <Cell key={`cell-${entry.name}`} fill={entry.fill} />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ChartContainer>
+                </div>
+
+                {incorrectAnswers.length > 0 && (
+                    <div>
+                            <h3 className="text-xl font-semibold font-headline flex items-center mb-4"><FileQuestion className="mr-2 h-5 w-5 text-primary"/>Review Your Mistakes</h3>
+                        <Accordion type="single" collapsible className="w-full">
+                            {incorrectAnswers.map((result, index) => (
+                                    <AccordionItem value={`item-${index}`} key={index}>
+                                        <AccordionTrigger>
+                                        <div className="flex items-start text-left gap-2">
+                                            <HelpCircle className="h-5 w-5 text-destructive shrink-0 mt-1"/>
+                                            <span>{result.question}</span>
+                                        </div>
+                                        </AccordionTrigger>
+                                        <AccordionContent className="space-y-2 p-4">
+                                            <p className="text-sm"><strong className="text-red-400">Your Answer:</strong> {result.yourAnswer}</p>
+                                            <p className="text-sm"><strong className="text-green-400">Correct Answer:</strong> {result.correctAnswer}</p>
+                                            <div className="p-3 bg-muted/50 rounded-md mt-2">
+                                            <h4 className="font-semibold text-primary">Explanation</h4>
+                                            <p className="text-muted-foreground text-sm">{result.explanation}</p>
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                )}
+            </CardContent>
+            <CardFooter className="justify-center gap-4 pt-6">
+                <Button asChild>
+                    <Link href="/dashboard">
+                        Back to Roadmap
+                    </Link>
+                </Button>
+                    <Button variant="outline" onClick={() => window.location.reload()}>
+                        <Repeat className="mr-2 h-4 w-4" />
+                    {passed ? 'Practice Again' : 'Try Again'}
+                    </Button>
+            </CardFooter>
+        </Card>
+    )
+}
