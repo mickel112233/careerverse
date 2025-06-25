@@ -25,7 +25,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
-import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap } from 'lucide-react';
+import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const streams = [
@@ -46,6 +46,7 @@ type RoadmapNode = {
   status: 'completed' | 'unlocked' | 'locked';
   description: string;
   xp: number;
+  coins: number;
 };
 
 const roadmapIcons = [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2];
@@ -109,6 +110,7 @@ export default function DashboardClient() {
             status: index === 0 ? 'unlocked' : 'locked',
             description: node.description,
             xp: node.xp,
+            coins: Math.floor(node.xp / 5),
         }));
         
         setRoadmapNodes(newNodes);
@@ -229,8 +231,9 @@ export default function DashboardClient() {
                       <div>
                         <CardTitle className="text-base font-semibold">{node.title}</CardTitle>
                         <CardDescription className="text-xs mt-1">{node.description}</CardDescription>
-                        <div className="flex items-center text-sm text-yellow-400 font-bold mt-2">
-                           <Zap className="h-4 w-4 mr-1" /> {node.xp} XP
+                        <div className="flex items-center gap-4 text-sm font-bold mt-2">
+                           <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {node.xp} XP</span>
+                           <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {node.coins}</span>
                         </div>
                       </div>
                     </CardHeader>

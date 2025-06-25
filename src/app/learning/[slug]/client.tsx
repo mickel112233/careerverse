@@ -13,7 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type LearningState = 'loading' | 'studying' | 'quizzing';
@@ -23,6 +23,7 @@ type RoadmapNode = {
     slug: string;
     status: 'completed' | 'unlocked' | 'locked';
     xp: number;
+    coins: number;
 };
 type QuizResult = {
     question: string;
@@ -38,6 +39,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const router = useRouter();
     const { toast } = useToast();
     const [levelXp, setLevelXp] = useState(0);
+    const [levelCoins, setLevelCoins] = useState(0);
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -53,6 +55,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     const currentNode = roadmap.find(node => node.slug === slug);
                     if (currentNode) {
                         setLevelXp(currentNode.xp || 0);
+                        setLevelCoins(currentNode.coins || 0);
                     }
                 }
                 
@@ -86,6 +89,11 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
                     const newTotalXp = currentTotalXp + levelXp;
                     localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+                    
+                    const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+                    const newTotalCoins = currentCoins + levelCoins;
+                    localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+
                     window.dispatchEvent(new Event('currencyChange'));
 
                     localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
@@ -93,7 +101,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             }
             toast({
                 title: "Level Complete!",
-                description: `You earned ${levelXp} XP and unlocked the next level.`,
+                description: `You earned ${levelXp} XP and ${levelCoins} Coins! The next level is unlocked.`,
                 className: "bg-green-500 text-white border-green-600",
             });
         } else {
@@ -119,7 +127,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     }
 
     if (state === 'quizzing') {
-        return <QuizView quizData={learningData.quiz} levelXp={levelXp} onQuizComplete={handleQuizComplete} />;
+        return <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
     }
 
     return null;
@@ -145,7 +153,7 @@ const StudyView = ({ content, onStartQuiz }: { content: string, onStartQuiz: () 
     </Card>
 );
 
-const QuizView = ({ quizData, levelXp, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, onQuizComplete: (score: number, total: number) => void }) => {
+const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number) => void }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -220,8 +228,13 @@ const QuizView = ({ quizData, levelXp, onQuizComplete }: { quizData: GenerateLea
                             </p>
                             <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
                              {passed && (
-                                <div className="flex items-center text-lg text-yellow-400 font-bold mt-2 bg-yellow-400/10 px-4 py-2 rounded-md">
-                                    <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
+                                <div className="space-y-2 mt-2">
+                                    <div className="flex items-center text-lg text-yellow-400 font-bold bg-yellow-400/10 px-4 py-2 rounded-md">
+                                        <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
+                                    </div>
+                                    <div className="flex items-center text-lg text-amber-500 font-bold bg-amber-500/10 px-4 py-2 rounded-md">
+                                        <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Coins Gained
+                                    </div>
                                 </div>
                             )}
                         </div>

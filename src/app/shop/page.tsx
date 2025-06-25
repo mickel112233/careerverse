@@ -126,10 +126,12 @@ const guildTiers = [
 
 const currencyPacks = [
     { name: 'Pocket of Coins', amount: 5000, price: '₹89', currency: 'coins' },
+    { name: 'Pile of Gems', amount: 100, price: '₹89', currency: 'gems' },
     { name: 'Bag of Coins', amount: 12000, price: '₹179', currency: 'coins' },
-    { name: 'Fistful of Gems', amount: 500, price: '₹449', currency: 'gems' },
-    { name: 'Treasure of Gems', amount: 1500, price: '₹1,299', currency: 'gems' },
-]
+    { name: 'Fistful of Gems', amount: 250, price: '₹179', currency: 'gems' },
+    { name: 'Chest of Coins', amount: 30000, price: '₹349', currency: 'coins' },
+    { name: 'Treasure of Gems', amount: 600, price: '₹449', currency: 'gems' },
+];
 
 
 export default function ShopPage() {
@@ -175,6 +177,18 @@ export default function ShopPage() {
 
     toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${itemName}.`, className: "bg-green-500 text-white" });
   };
+
+  const handleCurrencyPurchase = (amount: number, currency: 'coins' | 'gems', packName: string) => {
+     if (currency === 'coins') {
+        const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+        localStorage.setItem('careerClashCoins', (currentCoins + amount).toString());
+    } else {
+        const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
+        localStorage.setItem('careerClashGems', (currentGems + amount).toString());
+    }
+    window.dispatchEvent(new Event('currencyChange'));
+    toast({ title: 'Purchase Successful!', description: `Added ${amount.toLocaleString()} ${currency} to your wallet.`, className: "bg-green-500 text-white" });
+  }
 
   const handleMembershipPurchase = (planName: string) => {
     localStorage.setItem('careerClashMembership', planName);
@@ -270,10 +284,10 @@ export default function ShopPage() {
                                             <Check className="mr-2" /> Owned
                                         </>
                                     ) : (
-                                        <>
-                                            {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
+                                        <div className="flex items-center">
+                                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
                                             {item.price.toLocaleString()}
-                                        </>
+                                        </div>
                                     )}
                                     </Button>
                                 </CardFooter>
@@ -300,8 +314,10 @@ export default function ShopPage() {
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
                                 <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)}>
-                                    {item.currency === 'coins' ? <span className="text-yellow-400 mr-2">🟡</span> : <Gem className="text-primary mr-2"/>}
-                                    {item.price.toLocaleString()}
+                                     <div className="flex items-center">
+                                        {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
+                                        {item.price.toLocaleString()}
+                                    </div>
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -346,16 +362,16 @@ export default function ShopPage() {
                 <h2 className="text-2xl font-headline font-bold">Refill Your Wallet</h2>
                 <p className="text-muted-foreground">Purchase Coins and Gems to spend in the shop.</p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {currencyPacks.map((pack) => (
                      <Card key={pack.name}>
                         <CardHeader className="items-center text-center">
-                            {pack.currency === 'coins' ? <span className="text-yellow-400 text-5xl">🟡</span> : <Gem className="h-12 w-12 text-primary"/>}
+                            {pack.currency === 'coins' ? <Coins className="h-12 w-12 text-yellow-400"/> : <Gem className="h-12 w-12 text-primary"/>}
                             <CardTitle className="font-headline text-xl">{pack.name}</CardTitle>
                             <CardDescription>{pack.amount.toLocaleString()} {pack.currency}</CardDescription>
                         </CardHeader>
                         <CardFooter>
-                            <Button className="w-full" disabled>
+                            <Button className="w-full" onClick={() => handleCurrencyPurchase(pack.amount, pack.currency as 'coins' | 'gems', pack.name)}>
                                {pack.price}
                             </Button>
                         </CardFooter>
