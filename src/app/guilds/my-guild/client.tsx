@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,7 +14,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
@@ -111,6 +112,8 @@ export default function MyGuildClient() {
                 localStorage.setItem('userGuild', JSON.stringify(guildData));
             }
             setGuild(guildData);
+        } else {
+            setGuild(null);
         }
         setIsLoading(false);
     }
@@ -145,6 +148,13 @@ export default function MyGuildClient() {
         setManagingMember(null);
         toast({ title: "Member Removed", description: `${managingMember.name} has been removed from the guild.`, variant: 'destructive' });
     }
+
+    const handleDisbandGuild = () => {
+        localStorage.removeItem('userGuild');
+        window.dispatchEvent(new Event('guildChange'));
+        toast({ title: "Guild Disbanded", description: "You have successfully disbanded your guild."});
+        router.push('/guilds');
+    };
 
     if (isLoading) {
         return (
@@ -189,13 +199,13 @@ export default function MyGuildClient() {
 
     return (
         <div>
-            <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+            <Button variant="ghost" onClick={() => router.push('/guilds')} className="mb-4">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Guilds
             </Button>
             <Dialog onOpenChange={(isOpen) => !isOpen && setManagingMember(null)}>
                 <DialogContent>
-                    <DialogHeader>
+                     <DialogHeader>
                         <DialogTitle>Manage {managingMember?.name}</DialogTitle>
                         <DialogDescription>Assign a new role or remove this member from the guild.</DialogDescription>
                     </DialogHeader>
@@ -231,9 +241,27 @@ export default function MyGuildClient() {
                          <Button onClick={handleRoleChange} disabled={!selectedRole || selectedRole === managingMember?.role}>Update Role</Button>
                     </div>
                      <div className="border-t pt-4">
-                        <Button variant="destructive" className="w-full" onClick={handleKickMember}>
-                            <Trash2 className="mr-2 h-4 w-4"/> Kick {managingMember?.name}
-                        </Button>
+                         <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant="destructive" className="w-full" disabled={!managingMember}>
+                                    <Trash2 className="mr-2 h-4 w-4"/> Kick {managingMember?.name}
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This will permanently remove {managingMember?.name} from the guild.
+                                </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleKickMember} className={cn(buttonVariants({ variant: "destructive" }))}>
+                                    Kick Member
+                                </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </DialogContent>
 
@@ -250,9 +278,6 @@ export default function MyGuildClient() {
                                 <p className="text-muted-foreground max-w-xl">{guild.description}</p>
                             </div>
                         </div>
-                        <DialogTrigger asChild>
-                             <Button variant="secondary" size="sm"><Settings className="mr-2 h-4 w-4"/>Manage Guild</Button>
-                        </DialogTrigger>
                     </div>
                 </Card>
             </Dialog>
@@ -385,12 +410,62 @@ export default function MyGuildClient() {
                      <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle>
-                            <CardDescription>Manage your guild's public information. (Feature coming soon)</CardDescription>
+                            <CardDescription>Manage your guild's public information or leave the guild.</CardDescription>
                         </CardHeader>
-                        <CardContent>
-                           <div className="h-80 w-full bg-muted/50 rounded-lg flex items-center justify-center">
-                            <p className="text-muted-foreground">Settings management interface will be here.</p>
-                           </div>
+                        <CardContent className="space-y-6">
+                            <Card className="border-destructive/50">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle>
+                                    <CardDescription>These actions are irreversible. Proceed with caution.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                     {guild.owner === 'QuantumLeap' ? (
+                                        <div>
+                                            <h3 className="font-semibold">Disband Guild</h3>
+                                            <p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive">Disband {guild.guildName}</Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            This action cannot be undone. This will permanently disband your guild and remove all your members.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <h3 className="font-semibold">Leave Guild</h3>
+                                            <p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive">Leave {guild.guildName}</Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            You will be removed from the guild. You can rejoin later.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Stay in Guild</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
                         </CardContent>
                      </Card>
                 </TabsContent>

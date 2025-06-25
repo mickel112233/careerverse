@@ -13,15 +13,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
+import { mockGuilds } from '@/lib/guild-data';
 
-const mockGuilds = [
-  { id: 'GUILD-1', name: 'Frontend Forces', slug: 'frontend-forces', description: 'Masters of UI/UX, React, and modern web technologies.', members: 128, icon: Code, imageHint: 'abstract code interface', type: 'public' },
-  { id: 'GUILD-2', name: 'Backend Brigade', slug: 'backend-brigade', description: 'Architects of scalable APIs, databases, and server-side logic.', members: 92, icon: Database, imageHint: 'futuristic server room', type: 'public' },
-  { id: 'GUILD-3', name: 'Design Dynasty', slug: 'design-dynasty', description: 'Creators of stunning visuals and intuitive user experiences.', members: 74, icon: PenTool, imageHint: 'glowing design sketch', type: 'public' },
-  { id: 'GUILD-4', name: 'Data Mavericks', slug: 'data-mavericks', description: 'Experts in data science, machine learning, and analytics.', members: 68, icon: BarChart2, imageHint: 'holographic data visualization', type: 'public' },
-  { id: 'GUILD-5', name: 'Cyber Sentinels', slug: 'cyber-sentinels', description: 'Guardians of digital fortresses and cybersecurity experts.', members: 45, icon: Shield, imageHint: 'cyber security matrix', type: 'public' },
-  { id: 'GUILD-6', name: 'The Void Runners', slug: 'void-runners', description: 'A secretive guild operating in the shadows.', members: 13, icon: Shield, imageHint: 'dark cosmic void', type: 'private', password: 'secret' },
-];
 
 export default function GuildsPage() {
   const [userHasGuild, setUserHasGuild] = useState(false);
@@ -56,9 +49,11 @@ export default function GuildsPage() {
               className: "bg-green-500 text-white"
           });
           // In a real app, this would update backend and local state
+          localStorage.setItem('userGuild', JSON.stringify(selectedGuild));
+          window.dispatchEvent(new Event('guildChange'));
+          router.push('/guilds/my-guild');
           setSelectedGuild(null);
           setPassword('');
-          // For this demo, we won't fully implement joining another guild
       } else {
           toast({
               variant: "destructive",
@@ -72,7 +67,7 @@ export default function GuildsPage() {
       if (searchQuery.startsWith('GUILD-')) {
           return guild.id.toLowerCase().includes(searchQuery.toLowerCase());
       }
-      return guild.name.toLowerCase().includes(searchQuery.toLowerCase()) && guild.type === 'public';
+      return guild.name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   if (isLoading) {
@@ -162,16 +157,20 @@ export default function GuildsPage() {
                             <CardFooter className="bg-muted/50 p-4 flex justify-between items-center mt-auto">
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                     <Users className="h-4 w-4" />
-                                    <span>{guild.members} members</span>
+                                    <span>{guild.members.length} members</span>
                                 </div>
                                 {guild.type === 'private' ? (
                                     <DialogTrigger asChild>
                                         <Button onClick={() => setSelectedGuild(guild)}>
-                                            <Lock className="mr-2 h-4 w-4"/> Join Guild
+                                            <Lock className="mr-2 h-4 w-4"/> Join
                                         </Button>
                                     </DialogTrigger>
                                 ) : (
-                                    <Button>Join Guild</Button>
+                                    <Button asChild>
+                                        <Link href={`/guilds/${guild.slug}`}>
+                                            View Guild
+                                        </Link>
+                                    </Button>
                                 )}
                             </CardFooter>
                         </Card>
