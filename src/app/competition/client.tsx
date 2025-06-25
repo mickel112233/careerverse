@@ -1,19 +1,21 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { generateAiCompetitionQuiz, GenerateAiCompetitionQuizOutput } from "@/ai/flows/ai-competition-generator";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import Link from "next/link";
 import { AiAvatar } from "@/components/ui/ai-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 // --- Data ---
 const streams = [
@@ -63,8 +65,10 @@ export default function CompetitionClient() {
   const [opponentFound, setOpponentFound] = useState(false);
   const [timer, setTimer] = useState<number | null>(null);
   const [playerCoins, setPlayerCoins] = useState(0);
+  const [isLeaveConfirmOpen, setIsLeaveConfirmOpen] = useState(false);
 
   const { toast } = useToast();
+  const isCancelledRef = useRef(false);
 
   const player: Player = { name: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', type: 'human' };
   const opponent: Player = { name: 'AI Bot', avatarHint: 'cyberpunk robot face', type: 'bot' };
@@ -82,6 +86,8 @@ export default function CompetitionClient() {
   const handleStartBattle = async () => {
     if (!selectedStream) return;
     
+    isCancelledRef.current = false;
+
     if (battleConfig.mode === 'rush') {
         if (playerCoins < battleConfig.betAmount) {
             toast({
@@ -102,6 +108,9 @@ export default function CompetitionClient() {
     try {
       const numQuestions = battleConfig.mode === 'rush' ? 50 : battleConfig.questions;
       const quiz = await generateAiCompetitionQuiz({ jobRole: selectedStream, numQuestions });
+
+      if (isCancelledRef.current) return;
+
       setQuizData(quiz);
       setCurrentQuestionIndex(0);
       setScores({ player: 0, opponent: 0 });
@@ -116,13 +125,14 @@ export default function CompetitionClient() {
         }
       }, 2500);
     } catch (error) {
-      console.error("Failed to generate quiz:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to generate the battle. Please try again.",
-      });
-      setStep("select_mode");
+        if (isCancelledRef.current) return;
+        console.error("Failed to generate quiz:", error);
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to generate the battle. Please try again.",
+        });
+        setStep("select_mode");
     }
   };
 
@@ -195,6 +205,26 @@ export default function CompetitionClient() {
     setTimer(null);
   };
   
+  const handleCancelMatchmaking = () => {
+    isCancelledRef.current = true;
+    if (battleConfig.mode === 'rush') {
+        const newBalance = playerCoins + battleConfig.betAmount;
+        localStorage.setItem('careerClashCoins', newBalance.toString());
+        window.dispatchEvent(new Event('currencyChange'));
+        setPlayerCoins(newBalance);
+    }
+    setStep("select_mode");
+  };
+
+  const handleLeaveMatch = () => {
+    if (battleConfig.mode === 'rush') {
+        setTimer(0);
+    } else {
+        setStep('finished');
+    }
+    setIsLeaveConfirmOpen(false);
+  };
+
   // -- RENDER LOGIC --
 
   if (step === "select_stream") {
@@ -324,26 +354,34 @@ export default function CompetitionClient() {
 
   if (step === "matching") {
     return (
-      <Card className="flex flex-col items-center justify-center p-20 gap-6">
-        <div className="flex items-center gap-8">
-            <div className="flex flex-col items-center gap-2">
-                <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-24 h-24 ring-4 ring-primary" />
-                <p className="font-bold text-lg">{player.name}</p>
+      <Card className="flex flex-col items-center justify-center p-10 gap-6">
+        <CardContent className="p-0 flex flex-col items-center justify-center gap-6">
+            <div className="flex items-center gap-8">
+                <div className="flex flex-col items-center gap-2">
+                    <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-24 h-24 ring-4 ring-primary" />
+                    <p className="font-bold text-lg">{player.name}</p>
+                </div>
+                <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
+                <div className="flex flex-col items-center gap-2">
+                    {opponentFound ? (
+                        <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
+                    ) : (
+                        <Skeleton className="w-24 h-24 rounded-full" />
+                    )}
+                    <p className="font-bold text-lg">{opponentFound ? opponent.name : 'Searching...'}</p>
+                </div>
             </div>
-            <Swords className="h-12 w-12 text-muted-foreground animate-pulse"/>
-             <div className="flex flex-col items-center gap-2">
-                {opponentFound ? (
-                    <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
-                ) : (
-                    <Skeleton className="w-24 h-24 rounded-full" />
-                )}
-                <p className="font-bold text-lg">{opponentFound ? opponent.name : 'Finding Opponent...'}</p>
+            <div className="flex items-center gap-4 mt-6">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <h2 className="text-2xl font-headline">{opponentFound ? "Opponent Found! Starting..." : "Matching..."}</h2>
             </div>
-        </div>
-        <div className="flex items-center gap-4 mt-6">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <h2 className="text-2xl font-headline">{opponentFound ? "Opponent Found! Starting..." : "Matching..."}</h2>
-        </div>
+        </CardContent>
+        <CardFooter className="p-0 pt-6">
+            <Button variant="outline" onClick={handleCancelMatchmaking} disabled={opponentFound}>
+                <X className="mr-2 h-4 w-4" />
+                Cancel Search
+            </Button>
+        </CardFooter>
       </Card>
     );
   }
@@ -356,81 +394,110 @@ export default function CompetitionClient() {
         : (timer! / battleConfig.timeLimit) * 100;
         
     return (
-        <div className="space-y-4">
-            {/* Scoreboard */}
-            <Card>
-                <CardContent className="p-4 flex justify-between items-center">
-                    <div className="flex items-center gap-4">
-                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} />
-                        <div>
-                            <p className="font-bold">{player.name}</p>
-                            <p className="text-2xl font-bold text-primary">{scores.player}</p>
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        {battleConfig.mode === 'fixed' ? (
-                            <>
-                                <p className="font-mono text-sm text-muted-foreground">Question</p>
-                                <p className="font-bold text-2xl">{currentQuestionIndex + 1}/{quizData.questions.length}</p>
-                            </>
-                        ) : (
-                             <>
-                                <p className="font-mono text-sm text-muted-foreground">Time Left</p>
-                                <p className="font-bold text-2xl font-mono">{formatTime(timer || 0)}</p>
-                            </>
-                        )}
-                    </div>
-                     <div className="flex items-center gap-4">
-                        <div className="text-right">
-                            <p className="font-bold">{opponent.name}</p>
-                            <p className="text-2xl font-bold text-primary">{scores.opponent}</p>
-                        </div>
-                        <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} />
-                    </div>
-                </CardContent>
-                <Progress value={progressValue} />
-            </Card>
+        <>
+            <AlertDialog open={isLeaveConfirmOpen} onOpenChange={setIsLeaveConfirmOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to forfeit?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                           You will lose the match and any coins you have bet. This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Stay in Battle</AlertDialogCancel>
+                        <AlertDialogAction className={cn(buttonVariants({ variant: "destructive" }))} onClick={handleLeaveMatch}>Forfeit Match</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+            <div className="space-y-4">
+                {/* Scoreboard */}
+                <Card>
+                    <CardContent className="p-4 flex justify-between items-center relative">
+                         <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 text-muted-foreground hover:text-destructive" onClick={() => setIsLeaveConfirmOpen(true)}>
+                                        <LogOut className="h-5 w-5" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Forfeit Match</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
 
-            {/* Question Card */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline text-center">{quizData.quizTitle}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="font-semibold mb-6 text-center text-lg">{question.question}</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {question.options.map((option, index) => (
-                        <Button
-                            key={index}
-                            variant="outline"
-                            size="lg"
-                            className={cn(
-                                "h-auto py-4 justify-start text-left whitespace-normal",
-                                battleConfig.mode === 'fixed' && selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
-                                battleConfig.mode === 'fixed' && selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
+                        <div className="flex items-center gap-4">
+                            <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} />
+                            <div>
+                                <p className="font-bold">{player.name}</p>
+                                <p className="text-2xl font-bold text-primary">{scores.player}</p>
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            {battleConfig.mode === 'fixed' ? (
+                                <>
+                                    <p className="font-mono text-sm text-muted-foreground">Question</p>
+                                    <p className="font-bold text-2xl">{currentQuestionIndex + 1}/{quizData.questions.length}</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="font-mono text-sm text-muted-foreground">Time Left</p>
+                                    <p className="font-bold text-2xl font-mono">{formatTime(timer || 0)}</p>
+                                </>
                             )}
-                            onClick={() => handleAnswerSelect(option)}
-                            disabled={battleConfig.mode === 'fixed' && !!selectedAnswer}
-                        >
-                            {option}
-                        </Button>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-right">
+                                <p className="font-bold">{opponent.name}</p>
+                                <p className="text-2xl font-bold text-primary">{scores.opponent}</p>
+                            </div>
+                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} />
+                        </div>
+                    </CardContent>
+                    <Progress value={progressValue} />
+                </Card>
 
-             {/* Power-ups Section */}
-            <Card>
-                <CardHeader className="p-3">
-                    <CardTitle className="text-sm font-semibold">Power-ups</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 flex justify-center gap-4">
-                    <Button variant="outline" size="icon" disabled><Timer className="h-5 w-5" /></Button>
-                    <Button variant="outline" size="icon" disabled><Zap className="h-5 w-5" /></Button>
-                    <Button variant="outline" size="icon" disabled><Shield className="h-5 w-5" /></Button>
-                </CardContent>
-            </Card>
-        </div>
+                {/* Question Card */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="font-headline text-center">{quizData.quizTitle}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="font-semibold mb-6 text-center text-lg">{question.question}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {question.options.map((option, index) => (
+                            <Button
+                                key={index}
+                                variant="outline"
+                                size="lg"
+                                className={cn(
+                                    "h-auto py-4 justify-start text-left whitespace-normal",
+                                    battleConfig.mode === 'fixed' && selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
+                                    battleConfig.mode === 'fixed' && selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
+                                )}
+                                onClick={() => handleAnswerSelect(option)}
+                                disabled={battleConfig.mode === 'fixed' && !!selectedAnswer}
+                            >
+                                {option}
+                            </Button>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Power-ups Section */}
+                <Card>
+                    <CardHeader className="p-3">
+                        <CardTitle className="text-sm font-semibold">Power-ups</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 flex justify-center gap-4">
+                        <Button variant="outline" size="icon" disabled><Timer className="h-5 w-5" /></Button>
+                        <Button variant="outline" size="icon" disabled><Zap className="h-5 w-5" /></Button>
+                        <Button variant="outline" size="icon" disabled><Shield className="h-5 w-5" /></Button>
+                    </CardContent>
+                </Card>
+            </div>
+        </>
     );
   }
 
