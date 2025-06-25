@@ -171,6 +171,7 @@ export default function DashboardClient() {
   if (isLoadingRoadmap && !selectedStream) {
     return (
         <div className="flex flex-col justify-center items-center py-20 gap-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary"/>
             <p className="text-lg text-muted-foreground">Loading your dashboard...</p>
         </div>
     );

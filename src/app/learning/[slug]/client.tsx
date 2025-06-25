@@ -177,7 +177,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 >
                     {state === 'studying' && <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />}
                     {state === 'quizzing' && <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />}
-                    {state === 'results' && <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} />}
+                    {state === 'results' && <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} />}
                 </motion.div>
             </AnimatePresence>
         </>
@@ -301,7 +301,7 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
     );
 };
 
-const ResultsView = ({ results, levelXp, levelCoins }: { results: QuizResult[], levelXp: number, levelCoins: number }) => {
+const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizResult[], levelXp: number, levelCoins: number, onRetry: () => void }) => {
     const score = results.filter(r => r.isCorrect).length;
     const totalQuestions = results.length;
     const percentage = (score / totalQuestions) * 100;
@@ -385,7 +385,7 @@ const ResultsView = ({ results, levelXp, levelCoins }: { results: QuizResult[], 
                         Back to Roadmap
                     </Link>
                 </Button>
-                    <Button variant="outline" onClick={() => window.location.reload()}>
+                    <Button variant="outline" onClick={onRetry}>
                         <Repeat className="mr-2 h-4 w-4" />
                     {passed ? 'Practice Again' : 'Try Again'}
                     </Button>

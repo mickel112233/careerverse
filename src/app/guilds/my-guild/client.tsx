@@ -156,6 +156,13 @@ export default function MyGuildClient() {
         router.push('/guilds');
     };
 
+    const handleLeaveGuild = () => {
+        localStorage.removeItem('userGuild');
+        window.dispatchEvent(new Event('guildChange'));
+        toast({ title: "You have left the guild."});
+        router.push('/guilds');
+    }
+
     if (isLoading) {
         return (
             <div className="space-y-8">
@@ -196,6 +203,8 @@ export default function MyGuildClient() {
             </div>
         );
     }
+    
+    const isOwner = guild.owner === 'QuantumLeap';
 
     return (
         <div>
@@ -288,7 +297,7 @@ export default function MyGuildClient() {
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="battles">Battles</TabsTrigger>
                     <TabsTrigger value="chat">Chat</TabsTrigger>
-                    <TabsTrigger value="settings">Settings</TabsTrigger>
+                    {isOwner && <TabsTrigger value="settings">Settings</TabsTrigger>}
                 </TabsList>
                 <TabsContent value="dashboard" className="mt-6">
                    <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -343,7 +352,7 @@ export default function MyGuildClient() {
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
-                                            {guild.owner === 'QuantumLeap' && member.name !== 'QuantumLeap' && (
+                                            {isOwner && member.name !== 'QuantumLeap' && (
                                                 <DialogTrigger asChild>
                                                     <Button variant="ghost" size="icon" onClick={() => setManagingMember(member)}>
                                                         <UserCog className="h-5 w-5"/>
@@ -419,7 +428,7 @@ export default function MyGuildClient() {
                                     <CardDescription>These actions are irreversible. Proceed with caution.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                     {guild.owner === 'QuantumLeap' ? (
+                                     {isOwner ? (
                                         <div>
                                             <h3 className="font-semibold">Disband Guild</h3>
                                             <p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p>
@@ -458,7 +467,7 @@ export default function MyGuildClient() {
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>Stay in Guild</AlertDialogCancel>
-                                                        <AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction>
+                                                        <AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
                                             </AlertDialog>

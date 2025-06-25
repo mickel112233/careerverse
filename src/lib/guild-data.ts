@@ -17,8 +17,6 @@ export type Guild = {
   members: GuildMember[];
   icon: React.ElementType;
   imageHint: string;
-  bannerHint: string;
-  crestHint: string;
   type: 'public' | 'private';
   password?: string;
   owner: string;
@@ -57,7 +55,7 @@ const guildMembers = {
     ]
 };
 
-export const mockGuilds: Omit<Guild, 'capacity'>[] = [
+export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] = [
   { 
     id: 'GUILD-1', 
     name: 'Frontend Forces', 
@@ -67,8 +65,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.frontend, 
     icon: Code, 
     imageHint: 'abstract code interface', 
-    bannerHint: 'glowing frontend code on a screen',
-    crestHint: 'a shield with a stylized letter F',
     type: 'public',
     owner: 'ReactDev'
   },
@@ -81,8 +77,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.backend, 
     icon: Database, 
     imageHint: 'futuristic server room', 
-    bannerHint: 'glowing data streams in a server farm',
-    crestHint: 'a shield with a database symbol',
     type: 'public',
     owner: 'NodeKing'
   },
@@ -95,8 +89,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.design, 
     icon: PenTool, 
     imageHint: 'glowing design sketch', 
-    bannerHint: 'abstract colorful design shapes',
-    crestHint: 'a shield with a paintbrush and pen',
     type: 'public',
     owner: 'Figmaster'
   },
@@ -109,8 +101,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.data, 
     icon: BarChart2, 
     imageHint: 'holographic data visualization', 
-    bannerHint: 'a 3d holographic chart projection',
-    crestHint: 'a shield with a rising bar chart',
     type: 'public',
     owner: 'TensorFlowTamer'
   },
@@ -123,8 +113,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.security, 
     icon: Shield, 
     imageHint: 'cyber security matrix', 
-    bannerHint: 'a digital shield protecting a data core',
-    crestHint: 'an iron shield with a digital lock',
     type: 'public',
     owner: 'FirewallFox'
   },
@@ -137,8 +125,6 @@ export const mockGuilds: Omit<Guild, 'capacity'>[] = [
     members: guildMembers.void, 
     icon: Shield, 
     imageHint: 'dark cosmic void', 
-    bannerHint: 'a swirling dark nebula with stars',
-    crestHint: 'a cracked obsidian shield',
     type: 'private', 
     password: 'secret',
     owner: 'NullPointer'
