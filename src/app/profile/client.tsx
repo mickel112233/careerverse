@@ -90,7 +90,7 @@ export default function ProfileClient() {
     
     useEffect(() => {
         const updateAllStats = () => {
-            const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
+            const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
             setTotalXp(storedXp);
 
             const currentLevel = Math.floor(storedXp / 1000) + 1;

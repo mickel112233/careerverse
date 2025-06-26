@@ -80,7 +80,7 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
         const userAsNewMember = { 
             name: 'QuantumLeap', 
             role: 'Member', 
-            xp: parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10), 
+            xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10), 
             avatarHint: 'cyberpunk woman portrait' 
         };
 

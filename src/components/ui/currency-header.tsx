@@ -22,8 +22,8 @@ export default function CurrencyHeader() {
 
     useEffect(() => {
         const updateCurrencies = () => {
-            setCoins(parseInt(localStorage.getItem('careerClashCoins') || '1250', 10));
-            setGems(parseInt(localStorage.getItem('careerClashGems') || '100', 10));
+            setCoins(parseInt(localStorage.getItem('careerClashCoins') || '100', 10));
+            setGems(parseInt(localStorage.getItem('careerClashGems') || '5', 10));
         };
         
         updateCurrencies();

@@ -98,7 +98,7 @@ export default function CreateGuildPage() {
         crestHint: "futuristic guild crest emblem",
         owner: 'QuantumLeap',
         members: [
-            { name: 'QuantumLeap', role: 'Leader', xp: parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10), avatarHint: 'cyberpunk woman portrait' }
+            { name: 'QuantumLeap', role: 'Leader', xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10), avatarHint: 'cyberpunk woman portrait' }
         ]
     };
 

@@ -72,12 +72,12 @@ const memberships = [
 ];
 
 const addOns = [
-  { name: 'Cosmic Avatar Frame', price: 500, currency: 'coins', type: 'Frame', icon: Star, imageHint: 'cosmic avatar frame' },
-  { name: 'Neon Glow Profile FX', price: 750, currency: 'coins', type: 'Animation', icon: Zap, imageHint: 'neon profile animation' },
+  { name: 'Cosmic Avatar Frame', price: 50, currency: 'gems', type: 'Frame', icon: Star, imageHint: 'cosmic avatar frame' },
+  { name: 'Neon Glow Profile FX', price: 75, currency: 'gems', type: 'Animation', icon: Zap, imageHint: 'neon profile animation' },
   { name: 'Dark Matter Profile Theme', price: 150, currency: 'gems', type: 'Theme', icon: Paintbrush, imageHint: 'dark matter space theme' },
-  { name: 'Holographic Card Back', price: 600, currency: 'coins', type: 'Cosmetic', icon: Sparkles, imageHint: 'holographic card texture' },
-  { name: 'The Newbie Title', price: 100, currency: 'coins', type: 'Title', icon: Shield, imageHint: 'simple title banner' },
-  { name: 'The Apprentice Title', price: 500, currency: 'coins', type: 'Title', icon: Shield, imageHint: 'ornate title banner' },
+  { name: 'Holographic Card Back', price: 60, currency: 'gems', type: 'Cosmetic', icon: Sparkles, imageHint: 'holographic card texture' },
+  { name: 'The Newbie Title', price: 10, currency: 'gems', type: 'Title', icon: Shield, imageHint: 'simple title banner' },
+  { name: 'The Apprentice Title', price: 50, currency: 'gems', type: 'Title', icon: Shield, imageHint: 'ornate title banner' },
   { name: 'The Legend Title', price: 200, currency: 'gems', type: 'Title', icon: Trophy, imageHint: 'legendary trophy banner' },
   { name: 'God-Tier Title', price: 500, currency: 'gems', type: 'Title', icon: Crown, imageHint: 'golden crown banner' },
 ];

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 
 const leaderboardData = [
-  { rank: 1, name: 'QuantumLeap', xp: 9850, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'] },
+  { rank: 1, name: 'QuantumLeap', xp: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'] },
   { rank: 2, name: 'SynthWave', xp: 9500, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'] },
   { rank: 3, name: 'CodeNinja', xp: 9200, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'] },
   { rank: 4, name: 'DataDynamo', xp: 8900, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'] },
@@ -32,7 +32,7 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     const updateLeaderboard = () => {
-      const userXp = parseInt(localStorage.getItem('careerClashTotalXp') || '9850', 10);
+      const userXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
       
       const updatedLeaderboard = leaderboardData.map(player => 
           player.name === USER_NAME ? { ...player, xp: userXp } : player
