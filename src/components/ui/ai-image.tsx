@@ -14,45 +14,52 @@ interface AiImageProps extends Omit<ImageProps, 'src' | 'alt'> {
 
 export function AiImage({ prompt, alt, width, height, className, ...props }: AiImageProps) {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    
-    const placeholderUrl = `https://placehold.co/${width || 600}x${height || 400}.png`;
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         let isCancelled = false;
+        const cacheKey = `ai-image-cache:${prompt}`;
 
         const fetchImage = async () => {
-            if (!prompt) {
-                setImageUrl(placeholderUrl);
-                return;
-            }
+            setIsLoading(true);
             try {
+                const cachedUrl = localStorage.getItem(cacheKey);
+                if (cachedUrl) {
+                    if (!isCancelled) setImageUrl(cachedUrl);
+                    return;
+                }
                 const generatedUrl = await generateImage(prompt);
                 if (!isCancelled) {
+                    localStorage.setItem(cacheKey, generatedUrl);
                     setImageUrl(generatedUrl);
                 }
             } catch (error) {
                 console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
-                if (!isCancelled) {
-                    setImageUrl(placeholderUrl);
-                }
+            } finally {
+                if (!isCancelled) setIsLoading(false);
             }
         };
+        
+        if (prompt) {
+            fetchImage();
+        } else {
+            setIsLoading(false);
+        }
 
-        fetchImage();
+        return () => { isCancelled = true; };
+    }, [prompt]);
 
-        return () => {
-            isCancelled = true;
-        };
-    }, [prompt, placeholderUrl]);
-
-    if (!imageUrl) {
-        const w = Number(width);
-        const h = Number(height);
-        if (isNaN(w) || isNaN(h)) {
-            // This branch is taken for layout="fill" where width/height are undefined
+    if (isLoading || !imageUrl) {
+        if (props.layout === 'fill') {
             return <Skeleton className={cn('w-full h-full', className)} />;
         }
-        return <Skeleton className={cn(className)} style={{ width: w, height: h }} />;
+        const w = Number(width);
+        const h = Number(height);
+        if (!isNaN(w) && !isNaN(h)) {
+            return <Skeleton className={cn(className)} style={{ width: w, height: h }} />;
+        }
+        // Fallback skeleton if width/height are not available
+        return <Skeleton className={cn('w-full h-48', className)} />;
     }
 
     return (

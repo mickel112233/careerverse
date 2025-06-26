@@ -368,11 +368,29 @@ export default function MyGuildClient() {
                             <CardDescription>The backbone of our guild.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                           <ul className="space-y-4">
+                           <motion.ul 
+                                className="space-y-4"
+                                initial="hidden"
+                                animate="visible"
+                                variants={{
+                                    visible: {
+                                        transition: {
+                                            staggerChildren: 0.05,
+                                        },
+                                    },
+                                }}
+                            >
                             {guild.members.map((member) => {
                                 const RoleIcon = roleIcons[member.role] || Shield;
                                 return (
-                                    <li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                                    <motion.li 
+                                        key={member.name} 
+                                        className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                                        variants={{
+                                            hidden: { opacity: 0, y: 20 },
+                                            visible: { opacity: 1, y: 0 },
+                                        }}
+                                    >
                                         <div className="flex items-center gap-4">
                                             <AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0,2)} />
                                             <div>
@@ -401,10 +419,10 @@ export default function MyGuildClient() {
                                                 </DialogTrigger>
                                             )}
                                         </div>
-                                    </li>
+                                    </motion.li>
                                 )
                             })}
-                           </ul>
+                           </motion.ul>
                         </CardContent>
                     </Card>
                 </TabsContent>

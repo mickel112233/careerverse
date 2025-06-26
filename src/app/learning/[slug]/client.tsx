@@ -263,30 +263,31 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
                         const isCorrect = question.correctAnswer === option;
 
                         return (
-                            <Button
-                                key={index} 
-                                variant="outline"
-                                size="lg"
-                                className={cn(
-                                    "h-auto py-4 justify-start text-left whitespace-normal transition-all duration-300",
-                                    selectedOption ? "cursor-not-allowed" : "hover:bg-primary/10 hover:border-primary",
-                                    selectedOption && isCorrect && "bg-green-500/20 border-green-500 text-foreground animate-pulse",
-                                    selectedOption && !isCorrect && isSelected && "bg-destructive/20 border-destructive text-foreground"
-                                )}
-                                onClick={() => handleAnswer(option)}
-                                disabled={!!selectedOption}
-                            >
-                                <div className="flex items-center w-full">
-                                    <div className="flex items-center mr-4">
-                                        {selectedOption && isCorrect && isSelected && <CheckCircle className="h-6 w-6 text-green-400 shrink-0" />}
-                                        {selectedOption && isCorrect && !isSelected && <div className="h-6 w-6 shrink-0"/>}
-                                        {selectedOption && !isCorrect && isSelected && <XCircle className="h-6 w-6 text-red-400 shrink-0" />}
-                                        {!selectedOption && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full group-hover:border-primary"></div>}
-                                        {(selectedOption && !isSelected && !isCorrect) && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full"></div>}
+                            <motion.div key={index} whileHover={{ scale: selectedOption ? 1 : 1.02 }}>
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className={cn(
+                                        "h-auto py-4 justify-start text-left whitespace-normal transition-all duration-300 w-full",
+                                        selectedOption ? "cursor-not-allowed" : "hover:bg-primary/10 hover:border-primary",
+                                        selectedOption && isCorrect && "bg-green-500/20 border-green-500 text-foreground animate-pulse",
+                                        selectedOption && !isCorrect && isSelected && "bg-destructive/20 border-destructive text-foreground"
+                                    )}
+                                    onClick={() => handleAnswer(option)}
+                                    disabled={!!selectedOption}
+                                >
+                                    <div className="flex items-center w-full">
+                                        <div className="flex items-center mr-4">
+                                            {selectedOption && isCorrect && isSelected && <CheckCircle className="h-6 w-6 text-green-400 shrink-0" />}
+                                            {selectedOption && isCorrect && !isSelected && <div className="h-6 w-6 shrink-0"/>}
+                                            {selectedOption && !isCorrect && isSelected && <XCircle className="h-6 w-6 text-red-400 shrink-0" />}
+                                            {!selectedOption && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full group-hover:border-primary"></div>}
+                                            {(selectedOption && !isSelected && !isCorrect) && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full"></div>}
+                                        </div>
+                                        <Label className={cn("flex-1 text-base", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
                                     </div>
-                                    <Label className={cn("flex-1 text-base", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
-                                </div>
-                            </Button>
+                                </Button>
+                            </motion.div>
                         )
                     })}
                 </div>

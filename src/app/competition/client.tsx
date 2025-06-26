@@ -16,7 +16,7 @@ import { AiAvatar } from "@/components/ui/ai-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Data ---
 const streams = [
@@ -493,32 +493,42 @@ export default function CompetitionClient() {
                 </Card>
 
                 {/* Question Card */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="font-headline text-center">{quizData.quizTitle}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="font-semibold mb-6 text-center text-lg">{question.question}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {question.options.map((option, index) => (
-                            <Button
-                                key={index}
-                                variant="outline"
-                                size="lg"
-                                className={cn(
-                                    "h-auto py-4 justify-start text-left whitespace-normal",
-                                    selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
-                                    selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
-                                )}
-                                onClick={() => handleAnswerSelect(option)}
-                                disabled={!!selectedAnswer}
-                            >
-                                {option}
-                            </Button>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                 <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentQuestionIndex}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="font-headline text-center">{quizData.quizTitle}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="font-semibold mb-6 text-center text-lg">{question.question}</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {question.options.map((option, index) => (
+                                    <Button
+                                        key={index}
+                                        variant="outline"
+                                        size="lg"
+                                        className={cn(
+                                            "h-auto py-4 justify-start text-left whitespace-normal",
+                                            selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
+                                            selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
+                                        )}
+                                        onClick={() => handleAnswerSelect(option)}
+                                        disabled={!!selectedAnswer}
+                                    >
+                                        {option}
+                                    </Button>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Power-ups Section */}
                 <Card>
