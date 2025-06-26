@@ -4,7 +4,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart, BarChart, Trophy } from "lucide-react";
+import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart, Trophy, Skull } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { cn } from "@/lib/utils";
 import CurrencyHeader from "@/components/ui/currency-header";
@@ -12,6 +12,7 @@ import CurrencyHeader from "@/components/ui/currency-header";
 const menuItems = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
   { href: "/competition", label: "Battle", icon: Swords },
+  { href: "/boss-raid", label: "Boss Raids", icon: Skull },
   { href: "/guilds", label: "Guilds", icon: Users },
   { href: "/leaderboard", label: "Ranks", icon: Trophy },
   { href: "/shop", label: "Shop", icon: ShoppingCart },
@@ -62,7 +63,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       </div>
 
       <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-card border-t border-border p-2 z-50">
-        <div className="grid grid-cols-6 gap-1">
+        <div className="grid grid-cols-7 gap-1">
            {menuItems.map((item) => (
               <NavLink key={item.label} {...item} pathname={pathname} />
             ))}

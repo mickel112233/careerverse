@@ -6,3 +6,4 @@ import '@/ai/flows/ai-competition-generator.ts';
 import '@/ai/flows/learning-roadmap-generator.ts';
 import '@/ai/flows/learning-content-generator.ts';
 import '@/ai/flows/image-generator.ts';
+import '@/ai/flows/boss-raid-generator.ts';
