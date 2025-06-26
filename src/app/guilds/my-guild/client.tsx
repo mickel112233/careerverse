@@ -513,7 +513,7 @@ export default function MyGuildClient() {
                                                         <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
                                                         <AlertDialogDescription>
                                                             You will be removed from the guild. You can rejoin later.
-                                                        </AlertDialogDescription>
+                                                        </DESCRIPTION>
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>Stay in Guild</AlertDialogCancel>
