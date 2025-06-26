@@ -19,7 +19,7 @@ const memberships = [
         icon: Star,
         color: 'text-cyan-400',
         features: [
-            'Empire Guild (500 members)',
+            'Create a Guild',
             'Exclusive Profile Badge',
             'Ad-Free Experience',
             '5% Shop Discount',
@@ -48,14 +48,14 @@ const memberships = [
         color: 'text-yellow-400',
         features: [
             'All Premium+ Benefits',
-            'Exclusive Profile Theme',
+            'Custom Guild Roles',
             'Beta Access to New Features',
             '15% Shop Discount',
             'Monthly 6,000 Coins',
         ],
         highlight: false,
     },
-    {
+     {
         name: 'Super',
         price: '₹799/mo',
         icon: Wand2,
@@ -87,41 +87,6 @@ const powerUps = [
   { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 5000, currency: 'coins', icon: Shield },
   { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 100, currency: 'gems', icon: FileText },
   { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 150, currency: 'gems', icon: FileText },
-];
-
-const guildTiers = [
-    {
-      name: 'Starter',
-      price: 50,
-      currency: 'gems',
-      members: 100,
-      features: ['Basic Guild Management', 'Public/Private Listing', 'Team Battles'],
-      highlight: false,
-    },
-    {
-      name: 'Growing',
-      price: 70,
-      currency: 'gems',
-      members: 200,
-      features: ['All Starter Features', 'Custom Guild Banner', 'Priority Support'],
-      highlight: false,
-    },
-    {
-      name: 'Established',
-      price: 100,
-      currency: 'gems',
-      members: 300,
-      features: ['All Growing Features', 'Advanced Moderation Tools', 'Guild Analytics'],
-      highlight: true,
-    },
-    {
-      name: 'Empire',
-      price: 150,
-      currency: 'gems',
-      members: 500,
-      features: ['All Established Features', 'Exclusive Guild Events', 'Dedicated Discord Role'],
-      highlight: false,
-    },
 ];
 
 const currencyPacks = [
@@ -213,11 +178,10 @@ export default function ShopPage() {
       </div>
 
       <Tabs defaultValue={defaultTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-6">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
           <TabsTrigger value="memberships">Memberships</TabsTrigger>
           <TabsTrigger value="addons">Add-ons</TabsTrigger>
           <TabsTrigger value="power-ups">Power-Ups</TabsTrigger>
-          <TabsTrigger value="guilds">Guilds</TabsTrigger>
           <TabsTrigger value="currencies">Currencies</TabsTrigger>
         </TabsList>
         
@@ -330,38 +294,6 @@ export default function ShopPage() {
                         </Card>
                     )
                 })}
-            </div>
-        </TabsContent>
-        <TabsContent value="guilds">
-             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {guildTiers.map((tier) => (
-                    <Card key={tier.name} className={cn("flex flex-col", tier.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20")}>
-                        <CardHeader>
-                            <CardTitle className="font-headline text-xl">{tier.name}</CardTitle>
-                             <div className="flex items-center gap-2">
-                                <Gem className="h-6 w-6 text-primary"/>
-                                <span className="text-4xl font-bold">{tier.price}</span>
-                             </div>
-                            <CardDescription className="flex items-center gap-2 pt-2">
-                                <Users className="h-4 w-4" />
-                                Up to {tier.members} members
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-grow space-y-2">
-                            {tier.features.map(feature => (
-                                <div key={feature} className="flex items-start gap-2">
-                                    <Check className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
-                                    <p className="text-muted-foreground text-sm">{feature}</p>
-                                </div>
-                            ))}
-                        </CardContent>
-                        <CardFooter className="mt-auto">
-                            <Button className="w-full" variant={tier.highlight ? 'default' : 'outline'} onClick={() => handlePurchase(tier.price, tier.currency as 'gems', `${tier.name} Guild Plan`)}>
-                                Choose {tier.name}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
             </div>
         </TabsContent>
         <TabsContent value="currencies">

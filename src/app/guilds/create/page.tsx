@@ -90,13 +90,14 @@ export default function CreateGuildPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const guildId = `GUILD-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const slug = values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
     const newGuild = {
         ...values,
         id: guildId,
-        slug: values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+        slug: slug,
         capacity: memberCapacity,
-        bannerHint: "abstract futuristic guild banner",
-        crestHint: "futuristic guild crest emblem",
+        bannerHint: `abstract futuristic guild banner, ${values.guildName}`,
+        crestHint: `futuristic guild crest emblem, ${slug}`,
         owner: 'QuantumLeap',
         members: [
             { name: 'QuantumLeap', role: 'Leader', xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10), avatarHint: 'cyberpunk woman portrait' }
@@ -142,7 +143,7 @@ export default function CreateGuildPage() {
                 </CardHeader>
                 <CardContent>
                     <Button asChild>
-                        <Link href="/shop">
+                        <Link href="/shop?tab=memberships">
                             Explore Memberships <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                     </Button>
@@ -154,7 +155,7 @@ export default function CreateGuildPage() {
 
   return (
     <div className="container mx-auto max-w-2xl p-4 sm:p-6 md:p-8">
-      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+       <Button variant="ghost" onClick={() => router.back()} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
       </Button>

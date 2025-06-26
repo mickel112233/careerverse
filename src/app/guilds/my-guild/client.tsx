@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -65,11 +65,12 @@ const mockBattleHistory = [
 const roleIcons: { [key: string]: React.ElementType } = {
     Leader: Crown,
     Officer: Star,
-    Don: Shield,
-    Hacker: Shield,
-    Ghost: Shield,
-    Admin: Shield,
     Member: Shield,
+    Admin: Shield,
+    Friend: Shield,
+    Don: Shield,
+    Ghost: Shield,
+    Hacker: Shield,
 };
 
 const premiumRoles = ['Admin', 'Friend', 'Don', 'Ghost', 'Hacker'];
@@ -136,6 +137,7 @@ export default function MyGuildClient() {
     const [managingMember, setManagingMember] = useState<GuildMember | null>(null);
     const [selectedRole, setSelectedRole] = useState('');
     const { toast } = useToast();
+    const [isManageMemberOpen, setIsManageMemberOpen] = useState(false);
 
     useEffect(() => {
         const membership = localStorage.getItem('careerClashMembership');
@@ -177,6 +179,7 @@ export default function MyGuildClient() {
         setGuild(updatedGuild);
         localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
         setManagingMember(null);
+        setIsManageMemberOpen(false);
         toast({ title: "Role Updated", description: `${managingMember.name} is now a ${selectedRole}.` });
     };
 
@@ -188,6 +191,7 @@ export default function MyGuildClient() {
         setGuild(updatedGuild);
         localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
         setManagingMember(null);
+        setIsManageMemberOpen(false);
         toast({ title: "Member Removed", description: `${managingMember.name} has been removed from the guild.`, variant: 'destructive' });
     }
 
@@ -254,7 +258,7 @@ export default function MyGuildClient() {
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Guilds
             </Button>
-            <Dialog onOpenChange={(isOpen) => !isOpen && setManagingMember(null)}>
+            <Dialog open={isManageMemberOpen} onOpenChange={(isOpen) => { setIsManageMemberOpen(isOpen); if (!isOpen) setManagingMember(null); }}>
                 <DialogContent>
                      <DialogHeader>
                         <DialogTitle>Manage {managingMember?.name}</DialogTitle>
@@ -315,23 +319,23 @@ export default function MyGuildClient() {
                         </AlertDialog>
                     </div>
                 </DialogContent>
+            </Dialog>
 
-                <Card className="mb-8 overflow-hidden">
-                    <div className="relative h-48 bg-muted">
-                        <AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    </div>
-                    <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                        <div className="flex items-end gap-6">
-                            <AiImage prompt={guild.slug} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
-                            <div>
-                                <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
-                                <p className="text-muted-foreground max-w-xl">{guild.description}</p>
-                            </div>
+            <Card className="mb-8 overflow-hidden">
+                <div className="relative h-48 bg-muted">
+                    <AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                </div>
+                <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
+                    <div className="flex items-end gap-6">
+                        <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
+                        <div>
+                            <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
+                            <p className="text-muted-foreground max-w-xl">{guild.description}</p>
                         </div>
                     </div>
-                </Card>
-            </Dialog>
+                </div>
+            </Card>
 
             <Tabs defaultValue="dashboard" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
@@ -339,7 +343,7 @@ export default function MyGuildClient() {
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="battles">Battles</TabsTrigger>
                     <TabsTrigger value="chat">Chat</TabsTrigger>
-                    {isOwner && <TabsTrigger value="settings">Settings</TabsTrigger>}
+                    <TabsTrigger value="settings">Settings</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard" className="mt-6">
                    <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -413,11 +417,9 @@ export default function MyGuildClient() {
                                         <div className="flex items-center gap-4">
                                             <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
                                             {isOwner && member.name !== 'QuantumLeap' && (
-                                                <DialogTrigger asChild>
-                                                    <Button variant="ghost" size="icon" onClick={() => setManagingMember(member)}>
-                                                        <UserCog className="h-5 w-5"/>
-                                                    </Button>
-                                                </DialogTrigger>
+                                                <Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}>
+                                                    <UserCog className="h-5 w-5"/>
+                                                </Button>
                                             )}
                                         </div>
                                     </motion.li>
@@ -478,7 +480,7 @@ export default function MyGuildClient() {
                                     <CardDescription>These actions are irreversible. Proceed with caution.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                     {isOwner ? (
+                                    {isOwner ? (
                                         <div>
                                             <h3 className="font-semibold">Disband Guild</h3>
                                             <p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p>
@@ -513,7 +515,7 @@ export default function MyGuildClient() {
                                                         <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
                                                         <AlertDialogDescription>
                                                             You will be removed from the guild. You can rejoin later.
-                                                        </DESCRIPTION>
+                                                        </AlertDialogDescription>
                                                     </AlertDialogHeader>
                                                     <AlertDialogFooter>
                                                         <AlertDialogCancel>Stay in Guild</AlertDialogCancel>

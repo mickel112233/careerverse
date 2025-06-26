@@ -20,7 +20,7 @@ const baseUserData = {
     title: 'Senior AI Engineer',
     avatarHint: 'cyberpunk woman portrait',
     bannerHint: 'abstract purple and blue nebula',
-    guild: null as { name: string; role: string; icon: React.ElementType; } | null,
+    guild: null as { name: string; role: string; } | null,
     stats: {
         wins: 128,
         losses: 34,
@@ -129,7 +129,6 @@ export default function ProfileClient() {
                     guild: {
                         name: guildData.guildName,
                         role: userMemberData?.role || 'Member',
-                        icon: Zap
                     }
                 }));
             } else {
