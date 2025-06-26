@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { generateBossRaid, GenerateBossRaidOutput } from "@/ai/flows/boss-raid-generator";
-import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot } from 'lucide-react';
+import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot, HeartCrack } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
@@ -47,6 +47,7 @@ export default function BossRaidClient() {
     const [raidState, setRaidState] = useState<RaidState>('idle');
     const [bossData, setBossData] = useState<GenerateBossRaidOutput | null>(null);
     const [bossCurrentHealth, setBossCurrentHealth] = useState(0);
+    const [partyHealth, setPartyHealth] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [eventLog, setEventLog] = useState<EventLogMessage[]>([]);
@@ -77,6 +78,7 @@ export default function BossRaidClient() {
             
             setBossData(data);
             setBossCurrentHealth(data.bossHealth);
+            setPartyHealth(data.partyHealth);
             setCurrentQuestion(data.quizBank[0]);
             addEventLog(`${data.bossName} has appeared!`, 'boss');
             
@@ -102,23 +104,26 @@ export default function BossRaidClient() {
             setIsShaking(true);
             setTimeout(() => setIsShaking(false), 500);
         } else {
-            addEventLog(`Your attack misses! The boss is unfazed.`, 'player');
+            const bossDamage = currentQuestion!.bossAttackDamage;
+            addEventLog(`${bossData?.bossName} retaliates! Your party takes ${bossDamage} damage.`, 'boss');
+            setPartyHealth(prev => Math.max(0, prev - bossDamage));
         }
 
         setTimeout(() => {
-            if (bossCurrentHealth - (currentQuestion?.damage || 0) <= 0 && isCorrect) {
+            // Check for victory or defeat
+            if ((bossCurrentHealth - (currentQuestion?.damage ?? 0) <= 0 && isCorrect) || partyHealth <= 0) {
                 setRaidState('finished');
                 return;
             }
 
+            // Move to next question
             const nextQuestionIndex = bossData!.quizBank.findIndex(q => q.question === currentQuestion!.question) + 1;
             if (nextQuestionIndex < bossData!.quizBank.length) {
                 setCurrentQuestion(bossData!.quizBank[nextQuestionIndex]);
                 setSelectedAnswer(null);
             } else {
-                // Out of questions, consider it a partial victory or special state
                  addEventLog(`You've exhausted your attack patterns! The boss is weakened but still stands.`, 'system');
-                 setRaidState('finished'); // For now, end the raid.
+                 setRaidState('finished');
             }
         }, 1500);
     };
@@ -128,6 +133,7 @@ export default function BossRaidClient() {
         if (raidState !== 'active' || !bossData) return;
 
         const interval = setInterval(() => {
+            if (partyHealth <= 0) return; // Stop attacking if party is defeated
             const teammate = teammates[Math.floor(Math.random() * teammates.length)];
             const damage = Math.floor(Math.random() * 50) + 25; // 25-75 damage
             addEventLog(`${teammate.name} lands a blow for ${damage} damage!`, 'system');
@@ -135,19 +141,24 @@ export default function BossRaidClient() {
         }, 5000);
 
         return () => clearInterval(interval);
-    }, [raidState, bossData, addEventLog]);
+    }, [raidState, bossData, partyHealth, addEventLog]);
     
-    // Check for boss defeat from teammate attacks
+    // Check for raid end conditions from passive events
     useEffect(() => {
-        if (bossCurrentHealth <= 0 && raidState === 'active') {
+        if (raidState === 'active' && (bossCurrentHealth <= 0 || partyHealth <= 0)) {
             setRaidState('finished');
         }
-    }, [bossCurrentHealth, raidState]);
+    }, [bossCurrentHealth, partyHealth, raidState]);
 
     const bossHealthPercentage = useMemo(() => {
         if (!bossData) return 0;
         return (bossCurrentHealth / bossData.bossHealth) * 100;
     }, [bossCurrentHealth, bossData]);
+    
+    const partyHealthPercentage = useMemo(() => {
+        if (!bossData) return 0;
+        return (partyHealth / bossData.partyHealth) * 100;
+    }, [partyHealth, bossData]);
     
     if (raidState === 'generating') {
         return <LoadingSkeleton />;
@@ -171,17 +182,23 @@ export default function BossRaidClient() {
     }
     
     if (raidState === 'finished' && bossData) {
-        const playerWon = bossCurrentHealth <= 0;
+        const playerWon = bossCurrentHealth <= 0 && partyHealth > 0;
         return (
              <Card className="text-center">
                 <CardHeader>
-                    <CardTitle className={cn("font-headline text-5xl", playerWon ? "text-green-400" : "text-destructive")}>
-                        {playerWon ? "Victory!" : "Challenged Failed"}
+                    <motion.div initial={{ scale: 0.5, opacity: 0}} animate={{ scale: 1, opacity: 1}} transition={{type: 'spring'}}>
+                        {playerWon ? (
+                            <Trophy className="h-20 w-20 mx-auto text-yellow-400" />
+                        ) : (
+                            <HeartCrack className="h-20 w-20 mx-auto text-destructive" />
+                        )}
+                    </motion.div>
+                    <CardTitle className={cn("font-headline text-5xl mt-4", playerWon ? "text-green-400" : "text-destructive")}>
+                        {playerWon ? "Victory!" : "Raid Failed"}
                     </CardTitle>
-                    <CardDescription>{playerWon ? `You have vanquished ${bossData.bossName}!` : `The beast still stands. Regroup and try again.`}</CardDescription>
+                    <CardDescription>{playerWon ? `You have vanquished ${bossData.bossName}!` : `Your party has been defeated. Regroup and try again.`}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-6">
-                    <AiImage prompt={bossData.bossAvatarHint} alt={bossData.bossName} width={200} height={200} className="rounded-full border-4 border-card" />
                      {playerWon && (
                         <div className="text-center space-y-4">
                             <h3 className="text-xl font-semibold font-headline">Rewards Gained</h3>
@@ -218,7 +235,7 @@ export default function BossRaidClient() {
                         <CardContent>
                             <div className="space-y-2">
                                 <div className="flex justify-between font-mono text-sm">
-                                    <span>HEALTH</span>
+                                    <span>BOSS HEALTH</span>
                                     <span>{bossCurrentHealth.toLocaleString()} / {bossData.bossHealth.toLocaleString()}</span>
                                 </div>
                                 <Progress value={bossHealthPercentage} className="h-4" />
@@ -271,16 +288,25 @@ export default function BossRaidClient() {
                      {/* Team Info */}
                     <Card>
                         <CardHeader><CardTitle className="font-headline">Your Raid Party</CardTitle></CardHeader>
-                        <CardContent className="space-y-3">
-                            {[player, ...teammates].map(p => (
-                                <div key={p.name} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
-                                    <AiAvatar prompt={p.avatarHint} alt={p.name} fallback={p.name.substring(0,2)} />
-                                    <div>
-                                        <p className="font-semibold">{p.name}</p>
-                                        <p className="text-xs text-muted-foreground">{p.type === 'human' ? 'You' : 'AI Teammate'}</p>
-                                    </div>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <div className="flex justify-between font-mono text-sm text-green-400">
+                                    <span>PARTY HEALTH</span>
+                                    <span>{partyHealth.toLocaleString()} / {bossData.partyHealth.toLocaleString()}</span>
                                 </div>
-                            ))}
+                                <Progress value={partyHealthPercentage} className="h-3" progressColor="bg-green-500" />
+                            </div>
+                            <div className="space-y-3">
+                                {[player, ...teammates].map(p => (
+                                    <div key={p.name} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
+                                        <AiAvatar prompt={p.avatarHint} alt={p.name} fallback={p.name.substring(0,2)} />
+                                        <div>
+                                            <p className="font-semibold">{p.name}</p>
+                                            <p className="text-xs text-muted-foreground">{p.type === 'human' ? 'You' : 'AI Teammate'}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </CardContent>
                     </Card>
                     {/* Event Log */}
