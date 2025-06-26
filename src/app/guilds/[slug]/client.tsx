@@ -133,7 +133,7 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
             </Button>
              <Card className="mb-8 overflow-hidden">
                 <div className="relative h-48 bg-muted">
-                    <AiImage prompt={guild.imageHint} alt={`${guild.name} Banner`} layout="fill" objectFit="cover" />
+                    <AiImage prompt={guild.bannerHint} alt={`${guild.name} Banner`} layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 </div>
                 <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">

@@ -105,9 +105,9 @@ export default function DashboardClient() {
         setSelectedStream(storedStream);
         const parsedRoadmap = JSON.parse(storedRoadmap);
         // Re-hydrate the icon components after parsing from localStorage
-        const hydratedNodes = parsedRoadmap.map((node: any) => ({
+        const hydratedNodes = parsedRoadmap.map((node: any, index: number) => ({
             ...node,
-            icon: roadmapIcons[node.iconIndex] || roadmapIcons[0],
+            icon: roadmapIcons[index % roadmapIcons.length] || roadmapIcons[0],
         }));
         setRoadmapNodes(hydratedNodes);
     } else {
@@ -137,11 +137,11 @@ export default function DashboardClient() {
         
         setRoadmapNodes(newNodes);
         
-        const serializableNodes = newNodes.map((node, index) => {
+        const serializableNodes = newNodes.map((node) => {
             const { icon, ...rest } = node;
             return {
                 ...rest,
-                iconIndex: index % roadmapIcons.length
+                iconIndex: roadmapIcons.indexOf(node.icon)
             };
         });
 

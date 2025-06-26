@@ -104,7 +104,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         if (percentage >= 60) {
             const storedRoadmap = localStorage.getItem('careerClashRoadmap');
             if (storedRoadmap) {
-                const roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
+                let roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
                 const currentIndex = roadmap.findIndex(node => node.slug === slug);
                 if (currentIndex !== -1 && roadmap[currentIndex].status !== 'completed') {
                     roadmap[currentIndex].status = 'completed';
@@ -121,8 +121,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     localStorage.setItem('careerClashCoins', newTotalCoins.toString());
 
                     window.dispatchEvent(new Event('currencyChange'));
-
-                    localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
+                    
+                    const serializableRoadmap = roadmap.map(node => {
+                        const { icon, ...rest } = node;
+                        // Assuming icon is not needed for serialization or can be derived
+                        return rest; 
+                    });
+                    localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableRoadmap));
                 }
             }
             toast({

@@ -83,10 +83,10 @@ const addOns = [
 ];
 
 const powerUps = [
-  { name: 'XP Booster (x2)', description: 'Double your XP gain for 3 battles.', price: 20, currency: 'gems', icon: Percent },
-  { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 30, currency: 'gems', icon: Shield },
-  { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 40, currency: 'gems', icon: FileText },
-  { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 60, currency: 'gems', icon: FileText },
+  { name: 'XP Booster (x2)', description: 'Double your XP gain for 3 battles.', price: 2000, currency: 'coins', icon: Percent },
+  { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 5000, currency: 'coins', icon: Shield },
+  { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 100, currency: 'gems', icon: FileText },
+  { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 150, currency: 'gems', icon: FileText },
 ];
 
 const guildTiers = [
@@ -126,9 +126,9 @@ const guildTiers = [
 
 const currencyPacks = [
     { name: 'Pocket of Coins', amount: 5000, price: '₹89', currency: 'coins' },
-    { name: 'Pile of Gems', amount: 100, price: '₹89', currency: 'gems' },
+    { name: 'Fistful of Gems', amount: 100, price: '₹89', currency: 'gems' },
     { name: 'Bag of Coins', amount: 12000, price: '₹179', currency: 'coins' },
-    { name: 'Fistful of Gems', amount: 250, price: '₹179', currency: 'gems' },
+    { name: 'Handful of Gems', amount: 250, price: '₹179', currency: 'gems' },
     { name: 'Chest of Coins', amount: 30000, price: '₹349', currency: 'coins' },
     { name: 'Treasure of Gems', amount: 600, price: '₹449', currency: 'gems' },
 ];
@@ -292,7 +292,7 @@ export default function ShopPage() {
                                         </>
                                     ) : (
                                         <div className="flex items-center">
-                                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
+                                            <Gem className="h-4 w-4 mr-2 text-cyan-400"/>
                                             {item.price.toLocaleString()}
                                         </div>
                                     )}

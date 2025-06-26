@@ -93,6 +93,7 @@ export default function CreateGuildPage() {
     const newGuild = {
         ...values,
         id: guildId,
+        slug: values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
         capacity: memberCapacity,
         bannerHint: "abstract futuristic guild banner",
         crestHint: "futuristic guild crest emblem",

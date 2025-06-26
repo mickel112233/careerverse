@@ -39,6 +39,7 @@ type GuildData = {
     capacity: number;
     bannerHint: string;
     crestHint: string;
+    slug: string;
     owner: string;
     members: GuildMember[];
 };
@@ -322,7 +323,7 @@ export default function MyGuildClient() {
                     </div>
                     <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
                         <div className="flex items-end gap-6">
-                            <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
+                            <AiImage prompt={guild.slug} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
                             <div>
                                 <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
                                 <p className="text-muted-foreground max-w-xl">{guild.description}</p>
