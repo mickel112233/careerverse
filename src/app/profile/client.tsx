@@ -249,10 +249,11 @@ export default function ProfileClient() {
                             return (
                                 <motion.div 
                                     key={ach.name} 
-                                    className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg hover:bg-muted transition-all hover:scale-105 cursor-pointer"
+                                    className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer"
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, delay: i * 0.05 }}
+                                    whileHover={{ scale: 1.05, backgroundColor: 'hsl(var(--muted))' }}
                                 >
                                     <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
                                     <p className="text-sm font-semibold">{ach.name}</p>

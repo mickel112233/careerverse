@@ -8,7 +8,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft } from 'lucide-react';
+import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft, Send } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 type GuildMember = {
     name: string;
@@ -84,6 +85,46 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
             </CardContent>
         </Card>
     </motion.div>
+);
+
+const ChatPlaceholder = () => (
+    <Card>
+        <CardHeader>
+            <CardTitle className="flex items-center gap-2"><MessageSquare /> Guild Chat</CardTitle>
+            <CardDescription>This feature is coming soon! Here's a preview of what it will look like.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <div className="h-96 w-full bg-muted/50 rounded-lg flex flex-col p-4 space-y-4">
+                <div className="flex-grow space-y-4 overflow-y-auto">
+                     <div className="flex items-start gap-3">
+                        <Skeleton className="w-10 h-10 rounded-full" />
+                        <div className="space-y-1">
+                            <Skeleton className="h-4 w-24" />
+                            <Skeleton className="h-10 w-48" />
+                        </div>
+                    </div>
+                     <div className="flex items-start gap-3 justify-end">
+                        <div className="space-y-1 text-right">
+                            <Skeleton className="h-4 w-24 ml-auto" />
+                            <Skeleton className="h-16 w-56 ml-auto" />
+                        </div>
+                        <Skeleton className="w-10 h-10 rounded-full" />
+                    </div>
+                     <div className="flex items-start gap-3">
+                        <Skeleton className="w-10 h-10 rounded-full" />
+                        <div className="space-y-1">
+                             <Skeleton className="h-4 w-24" />
+                            <Skeleton className="h-8 w-32" />
+                        </div>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 pt-4 border-t">
+                    <Input placeholder="Chat is coming soon..." disabled/>
+                    <Button disabled><Send className="h-4 w-4"/></Button>
+                </div>
+            </div>
+        </CardContent>
+    </Card>
 );
 
 export default function MyGuildClient() {
@@ -403,17 +444,7 @@ export default function MyGuildClient() {
                      </div>
                 </TabsContent>
                  <TabsContent value="chat" className="mt-6">
-                     <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><MessageSquare /> Guild Chat</CardTitle>
-                            <CardDescription>This feature is coming soon!</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                           <div className="h-80 w-full bg-muted/50 rounded-lg flex items-center justify-center">
-                            <p className="text-muted-foreground">Chat interface will be here.</p>
-                           </div>
-                        </CardContent>
-                     </Card>
+                     <ChatPlaceholder />
                 </TabsContent>
                 <TabsContent value="settings" className="mt-6">
                      <Card>

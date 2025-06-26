@@ -272,8 +272,10 @@ export default function ShopPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: i * 0.05 }}
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="h-full"
                         >
-                            <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+                            <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
                                 <CardHeader className="p-0 relative">
                                 <AiImage prompt={item.imageHint} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
                                 <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>

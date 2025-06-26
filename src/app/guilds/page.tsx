@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
-import { mockGuilds } from '@/lib/guild-data';
+import { mockGuilds, Guild } from '@/lib/guild-data';
 
 
 export default function GuildsPage() {
@@ -21,7 +21,7 @@ export default function GuildsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedGuild, setSelectedGuild] = useState<any | null>(null);
+  const [selectedGuild, setSelectedGuild] = useState<Guild | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -42,6 +42,8 @@ export default function GuildsPage() {
   }, []);
 
   const handleJoinPrivateGuild = () => {
+      if (!selectedGuild) return;
+      
       if(selectedGuild.password === password) {
           toast({
               title: "Joined Guild!",
@@ -139,9 +141,11 @@ export default function GuildsPage() {
                         key={guild.name}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                        transition={{ duration: 0.5, delay: i * 0.05 }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                        className="h-full"
                     >
-                        <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                        <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300">
                             <CardHeader className="p-0">
                             <AiImage prompt={guild.imageHint} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" />
                             </CardHeader>

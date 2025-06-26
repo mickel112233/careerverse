@@ -326,9 +326,13 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
             <CardContent className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div className="flex flex-col items-center justify-center gap-2">
-                            <p className={cn("text-7xl font-bold font-headline my-2", passed ? "text-green-400" : "text-destructive")}>
+                            <motion.p 
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                className={cn("text-7xl font-bold font-headline my-2", passed ? "text-green-400" : "text-destructive")}>
                             {score}<span className="text-3xl text-muted-foreground">/{totalQuestions}</span>
-                        </p>
+                        </motion.p>
                         <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
                             {passed && (
                             <div className="space-y-2 mt-2">

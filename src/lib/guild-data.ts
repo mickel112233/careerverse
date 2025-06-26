@@ -17,6 +17,8 @@ export type Guild = {
   members: GuildMember[];
   icon: React.ElementType;
   imageHint: string;
+  bannerHint: string;
+  crestHint: string;
   type: 'public' | 'private';
   password?: string;
   owner: string;
@@ -55,7 +57,7 @@ const guildMembers = {
     ]
 };
 
-export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] = [
+export const mockGuilds: Guild[] = [
   { 
     id: 'GUILD-1', 
     name: 'Frontend Forces', 
@@ -65,8 +67,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.frontend, 
     icon: Code, 
     imageHint: 'abstract code interface', 
+    bannerHint: 'abstract blue code interface banner',
+    crestHint: 'futuristic code emblem',
     type: 'public',
-    owner: 'ReactDev'
+    owner: 'ReactDev',
+    capacity: 50,
   },
   { 
     id: 'GUILD-2', 
@@ -77,8 +82,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.backend, 
     icon: Database, 
     imageHint: 'futuristic server room', 
+    bannerHint: 'futuristic server room banner',
+    crestHint: 'glowing database emblem',
     type: 'public',
-    owner: 'NodeKing'
+    owner: 'NodeKing',
+    capacity: 50,
   },
   { 
     id: 'GUILD-3', 
@@ -89,8 +97,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.design, 
     icon: PenTool, 
     imageHint: 'glowing design sketch', 
+    bannerHint: 'abstract glowing design tools banner',
+    crestHint: 'elegant pen tool crest',
     type: 'public',
-    owner: 'Figmaster'
+    owner: 'Figmaster',
+    capacity: 50,
   },
   { 
     id: 'GUILD-4', 
@@ -101,8 +112,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.data, 
     icon: BarChart2, 
     imageHint: 'holographic data visualization', 
+    bannerHint: 'holographic data visualization banner',
+    crestHint: 'data chart emblem',
     type: 'public',
-    owner: 'TensorFlowTamer'
+    owner: 'TensorFlowTamer',
+    capacity: 50,
   },
   { 
     id: 'GUILD-5', 
@@ -113,8 +127,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.security, 
     icon: Shield, 
     imageHint: 'cyber security matrix', 
+    bannerHint: 'cyber security matrix banner',
+    crestHint: 'digital shield emblem',
     type: 'public',
-    owner: 'FirewallFox'
+    owner: 'FirewallFox',
+    capacity: 50,
   },
   { 
     id: 'GUILD-6', 
@@ -125,8 +142,11 @@ export const mockGuilds: Omit<Guild, 'capacity' | 'bannerHint' | 'crestHint'>[] 
     members: guildMembers.void, 
     icon: Shield, 
     imageHint: 'dark cosmic void', 
+    bannerHint: 'dark cosmic void banner',
+    crestHint: 'black hole emblem',
     type: 'private', 
     password: 'secret',
-    owner: 'NullPointer'
+    owner: 'NullPointer',
+    capacity: 100,
   },
 ];

@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -156,8 +156,8 @@ export default function CompetitionClient() {
   // Simulate opponent's turn
   useEffect(() => {
     let opponentInterval: NodeJS.Timeout | null = null;
-    if (step === 'active') {
-        if (battleConfig.mode === 'fixed' && !selectedAnswer) {
+    if (step === 'active' && !selectedAnswer) {
+        if (battleConfig.mode === 'fixed') {
             opponentInterval = setTimeout(() => {
                 const isCorrect = Math.random() < 0.75;
                 if (isCorrect) setScores(s => ({...s, opponent: s.opponent + 1}));
@@ -173,7 +173,7 @@ export default function CompetitionClient() {
     return () => {
         if(opponentInterval) clearInterval(opponentInterval);
     }
-  }, [step, quizData, currentQuestionIndex, selectedAnswer, battleConfig.mode]);
+  }, [step, currentQuestionIndex, selectedAnswer, battleConfig.mode]);
 
   // Effect to handle rewards only once on finish
   useEffect(() => {
@@ -202,7 +202,7 @@ export default function CompetitionClient() {
   }, [step, quizData, scores, battleConfig, rewardsGiven]);
 
   const handleAnswerSelect = (answer: string) => {
-    if(selectedAnswer && battleConfig.mode === 'fixed') return;
+    if(selectedAnswer) return;
 
     setSelectedAnswer(answer);
 
@@ -215,16 +215,13 @@ export default function CompetitionClient() {
         if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
             setSelectedAnswer(null);
-          } else {
+        } else {
             setStep("finished");
-          }
+        }
     }
-
-    if (battleConfig.mode === 'fixed') {
-        setTimeout(advanceNext, 1500);
-    } else {
-        advanceNext();
-    }
+    
+    const feedbackDuration = battleConfig.mode === 'fixed' ? 1500 : 300;
+    setTimeout(advanceNext, feedbackDuration);
   };
 
   const handleRestart = () => {
@@ -268,14 +265,15 @@ export default function CompetitionClient() {
           {streams.map((stream) => {
             const Icon = stream.icon;
             return (
-              <button
+              <motion.button
                 key={stream.name}
                 onClick={() => handleStreamSelect(stream.name)}
                 className="p-4 border rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary/10 hover:border-primary transition-colors text-center"
+                whileHover={{ scale: 1.05 }}
               >
                 <Icon className="h-10 w-10 text-primary" />
                 <span className="font-semibold">{stream.name}</span>
-              </button>
+              </motion.button>
             );
           })}
         </CardContent>
@@ -294,12 +292,13 @@ export default function CompetitionClient() {
                 <CardDescription className="text-center">How do you want to battle?</CardDescription>
             </CardHeader>
             <CardContent className="grid md:grid-cols-2 gap-6">
-                <div 
+                <motion.div 
                     className={cn(
                         "p-6 border-2 rounded-lg cursor-pointer transition-all",
                         battleConfig.mode === 'fixed' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-border'
                     )}
                     onClick={() => setBattleConfig(prev => ({...prev, mode: 'fixed'}))}
+                    whileHover={{ scale: 1.02 }}
                 >
                     <div className="flex items-center gap-4 mb-4">
                         <Target className="h-8 w-8 text-primary"/>
@@ -322,13 +321,14 @@ export default function CompetitionClient() {
                             <ToggleGroupItem key={count} value={String(count)}>{count}</ToggleGroupItem>
                         ))}
                     </ToggleGroup>
-                </div>
-                <div 
+                </motion.div>
+                <motion.div 
                      className={cn(
                         "p-6 border-2 rounded-lg cursor-pointer transition-all",
                         battleConfig.mode === 'rush' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-border/50'
                     )}
                     onClick={() => setBattleConfig(prev => ({...prev, mode: 'rush'}))}
+                    whileHover={{ scale: 1.02 }}
                 >
                     <div className="flex items-center gap-4 mb-4">
                         <Timer className="h-8 w-8 text-primary"/>
@@ -370,7 +370,7 @@ export default function CompetitionClient() {
                             </ToggleGroup>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </CardContent>
              <CardFooter className="justify-center">
                 <Button size="lg" onClick={handleStartBattle}>
@@ -507,11 +507,11 @@ export default function CompetitionClient() {
                                 size="lg"
                                 className={cn(
                                     "h-auto py-4 justify-start text-left whitespace-normal",
-                                    battleConfig.mode === 'fixed' && selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
-                                    battleConfig.mode === 'fixed' && selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
+                                    selectedAnswer && option === question.correctAnswer && "bg-green-500/20 border-green-500 text-foreground",
+                                    selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive text-foreground"
                                 )}
                                 onClick={() => handleAnswerSelect(option)}
-                                disabled={battleConfig.mode === 'fixed' && !!selectedAnswer}
+                                disabled={!!selectedAnswer}
                             >
                                 {option}
                             </Button>
@@ -525,10 +525,21 @@ export default function CompetitionClient() {
                     <CardHeader className="p-3">
                         <CardTitle className="text-sm font-semibold">Power-ups</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-3 flex justify-center gap-4">
-                        <Button variant="outline" size="icon" disabled><Timer className="h-5 w-5" /></Button>
-                        <Button variant="outline" size="icon" disabled><Zap className="h-5 w-5" /></Button>
-                        <Button variant="outline" size="icon" disabled><Shield className="h-5 w-5" /></Button>
+                     <CardContent className="p-3 flex justify-center gap-4">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild><Button variant="outline" size="icon" disabled><Timer className="h-5 w-5" /></Button></TooltipTrigger>
+                                <TooltipContent><p>Freeze Time (Coming Soon)</p></TooltipContent>
+                            </Tooltip>
+                             <Tooltip>
+                                <TooltipTrigger asChild><Button variant="outline" size="icon" disabled><Zap className="h-5 w-5" /></Button></TooltipTrigger>
+                                <TooltipContent><p>50/50 - Remove two answers (Coming Soon)</p></TooltipContent>
+                            </Tooltip>
+                             <Tooltip>
+                                <TooltipTrigger asChild><Button variant="outline" size="icon" disabled><Shield className="h-5 w-5" /></Button></TooltipTrigger>
+                                <TooltipContent><p>Answer Shield (Coming Soon)</p></TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                     </CardContent>
                 </Card>
             </div>

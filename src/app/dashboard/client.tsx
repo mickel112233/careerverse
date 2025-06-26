@@ -254,7 +254,10 @@ export default function DashboardClient() {
                      transition={{ duration: 0.5, delay: 0.1 }}
                      className="inline-block"
                   >
-                    <Card className={cn('inline-block text-left border-2 w-full max-w-sm', node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', node.status === 'completed' && 'bg-muted/30')}>
+                    <Card className={cn('inline-block text-left border-2 w-full max-w-sm transition-all', 
+                        node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', 
+                        node.status === 'completed' && 'bg-muted/30 border-green-500/30'
+                    )}>
                         <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
                         <NodeIcon icon={node.icon} status={node.status} />
                         <div>
@@ -286,7 +289,10 @@ export default function DashboardClient() {
                     transition={{ duration: 0.3, delay: 0.2 }}
                     className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background"
                 >
-                  <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border')}>
+                  <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
+                      node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
+                      node.status === 'unlocked' && 'ring-primary'
+                    )}>
                      <NodeStatusIcon status={node.status} />
                   </div>
                 </motion.div>
