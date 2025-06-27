@@ -12,7 +12,7 @@ import CurrencyHeader from "@/components/ui/currency-header";
 const menuItems = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
   { href: "/competition", label: "Battle", icon: Swords },
-  { href: "/boss-raid", label: "Boss Raids", icon: Skull },
+  { href: "/boss-raid", label: "Bosses", icon: Skull },
   { href: "/guilds", label: "Guilds", icon: Users },
   { href: "/leaderboard", label: "Ranks", icon: Trophy },
   { href: "/shop", label: "Shop", icon: ShoppingCart },
@@ -23,11 +23,12 @@ const NavLink = ({ href, label, icon: Icon, pathname }: { href: string; label: s
   const isActive = pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard');
   return (
     <Link href={href} className={cn(
-        "flex flex-col items-center gap-1 p-2 rounded-md text-sm font-medium transition-colors md:flex-row md:w-full md:justify-start md:px-4 md:py-3",
+        "flex flex-col items-center justify-center gap-1 p-1 rounded-md text-sm font-medium transition-colors md:flex-row md:w-full md:justify-start md:px-4 md:py-3",
         isActive ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
     )}>
-        <Icon className="h-6 w-6 md:h-5 md:w-5" />
-        <span className="md:inline hidden">{label}</span>
+        <Icon className="h-5 w-5" />
+        <span className="text-[10px] leading-tight md:hidden">{label}</span>
+        <span className="hidden md:inline">{label}</span>
     </Link>
   );
 };
@@ -62,7 +63,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         </main>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-card border-t border-border p-2 z-50">
+      <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-card border-t border-border p-1.5 z-50">
         <div className="grid grid-cols-7 gap-1">
            {menuItems.map((item) => (
               <NavLink key={item.label} {...item} pathname={pathname} />

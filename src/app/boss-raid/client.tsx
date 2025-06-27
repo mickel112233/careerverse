@@ -103,13 +103,13 @@ export default function BossRaidClient() {
             addEventLog(`You strike a critical vulnerability! Dealt ${damage} damage.`, 'player');
             setBossCurrentHealth(prev => Math.max(0, prev - damage));
             setIsBossShaking(true);
-            setTimeout(() => setIsBossShaking(false), 500);
+            setTimeout(() => setIsBossShaking(false), 350);
         } else {
             const bossDamage = currentQuestion!.bossAttackDamage;
             addEventLog(`${bossData?.bossName} retaliates! Your party takes ${bossDamage} damage.`, 'boss');
             setPartyHealth(prev => Math.max(0, prev - bossDamage));
             setIsPartyHit(true);
-            setTimeout(() => setIsPartyHit(false), 500);
+            setTimeout(() => setIsPartyHit(false), 350);
         }
 
         setTimeout(() => {
@@ -245,11 +245,11 @@ export default function BossRaidClient() {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Boss Info */}
                     <Card className={cn("overflow-hidden transition-all", isBossShaking && "animate-shake")}>
-                        <CardHeader className="flex-row items-center gap-4">
-                            <AiImage prompt={bossData.bossAvatarHint} alt={bossData.bossName} width={80} height={80} className="rounded-lg"/>
-                            <div className="flex-1">
+                        <CardHeader className="flex-col sm:flex-row items-center gap-4">
+                            <AiImage prompt={bossData.bossAvatarHint} alt={bossData.bossName} width={80} height={80} className="rounded-lg shrink-0"/>
+                            <div className="flex-1 text-center sm:text-left">
                                 <CardTitle className="font-headline text-3xl">{bossData.bossName}</CardTitle>
-                                <p className="text-sm text-muted-foreground">{bossData.bossDescription}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{bossData.bossDescription}</p>
                             </div>
                         </CardHeader>
                         <CardContent>
@@ -339,8 +339,9 @@ export default function BossRaidClient() {
                                     <motion.p 
                                         key={e.id} 
                                         className={cn(
+                                            'transition-all',
                                             e.type === 'player' && 'text-cyan-400',
-                                            e.type === 'boss' && 'text-red-400',
+                                            e.type === 'boss' && 'text-red-400 font-medium',
                                             e.type === 'system' && 'text-muted-foreground italic',
                                         )}
                                         initial={{ opacity: 0, y: 10 }}

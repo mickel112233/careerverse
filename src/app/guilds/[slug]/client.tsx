@@ -12,6 +12,7 @@ import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { useToast } from '@/hooks/use-toast';
 import { mockGuilds, Guild, GuildMember } from '@/lib/guild-data';
+import { motion } from 'framer-motion';
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
     <Card className="bg-muted/50 h-full">
@@ -28,8 +29,8 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
 const LoadingSkeleton = () => (
      <div className="space-y-8">
         <Skeleton className="h-48 w-full rounded-lg" />
-        <div className="flex items-end gap-4 -mt-20 ml-8">
-            <Skeleton className="h-32 w-32 rounded-lg border-4 border-background" />
+        <div className="flex flex-col md:flex-row items-start md:items-end gap-4 -mt-20 ml-8">
+            <Skeleton className="h-32 w-32 rounded-lg border-4 border-background flex-shrink-0" />
             <div className="pb-4 space-y-2">
                 <Skeleton className="h-10 w-64" />
                 <Skeleton className="h-6 w-96" />
@@ -52,17 +53,20 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
     const [userGuild, setUserGuild] = useState<any | null>(null);
 
     useEffect(() => {
-        const foundGuild = mockGuilds.find(g => g.slug === slug);
-        if (foundGuild) {
-            setGuild(foundGuild as Guild);
-        }
+        // A short timeout to prevent instant flash on cached loads
+        const timer = setTimeout(() => {
+            const foundGuild = mockGuilds.find(g => g.slug === slug);
+            if (foundGuild) {
+                setGuild(foundGuild as Guild);
+            }
 
-        const storedUserGuild = localStorage.getItem('userGuild');
-        if (storedUserGuild) {
-            setUserGuild(JSON.parse(storedUserGuild));
-        }
-
-        setIsLoading(false);
+            const storedUserGuild = localStorage.getItem('userGuild');
+            if (storedUserGuild) {
+                setUserGuild(JSON.parse(storedUserGuild));
+            }
+            setIsLoading(false);
+        }, 300);
+        return () => clearTimeout(timer);
     }, [slug]);
 
     const handleJoinGuild = () => {
@@ -112,8 +116,8 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                 <h2 className="mt-4 text-2xl font-bold font-headline">Guild Not Found</h2>
                 <p className="mt-2 text-lg text-muted-foreground">The guild you are looking for does not exist.</p>
                 <div className="mt-6">
-                    <Button asChild>
-                        <a href="/guilds">
+                    <Button asChild onClick={() => router.push('/guilds')}>
+                        <a>
                             <Users className="mr-2 h-4 w-4" />
                             Explore Other Guilds
                         </a>
@@ -132,19 +136,19 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                 Back to Guilds
             </Button>
              <Card className="mb-8 overflow-hidden">
-                <div className="relative h-48 bg-muted">
+                <div className="relative h-32 sm:h-48 bg-muted">
                     <AiImage prompt={guild.bannerHint} alt={`${guild.name} Banner`} layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 </div>
-                <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                    <div className="flex items-end gap-6">
-                        <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card" />
-                        <div>
-                            <h1 className="text-4xl font-bold font-headline">{guild.name}</h1>
-                            <p className="text-muted-foreground max-w-xl">{guild.description}</p>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6">
+                        <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" />
+                        <div className="text-center sm:text-left">
+                            <h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1>
+                            <p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p>
                         </div>
                     </div>
-                     <Button size="lg" onClick={handleJoinGuild} disabled={!!userGuild}>
+                     <Button size="lg" onClick={handleJoinGuild} disabled={!!userGuild} className="w-full md:w-auto">
                         <PlusCircle className="mr-2 h-5 w-5"/> Join Guild
                     </Button>
                 </div>
@@ -156,7 +160,7 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                 <StatCard icon={BarChart3} label="Guild Rank" value={`#${mockGuilds.findIndex(g => g.id === guild.id) + 1}`} />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid lg:grid-cols-2 gap-6">
                  <Card>
                     <CardHeader>
                         <CardTitle>Recruitment</CardTitle>
@@ -172,10 +176,24 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                         <CardDescription>The players that form this guild.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <ul className="space-y-3 max-h-96 overflow-y-auto">
-                        {guild.members.map((member) => {
+                        <motion.ul 
+                            className="space-y-3 max-h-96 overflow-y-auto"
+                            initial="hidden"
+                            animate="visible"
+                             variants={{
+                                visible: { transition: { staggerChildren: 0.05 } },
+                            }}
+                        >
+                        {guild.members.map((member, i) => {
                             return (
-                                <li key={member.name} className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                                <motion.li 
+                                    key={member.name} 
+                                    className="flex items-center justify-between p-2 bg-muted/50 rounded-lg"
+                                    variants={{
+                                        hidden: { opacity: 0, y: 20 },
+                                        visible: { opacity: 1, y: 0 },
+                                    }}
+                                >
                                     <div className="flex items-center gap-3">
                                         <AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0,2)} />
                                         <div>
@@ -184,10 +202,10 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                                         </div>
                                     </div>
                                     <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
-                                </li>
+                                </motion.li>
                             )
                         })}
-                        </ul>
+                        </motion.ul>
                     </CardContent>
                 </Card>
             </div>

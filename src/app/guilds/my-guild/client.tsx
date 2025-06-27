@@ -218,9 +218,9 @@ export default function MyGuildClient() {
     if (isLoading) {
         return (
             <div className="space-y-8">
-                <Skeleton className="h-48 w-full rounded-lg" />
-                <div className="flex items-end gap-4 -mt-20 ml-8">
-                    <Skeleton className="h-32 w-32 rounded-lg border-4 border-background" />
+                <Skeleton className="h-32 sm:h-48 w-full rounded-lg" />
+                <div className="flex flex-col md:flex-row items-start md:items-end gap-4 -mt-20 ml-8">
+                    <Skeleton className="h-24 w-24 sm:h-32 sm:w-32 rounded-lg border-4 border-background flex-shrink-0" />
                     <div className="pb-4 space-y-2">
                         <Skeleton className="h-10 w-64" />
                         <Skeleton className="h-6 w-96" />
@@ -328,27 +328,27 @@ export default function MyGuildClient() {
             </Dialog>
 
             <Card className="mb-8 overflow-hidden">
-                <div className="relative h-48 bg-muted">
+                <div className="relative h-32 sm:h-48 bg-muted">
                     <AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 </div>
-                <div className="flex flex-wrap items-end justify-between gap-4 -mt-16 px-6 pb-6 bg-gradient-to-t from-card to-transparent">
-                    <div className="flex items-end gap-6">
-                        <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card" />
-                        <div>
-                            <h1 className="text-4xl font-bold font-headline">{guild.guildName}</h1>
-                            <p className="text-muted-foreground max-w-xl">{guild.description}</p>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6">
+                        <AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" />
+                        <div className="text-center sm:text-left">
+                            <h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1>
+                            <p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p>
                         </div>
                     </div>
                 </div>
             </Card>
 
             <Tabs defaultValue="dashboard" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
+                <TabsList className="grid w-full grid-cols-3 md:grid-cols-5">
                     <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="battles">Battles</TabsTrigger>
-                    <TabsTrigger value="chat">Chat</TabsTrigger>
+                    <TabsTrigger value="chat" className="hidden md:inline-flex">Chat</TabsTrigger>
                     <TabsTrigger value="settings">Settings</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard" className="mt-6">
@@ -421,7 +421,7 @@ export default function MyGuildClient() {
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
-                                            <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
+                                            <p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>
                                             {isOwner && member.name !== 'QuantumLeap' && (
                                                 <Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}>
                                                     <UserCog className="h-5 w-5"/>
@@ -457,9 +457,9 @@ export default function MyGuildClient() {
                             <CardContent>
                                 <ul className="space-y-3">
                                 {mockBattleHistory.map((battle, i) => (
-                                    <li key={i} className="flex justify-between items-center text-sm">
+                                    <li key={i} className="flex flex-wrap justify-between items-center text-sm gap-2">
                                         <p>vs <span className="font-semibold">{battle.opponent}</span></p>
-                                        <Badge variant={battle.result === 'Victory' ? 'default' : 'destructive'} className={battle.result === 'Victory' ? 'bg-green-500/20 text-green-400 border-green-500' : ''}>
+                                        <Badge variant={battle.result === 'Victory' ? 'default' : 'destructive'} className={cn(battle.result === 'Victory' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>
                                             {battle.result} ({battle.score})
                                         </Badge>
                                         <p className="text-muted-foreground">{battle.date}</p>

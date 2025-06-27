@@ -154,19 +154,19 @@ export default function ProfileClient() {
                 Back
             </Button>
        </div>
-       <div className="relative mb-8 h-48 rounded-lg overflow-hidden">
+       <div className="relative mb-8 h-32 sm:h-48 rounded-lg overflow-hidden">
             <AiImage prompt={userData.bannerHint} alt="Profile banner" layout="fill" objectFit="cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
        </div>
        
        <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Column */}
-        <div className="lg:w-1/3 space-y-8 -mt-24 z-10">
+        <div className="w-full lg:w-1/3 space-y-8 -mt-20 sm:-mt-24 z-10">
             <Card className="text-center p-6 pt-0 border-2 border-transparent">
                  <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className={cn("w-32 h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}>
+                            <div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}>
                                 <AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" />
                             </div>
                         </TooltipTrigger>
@@ -181,16 +181,20 @@ export default function ProfileClient() {
                 
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
                     {userData.guild && (
-                        <Badge variant="secondary" className="text-accent">
-                            <Users className="h-3 w-3 mr-1" />
-                            {userData.guild.name} ({userData.guild.role})
-                        </Badge>
+                         <motion.div whileHover={{ scale: 1.05 }}>
+                            <Badge variant="secondary" className="text-accent">
+                                <Users className="h-3 w-3 mr-1" />
+                                {userData.guild.name} ({userData.guild.role})
+                            </Badge>
+                        </motion.div>
                     )}
                     {membership !== 'Free' && (
-                         <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
-                            <Star className="h-3 w-3 mr-1" />
-                            {membership} Member
-                        </Badge>
+                         <motion.div whileHover={{ scale: 1.05 }}>
+                            <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
+                                <Star className="h-3 w-3 mr-1" />
+                                {membership} Member
+                            </Badge>
+                        </motion.div>
                     )}
                 </div>
                 
@@ -229,7 +233,7 @@ export default function ProfileClient() {
         </div>
 
         {/* Right Column */}
-        <div className="lg:w-2/3 space-y-8">
+        <div className="w-full lg:w-2/3 space-y-8">
              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <StatCard icon={BarChartHorizontal} label="Win Rate" value={winRate} />
                 <StatCard icon={Trophy} label="Total Wins" value={userData.stats.wins} />
@@ -242,7 +246,7 @@ export default function ProfileClient() {
                     <CardDescription>Your collection of titles and achievements.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {achievements.map((ach, i) => {
                             const Icon = ach.icon;
                             return (
@@ -277,33 +281,35 @@ export default function ProfileClient() {
                     <CardDescription>Latest competition history.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Challenge</TableHead>
-                                <TableHead>Opponent</TableHead>
-                                <TableHead className="text-center">Result</TableHead>
-                                <TableHead className="text-right">XP Gained</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {userData.battleHistory.map((battle) => (
-                                <TableRow key={battle.id}>
-                                    <TableCell className="font-medium">{battle.challenge}</TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-6 h-6" />
-                                            <span>{battle.opponent.name}</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-center">
-                                        <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'} className={cn(battle.result === 'Win' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>{battle.result}</Badge>
-                                    </TableCell>
-                                    <TableCell className={cn("text-right font-mono", battle.result === 'Win' ? 'text-lime-400' : 'text-red-500')}>{battle.xp}</TableCell>
+                    <div className="w-full overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Challenge</TableHead>
+                                    <TableHead>Opponent</TableHead>
+                                    <TableHead className="text-center">Result</TableHead>
+                                    <TableHead className="text-right">XP Gained</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {userData.battleHistory.map((battle) => (
+                                    <TableRow key={battle.id}>
+                                        <TableCell className="font-medium">{battle.challenge}</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-2">
+                                                <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-6 h-6" />
+                                                <span>{battle.opponent.name}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'} className={cn(battle.result === 'Win' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>{battle.result}</Badge>
+                                        </TableCell>
+                                        <TableCell className={cn("text-right font-mono", battle.result === 'Win' ? 'text-lime-400' : 'text-red-500')}>{battle.xp}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </CardContent>
             </Card>
         </div>

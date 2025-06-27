@@ -72,17 +72,17 @@ const NodeStatusIcon = ({ status }: { status: string }) => {
 
 const RoadmapSkeleton = () => (
     <div className="relative pt-8">
-        <div className="absolute left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
+        <div className="absolute left-6 md:left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
         <div className="space-y-16">
             {[...Array(3)].map((_, index) => (
-                <div key={index} className="relative flex items-center">
-                    <div className={`w-[calc(50%-2rem)] flex ${index % 2 === 0 ? 'justify-end' : 'justify-start order-2'}`}>
+                <div key={index} className="relative flex items-center md:justify-center">
+                    <div className="w-12 h-12 flex-shrink-0" />
+                    <div className="flex-grow pl-8 md:pl-0 md:w-[calc(50%-3rem)] md:flex">
                         <Skeleton className="h-36 w-full max-w-sm" />
                     </div>
-                    <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background">
+                    <div className="absolute top-0 left-0 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background md:left-1/2 md:-translate-x-1/2">
                          <Skeleton className="h-10 w-10 rounded-full" />
                     </div>
-                    <div className={`w-[calc(50%-2rem)] ${index % 2 !== 0 && 'order-1'}`} />
                 </div>
             ))}
         </div>
@@ -223,7 +223,7 @@ export default function DashboardClient() {
                     <AlertDialogTitle>Change Learning Path?</AlertDialogTitle>
                     <AlertDialogDescription>
                         Are you sure you want to switch to the "{streamToConfirm}" path? Your progress on the current path will be removed and your XP will be reset. This action cannot be undone.
-                    </AlertDialogDescription>
+                    </Description>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={cancelConfirmation}>Cancel</AlertDialogCancel>
@@ -245,20 +245,24 @@ export default function DashboardClient() {
           <RoadmapSkeleton />
       ) : (
         <div className="relative">
-          <div className="absolute left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
+          <div className="absolute left-6 md:left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
 
           <div className="space-y-16">
             {roadmapNodes.map((node, index) => (
-              <div key={index} className="relative flex items-center">
-                <div className={`w-[calc(50%-2rem)] ${index % 2 === 0 ? 'text-right' : 'order-2 text-left'}`}>
+              <div key={index} className="relative flex items-center md:justify-center">
+                 {/* This empty div is for spacing on desktop */}
+                 <div className={`hidden md:block w-[calc(50%-3rem)] ${index % 2 === 0 ? 'order-2' : ''}`} />
+                
+                 {/* The card itself */}
+                 <div className={`w-full pl-14 md:pl-0 md:w-[calc(50%-3rem)] ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
                   <motion.div
-                     initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                     initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
                      whileInView={{ opacity: 1, x: 0 }}
                      viewport={{ once: true }}
                      transition={{ duration: 0.5, delay: 0.1 }}
-                     className="inline-block w-full max-w-sm"
+                     className="inline-block w-full max-w-sm text-left"
                   >
-                    <Card className={cn('text-left border-2 w-full transition-all', 
+                    <Card className={cn('w-full transition-all', 
                         node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', 
                         node.status === 'completed' && 'bg-muted/30 border-green-500/30'
                     )}>
@@ -286,12 +290,13 @@ export default function DashboardClient() {
                   </motion.div>
                 </div>
 
+                {/* The center status icon */}
                 <motion.div 
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: 0.2, type: 'spring' }}
-                    className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background"
+                    className="absolute top-0 left-0 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background md:left-1/2 md:-translate-x-1/2"
                 >
                   <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
                       node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
@@ -300,8 +305,6 @@ export default function DashboardClient() {
                      <NodeStatusIcon status={node.status} />
                   </div>
                 </motion.div>
-
-                <div className={`w-[calc(50%-2rem)] ${index % 2 !== 0 && 'order-1'}`} />
               </div>
             ))}
           </div>

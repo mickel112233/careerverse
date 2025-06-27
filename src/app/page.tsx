@@ -97,7 +97,7 @@ export default function Home() {
 
             <motion.div variants={itemVariants} className="mt-8 flex items-center gap-2 rounded-full border border-border bg-card/50 p-2 px-4 text-sm text-slate-300 backdrop-blur-sm">
               <Target className="h-5 w-5 text-lime-400 animate-pulse" />
-              <span className="">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
+              <span className="text-center">120M+ Teen Gamers Ready — Join India’s Next-Gen Learning Revolution</span>
             </motion.div>
           </main>
         </motion.div>

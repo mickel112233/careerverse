@@ -76,7 +76,7 @@ export default function CompetitionClient() {
   const opponent: Player = { name: 'AI Bot', avatarHint: 'cyberpunk robot face', type: 'bot' };
   
   useEffect(() => {
-    const coins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+    const coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
     setPlayerCoins(coins);
   }, []);
 
@@ -194,7 +194,7 @@ export default function CompetitionClient() {
         localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
         
         if (coinReward > 0) {
-            const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+            const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
             const newTotalCoins = currentCoins + coinReward;
             localStorage.setItem('careerClashCoins', newTotalCoins.toString());
         }
@@ -291,7 +291,7 @@ export default function CompetitionClient() {
                 whileHover={{ scale: 1.05, y: -5 }}
               >
                 <Icon className="h-10 w-10 text-primary" />
-                <span className="font-semibold">{stream.name}</span>
+                <span className="font-semibold text-sm">{stream.name}</span>
               </motion.button>
             );
           })}
@@ -304,7 +304,7 @@ export default function CompetitionClient() {
     return (
         <Card>
             <CardHeader>
-                <Button variant="ghost" size="sm" className="absolute top-4 left-4" onClick={() => setStep("select_stream")}>
+                <Button variant="ghost" size="sm" className="absolute top-4 left-4 h-auto" onClick={() => setStep("select_stream")}>
                     <ArrowLeft className="mr-2 h-4 w-4"/> Back
                 </Button>
                 <CardTitle className="font-headline text-center pt-8">Step 2: Select Your Challenge</CardTitle>
@@ -323,7 +323,7 @@ export default function CompetitionClient() {
                         <Target className="h-8 w-8 text-primary"/>
                         <h3 className="text-xl font-bold font-headline">Quick Clash</h3>
                     </div>
-                    <p className="text-muted-foreground mb-4">A standard quiz with a fixed number of questions. Accuracy is key.</p>
+                    <p className="text-muted-foreground mb-4 text-sm">A standard quiz with a fixed number of questions. Accuracy is key.</p>
                     <Label className="font-semibold">Number of Questions</Label>
                      <ToggleGroup 
                         type="single"
@@ -353,7 +353,7 @@ export default function CompetitionClient() {
                         <Timer className="h-8 w-8 text-primary"/>
                         <h3 className="text-xl font-bold font-headline">Time Rush (PvP)</h3>
                     </div>
-                    <p className="text-muted-foreground mb-4">Answer as many questions as you can before the timer runs out. Speed and correctness win.</p>
+                    <p className="text-muted-foreground mb-4 text-sm">Answer as many questions as you can before the timer runs out. Speed and correctness win.</p>
                     
                     <div className="space-y-4">
                          <div>
@@ -403,33 +403,33 @@ export default function CompetitionClient() {
 
   if (step === "matching") {
     return (
-      <Card className="flex flex-col items-center justify-center p-10 gap-6">
+      <Card className="flex flex-col items-center justify-center p-6 sm:p-10 gap-6">
         <CardContent className="p-0 flex flex-col items-center justify-center gap-6">
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 sm:gap-8">
                 <div className="flex flex-col items-center gap-2">
-                    <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-24 h-24 ring-4 ring-primary" />
-                    <p className="font-bold text-lg">{player.name}</p>
+                    <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-20 h-20 sm:w-24 sm:h-24 ring-4 ring-primary" />
+                    <p className="font-bold text-base sm:text-lg">{player.name}</p>
                 </div>
                 <motion.div
                     animate={{ y: [0, -10, 0], scale: [1, 1.1, 1] }}
                     transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity }}
                 >
-                    <Swords className="h-12 w-12 text-muted-foreground"/>
+                    <Swords className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground"/>
                 </motion.div>
                 <div className="flex flex-col items-center gap-2">
                     {opponentFound ? (
                          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring"}}>
-                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
+                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-20 h-20 sm:w-24 sm:h-24" />
                         </motion.div>
                     ) : (
-                        <Skeleton className="w-24 h-24 rounded-full" />
+                        <Skeleton className="w-20 h-20 sm:w-24 sm:h-24 rounded-full" />
                     )}
-                    <p className="font-bold text-lg">{opponentFound ? opponent.name : 'Searching...'}</p>
+                    <p className="font-bold text-base sm:text-lg">{opponentFound ? opponent.name : 'Searching...'}</p>
                 </div>
             </div>
             <div className="flex items-center gap-4 mt-6">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <h2 className="text-2xl font-headline">{opponentFound ? "Opponent Found! Starting..." : "Matching..."}</h2>
+                <h2 className="text-xl sm:text-2xl font-headline">{opponentFound ? "Opponent Found! Starting..." : "Matching..."}</h2>
             </div>
         </CardContent>
         <CardFooter className="p-0 pt-6">
@@ -468,11 +468,11 @@ export default function CompetitionClient() {
             <div className="space-y-4">
                 {/* Scoreboard */}
                 <Card>
-                    <CardContent className="p-4 flex justify-between items-center relative">
+                    <CardContent className="p-2 sm:p-4 flex justify-between items-center relative">
                          <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 text-muted-foreground hover:text-destructive" onClick={() => setIsLeaveConfirmOpen(true)}>
+                                    <Button variant="ghost" size="icon" className="absolute top-1 right-1 sm:top-2 sm:right-2 text-muted-foreground hover:text-destructive" onClick={() => setIsLeaveConfirmOpen(true)}>
                                         <LogOut className="h-5 w-5" />
                                     </Button>
                                 </TooltipTrigger>
@@ -482,32 +482,32 @@ export default function CompetitionClient() {
                             </Tooltip>
                         </TooltipProvider>
 
-                        <div className="flex items-center gap-4">
-                            <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} />
-                            <div>
-                                <p className="font-bold">{player.name}</p>
+                        <div className="flex items-center gap-2 sm:gap-4">
+                            <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-10 h-10 sm:w-12 sm:h-12" />
+                            <div className="text-center sm:text-left">
+                                <p className="font-bold hidden sm:block">{player.name}</p>
                                 <p className="text-2xl font-bold text-primary">{scores.player}</p>
                             </div>
                         </div>
                         <div className="text-center">
                             {battleConfig.mode === 'fixed' ? (
                                 <>
-                                    <p className="font-mono text-sm text-muted-foreground">Question</p>
-                                    <p className="font-bold text-2xl">{currentQuestionIndex + 1}/{quizData.questions.length}</p>
+                                    <p className="font-mono text-xs sm:text-sm text-muted-foreground">Question</p>
+                                    <p className="font-bold text-xl sm:text-2xl">{currentQuestionIndex + 1}/{quizData.questions.length}</p>
                                 </>
                             ) : (
                                 <>
-                                    <p className="font-mono text-sm text-muted-foreground">Time Left</p>
-                                    <p className="font-bold text-2xl font-mono">{formatTime(timer || 0)}</p>
+                                    <p className="font-mono text-xs sm:text-sm text-muted-foreground">Time Left</p>
+                                    <p className="font-bold text-xl sm:text-2xl font-mono">{formatTime(timer || 0)}</p>
                                 </>
                             )}
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="text-right">
-                                <p className="font-bold">{opponent.name}</p>
+                        <div className="flex items-center gap-2 sm:gap-4">
+                            <div className="text-center sm:text-right">
+                                <p className="font-bold hidden sm:block">{opponent.name}</p>
                                 <p className="text-2xl font-bold text-primary">{scores.opponent}</p>
                             </div>
-                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} />
+                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-10 h-10 sm:w-12 sm:h-12" />
                         </div>
                     </CardContent>
                     <Progress value={progressValue} />
@@ -592,33 +592,33 @@ export default function CompetitionClient() {
     return (
         <Card className="text-center">
             <CardHeader>
-                <CardTitle className={cn("font-headline text-5xl", playerWon && "text-green-400", !playerWon && !isDraw && "text-destructive")}>
+                <CardTitle className={cn("font-headline text-4xl sm:text-5xl", playerWon && "text-green-400", !playerWon && !isDraw && "text-destructive")}>
                     {resultText}
                 </CardTitle>
                 <CardDescription>You competed in the "{quizData.quizTitle}" challenge.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-6">
-                 <div className="flex items-end gap-8">
+                 <div className="flex items-end gap-4 sm:gap-8">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-col items-center gap-2">
-                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-20 h-20" />
+                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-16 h-16 sm:w-20 sm:h-20" />
                         <p className="font-bold text-lg">{scores.player}</p>
                     </motion.div>
-                    <p className="text-4xl font-bold text-muted-foreground pb-6">vs</p>
+                    <p className="text-3xl sm:text-4xl font-bold text-muted-foreground pb-6">vs</p>
                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col items-center gap-2">
-                         <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-20 h-20" />
+                         <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-16 h-16 sm:w-20 sm:h-20" />
                         <p className="font-bold text-lg">{scores.opponent}</p>
                     </motion.div>
                 </div>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center space-y-2">
                     <div>
                         <p className="text-lg">You earned:</p>
-                        <p className="text-4xl font-bold text-yellow-400 my-2">+{xpGained} XP</p>
+                        <p className="text-3xl sm:text-4xl font-bold text-yellow-400 my-2">+{xpGained} XP</p>
                     </div>
                     {coinReward > 0 && (
                         <div>
                             <p className="text-lg">You won:</p>
-                             <p className="text-4xl font-bold text-primary my-2 flex items-center justify-center gap-2">
-                                <Coins className="h-8 w-8 text-yellow-400"/>
+                             <p className="text-3xl sm:text-4xl font-bold text-primary my-2 flex items-center justify-center gap-2">
+                                <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400"/>
                                 {coinReward}
                             </p>
                         </div>
