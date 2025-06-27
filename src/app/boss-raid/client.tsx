@@ -51,7 +51,8 @@ export default function BossRaidClient() {
     const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [eventLog, setEventLog] = useState<EventLogMessage[]>([]);
-    const [isShaking, setIsShaking] = useState(false);
+    const [isBossShaking, setIsBossShaking] = useState(false);
+    const [isPartyHit, setIsPartyHit] = useState(false);
     
     const eventLogRef = useRef<HTMLDivElement>(null);
     const { toast } = useToast();
@@ -101,17 +102,21 @@ export default function BossRaidClient() {
             const damage = currentQuestion!.damage;
             addEventLog(`You strike a critical vulnerability! Dealt ${damage} damage.`, 'player');
             setBossCurrentHealth(prev => Math.max(0, prev - damage));
-            setIsShaking(true);
-            setTimeout(() => setIsShaking(false), 500);
+            setIsBossShaking(true);
+            setTimeout(() => setIsBossShaking(false), 500);
         } else {
             const bossDamage = currentQuestion!.bossAttackDamage;
             addEventLog(`${bossData?.bossName} retaliates! Your party takes ${bossDamage} damage.`, 'boss');
             setPartyHealth(prev => Math.max(0, prev - bossDamage));
+            setIsPartyHit(true);
+            setTimeout(() => setIsPartyHit(false), 500);
         }
 
         setTimeout(() => {
             // Check for victory or defeat
-            if ((bossCurrentHealth - (currentQuestion?.damage ?? 0) <= 0 && isCorrect) || partyHealth <= 0) {
+            const newBossHealth = bossCurrentHealth - (isCorrect ? (currentQuestion?.damage ?? 0) : 0);
+            if (newBossHealth <= 0 || partyHealth <= 0) {
+                if (newBossHealth <= 0) setBossCurrentHealth(0);
                 setRaidState('finished');
                 return;
             }
@@ -130,23 +135,29 @@ export default function BossRaidClient() {
     
     // Simulate teammates' attacks
     useEffect(() => {
-        if (raidState !== 'active' || !bossData) return;
+        if (raidState !== 'active' || !bossData || partyHealth <= 0 || bossCurrentHealth <= 0) return;
 
         const interval = setInterval(() => {
-            if (partyHealth <= 0) return; // Stop attacking if party is defeated
             const teammate = teammates[Math.floor(Math.random() * teammates.length)];
             const damage = Math.floor(Math.random() * 50) + 25; // 25-75 damage
-            addEventLog(`${teammate.name} lands a blow for ${damage} damage!`, 'system');
-            setBossCurrentHealth(prev => Math.max(0, prev - damage));
+            
+            setBossCurrentHealth(prev => {
+                const newHealth = Math.max(0, prev - damage);
+                if (newHealth > 0) {
+                    addEventLog(`${teammate.name} lands a blow for ${damage} damage!`, 'system');
+                }
+                return newHealth;
+            });
+
         }, 5000);
 
         return () => clearInterval(interval);
-    }, [raidState, bossData, partyHealth, addEventLog]);
+    }, [raidState, bossData, partyHealth, bossCurrentHealth, addEventLog]);
     
     // Check for raid end conditions from passive events
     useEffect(() => {
         if (raidState === 'active' && (bossCurrentHealth <= 0 || partyHealth <= 0)) {
-            setRaidState('finished');
+            setTimeout(() => setRaidState('finished'), 500);
         }
     }, [bossCurrentHealth, partyHealth, raidState]);
 
@@ -168,7 +179,9 @@ export default function BossRaidClient() {
         return (
             <Card className="text-center bg-gradient-to-br from-card to-muted/30 border-primary/20">
                 <CardHeader>
-                    <Skull className="h-16 w-16 mx-auto text-primary animate-pulse" />
+                    <motion.div initial={{ scale: 0.8, opacity: 0}} animate={{ scale: 1, opacity: 1}} transition={{ delay: 0.2, type: 'spring' }}>
+                        <Skull className="h-16 w-16 mx-auto text-primary animate-pulse" />
+                    </motion.div>
                     <CardTitle className="font-headline text-3xl">The Raid Altar is Silent</CardTitle>
                     <CardDescription>A powerful entity slumbers, waiting to be challenged. Gather your courage and prepare for battle.</CardDescription>
                 </CardHeader>
@@ -186,7 +199,7 @@ export default function BossRaidClient() {
         return (
              <Card className="text-center">
                 <CardHeader>
-                    <motion.div initial={{ scale: 0.5, opacity: 0}} animate={{ scale: 1, opacity: 1}} transition={{type: 'spring'}}>
+                    <motion.div initial={{ scale: 0.5, opacity: 0}} animate={{ scale: 1, opacity: 1}} transition={{type: 'spring', delay: 0.2}}>
                         {playerWon ? (
                             <Trophy className="h-20 w-20 mx-auto text-yellow-400" />
                         ) : (
@@ -200,14 +213,19 @@ export default function BossRaidClient() {
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-6">
                      {playerWon && (
-                        <div className="text-center space-y-4">
+                        <motion.div
+                             initial={{ opacity: 0, y: 20 }}
+                             animate={{ opacity: 1, y: 0 }}
+                             transition={{ delay: 0.4 }}
+                             className="text-center space-y-4"
+                        >
                             <h3 className="text-xl font-semibold font-headline">Rewards Gained</h3>
                             <div className="flex flex-wrap justify-center gap-4">
-                                <div className="p-3 bg-yellow-400/10 rounded-md text-yellow-400 font-bold"><Zap className="inline h-5 w-5 mr-1" /> +{bossData.rewards.xp.toLocaleString()} XP</div>
-                                <div className="p-3 bg-amber-500/10 rounded-md text-amber-500 font-bold"><Coins className="inline h-5 w-5 mr-1" /> +{bossData.rewards.coins.toLocaleString()} Coins</div>
-                                <div className="p-3 bg-purple-400/10 rounded-md text-purple-400 font-bold"><Trophy className="inline h-5 w-5 mr-1" /> Title: "{bossData.rewards.title}"</div>
+                                <motion.div whileHover={{ scale: 1.05 }} className="p-3 bg-yellow-400/10 rounded-md text-yellow-400 font-bold"><Zap className="inline h-5 w-5 mr-1" /> +{bossData.rewards.xp.toLocaleString()} XP</motion.div>
+                                <motion.div whileHover={{ scale: 1.05 }} className="p-3 bg-amber-500/10 rounded-md text-amber-500 font-bold"><Coins className="inline h-5 w-5 mr-1" /> +{bossData.rewards.coins.toLocaleString()} Coins</motion.div>
+                                <motion.div whileHover={{ scale: 1.05 }} className="p-3 bg-purple-400/10 rounded-md text-purple-400 font-bold"><Trophy className="inline h-5 w-5 mr-1" /> Title: "{bossData.rewards.title}"</motion.div>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
                 </CardContent>
                 <CardFooter className="justify-center">
@@ -224,7 +242,7 @@ export default function BossRaidClient() {
             <div className="grid lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Boss Info */}
-                    <Card className={cn("overflow-hidden transition-all", isShaking && "animate-shake")}>
+                    <Card className={cn("overflow-hidden transition-all", isBossShaking && "animate-shake")}>
                         <CardHeader className="flex-row items-center gap-4">
                             <AiImage prompt={bossData.bossAvatarHint} alt={bossData.bossName} width={80} height={80} className="rounded-lg"/>
                             <div className="flex-1">
@@ -286,7 +304,7 @@ export default function BossRaidClient() {
                 </div>
                 <div className="space-y-4">
                      {/* Team Info */}
-                    <Card>
+                    <Card className={cn("transition-all", isPartyHit && "bg-destructive/10 border-destructive")}>
                         <CardHeader><CardTitle className="font-headline">Your Raid Party</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">

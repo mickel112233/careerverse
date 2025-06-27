@@ -147,6 +147,8 @@ export default function DashboardClient() {
 
         localStorage.setItem('careerClashStream', streamName);
         localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableNodes));
+        localStorage.setItem('careerClashTotalXp', '0');
+        window.dispatchEvent(new Event('currencyChange'));
     } catch (error) {
         console.error("Failed to generate roadmap:", error);
         toast({
@@ -218,7 +220,7 @@ export default function DashboardClient() {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Change Learning Path?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Are you sure you want to switch to the "{streamToConfirm}" path? Your progress on the current path will be removed. This action cannot be undone.
+                        Are you sure you want to switch to the "{streamToConfirm}" path? Your progress on the current path will be removed and your XP will be reset. This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -252,10 +254,10 @@ export default function DashboardClient() {
                      whileInView={{ opacity: 1, x: 0 }}
                      viewport={{ once: true }}
                      transition={{ duration: 0.5, delay: 0.1 }}
-                     className="inline-block"
+                     className="inline-block w-full max-w-sm"
                   >
-                    <Card className={cn('inline-block text-left border-2 w-full max-w-sm transition-all', 
-                        node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20 animate-pulse' : 'border-transparent', 
+                    <Card className={cn('text-left border-2 w-full transition-all', 
+                        node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', 
                         node.status === 'completed' && 'bg-muted/30 border-green-500/30'
                     )}>
                         <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
@@ -286,12 +288,12 @@ export default function DashboardClient() {
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
+                    transition={{ duration: 0.3, delay: 0.2, type: 'spring' }}
                     className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background"
                 >
                   <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
                       node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
-                      node.status === 'unlocked' && 'ring-primary'
+                      node.status === 'unlocked' && 'ring-primary animate-pulse'
                     )}>
                      <NodeStatusIcon status={node.status} />
                   </div>

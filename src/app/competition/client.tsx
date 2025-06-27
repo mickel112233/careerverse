@@ -156,26 +156,29 @@ export default function CompetitionClient() {
   // Simulate opponent's turn
   useEffect(() => {
     let opponentInterval: NodeJS.Timeout | null = null;
-    if (step === 'active' && !selectedAnswer) {
+    if (step === 'active' && quizData) {
         if (battleConfig.mode === 'fixed') {
-            opponentInterval = setTimeout(() => {
-                const isCorrect = Math.random() < 0.75;
-                if (isCorrect) setScores(s => ({...s, opponent: s.opponent + 1}));
-            }, Math.random() * 3000 + 1000);
+             // Only run once per question for the opponent
+            if (!selectedAnswer) {
+                opponentInterval = setTimeout(() => {
+                    const isCorrect = Math.random() < 0.75;
+                    if (isCorrect) setScores(s => ({...s, opponent: s.opponent + 1}));
+                }, Math.random() * 2000 + 1000); // 1-3 seconds
+            }
         } else if (battleConfig.mode === 'rush') {
+             // In rush mode, opponent scores periodically
              opponentInterval = setInterval(() => {
-                if (Math.random() < 0.35) { // Simulates opponent scoring over time
+                if (Math.random() < 0.45) { 
                      setScores(s => ({ ...s, opponent: s.opponent + 1 }));
                 }
-            }, 2500);
+            }, 3000); // Every 3 seconds
         }
     }
     return () => {
         if(opponentInterval) clearInterval(opponentInterval);
     }
-  }, [step, currentQuestionIndex, selectedAnswer, battleConfig.mode]);
+  }, [step, currentQuestionIndex, selectedAnswer, battleConfig.mode, quizData]);
 
-  // Effect to handle rewards only once on finish
   useEffect(() => {
     if (step === 'finished' && quizData && !rewardsGiven) {
         const playerWon = scores.player > scores.opponent;
@@ -212,16 +215,32 @@ export default function CompetitionClient() {
     }
     
     const advanceNext = () => {
-        if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedAnswer(null);
+        if (battleConfig.mode === 'rush') {
+            // In rush mode, we just move to the next question immediately
+            if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
+                setSelectedAnswer(null);
+            } else {
+                setStep("finished");
+            }
         } else {
-            setStep("finished");
+            // In fixed mode, we wait to show feedback
+            setTimeout(() => {
+                 if (currentQuestionIndex < (quizData?.questions.length ?? 0) - 1) {
+                    setCurrentQuestionIndex(currentQuestionIndex + 1);
+                    setSelectedAnswer(null);
+                } else {
+                    setStep("finished");
+                }
+            }, 1500)
         }
     }
     
-    const feedbackDuration = battleConfig.mode === 'fixed' ? 1500 : 300;
-    setTimeout(advanceNext, feedbackDuration);
+    if (battleConfig.mode === 'rush') {
+        setTimeout(advanceNext, 300);
+    } else {
+        advanceNext();
+    }
   };
 
   const handleRestart = () => {
@@ -269,7 +288,7 @@ export default function CompetitionClient() {
                 key={stream.name}
                 onClick={() => handleStreamSelect(stream.name)}
                 className="p-4 border rounded-lg flex flex-col items-center justify-center gap-2 hover:bg-primary/10 hover:border-primary transition-colors text-center"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, y: -5 }}
               >
                 <Icon className="h-10 w-10 text-primary" />
                 <span className="font-semibold">{stream.name}</span>
@@ -399,7 +418,9 @@ export default function CompetitionClient() {
                 </motion.div>
                 <div className="flex flex-col items-center gap-2">
                     {opponentFound ? (
-                        <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
+                         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring"}}>
+                            <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-24 h-24" />
+                        </motion.div>
                     ) : (
                         <Skeleton className="w-24 h-24 rounded-full" />
                     )}
@@ -578,17 +599,17 @@ export default function CompetitionClient() {
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-6">
                  <div className="flex items-end gap-8">
-                    <div className="flex flex-col items-center gap-2">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-col items-center gap-2">
                         <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-20 h-20" />
                         <p className="font-bold text-lg">{scores.player}</p>
-                    </div>
+                    </motion.div>
                     <p className="text-4xl font-bold text-muted-foreground pb-6">vs</p>
-                     <div className="flex flex-col items-center gap-2">
+                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col items-center gap-2">
                          <AiAvatar prompt={opponent.avatarHint} alt={opponent.name} fallback={opponent.name.charAt(0)} className="w-20 h-20" />
                         <p className="font-bold text-lg">{scores.opponent}</p>
-                    </div>
+                    </motion.div>
                 </div>
-                <div className="text-center space-y-2">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center space-y-2">
                     <div>
                         <p className="text-lg">You earned:</p>
                         <p className="text-4xl font-bold text-yellow-400 my-2">+{xpGained} XP</p>
@@ -602,7 +623,7 @@ export default function CompetitionClient() {
                             </p>
                         </div>
                     )}
-                </div>
+                </motion.div>
             </CardContent>
             <CardFooter className="justify-center gap-4">
                 <Button onClick={handleRestart}>

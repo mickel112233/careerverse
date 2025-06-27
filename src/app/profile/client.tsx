@@ -246,17 +246,25 @@ export default function ProfileClient() {
                         {achievements.map((ach, i) => {
                             const Icon = ach.icon;
                             return (
-                                <motion.div 
-                                    key={ach.name} 
-                                    className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                                    whileHover={{ scale: 1.05, backgroundColor: 'hsl(var(--muted))' }}
-                                >
-                                    <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
-                                    <p className="text-sm font-semibold">{ach.name}</p>
-                                </motion.div>
+                                <TooltipProvider key={ach.name}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <motion.div 
+                                                className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer"
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ duration: 0.3, delay: i * 0.05 }}
+                                                whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
+                                            >
+                                                <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
+                                                <p className="text-sm font-semibold">{ach.name}</p>
+                                            </motion.div>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{ach.name}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             )
                         })}
                     </div>

@@ -14,7 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -96,27 +96,33 @@ const ChatPlaceholder = () => (
             <CardDescription>This feature is coming soon! Here's a preview of what it will look like.</CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="h-96 w-full bg-muted/50 rounded-lg flex flex-col p-4 space-y-4">
-                <div className="flex-grow space-y-4 overflow-y-auto">
+            <div className="h-96 w-full bg-muted/50 rounded-lg flex flex-col p-4 space-y-4 border">
+                <div className="flex-grow space-y-4 overflow-y-auto pr-2">
                      <div className="flex items-start gap-3">
-                        <Skeleton className="w-10 h-10 rounded-full" />
-                        <div className="space-y-1">
-                            <Skeleton className="h-4 w-24" />
-                            <Skeleton className="h-10 w-48" />
+                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+                        <div className="flex flex-col gap-1">
+                            <span className="text-xs text-muted-foreground">SynthWave</span>
+                            <div className="bg-background p-3 rounded-lg rounded-tl-none">
+                                <p>Who's up for the Guild War this Friday? 🔥</p>
+                            </div>
                         </div>
                     </div>
-                     <div className="flex items-start gap-3 justify-end">
-                        <div className="space-y-1 text-right">
-                            <Skeleton className="h-4 w-24 ml-auto" />
-                            <Skeleton className="h-16 w-56 ml-auto" />
+                     <div className="flex items-start gap-3 flex-row-reverse">
+                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+                        <div className="flex flex-col gap-1 items-end">
+                             <span className="text-xs text-muted-foreground">You</span>
+                            <div className="bg-primary text-primary-foreground p-3 rounded-lg rounded-tr-none">
+                                <p>I'm in! Let's get that #1 spot. 🏆</p>
+                            </div>
                         </div>
-                        <Skeleton className="w-10 h-10 rounded-full" />
                     </div>
                      <div className="flex items-start gap-3">
-                        <Skeleton className="w-10 h-10 rounded-full" />
-                        <div className="space-y-1">
-                             <Skeleton className="h-4 w-24" />
-                            <Skeleton className="h-8 w-32" />
+                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+                        <div className="flex flex-col gap-1">
+                             <span className="text-xs text-muted-foreground">CodeNinja</span>
+                            <div className="bg-background p-3 rounded-lg rounded-tl-none">
+                                <p>Let's do it.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

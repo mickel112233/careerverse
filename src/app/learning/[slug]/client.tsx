@@ -261,41 +261,51 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
                 <Progress value={((currentQuestionIndex + 1) / totalQuestions) * 100} className="w-full" />
             </CardHeader>
             <CardContent>
-                <p className="font-semibold mb-6 text-lg text-center">{question.question}</p>
-                <div className="space-y-3">
-                    {question.options.map((option, index) => {
-                        const isSelected = selectedOption === option;
-                        const isCorrect = question.correctAnswer === option;
+                 <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentQuestionIndex}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <p className="font-semibold mb-6 text-lg text-center">{question.question}</p>
+                        <div className="space-y-3">
+                            {question.options.map((option, index) => {
+                                const isSelected = selectedOption === option;
+                                const isCorrect = question.correctAnswer === option;
 
-                        return (
-                            <motion.div key={index} whileHover={{ scale: selectedOption ? 1 : 1.02 }}>
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    className={cn(
-                                        "h-auto py-4 justify-start text-left whitespace-normal transition-all duration-300 w-full",
-                                        selectedOption ? "cursor-not-allowed" : "hover:bg-primary/10 hover:border-primary",
-                                        selectedOption && isCorrect && "bg-green-500/20 border-green-500 text-foreground animate-pulse",
-                                        selectedOption && !isCorrect && isSelected && "bg-destructive/20 border-destructive text-foreground"
-                                    )}
-                                    onClick={() => handleAnswer(option)}
-                                    disabled={!!selectedOption}
-                                >
-                                    <div className="flex items-center w-full">
-                                        <div className="flex items-center mr-4">
-                                            {selectedOption && isCorrect && isSelected && <CheckCircle className="h-6 w-6 text-green-400 shrink-0" />}
-                                            {selectedOption && isCorrect && !isSelected && <div className="h-6 w-6 shrink-0"/>}
-                                            {selectedOption && !isCorrect && isSelected && <XCircle className="h-6 w-6 text-red-400 shrink-0" />}
-                                            {!selectedOption && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full group-hover:border-primary"></div>}
-                                            {(selectedOption && !isSelected && !isCorrect) && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full"></div>}
-                                        </div>
-                                        <Label className={cn("flex-1 text-base", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
-                                    </div>
-                                </Button>
-                            </motion.div>
-                        )
-                    })}
-                </div>
+                                return (
+                                    <motion.div key={index} whileHover={{ scale: selectedOption ? 1 : 1.02 }}>
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            className={cn(
+                                                "h-auto py-4 justify-start text-left whitespace-normal transition-all duration-300 w-full",
+                                                selectedOption ? "cursor-not-allowed" : "hover:bg-primary/10 hover:border-primary",
+                                                selectedOption && isCorrect && "bg-green-500/20 border-green-500 text-foreground animate-pulse",
+                                                selectedOption && !isCorrect && isSelected && "bg-destructive/20 border-destructive text-foreground"
+                                            )}
+                                            onClick={() => handleAnswer(option)}
+                                            disabled={!!selectedOption}
+                                        >
+                                            <div className="flex items-center w-full">
+                                                <div className="flex items-center mr-4">
+                                                    {selectedOption && isCorrect && isSelected && <CheckCircle className="h-6 w-6 text-green-400 shrink-0" />}
+                                                    {selectedOption && isCorrect && !isSelected && <div className="h-6 w-6 shrink-0"/>}
+                                                    {selectedOption && !isCorrect && isSelected && <XCircle className="h-6 w-6 text-red-400 shrink-0" />}
+                                                    {!selectedOption && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full group-hover:border-primary"></div>}
+                                                    {(selectedOption && !isSelected && !isCorrect) && <div className="h-6 w-6 shrink-0 border-2 border-muted rounded-full"></div>}
+                                                </div>
+                                                <Label className={cn("flex-1 text-base", selectedOption ? "cursor-not-allowed" : "cursor-pointer")}>{option}</Label>
+                                            </div>
+                                        </Button>
+                                    </motion.div>
+                                )
+                            })}
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
             </CardContent>
              <CardFooter className="justify-end">
                 <Button onClick={handleNext} disabled={!selectedOption}>
@@ -341,14 +351,19 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
                         </motion.p>
                         <p className="text-2xl font-semibold text-muted-foreground">({percentage.toFixed(0)}%)</p>
                             {passed && (
-                            <div className="space-y-2 mt-2">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="space-y-2 mt-2"
+                            >
                                 <div className="flex items-center text-lg text-yellow-400 font-bold bg-yellow-400/10 px-4 py-2 rounded-md">
                                     <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
                                 </div>
                                 <div className="flex items-center text-lg text-amber-500 font-bold bg-amber-500/10 px-4 py-2 rounded-md">
                                     <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Coins Gained
                                 </div>
-                            </div>
+                            </motion.div>
                         )}
                     </div>
                     <ChartContainer config={chartConfig} className="mx-auto aspect-square h-48">
