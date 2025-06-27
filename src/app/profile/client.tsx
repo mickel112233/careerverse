@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -41,12 +40,12 @@ const baseUserData = {
         streak: 5,
     },
     achievements: [
-        { name: 'Master Coder', icon: Award, color: 'text-purple-400' },
-        { name: 'AI Guru', icon: Zap, color: 'text-sky-400' },
-        { name: 'TS Wizard', icon: ShieldCheck, color: 'text-green-400' },
-        { name: '5 Wins Streak', icon: Flame, color: 'text-red-500' },
-        { name: 'Top 10 Player', icon: Trophy, color: 'text-orange-400' },
-        { name: 'React Pro', icon: Star, color: 'text-yellow-400' },
+        { name: 'Master Coder', description: 'Achieved mastery in advanced coding challenges.', icon: Award, color: 'text-purple-400' },
+        { name: 'AI Guru', description: 'Demonstrated deep knowledge in AI and Machine Learning.', icon: Zap, color: 'text-sky-400' },
+        { name: 'TS Wizard', description: 'Mastered the art of TypeScript.', icon: ShieldCheck, color: 'text-green-400' },
+        { name: '5 Wins Streak', description: 'Achieved a winning streak of 5 consecutive battles.', icon: Flame, color: 'text-red-500' },
+        { name: 'Top 10 Player', description: 'Ranked among the top 10 players on the leaderboard.', icon: Trophy, color: 'text-orange-400' },
+        { name: 'React Pro', description: 'Showcased expert-level skills in React development.', icon: Star, color: 'text-yellow-400' },
     ],
     battleHistory: [
         { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatarHint: 'cyberpunk man portrait' }, result: 'Win', xp: '+150 XP' },
@@ -72,20 +71,18 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 type UserData = typeof baseUserData & {
     guild: { name: string; role: string; } | null;
+    achievements: { name: string; description: string; icon: React.ElementType, color: string }[];
 };
 
-const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementType, label: string, value: string | number, subValue?: string }) => (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <Card className="bg-muted/30 h-full">
-            <CardContent className="p-4 flex items-center gap-4">
-                <Icon className="h-8 w-8 text-primary" />
-                <div>
-                    <p className="text-sm text-muted-foreground">{label}</p>
-                    <p className="text-2xl font-bold font-headline">{value}</p>
-                    {subValue && <p className="text-xs text-muted-foreground">{subValue}</p>}
-                </div>
-            </CardContent>
-        </Card>
+const StatItem = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ElementType }) => (
+    <motion.div 
+        className="flex flex-col items-center justify-center p-4 bg-muted/30 rounded-lg text-center"
+        whileHover={{ scale: 1.05, y: -5 }}
+        transition={{ type: 'spring', stiffness: 300 }}
+    >
+        <Icon className="h-8 w-8 text-primary mb-2" />
+        <p className="text-2xl font-bold font-headline">{value}</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
     </motion.div>
 );
 
@@ -235,7 +232,12 @@ export default function ProfileClient() {
             const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
             const purchasedTitles = inventory
                 .filter((name: string) => name.toLowerCase().includes('title'))
-                .map((name: string) => ({ name, icon: Award, color: 'text-cyan-400' }));
+                .map((name: string) => ({ 
+                    name, 
+                    icon: Award, 
+                    color: 'text-cyan-400',
+                    description: `A title purchased from the shop to showcase your status.`
+                }));
         
             const allAchievements = [...baseUserData.achievements];
             purchasedTitles.forEach((purchased: any) => {
@@ -536,11 +538,19 @@ export default function ProfileClient() {
         </div>
 
         <div className="w-full lg:w-2/3 space-y-8">
-             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <StatCard icon={BarChartHorizontal} label="Win Rate" value={winRate} />
-                <StatCard icon={Trophy} label="Total Wins" value={userData.stats.wins} />
-                <StatCard icon={Flame} label="Win Streak" value={userData.stats.streak} />
-            </div>
+             <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Battle Statistics</CardTitle>
+                    <CardDescription>Your performance across all competitions.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <StatItem label="Total Battles" value={userData.stats.wins + userData.stats.losses} icon={Swords} />
+                    <StatItem label="Wins" value={userData.stats.wins} icon={Trophy} />
+                    <StatItem label="Losses" value={userData.stats.losses} icon={Shield} />
+                    <StatItem label="Win Rate" value={winRate} icon={Percent} />
+                    <StatItem label="Win Streak" value={userData.stats.streak} icon={Flame} />
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>
@@ -552,7 +562,7 @@ export default function ProfileClient() {
                         {achievements.map((ach, i) => {
                             const Icon = ach.icon;
                             return (
-                                <TooltipProvider key={ach.name}>
+                                <TooltipProvider key={i}>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
                                             <motion.div 
@@ -567,7 +577,8 @@ export default function ProfileClient() {
                                             </motion.div>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                            <p>{ach.name}</p>
+                                            <p className="font-bold">{ach.name}</p>
+                                            {ach.description && <p className="text-xs text-muted-foreground">{ach.description}</p>}
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
@@ -583,34 +594,29 @@ export default function ProfileClient() {
                     <CardDescription>Latest competition history.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="w-full overflow-x-auto">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Challenge</TableHead>
-                                    <TableHead>Opponent</TableHead>
-                                    <TableHead className="text-center">Result</TableHead>
-                                    <TableHead className="text-right">XP Gained</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {userData.battleHistory.map((battle) => (
-                                    <TableRow key={battle.id}>
-                                        <TableCell className="font-medium">{battle.challenge}</TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-2">
-                                                <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-6 h-6" />
-                                                <span>{battle.opponent.name}</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="text-center">
-                                            <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'} className={cn(battle.result === 'Win' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>{battle.result}</Badge>
-                                        </TableCell>
-                                        <TableCell className={cn("text-right font-mono", battle.result === 'Win' ? 'text-lime-400' : 'text-red-500')}>{battle.xp}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                    <div className="space-y-4">
+                        {userData.battleHistory.map((battle, i) => (
+                            <motion.div
+                                key={battle.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.3, delay: i * 0.1 }}
+                                className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                            >
+                                <div className="flex-1 space-y-1">
+                                    <p className="font-semibold">{battle.challenge}</p>
+                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                        <span>vs</span>
+                                        <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-5 h-5" />
+                                        <span>{battle.opponent.name}</span>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-end">
+                                    <Badge variant={battle.result === 'Win' ? 'default' : 'destructive'} className={cn(battle.result === 'Win' ? 'bg-green-500/20 text-green-400 border-green-500' : '')}>{battle.result}</Badge>
+                                    <span className={cn("text-sm font-mono mt-1", battle.result === 'Win' ? 'text-lime-400' : 'text-red-500')}>{battle.xp}</span>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </CardContent>
             </Card>
@@ -619,3 +625,5 @@ export default function ProfileClient() {
     </>
   );
 }
+
+    
