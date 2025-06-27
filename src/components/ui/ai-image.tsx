@@ -32,8 +32,8 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
                 if (!isCancelled) {
                     try {
                         localStorage.setItem(cacheKey, generatedUrl);
-                    } catch (e) {
-                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, e);
+                    } catch (error) {
+                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
                     }
                     setImageUrl(generatedUrl);
                 }
