@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -325,7 +324,7 @@ export default function ProfileClient() {
                 
                 <Button className="mt-4 w-full" disabled>
                     <Linkedin className="mr-2 h-4 w-4" />
-                    Share on LinkedIn
+                    Connect with LinkedIn
                 </Button>
             </Card>
 
