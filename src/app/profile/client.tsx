@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,12 +15,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { motion } from 'framer-motion';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const baseUserData = {
     name: 'QuantumLeap',
@@ -38,6 +40,8 @@ const baseUserData = {
         wins: 128,
         losses: 34,
         streak: 5,
+        longestStreak: 12,
+        bossesDefeated: 3,
     },
     achievements: [
         { name: 'Master Coder', description: 'Achieved mastery in advanced coding challenges.', icon: Award, color: 'text-purple-400' },
@@ -54,6 +58,15 @@ const baseUserData = {
         { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatarHint: 'data scientist smiling' }, result: 'Win', xp: '+180 XP' },
     ],
 };
+
+const mockSkillData = [
+  { subject: 'Frontend', score: 95, fullMark: 100 },
+  { subject: 'Backend', score: 80, fullMark: 100 },
+  { subject: 'AI/ML', score: 88, fullMark: 100 },
+  { subject: 'Databases', score: 75, fullMark: 100 },
+  { subject: 'UI/UX', score: 60, fullMark: 100 },
+  { subject: 'DevOps', score: 70, fullMark: 100 },
+];
 
 const profileFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters.").max(30, "Name must be at most 30 characters."),
@@ -88,69 +101,85 @@ const StatItem = ({ label, value, icon: Icon }: { label: string, value: string |
 
 const Socials = ({ links }: { links: UserData['links']}) => {
     const hasLinks = Object.values(links).some(link => !!link);
-
     if (!hasLinks) return null;
-
     return (
         <Card>
-            <CardHeader>
-                <CardTitle className="font-headline">Socials</CardTitle>
-            </CardHeader>
+            <CardHeader><CardTitle className="font-headline">Socials</CardTitle></CardHeader>
             <CardContent>
                 <div className="flex flex-wrap gap-2">
-                    {links.github && (
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button asChild variant="outline" size="icon">
-                                        <a href={links.github} target="_blank" rel="noopener noreferrer"><Github className="h-5 w-5" /></a>
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>GitHub</p></TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                     {links.youtube && (
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button asChild variant="outline" size="icon">
-                                        <a href={links.youtube} target="_blank" rel="noopener noreferrer"><Youtube className="h-5 w-5" /></a>
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>YouTube</p></TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                     {links.instagram && (
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button asChild variant="outline" size="icon">
-                                        <a href={links.instagram} target="_blank" rel="noopener noreferrer"><Instagram className="h-5 w-5" /></a>
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Instagram</p></TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
-                      {links.discord && (
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button variant="outline" size="icon">
-                                        <MessageSquare className="h-5 w-5" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent><p>Discord: {links.discord}</p></TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    )}
+                    {links.github && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button asChild variant="outline" size="icon"><a href={links.github} target="_blank" rel="noopener noreferrer"><Github className="h-5 w-5" /></a></Button></TooltipTrigger><TooltipContent><p>GitHub</p></TooltipContent></Tooltip></TooltipProvider>}
+                    {links.youtube && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button asChild variant="outline" size="icon"><a href={links.youtube} target="_blank" rel="noopener noreferrer"><Youtube className="h-5 w-5" /></a></Button></TooltipTrigger><TooltipContent><p>YouTube</p></TooltipContent></Tooltip></TooltipProvider>}
+                    {links.instagram && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button asChild variant="outline" size="icon"><a href={links.instagram} target="_blank" rel="noopener noreferrer"><Instagram className="h-5 w-5" /></a></Button></TooltipTrigger><TooltipContent><p>Instagram</p></TooltipContent></Tooltip></TooltipProvider>}
+                    {links.discord && <TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="icon"><MessageSquare className="h-5 w-5" /></Button></TooltipTrigger><TooltipContent><p>Discord: {links.discord}</p></TooltipContent></Tooltip></TooltipProvider>}
                 </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
+
+const SkillRadarChart = ({ data }: { data: typeof mockSkillData }) => (
+    <ResponsiveContainer width="100%" height={300}>
+        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="subject" />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} />
+            <Radar name="Score" dataKey="score" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.6} />
+        </RadarChart>
+    </ResponsiveContainer>
+);
+
+const EditShowcaseDialog = ({ isOpen, onOpenChange, allAchievements, currentPinned, onSave }: { isOpen: boolean, onOpenChange: (open: boolean) => void, allAchievements: UserData['achievements'], currentPinned: string[], onSave: (newPinned: string[]) => void }) => {
+    const [selected, setSelected] = useState(new Set(currentPinned));
+    const MAX_PINNED = 4;
+
+    const handleSelect = (achName: string) => {
+        setSelected(prev => {
+            const newSelection = new Set(prev);
+            if (newSelection.has(achName)) {
+                newSelection.delete(achName);
+            } else {
+                if (newSelection.size < MAX_PINNED) {
+                    newSelection.add(achName);
+                }
+            }
+            return newSelection;
+        });
+    };
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onOpenChange}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Customize Your Showcase</DialogTitle>
+                    <DialogDescription>Select up to {MAX_PINNED} achievements to display on your profile.</DialogDescription>
+                </DialogHeader>
+                <div className="py-4 space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                    {allAchievements.map((ach) => {
+                        const Icon = ach.icon;
+                        const isSelected = selected.has(ach.name);
+                        const isDisabled = !isSelected && selected.size >= MAX_PINNED;
+                        return (
+                            <div key={ach.name} className={cn("flex items-center space-x-3 p-3 rounded-md border", isSelected && "border-primary bg-primary/10", isDisabled && "opacity-50")}>
+                                <Checkbox id={ach.name} checked={isSelected} onCheckedChange={() => handleSelect(ach.name)} disabled={isDisabled} />
+                                <label htmlFor={ach.name} className={cn("flex items-center gap-3 w-full", isDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
+                                    <Icon className={cn("h-8 w-8 p-1 rounded-md", ach.color, isSelected ? "bg-primary/20" : "bg-muted")} />
+                                    <div>
+                                        <p className="font-semibold">{ach.name}</p>
+                                        <p className="text-xs text-muted-foreground">{ach.description}</p>
+                                    </div>
+                                </label>
+                            </div>
+                        );
+                    })}
+                </div>
+                <DialogFooter>
+                    <Button onClick={() => onSave(Array.from(selected))}>Save Showcase</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
 
 export default function ProfileClient() {
     const router = useRouter();
@@ -162,34 +191,21 @@ export default function ProfileClient() {
     const [xpForCurrentLevel, setXpForCurrentLevel] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
     const [membership, setMembership] = useState('Free');
-    const [achievements, setAchievements] = useState(baseUserData.achievements);
+    const [allAchievements, setAllAchievements] = useState(baseUserData.achievements);
+    const [pinnedAchievements, setPinnedAchievements] = useState<string[]>([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
-        defaultValues: {
-            name: '',
-            title: '',
-            bio: '',
-            avatarHint: '',
-            bannerHint: '',
-            github: '',
-            youtube: '',
-            instagram: '',
-            discord: '',
-        },
+        defaultValues: { name: '', title: '', bio: '', avatarHint: '', bannerHint: '', github: '', youtube: '', instagram: '', discord: '' },
     });
 
     useEffect(() => {
         const updateAllStats = () => {
             const storedProfile = localStorage.getItem('careerClashUserProfile');
             let profileData: Omit<UserData, 'guild' | 'links'> & { links?: UserData['links'] };
-            if (storedProfile) {
-                profileData = JSON.parse(storedProfile);
-            } else {
-                profileData = baseUserData;
-                localStorage.setItem('careerClashUserProfile', JSON.stringify(profileData));
-            }
+            profileData = storedProfile ? JSON.parse(storedProfile) : baseUserData;
 
             const storedGuild = localStorage.getItem('userGuild');
             let guild = null;
@@ -214,18 +230,14 @@ export default function ProfileClient() {
 
             const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
             setTotalXp(storedXp);
-
             const currentLevel = Math.floor(storedXp / 1000) + 1;
             setLevel(currentLevel);
-
             const xpBaseForCurrentLevel = (currentLevel - 1) * 1000;
             const xpInCurrentLevel = storedXp - xpBaseForCurrentLevel;
             setXpForCurrentLevel(xpInCurrentLevel);
-            
             const xpNeededForNextLevel = 1000;
             setXpToNextLevel(xpNeededForNextLevel);
             setXpProgress((xpInCurrentLevel / xpNeededForNextLevel) * 100);
-
             const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
             setMembership(storedMembership);
 
@@ -238,14 +250,20 @@ export default function ProfileClient() {
                     color: 'text-cyan-400',
                     description: `A title purchased from the shop to showcase your status.`
                 }));
-        
-            const allAchievements = [...baseUserData.achievements];
+            const combinedAchievements = [...baseUserData.achievements];
             purchasedTitles.forEach((purchased: any) => {
-                if (!allAchievements.some(existing => existing.name === purchased.name)) {
-                    allAchievements.push(purchased);
+                if (!combinedAchievements.some(existing => existing.name === purchased.name)) {
+                    combinedAchievements.push(purchased);
                 }
             });
-            setAchievements(allAchievements);
+            setAllAchievements(combinedAchievements);
+
+            const storedPinned = localStorage.getItem('pinnedAchievements');
+            if (storedPinned) {
+                setPinnedAchievements(JSON.parse(storedPinned));
+            } else {
+                setPinnedAchievements(combinedAchievements.slice(0, 4).map(a => a.name));
+            }
         };
 
         updateAllStats();
@@ -265,13 +283,11 @@ export default function ProfileClient() {
         const { wins, losses } = userData.stats;
         const totalGames = wins + losses;
         const rate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
-
         let ringClass = 'ring-primary/50';
         let lvlName = 'Bronze';
         if (level >= 10) { ringClass = 'ring-accent'; lvlName = 'Silver'; }
         if (level >= 20) { ringClass = 'ring-yellow-400'; lvlName = 'Gold'; }
         if (level >= 50) { ringClass = 'ring-purple-500'; lvlName = 'Diamond'; }
-
         return {
             winRate: rate.toFixed(1) + '%',
             avatarRingClass: ringClass,
@@ -283,21 +299,8 @@ export default function ProfileClient() {
     const onSubmitProfile = (values: ProfileFormValues) => {
         if (!userData) return;
         const { github, youtube, instagram, discord, ...restOfValues } = values;
-
-        const updatedProfileData = {
-            ...userData,
-            ...restOfValues,
-            links: {
-                github: github || '',
-                youtube: youtube || '',
-                instagram: instagram || '',
-                discord: discord || '',
-            }
-        };
-
-        // Remove properties that shouldn't be in the persisted user profile object
+        const updatedProfileData = { ...userData, ...restOfValues, links: { github: github || '', youtube: youtube || '', instagram: instagram || '', discord: discord || '' } };
         const { guild, ...profileToSave } = updatedProfileData;
-
         localStorage.setItem('careerClashUserProfile', JSON.stringify(profileToSave));
         window.dispatchEvent(new Event('profileChange'));
         toast({ title: 'Profile Updated!', description: 'Your changes have been saved.' });
@@ -308,152 +311,47 @@ export default function ProfileClient() {
         return <div className="flex justify-center items-center h-96"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
+    const displayedAchievements = allAchievements.filter(ach => pinnedAchievements.includes(ach.name));
+
   return (
     <>
        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
             <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>Edit Your Profile</DialogTitle>
-                </DialogHeader>
+                <DialogHeader><DialogTitle>Edit Your Profile</DialogTitle></DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmitProfile)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Display Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Your in-game name" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Title / Role</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="e.g. Aspiring Developer" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                         <FormField
-                            control={form.control}
-                            name="bio"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Bio</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder="A short description about yourself" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                         <FormField
-                            control={form.control}
-                            name="avatarHint"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Avatar AI Prompt</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Describe your desired avatar" {...field} />
-                                    </FormControl>
-                                    <FormDescription>This will regenerate your avatar image.</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                         <FormField
-                            control={form.control}
-                            name="bannerHint"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Banner AI Prompt</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Describe your desired banner" {...field} />
-                                    </FormControl>
-                                    <FormDescription>This will regenerate your profile banner.</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <FormField control={form.control} name="name" render={({ field }) => (<FormItem><FormLabel>Display Name</FormLabel><FormControl><Input placeholder="Your in-game name" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="title" render={({ field }) => (<FormItem><FormLabel>Title / Role</FormLabel><FormControl><Input placeholder="e.g. Aspiring Developer" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="bio" render={({ field }) => (<FormItem><FormLabel>Bio</FormLabel><FormControl><Textarea placeholder="A short description about yourself" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="avatarHint" render={({ field }) => (<FormItem><FormLabel>Avatar AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired avatar" {...field} /></FormControl><FormDescription>This will regenerate your avatar image.</FormDescription><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="bannerHint" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired banner" {...field} /></FormControl><FormDescription>This will regenerate your profile banner.</FormDescription><FormMessage /></FormItem>)} />
                         <h3 className="text-md font-semibold pt-2 border-b pb-2">Social Links</h3>
-                        <FormField
-                            control={form.control}
-                            name="github"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>GitHub URL</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="https://github.com/your-username" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="youtube"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>YouTube URL</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="https://youtube.com/@your-channel" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="instagram"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Instagram URL</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="https://instagram.com/your-username" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="discord"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Discord Username</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="your_username#1234" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <DialogFooter className="pt-4 sticky bottom-0 bg-background">
-                            <Button type="submit" disabled={form.formState.isSubmitting}>
-                                {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Save Changes
-                            </Button>
+                        <FormField control={form.control} name="github" render={({ field }) => (<FormItem><FormLabel>GitHub URL</FormLabel><FormControl><Input placeholder="https://github.com/your-username" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="youtube" render={({ field }) => (<FormItem><FormLabel>YouTube URL</FormLabel><FormControl><Input placeholder="https://youtube.com/@your-channel" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="instagram" render={({ field }) => (<FormItem><FormLabel>Instagram URL</FormLabel><FormControl><Input placeholder="https://instagram.com/your-username" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="discord" render={({ field }) => (<FormItem><FormLabel>Discord Username</FormLabel><FormControl><Input placeholder="your_username#1234" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                        <DialogFooter className="pt-4 sticky bottom-0 bg-background/95 backdrop-blur-sm">
+                            <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save Changes</Button>
                         </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>
         </Dialog>
+        
+        <EditShowcaseDialog 
+            isOpen={isShowcaseModalOpen} 
+            onOpenChange={setIsShowcaseModalOpen} 
+            allAchievements={allAchievements} 
+            currentPinned={pinnedAchievements} 
+            onSave={(newPinned) => {
+                setPinnedAchievements(newPinned);
+                localStorage.setItem('pinnedAchievements', JSON.stringify(newPinned));
+                toast({ title: 'Showcase Updated!' });
+                setIsShowcaseModalOpen(false);
+            }} 
+        />
 
-       <div className="mb-4">
-            <Button variant="ghost" onClick={() => router.back()}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-            </Button>
-       </div>
+       <div className="mb-4"><Button variant="ghost" onClick={() => router.back()}><ArrowLeft className="mr-2 h-4 w-4" />Back</Button></div>
        <div className="relative mb-8 h-32 sm:h-48 rounded-lg overflow-hidden">
             <AiImage prompt={userData.bannerHint} alt="Profile banner" layout="fill" objectFit="cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
@@ -462,145 +360,89 @@ export default function ProfileClient() {
        <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-1/3 space-y-8 -mt-20 sm:-mt-24 z-10">
             <Card className="text-center p-6 pt-0 border-2 border-transparent relative">
-                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}>
-                    <Pencil className="h-4 w-4" />
-                </Button>
-                 <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}>
-                                <AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" />
-                            </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>{levelTooltip}</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-
+                <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}><Pencil className="h-4 w-4" /></Button>
+                <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
                 <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
                 <p className="text-muted-foreground">{userData.title}</p>
                 {userData.bio && <p className="text-sm text-muted-foreground mt-4 text-center">{userData.bio}</p>}
-                
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
-                    {userData.guild && (
-                         <motion.div whileHover={{ scale: 1.05 }}>
-                            <Badge variant="secondary" className="text-accent">
-                                <Users className="h-3 w-3 mr-1" />
-                                {userData.guild.name} ({userData.guild.role})
-                            </Badge>
-                        </motion.div>
-                    )}
-                    {membership !== 'Free' && (
-                         <motion.div whileHover={{ scale: 1.05 }}>
-                            <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
-                                <Star className="h-3 w-3 mr-1" />
-                                {membership} Member
-                            </Badge>
-                        </motion.div>
-                    )}
+                    {userData.guild && <motion.div whileHover={{ scale: 1.05 }}><Badge variant="secondary" className="text-accent"><Users className="h-3 w-3 mr-1" />{userData.guild.name} ({userData.guild.role})</Badge></motion.div>}
+                    {membership !== 'Free' && <motion.div whileHover={{ scale: 1.05 }}><Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500"><Star className="h-3 w-3 mr-1" />{membership} Member</Badge></motion.div>}
                 </div>
-                
-                <Button className="mt-4 w-full" onClick={() => window.open('https://www.linkedin.com/in/', '_blank')}>
-                    <Linkedin className="mr-2 h-4 w-4" />
-                    Connect with LinkedIn
-                </Button>
+                <Button className="mt-4 w-full" asChild><a href="https://www.linkedin.com/in/" target="_blank" rel="noopener noreferrer"><Linkedin className="mr-2 h-4 w-4" />Connect with LinkedIn</a></Button>
             </Card>
 
             <Socials links={userData.links} />
 
             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Level Progress</CardTitle>
-                    <CardDescription>Your journey to mastery</CardDescription>
-                </CardHeader>
+                <CardHeader><CardTitle className="font-headline">Level Progress</CardTitle><CardDescription>Your journey to mastery</CardDescription></CardHeader>
                 <CardContent className="space-y-4">
-                     <div>
-                        <div className="flex justify-between mb-1 text-sm font-medium">
-                            <span>Level {level} ({levelName})</span>
-                            <span className="font-mono text-primary">{xpForCurrentLevel} / {xpToNextLevel}</span>
-                        </div>
+                    <div>
+                        <div className="flex justify-between mb-1 text-sm font-medium"><span>Level {level} ({levelName})</span><span className="font-mono text-primary">{xpForCurrentLevel} / {xpToNextLevel}</span></div>
                         <Progress value={xpProgress} aria-label={`${xpProgress}% to next level`} />
-                         <p className="text-xs text-muted-foreground mt-1 text-right">Total XP: {totalXp.toLocaleString()}</p>
+                        <p className="text-xs text-muted-foreground mt-1 text-right">Total XP: {totalXp.toLocaleString()}</p>
                     </div>
                 </CardContent>
             </Card>
-
              <Card className="bg-gradient-to-br from-muted/20 to-muted/40">
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2"><Repeat /> Prestige</CardTitle>
-                    <CardDescription>Reset your level to earn unique rewards and climb again. (Coming Soon)</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button className="w-full" disabled>Prestige Up (Lvl 100 Req.)</Button>
-                </CardContent>
+                <CardHeader><CardTitle className="font-headline flex items-center gap-2"><Repeat /> Prestige</CardTitle><CardDescription>Reset your level to earn unique rewards and climb again. (Coming Soon)</CardDescription></CardHeader>
+                <CardContent><Button className="w-full" disabled>Prestige Up (Lvl 100 Req.)</Button></CardContent>
             </Card>
         </div>
 
         <div className="w-full lg:w-2/3 space-y-8">
              <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Battle Statistics</CardTitle>
-                    <CardDescription>Your performance across all competitions.</CardDescription>
-                </CardHeader>
+                <CardHeader><CardTitle className="font-headline">Battle Statistics</CardTitle><CardDescription>Your performance across all competitions.</CardDescription></CardHeader>
                 <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <StatItem label="Total Battles" value={userData.stats.wins + userData.stats.losses} icon={Swords} />
                     <StatItem label="Wins" value={userData.stats.wins} icon={Trophy} />
                     <StatItem label="Losses" value={userData.stats.losses} icon={Shield} />
                     <StatItem label="Win Rate" value={winRate} icon={Percent} />
-                    <StatItem label="Win Streak" value={userData.stats.streak} icon={Flame} />
+                    <StatItem label="Current Streak" value={userData.stats.streak} icon={Flame} />
+                    <StatItem label="Longest Streak" value={userData.stats.longestStreak} icon={Flame} />
+                    <StatItem label="Bosses Defeated" value={userData.stats.bossesDefeated} icon={Skull} />
                 </CardContent>
             </Card>
 
             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Showcase</CardTitle>
-                    <CardDescription>Your collection of titles and achievements.</CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle className="font-headline">Showcase</CardTitle>
+                        <CardDescription>Your collection of titles and achievements.</CardDescription>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={() => setIsShowcaseModalOpen(true)}><Pencil className="mr-2 h-4 w-4"/>Edit</Button>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        {achievements.map((ach, i) => {
+                        {displayedAchievements.map((ach, i) => {
                             const Icon = ach.icon;
                             return (
-                                <TooltipProvider key={i}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <motion.div 
-                                                className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer"
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.3, delay: i * 0.05 }}
-                                                whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
-                                            >
-                                                <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
-                                                <p className="text-sm font-semibold">{ach.name}</p>
-                                            </motion.div>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p className="font-bold">{ach.name}</p>
-                                            {ach.description && <p className="text-xs text-muted-foreground">{ach.description}</p>}
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                <TooltipProvider key={i}><Tooltip><TooltipTrigger asChild>
+                                    <motion.div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer"
+                                        initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: i * 0.05 }}
+                                        whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
+                                    >
+                                        <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
+                                        <p className="text-sm font-semibold">{ach.name}</p>
+                                    </motion.div>
+                                </TooltipTrigger><TooltipContent><p className="font-bold">{ach.name}</p>{ach.description && <p className="text-xs text-muted-foreground">{ach.description}</p>}</TooltipContent></Tooltip></TooltipProvider>
                             )
                         })}
                     </div>
                 </CardContent>
             </Card>
             
+             <Card>
+                <CardHeader><CardTitle className="font-headline flex items-center gap-2"><LineChart/>Skill Analysis</CardTitle><CardDescription>Your strengths based on recent performance data.</CardDescription></CardHeader>
+                <CardContent className="pl-0 pr-4 -mt-4"><SkillRadarChart data={mockSkillData} /></CardContent>
+            </Card>
+
             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Recent Battles</CardTitle>
-                    <CardDescription>Latest competition history.</CardDescription>
-                </CardHeader>
+                <CardHeader><CardTitle className="font-headline">Recent Battles</CardTitle><CardDescription>Latest competition history.</CardDescription></CardHeader>
                 <CardContent>
                     <div className="space-y-4">
                         {userData.battleHistory.map((battle, i) => (
-                            <motion.div
-                                key={battle.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: i * 0.1 }}
+                            <motion.div key={battle.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: i * 0.1 }}
                                 className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
                             >
                                 <div className="flex-1 space-y-1">
@@ -625,5 +467,3 @@ export default function ProfileClient() {
     </>
   );
 }
-
-    
