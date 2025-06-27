@@ -37,7 +37,7 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
                     }
                     setImageUrl(generatedUrl);
                 }
-            } catch (error)_ {
+            } catch (error) {
                 console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
             } finally {
                 if (!isCancelled) setIsLoading(false);
