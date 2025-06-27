@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
 import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap, Coins } from 'lucide-react';
@@ -278,13 +278,13 @@ export default function DashboardClient() {
                         </div>
                         </CardHeader>
                         {node.status !== 'locked' && (
-                        <CardContent className="p-4 pt-0">
+                        <CardFooter className="p-4 pt-0">
                             <Button asChild size="sm" className="w-full" disabled={node.status === 'completed'}>
                             <Link href={`/learning/${node.slug}`}>
                                 {node.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
                             </Link>
                             </Button>
-                        </CardContent>
+                        </CardFooter>
                         )}
                     </Card>
                   </motion.div>
@@ -300,7 +300,7 @@ export default function DashboardClient() {
                 >
                   <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
                       node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
-                      node.status === 'unlocked' && 'ring-primary animate-pulse'
+                      node.status === 'unlocked' && 'ring-primary animate-pulse-slow'
                     )}>
                      <NodeStatusIcon status={node.status} />
                   </div>
