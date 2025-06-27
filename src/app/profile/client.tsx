@@ -322,7 +322,7 @@ export default function ProfileClient() {
                     )}
                 </div>
                 
-                <Button className="mt-4 w-full" disabled>
+                <Button className="mt-4 w-full" onClick={() => window.open('https://www.linkedin.com/in/me/', '_blank')}>
                     <Linkedin className="mr-2 h-4 w-4" />
                     Connect with LinkedIn
                 </Button>
