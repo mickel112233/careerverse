@@ -8,7 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft } from "lucide-react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useToast } from '@/hooks/use-toast';
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft, Pencil, Loader2 } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -20,7 +27,6 @@ const baseUserData = {
     title: 'Senior AI Engineer',
     avatarHint: 'cyberpunk woman portrait',
     bannerHint: 'abstract purple and blue nebula',
-    guild: null as { name: string; role: string; } | null,
     stats: {
         wins: 128,
         losses: 34,
@@ -42,6 +48,18 @@ const baseUserData = {
     ],
 };
 
+const profileFormSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters.").max(30, "Name must be at most 30 characters."),
+  title: z.string().min(3, "Title must be at least 3 characters.").max(50, "Title must be at most 50 characters."),
+  avatarHint: z.string().max(100, "Avatar hint must be at most 100 characters."),
+  bannerHint: z.string().max(100, "Banner hint must be at most 100 characters."),
+});
+
+type ProfileFormValues = z.infer<typeof profileFormSchema>;
+
+type UserData = typeof baseUserData & {
+    guild: { name: string; role: string; } | null;
+};
 
 const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementType, label: string, value: string | number, subValue?: string }) => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -60,6 +78,8 @@ const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementT
 
 export default function ProfileClient() {
     const router = useRouter();
+    const { toast } = useToast();
+    const [userData, setUserData] = useState<UserData | null>(null);
     const [totalXp, setTotalXp] = useState(0);
     const [level, setLevel] = useState(1);
     const [xpProgress, setXpProgress] = useState(0);
@@ -67,29 +87,40 @@ export default function ProfileClient() {
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
     const [membership, setMembership] = useState('Free');
     const [achievements, setAchievements] = useState(baseUserData.achievements);
-    const [userData, setUserData] = useState(baseUserData);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-    const { winRate, avatarRingClass, levelName, levelTooltip } = useMemo(() => {
-        const { wins, losses } = userData.stats;
-        const totalGames = wins + losses;
-        const rate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
+    const form = useForm<ProfileFormValues>({
+        resolver: zodResolver(profileFormSchema),
+        defaultValues: {
+            name: '',
+            title: '',
+            avatarHint: '',
+            bannerHint: '',
+        },
+    });
 
-        let ringClass = 'ring-primary/50';
-        let lvlName = 'Bronze';
-        if (level >= 10) { ringClass = 'ring-accent'; lvlName = 'Silver'; }
-        if (level >= 20) { ringClass = 'ring-yellow-400'; lvlName = 'Gold'; }
-        if (level >= 50) { ringClass = 'ring-purple-500'; lvlName = 'Diamond'; }
-
-        return {
-            winRate: rate.toFixed(1) + '%',
-            avatarRingClass: ringClass,
-            levelName: lvlName,
-            levelTooltip: `Your avatar's frame evolves as you level up. Current tier: ${lvlName}.`,
-        };
-    }, [level, userData.stats]);
-    
     useEffect(() => {
         const updateAllStats = () => {
+            const storedProfile = localStorage.getItem('careerClashUserProfile');
+            let profileData: Omit<UserData, 'guild'>;
+            if (storedProfile) {
+                profileData = JSON.parse(storedProfile);
+            } else {
+                profileData = baseUserData;
+                localStorage.setItem('careerClashUserProfile', JSON.stringify(profileData));
+            }
+
+            const storedGuild = localStorage.getItem('userGuild');
+            let guild = null;
+            if (storedGuild) {
+                const guildData = JSON.parse(storedGuild);
+                const userMemberData = guildData.members.find((m: any) => m.name === profileData.name);
+                guild = { name: guildData.guildName, role: userMemberData?.role || 'Member' };
+            }
+            
+            setUserData({ ...profileData, guild });
+            form.reset(profileData);
+
             const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
             setTotalXp(storedXp);
 
@@ -119,35 +150,127 @@ export default function ProfileClient() {
                 }
             });
             setAchievements(allAchievements);
-
-            const storedGuild = localStorage.getItem('userGuild');
-            if (storedGuild) {
-                const guildData = JSON.parse(storedGuild);
-                const userMemberData = guildData.members.find((m: any) => m.name === 'QuantumLeap');
-                setUserData(prev => ({
-                    ...prev,
-                    guild: {
-                        name: guildData.guildName,
-                        role: userMemberData?.role || 'Member',
-                    }
-                }));
-            } else {
-                 setUserData(prev => ({ ...prev, guild: null }));
-            }
         };
 
         updateAllStats();
         window.addEventListener('currencyChange', updateAllStats);
         window.addEventListener('guildChange', updateAllStats);
+        window.addEventListener('profileChange', updateAllStats);
 
         return () => {
             window.removeEventListener('currencyChange', updateAllStats);
             window.removeEventListener('guildChange', updateAllStats);
-        }
-    }, []);
+            window.removeEventListener('profileChange', updateAllStats);
+        };
+    }, [form]);
+
+    const { winRate, avatarRingClass, levelName, levelTooltip } = useMemo(() => {
+        if (!userData) return { winRate: '0%', avatarRingClass: 'ring-primary/50', levelName: 'Bronze', levelTooltip: ''};
+        const { wins, losses } = userData.stats;
+        const totalGames = wins + losses;
+        const rate = totalGames > 0 ? (wins / totalGames) * 100 : 0;
+
+        let ringClass = 'ring-primary/50';
+        let lvlName = 'Bronze';
+        if (level >= 10) { ringClass = 'ring-accent'; lvlName = 'Silver'; }
+        if (level >= 20) { ringClass = 'ring-yellow-400'; lvlName = 'Gold'; }
+        if (level >= 50) { ringClass = 'ring-purple-500'; lvlName = 'Diamond'; }
+
+        return {
+            winRate: rate.toFixed(1) + '%',
+            avatarRingClass: ringClass,
+            levelName: lvlName,
+            levelTooltip: `Your avatar's frame evolves as you level up. Current tier: ${lvlName}.`,
+        };
+    }, [level, userData]);
+
+    const onSubmitProfile = (values: ProfileFormValues) => {
+        if (!userData) return;
+        const updatedProfile = { ...userData, ...values };
+        localStorage.setItem('careerClashUserProfile', JSON.stringify(updatedProfile));
+        window.dispatchEvent(new Event('profileChange'));
+        toast({ title: 'Profile Updated!', description: 'Your changes have been saved.' });
+        setIsEditModalOpen(false);
+    };
+    
+    if (!userData) {
+        return <div className="flex justify-center items-center h-96"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
+    }
 
   return (
     <>
+       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Edit Your Profile</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmitProfile)} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Display Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Your in-game name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Title / Role</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. Aspiring Developer" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="avatarHint"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Avatar AI Prompt</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Describe your desired avatar" {...field} />
+                                    </FormControl>
+                                    <FormDescription>This will regenerate your avatar image.</FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="bannerHint"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Banner AI Prompt</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Describe your desired banner" {...field} />
+                                    </FormControl>
+                                    <FormDescription>This will regenerate your profile banner.</FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <DialogFooter>
+                            <Button type="submit" disabled={form.formState.isSubmitting}>
+                                {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Save Changes
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
+
        <div className="mb-4">
             <Button variant="ghost" onClick={() => router.back()}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -160,9 +283,11 @@ export default function ProfileClient() {
        </div>
        
        <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Column */}
         <div className="w-full lg:w-1/3 space-y-8 -mt-20 sm:-mt-24 z-10">
-            <Card className="text-center p-6 pt-0 border-2 border-transparent">
+            <Card className="text-center p-6 pt-0 border-2 border-transparent relative">
+                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}>
+                    <Pencil className="h-4 w-4" />
+                </Button>
                  <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
@@ -232,7 +357,6 @@ export default function ProfileClient() {
             </Card>
         </div>
 
-        {/* Right Column */}
         <div className="w-full lg:w-2/3 space-y-8">
              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <StatCard icon={BarChartHorizontal} label="Win Rate" value={winRate} />
