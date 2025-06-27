@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -13,7 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
@@ -43,6 +43,15 @@ type GuildData = {
     owner: string;
     members: GuildMember[];
 };
+
+type ChatMessage = {
+    id: number;
+    sender: string;
+    avatarHint: string;
+    message: string;
+    isUser: boolean;
+};
+
 
 const mockInitialMembers = [
     { name: 'SynthWave', role: 'Officer', xp: 9500, avatarHint: 'cyberpunk man portrait' },
@@ -89,51 +98,95 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
     </motion.div>
 );
 
-const ChatPlaceholder = () => (
-    <Card>
-        <CardHeader>
-            <CardTitle className="flex items-center gap-2"><MessageSquare /> Guild Chat</CardTitle>
-            <CardDescription>This feature is coming soon! Here's a preview of what it will look like.</CardDescription>
-        </CardHeader>
-        <CardContent>
-            <div className="h-96 w-full bg-muted/50 rounded-lg flex flex-col p-4 space-y-4 border">
-                <div className="flex-grow space-y-4 overflow-y-auto pr-2">
-                     <div className="flex items-start gap-3">
-                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
-                        <div className="flex flex-col gap-1">
-                            <span className="text-xs text-muted-foreground">SynthWave</span>
-                            <div className="bg-background p-3 rounded-lg rounded-tl-none">
-                                <p>Who's up for the Guild War this Friday? 🔥</p>
-                            </div>
-                        </div>
+const ChatInterface = ({ members }: { members: GuildMember[] }) => {
+    const [messages, setMessages] = useState<ChatMessage[]>([
+        { id: 1, sender: 'SynthWave', avatarHint: 'cyberpunk man portrait', message: "Who's up for the Guild War this Friday? 🔥", isUser: false },
+        { id: 2, sender: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', message: "I'm in! Let's get that #1 spot. 🏆", isUser: true },
+        { id: 3, sender: 'CodeNinja', avatarHint: 'hacker with glasses', message: "Let's do it.", isUser: false },
+    ]);
+    const [inputValue, setInputValue] = useState('');
+    const chatLogRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if(chatLogRef.current) {
+            chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
+        }
+    }, [messages]);
+
+    const handleSendMessage = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (inputValue.trim() === '') return;
+
+        const newMessage: ChatMessage = {
+            id: Date.now(),
+            sender: 'QuantumLeap',
+            avatarHint: 'cyberpunk woman portrait',
+            message: inputValue,
+            isUser: true,
+        };
+        setMessages(prev => [...prev, newMessage]);
+        setInputValue('');
+
+        // Simulate a bot response
+        setTimeout(() => {
+            const randomMember = members.filter(m => m.name !== 'QuantumLeap')[Math.floor(Math.random() * (members.length - 1))];
+            const botMessage: ChatMessage = {
+                id: Date.now() + 1,
+                sender: randomMember.name,
+                avatarHint: randomMember.avatarHint,
+                message: 'Sounds good!',
+                isUser: false,
+            };
+            setMessages(prev => [...prev, botMessage]);
+        }, 1500 + Math.random() * 1000);
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><MessageSquare /> Guild Chat</CardTitle>
+                <CardDescription>Coordinate with your guild members in real-time.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="h-96 w-full bg-muted/50 rounded-lg flex flex-col p-4 border">
+                    <div ref={chatLogRef} className="flex-grow space-y-4 overflow-y-auto pr-2">
+                        <AnimatePresence>
+                        {messages.map(msg => (
+                           <motion.div
+                                key={msg.id}
+                                layout
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                className={cn("flex items-end gap-3", msg.isUser && "flex-row-reverse")}
+                            >
+                                <AiAvatar prompt={msg.avatarHint} alt={msg.sender} fallback={msg.sender.substring(0, 2)} className="w-8 h-8 shrink-0"/>
+                                <div className="flex flex-col gap-1 max-w-[75%]">
+                                    <span className={cn("text-xs text-muted-foreground", msg.isUser && "text-right")}>{msg.sender}</span>
+                                    <div className={cn(
+                                        "p-3 rounded-lg text-sm", 
+                                        msg.isUser ? "bg-primary text-primary-foreground rounded-br-none" : "bg-background rounded-bl-none"
+                                    )}>
+                                        <p>{msg.message}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                        </AnimatePresence>
                     </div>
-                     <div className="flex items-start gap-3 flex-row-reverse">
-                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
-                        <div className="flex flex-col gap-1 items-end">
-                             <span className="text-xs text-muted-foreground">You</span>
-                            <div className="bg-primary text-primary-foreground p-3 rounded-lg rounded-tr-none">
-                                <p>I'm in! Let's get that #1 spot. 🏆</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div className="flex items-start gap-3">
-                        <Skeleton className="w-10 h-10 rounded-full shrink-0" />
-                        <div className="flex flex-col gap-1">
-                             <span className="text-xs text-muted-foreground">CodeNinja</span>
-                            <div className="bg-background p-3 rounded-lg rounded-tl-none">
-                                <p>Let's do it.</p>
-                            </div>
-                        </div>
-                    </div>
+                     <form onSubmit={handleSendMessage} className="flex items-center gap-2 pt-4 border-t">
+                        <Input 
+                            placeholder="Send a message..." 
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                        />
+                        <Button type="submit"><Send className="h-4 w-4"/></Button>
+                    </form>
                 </div>
-                <div className="flex items-center gap-2 pt-4 border-t">
-                    <Input placeholder="Chat is coming soon..." disabled/>
-                    <Button disabled><Send className="h-4 w-4"/></Button>
-                </div>
-            </div>
-        </CardContent>
-    </Card>
-);
+            </CardContent>
+        </Card>
+    );
+};
 
 export default function MyGuildClient() {
     const router = useRouter();
@@ -257,6 +310,7 @@ export default function MyGuildClient() {
     }
     
     const isOwner = guild.owner === 'QuantumLeap';
+    const totalXp = guild.members.reduce((acc, member) => acc + member.xp, 0);
 
     return (
         <div>
@@ -348,13 +402,13 @@ export default function MyGuildClient() {
                     <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="battles">Battles</TabsTrigger>
-                    <TabsTrigger value="chat" className="hidden md:inline-flex">Chat</TabsTrigger>
+                    <TabsTrigger value="chat">Chat</TabsTrigger>
                     <TabsTrigger value="settings">Settings</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard" className="mt-6">
                    <div className="grid md:grid-cols-3 gap-6 mb-6">
                        <StatCard icon={Trophy} label="Guild Rank" value="#12" />
-                       <StatCard icon={BarChart3} label="Total XP" value="1.2M" />
+                       <StatCard icon={BarChart3} label="Total XP" value={totalXp.toLocaleString()} />
                        <StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} />
                    </div>
                     <Card>
@@ -471,7 +525,7 @@ export default function MyGuildClient() {
                      </div>
                 </TabsContent>
                  <TabsContent value="chat" className="mt-6">
-                     <ChatPlaceholder />
+                     <ChatInterface members={guild.members} />
                 </TabsContent>
                 <TabsContent value="settings" className="mt-6">
                      <Card>

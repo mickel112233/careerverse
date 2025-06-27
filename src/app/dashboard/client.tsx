@@ -150,6 +150,7 @@ export default function DashboardClient() {
         localStorage.setItem('careerClashTotalXp', '0');
         localStorage.setItem('careerClashCoins', '100');
         localStorage.setItem('careerClashGems', '5');
+        localStorage.setItem('careerClashPrestige', '0');
         window.dispatchEvent(new Event('currencyChange'));
     } catch (error) {
         console.error("Failed to generate roadmap:", error);

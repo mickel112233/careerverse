@@ -7,21 +7,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Trophy, ArrowLeft } from "lucide-react";
+import { Trophy, ArrowLeft, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 
 const leaderboardData = [
-  { rank: 1, name: 'QuantumLeap', xp: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'] },
-  { rank: 2, name: 'SynthWave', xp: 9500, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'] },
-  { rank: 3, name: 'CodeNinja', xp: 9200, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'] },
-  { rank: 4, name: 'DataDynamo', xp: 8900, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'] },
-  { rank: 5, name: 'PixelPerfect', xp: 8750, avatarHint: 'designer serious', badges: ['UI/UX Expert'] },
-  { rank: 6, name: 'LogicLord', xp: 8500, avatarHint: 'philosopher thinking', badges: ['Algorithm Ace'] },
-  { rank: 7, name: 'CloudChaser', xp: 8300, avatarHint: 'devops engineer female', badges: ['DevOps King'] },
-  { rank: 8, name: 'ScriptKiddie', xp: 8100, avatarHint: 'young male student', badges: ['JS Jedi'] },
-  { rank: 9, name: 'SecureShell', xp: 7900, avatarHint: 'female hacker hood', badges: ['Security Sentinel'] },
-  { rank: 10, name: 'APIAdept', xp: 7700, avatarHint: 'male backend developer', badges: ['Backend Baron'] },
+  { rank: 1, name: 'QuantumLeap', xp: 0, prestige: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'] },
+  { rank: 2, name: 'SynthWave', xp: 9500, prestige: 0, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'] },
+  { rank: 3, name: 'CodeNinja', xp: 9200, prestige: 0, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'] },
+  { rank: 4, name: 'DataDynamo', xp: 8900, prestige: 0, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'] },
+  { rank: 5, name: 'PixelPerfect', xp: 8750, prestige: 0, avatarHint: 'designer serious', badges: ['UI/UX Expert'] },
+  { rank: 6, name: 'LogicLord', xp: 8500, prestige: 0, avatarHint: 'philosopher thinking', badges: ['Algorithm Ace'] },
+  { rank: 7, name: 'CloudChaser', xp: 8300, prestige: 0, avatarHint: 'devops engineer female', badges: ['DevOps King'] },
+  { rank: 8, name: 'ScriptKiddie', xp: 8100, prestige: 0, avatarHint: 'young male student', badges: ['JS Jedi'] },
+  { rank: 9, name: 'SecureShell', xp: 7900, prestige: 0, avatarHint: 'female hacker hood', badges: ['Security Sentinel'] },
+  { rank: 10, name: 'APIAdept', xp: 7700, prestige: 0, avatarHint: 'male backend developer', badges: ['Backend Baron'] },
 ];
 
 const USER_NAME = 'QuantumLeap';
@@ -33,12 +35,18 @@ export default function LeaderboardPage() {
   useEffect(() => {
     const updateLeaderboard = () => {
       const userXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+      const userPrestige = parseInt(localStorage.getItem('careerClashPrestige') || '0', 10);
       
       const updatedLeaderboard = leaderboardData.map(player => 
-          player.name === USER_NAME ? { ...player, xp: userXp } : player
+          player.name === USER_NAME ? { ...player, xp: userXp, prestige: userPrestige } : player
       );
       
-      updatedLeaderboard.sort((a, b) => b.xp - a.xp);
+      updatedLeaderboard.sort((a, b) => {
+        if (b.prestige !== a.prestige) {
+          return b.prestige - a.prestige;
+        }
+        return b.xp - a.xp;
+      });
       
       const rankedLeaderboard = updatedLeaderboard.map((player, index) => ({ ...player, rank: index + 1 }));
       
@@ -46,7 +54,7 @@ export default function LeaderboardPage() {
     }
     
     updateLeaderboard();
-    window.addEventListener('currencyChange', updateLeaderboard); // Listen for XP changes
+    window.addEventListener('currencyChange', updateLeaderboard); // Listen for XP/Prestige changes
     return () => window.removeEventListener('currencyChange', updateLeaderboard);
   }, []);
 
@@ -99,7 +107,24 @@ export default function LeaderboardPage() {
                           player.rank <= 3 && "ring-2 ring-primary",
                           player.name === USER_NAME && "ring-2 ring-accent"
                           )} />
-                      <span className="font-medium">{player.name} {player.name === USER_NAME && '(You)'}</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-medium">{player.name} {player.name === USER_NAME && '(You)'}</span>
+                        {player.prestige > 0 && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <div className="flex items-center gap-1 text-yellow-400">
+                                  <Star className="h-4 w-4" />
+                                  <span className="font-bold text-sm">x{player.prestige}</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Prestige Level: {player.prestige}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-right font-mono font-semibold">{player.xp.toLocaleString()}</TableCell>
