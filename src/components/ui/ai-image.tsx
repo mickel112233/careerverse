@@ -30,7 +30,11 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
                 }
                 const generatedUrl = await generateImage(prompt);
                 if (!isCancelled) {
-                    localStorage.setItem(cacheKey, generatedUrl);
+                    try {
+                        localStorage.setItem(cacheKey, generatedUrl);
+                    } catch (e) {
+                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, e);
+                    }
                     setImageUrl(generatedUrl);
                 }
             } catch (error) {

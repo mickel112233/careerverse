@@ -31,7 +31,11 @@ export function AiAvatar({ prompt, alt, fallback, className }: AiAvatarProps) {
                 }
                 const generatedUrl = await generateImage(prompt);
                 if (!isCancelled) {
-                    localStorage.setItem(cacheKey, generatedUrl);
+                    try {
+                        localStorage.setItem(cacheKey, generatedUrl);
+                    } catch (e) {
+                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, e);
+                    }
                     setImageUrl(generatedUrl);
                 }
             } catch (error) {
