@@ -223,7 +223,7 @@ export default function DashboardClient() {
                     <AlertDialogTitle>Change Learning Path?</AlertDialogTitle>
                     <AlertDialogDescription>
                         Are you sure you want to switch to the "{streamToConfirm}" path? Your progress on the current path will be removed and your XP will be reset. This action cannot be undone.
-                    </Description>
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel onClick={cancelConfirmation}>Cancel</AlertDialogCancel>
