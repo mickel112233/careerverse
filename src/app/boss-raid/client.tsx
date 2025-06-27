@@ -115,8 +115,10 @@ export default function BossRaidClient() {
         setTimeout(() => {
             // Check for victory or defeat
             const newBossHealth = bossCurrentHealth - (isCorrect ? (currentQuestion?.damage ?? 0) : 0);
-            if (newBossHealth <= 0 || partyHealth <= 0) {
+            const newPartyHealth = partyHealth - (!isCorrect ? (currentQuestion?.bossAttackDamage ?? 0) : 0);
+            if (newBossHealth <= 0 || newPartyHealth <= 0) {
                 if (newBossHealth <= 0) setBossCurrentHealth(0);
+                if (newPartyHealth <= 0) setPartyHealth(0);
                 setRaidState('finished');
                 return;
             }
@@ -304,7 +306,7 @@ export default function BossRaidClient() {
                 </div>
                 <div className="space-y-4">
                      {/* Team Info */}
-                    <Card className={cn("transition-all", isPartyHit && "bg-destructive/10 border-destructive")}>
+                    <Card className={cn("transition-all duration-300", isPartyHit && "bg-destructive/20 border-destructive animate-shake")}>
                         <CardHeader><CardTitle className="font-headline">Your Raid Party</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
@@ -332,13 +334,21 @@ export default function BossRaidClient() {
                         <CardHeader><CardTitle className="font-headline">Battle Log</CardTitle></CardHeader>
                         <CardContent>
                             <div ref={eventLogRef} className="h-64 overflow-y-auto space-y-2 p-2 bg-muted/50 rounded-md text-sm">
+                                <AnimatePresence>
                                 {eventLog.map(e => (
-                                    <p key={e.id} className={cn(
-                                        e.type === 'player' && 'text-cyan-400',
-                                        e.type === 'boss' && 'text-red-400',
-                                        e.type === 'system' && 'text-muted-foreground italic',
-                                    )}>{e.message}</p>
+                                    <motion.p 
+                                        key={e.id} 
+                                        className={cn(
+                                            e.type === 'player' && 'text-cyan-400',
+                                            e.type === 'boss' && 'text-red-400',
+                                            e.type === 'system' && 'text-muted-foreground italic',
+                                        )}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                    >{e.message}</motion.p>
                                 ))}
+                                </AnimatePresence>
                             </div>
                         </CardContent>
                     </Card>

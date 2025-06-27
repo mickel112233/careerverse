@@ -106,10 +106,22 @@ export default function ShopPage() {
   const { toast } = useToast();
 
   const [inventory, setInventory] = useState<string[]>([]);
+  const [membership, setMembership] = useState('Free');
 
   useEffect(() => {
     const storedInventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
     setInventory(storedInventory);
+    const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
+    setMembership(storedMembership);
+  }, []);
+  
+  useEffect(() => {
+    const handleStorageChange = () => {
+        const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
+        setMembership(storedMembership);
+    };
+    window.addEventListener('currencyChange', handleStorageChange);
+    return () => window.removeEventListener('currencyChange', handleStorageChange);
   }, []);
 
   const handlePurchase = (cost: number, currency: 'coins' | 'gems', itemName: string) => {
@@ -189,8 +201,9 @@ export default function ShopPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {memberships.map((plan) => {
                     const PlanIcon = plan.icon;
+                    const isCurrentPlan = membership === plan.name;
                     return (
-                        <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20")}>
+                        <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20", isCurrentPlan && "border-green-500 ring-2 ring-green-500")}>
                             <CardHeader>
                                 <div className="flex items-center gap-3 mb-2">
                                     <PlanIcon className={cn("h-8 w-8", plan.color)} />
@@ -210,8 +223,8 @@ export default function ShopPage() {
                                 ))}
                             </CardContent>
                             <CardFooter>
-                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)}>
-                                    Subscribe
+                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)} disabled={isCurrentPlan}>
+                                    {isCurrentPlan ? "Current Plan" : "Subscribe"}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -272,6 +285,7 @@ export default function ShopPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {powerUps.map((item) => {
                     const ItemIcon = item.icon;
+                    const isOwned = inventory.includes(item.name);
                     return (
                         <Card key={item.name} className="flex flex-col">
                             <CardHeader>
@@ -284,11 +298,17 @@ export default function ShopPage() {
                                 <p className="text-muted-foreground">{item.description}</p>
                             </CardContent>
                             <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
-                                <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)}>
-                                     <div className="flex items-center">
-                                        {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
-                                        {item.price.toLocaleString()}
-                                    </div>
+                                <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)} disabled={isOwned}>
+                                    {isOwned ? (
+                                        <>
+                                            <Check className="mr-2" /> Owned
+                                        </>
+                                     ) : (
+                                        <div className="flex items-center">
+                                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
+                                            {item.price.toLocaleString()}
+                                        </div>
+                                     )}
                                 </Button>
                             </CardFooter>
                         </Card>

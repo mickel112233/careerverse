@@ -148,6 +148,8 @@ export default function DashboardClient() {
         localStorage.setItem('careerClashStream', streamName);
         localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableNodes));
         localStorage.setItem('careerClashTotalXp', '0');
+        localStorage.setItem('careerClashCoins', '100');
+        localStorage.setItem('careerClashGems', '5');
         window.dispatchEvent(new Event('currencyChange'));
     } catch (error) {
         console.error("Failed to generate roadmap:", error);
@@ -181,7 +183,7 @@ export default function DashboardClient() {
 
   return (
     <>
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button variant="outline" size="icon">
