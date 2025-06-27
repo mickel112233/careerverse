@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -10,11 +11,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft, Pencil, Loader2 } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, BarChartHorizontal, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -24,8 +26,15 @@ import { motion } from 'framer-motion';
 const baseUserData = {
     name: 'QuantumLeap',
     title: 'Senior AI Engineer',
+    bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning. Let\'s connect and build the future!',
     avatarHint: 'cyberpunk woman portrait',
     bannerHint: 'abstract purple and blue nebula',
+    links: {
+        github: 'https://github.com/QuantumLeap',
+        youtube: 'https://youtube.com/@QuantumLeap',
+        instagram: 'https://instagram.com/QuantumLeap',
+        discord: 'quantumleap#1234'
+    },
     stats: {
         wins: 128,
         losses: 34,
@@ -50,8 +59,13 @@ const baseUserData = {
 const profileFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters.").max(30, "Name must be at most 30 characters."),
   title: z.string().min(3, "Title must be at least 3 characters.").max(50, "Title must be at most 50 characters."),
+  bio: z.string().max(160, "Bio cannot exceed 160 characters.").optional(),
   avatarHint: z.string().max(100, "Avatar hint must be at most 100 characters."),
   bannerHint: z.string().max(100, "Banner hint must be at most 100 characters."),
+  github: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
+  youtube: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
+  instagram: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
+  discord: z.string().max(50, "Discord username is too long.").optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -75,6 +89,72 @@ const StatCard = ({ icon: Icon, label, value, subValue }: { icon: React.ElementT
     </motion.div>
 );
 
+const Socials = ({ links }: { links: UserData['links']}) => {
+    const hasLinks = Object.values(links).some(link => !!link);
+
+    if (!hasLinks) return null;
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="font-headline">Socials</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex flex-wrap gap-2">
+                    {links.github && (
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button asChild variant="outline" size="icon">
+                                        <a href={links.github} target="_blank" rel="noopener noreferrer"><Github className="h-5 w-5" /></a>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>GitHub</p></TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                     {links.youtube && (
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button asChild variant="outline" size="icon">
+                                        <a href={links.youtube} target="_blank" rel="noopener noreferrer"><Youtube className="h-5 w-5" /></a>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>YouTube</p></TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                     {links.instagram && (
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button asChild variant="outline" size="icon">
+                                        <a href={links.instagram} target="_blank" rel="noopener noreferrer"><Instagram className="h-5 w-5" /></a>
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Instagram</p></TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                      {links.discord && (
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button variant="outline" size="icon">
+                                        <MessageSquare className="h-5 w-5" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent><p>Discord: {links.discord}</p></TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    )}
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
 export default function ProfileClient() {
     const router = useRouter();
     const { toast } = useToast();
@@ -93,15 +173,20 @@ export default function ProfileClient() {
         defaultValues: {
             name: '',
             title: '',
+            bio: '',
             avatarHint: '',
             bannerHint: '',
+            github: '',
+            youtube: '',
+            instagram: '',
+            discord: '',
         },
     });
 
     useEffect(() => {
         const updateAllStats = () => {
             const storedProfile = localStorage.getItem('careerClashUserProfile');
-            let profileData: Omit<UserData, 'guild'>;
+            let profileData: Omit<UserData, 'guild' | 'links'> & { links?: UserData['links'] };
             if (storedProfile) {
                 profileData = JSON.parse(storedProfile);
             } else {
@@ -117,8 +202,18 @@ export default function ProfileClient() {
                 guild = { name: guildData.guildName, role: userMemberData?.role || 'Member' };
             }
             
-            setUserData({ ...profileData, guild });
-            form.reset(profileData);
+            setUserData({ ...baseUserData, ...profileData, guild });
+            form.reset({
+                name: profileData.name,
+                title: profileData.title,
+                bio: profileData.bio || '',
+                avatarHint: profileData.avatarHint,
+                bannerHint: profileData.bannerHint,
+                github: profileData.links?.github || '',
+                youtube: profileData.links?.youtube || '',
+                instagram: profileData.links?.instagram || '',
+                discord: profileData.links?.discord || '',
+            });
 
             const storedXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
             setTotalXp(storedXp);
@@ -185,8 +280,23 @@ export default function ProfileClient() {
 
     const onSubmitProfile = (values: ProfileFormValues) => {
         if (!userData) return;
-        const updatedProfile = { ...userData, ...values };
-        localStorage.setItem('careerClashUserProfile', JSON.stringify(updatedProfile));
+        const { github, youtube, instagram, discord, ...restOfValues } = values;
+
+        const updatedProfileData = {
+            ...userData,
+            ...restOfValues,
+            links: {
+                github: github || '',
+                youtube: youtube || '',
+                instagram: instagram || '',
+                discord: discord || '',
+            }
+        };
+
+        // Remove properties that shouldn't be in the persisted user profile object
+        const { guild, ...profileToSave } = updatedProfileData;
+
+        localStorage.setItem('careerClashUserProfile', JSON.stringify(profileToSave));
         window.dispatchEvent(new Event('profileChange'));
         toast({ title: 'Profile Updated!', description: 'Your changes have been saved.' });
         setIsEditModalOpen(false);
@@ -199,12 +309,12 @@ export default function ProfileClient() {
   return (
     <>
        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-            <DialogContent>
+            <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Edit Your Profile</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmitProfile)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmitProfile)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
                         <FormField
                             control={form.control}
                             name="name"
@@ -226,6 +336,19 @@ export default function ProfileClient() {
                                     <FormLabel>Title / Role</FormLabel>
                                     <FormControl>
                                         <Input placeholder="e.g. Aspiring Developer" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="bio"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Bio</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="A short description about yourself" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -259,7 +382,60 @@ export default function ProfileClient() {
                                 </FormItem>
                             )}
                         />
-                        <DialogFooter>
+                        <h3 className="text-md font-semibold pt-2 border-b pb-2">Social Links</h3>
+                        <FormField
+                            control={form.control}
+                            name="github"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>GitHub URL</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="https://github.com/your-username" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="youtube"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>YouTube URL</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="https://youtube.com/@your-channel" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="instagram"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Instagram URL</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="https://instagram.com/your-username" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="discord"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Discord Username</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="your_username#1234" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <DialogFooter className="pt-4 sticky bottom-0 bg-background">
                             <Button type="submit" disabled={form.formState.isSubmitting}>
                                 {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                 Save Changes
@@ -302,6 +478,7 @@ export default function ProfileClient() {
 
                 <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
                 <p className="text-muted-foreground">{userData.title}</p>
+                {userData.bio && <p className="text-sm text-muted-foreground mt-4 text-center">{userData.bio}</p>}
                 
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
                     {userData.guild && (
@@ -322,11 +499,13 @@ export default function ProfileClient() {
                     )}
                 </div>
                 
-                <Button className="mt-4 w-full" onClick={() => window.open('https://www.linkedin.com/in/me/', '_blank')}>
+                <Button className="mt-4 w-full" onClick={() => window.open('https://www.linkedin.com/in/', '_blank')}>
                     <Linkedin className="mr-2 h-4 w-4" />
                     Connect with LinkedIn
                 </Button>
             </Card>
+
+            <Socials links={userData.links} />
 
             <Card>
                 <CardHeader>
