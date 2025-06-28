@@ -28,16 +28,16 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
                     if (!isCancelled) {
                         setImageUrl(cachedUrl);
                     }
-                    return;
-                }
-                const generatedUrl = await generateImage(prompt);
-                if (!isCancelled) {
-                    try {
-                        localStorage.setItem(cacheKey, generatedUrl);
-                    } catch (error) {
-                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
+                } else {
+                    const generatedUrl = await generateImage(prompt);
+                    if (!isCancelled) {
+                        try {
+                            localStorage.setItem(cacheKey, generatedUrl);
+                        } catch (error) {
+                            console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
+                        }
+                        setImageUrl(generatedUrl);
                     }
-                    setImageUrl(generatedUrl);
                 }
             } catch (error) {
                 console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
