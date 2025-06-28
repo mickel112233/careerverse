@@ -6,97 +6,57 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Shield, Star, Zap, Paintbrush, FileText, ShoppingCart, Crown, Sparkles, Wand2, Percent, Check, Users, Trophy, ArrowLeft, Coins } from "lucide-react";
+import { Gem, Star, ShoppingCart, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
+import { memberships, addOns, currencyPacks, limitedTimeOffers, ShopItem } from '@/lib/shop-data';
+import { Badge } from '@/components/ui/badge';
 
-const memberships = [
-    {
-        name: 'Premium',
-        price: '₹149/mo',
-        icon: Star,
-        color: 'text-cyan-400',
-        features: [
-            'Create a Guild',
-            'Exclusive Profile Badge',
-            'Ad-Free Experience',
-            '5% Shop Discount',
-            'Monthly 1,000 Coins',
-        ],
-        highlight: false,
-    },
-    {
-        name: 'Premium+',
-        price: '₹299/mo',
-        icon: Sparkles,
-        color: 'text-fuchsia-400',
-        features: [
-            'All Premium Benefits',
-            'Golden Username Effect',
-            'Exclusive Animated Avatar Frame',
-            '10% Shop Discount',
-            'Monthly 2,500 Coins',
-        ],
-        highlight: true,
-    },
-    {
-        name: 'Elite',
-        price: '₹499/mo',
-        icon: Crown,
-        color: 'text-yellow-400',
-        features: [
-            'All Premium+ Benefits',
-            'Custom Guild Roles',
-            'Beta Access to New Features',
-            '15% Shop Discount',
-            'Monthly 6,000 Coins',
-        ],
-        highlight: false,
-    },
-     {
-        name: 'Super',
-        price: '₹799/mo',
-        icon: Wand2,
-        color: 'text-purple-400',
-        features: [
-            'All Elite Benefits',
-            'Unique "Super" Title & Badge',
-            'Direct line to support',
-            '20% Shop Discount',
-            'Monthly 15,000 Coins',
-        ],
-        highlight: false,
-    },
-];
 
-const addOns = [
-  { name: 'Cosmic Avatar Frame', price: 50, currency: 'gems', type: 'Frame', icon: Star, imageHint: 'cosmic avatar frame' },
-  { name: 'Neon Glow Profile FX', price: 75, currency: 'gems', type: 'Animation', icon: Zap, imageHint: 'neon profile animation' },
-  { name: 'Dark Matter Profile Theme', price: 150, currency: 'gems', type: 'Theme', icon: Paintbrush, imageHint: 'dark matter space theme' },
-  { name: 'Holographic Card Back', price: 60, currency: 'gems', type: 'Cosmetic', icon: Sparkles, imageHint: 'holographic card texture' },
-  { name: 'The Newbie Title', price: 10, currency: 'gems', type: 'Title', icon: Shield, imageHint: 'simple title banner' },
-  { name: 'The Apprentice Title', price: 50, currency: 'gems', type: 'Title', icon: Shield, imageHint: 'ornate title banner' },
-  { name: 'The Legend Title', price: 200, currency: 'gems', type: 'Title', icon: Trophy, imageHint: 'legendary trophy banner' },
-  { name: 'God-Tier Title', price: 500, currency: 'gems', type: 'Title', icon: Crown, imageHint: 'golden crown banner' },
-];
-
-const powerUps = [
-  { name: 'XP Booster (x2)', description: 'Double your XP gain for 3 battles.', price: 2000, currency: 'coins', icon: Percent },
-  { name: 'Retry Token', description: 'Get a second chance on a lost battle.', price: 5000, currency: 'coins', icon: Shield },
-  { name: 'AI Resume Builder Template', description: 'A template optimized for AI/ML roles.', price: 100, currency: 'gems', icon: FileText },
-  { name: 'Startup Pitch Deck', description: 'A professional deck to pitch your next big idea.', price: 150, currency: 'gems', icon: FileText },
-];
-
-const currencyPacks = [
-    { name: 'Pocket of Coins', amount: 5000, price: '₹89', currency: 'coins' },
-    { name: 'Fistful of Gems', amount: 100, price: '₹89', currency: 'gems' },
-    { name: 'Bag of Coins', amount: 12000, price: '₹179', currency: 'coins' },
-    { name: 'Handful of Gems', amount: 250, price: '₹179', currency: 'gems' },
-    { name: 'Chest of Coins', amount: 30000, price: '₹349', currency: 'coins' },
-    { name: 'Treasure of Gems', amount: 600, price: '₹449', currency: 'gems' },
-];
+const ItemCard = ({ item, onPurchase, isOwned }: { item: ShopItem, onPurchase: () => void, isOwned: boolean }) => {
+    const ItemIcon = item.icon;
+    const rarityColors: { [key: string]: string } = {
+        Common: 'border-gray-400',
+        Rare: 'border-blue-400',
+        Epic: 'border-purple-500',
+        Legendary: 'border-orange-400 animate-pulse-slow',
+    }
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -5, scale: 1.02 }}
+            className="h-full"
+        >
+            <Card className={cn("flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300 overflow-hidden border-2", item.rarity && rarityColors[item.rarity])}>
+                <CardHeader className="p-0 relative">
+                    <AiImage prompt={item.imageHint} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
+                    <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>
+                </CardHeader>
+                <CardContent className="p-4 flex-grow">
+                    <CardTitle className="font-headline text-lg mb-2">{item.name}</CardTitle>
+                    <CardDescription>{item.description}</CardDescription>
+                </CardContent>
+                <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
+                <Button className="w-full" onClick={onPurchase} disabled={isOwned}>
+                    {isOwned ? (
+                        <>
+                            <Check className="mr-2" /> Owned
+                        </>
+                    ) : (
+                        <div className="flex items-center">
+                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400" /> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
+                            {item.price.toLocaleString()}
+                        </div>
+                    )}
+                    </Button>
+                </CardFooter>
+            </Card>
+        </motion.div>
+    );
+};
 
 
 export default function ShopPage() {
@@ -119,41 +79,44 @@ export default function ShopPage() {
     const handleStorageChange = () => {
         const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
         setMembership(storedMembership);
+        const storedInventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
+        setInventory(storedInventory);
     };
     window.addEventListener('currencyChange', handleStorageChange);
     return () => window.removeEventListener('currencyChange', handleStorageChange);
   }, []);
 
-  const handlePurchase = (cost: number, currency: 'coins' | 'gems', itemName: string) => {
-    if (inventory.includes(itemName)) {
-        toast({ variant: 'destructive', title: 'Already Owned', description: `You already own ${itemName}.` });
+  const handlePurchase = (item: ShopItem) => {
+    if (inventory.includes(item.name)) {
+        toast({ variant: 'destructive', title: 'Already Owned', description: `You already own ${item.name}.` });
         return;
     }
 
     const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
     const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
 
-    if (currency === 'coins') {
-        if (currentCoins < cost) {
+    if (item.currency === 'coins') {
+        if (currentCoins < item.price) {
             toast({ variant: 'destructive', title: 'Insufficient Coins', description: 'You do not have enough coins to purchase this item.' });
             return;
         }
-        localStorage.setItem('careerClashCoins', (currentCoins - cost).toString());
+        localStorage.setItem('careerClashCoins', (currentCoins - item.price).toString());
     } else {
-        if (currentGems < cost) {
+        if (currentGems < item.price) {
             toast({ variant: 'destructive', title: 'Insufficient Gems', description: 'You do not have enough gems to purchase this item.' });
             return;
         }
-        localStorage.setItem('careerClashGems', (currentGems - cost).toString());
+        localStorage.setItem('careerClashGems', (currentGems - item.price).toString());
     }
     
-    const newInventory = [...inventory, itemName];
+    const newInventory = [...inventory, item.name];
     setInventory(newInventory);
     localStorage.setItem('careerClashInventory', JSON.stringify(newInventory));
 
     window.dispatchEvent(new Event('currencyChange'));
+    window.dispatchEvent(new Event('profileChange'));
 
-    toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${itemName}.`, className: "bg-green-500 text-white" });
+    toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${item.name}.`, className: "bg-green-500 text-white" });
   };
 
   const handleCurrencyPurchase = (amount: number, currency: 'coins' | 'gems', packName: string) => {
@@ -190,10 +153,9 @@ export default function ShopPage() {
       </div>
 
       <Tabs defaultValue={defaultTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="memberships">Memberships</TabsTrigger>
           <TabsTrigger value="addons">Add-ons</TabsTrigger>
-          <TabsTrigger value="power-ups">Power-Ups</TabsTrigger>
           <TabsTrigger value="currencies">Currencies</TabsTrigger>
         </TabsList>
         
@@ -233,89 +195,29 @@ export default function ShopPage() {
             </div>
         </TabsContent>
 
-        <TabsContent value="addons">
-           <div className="mb-6 p-4 bg-muted/50 rounded-lg">
-                <p className="text-sm text-muted-foreground text-center">
-                    Note: This is just a sample of our 1000+ items! The shop rotates daily with new and exciting add-ons.
-                </p>
+        <TabsContent value="addons" className="space-y-8">
+            <div>
+                <h2 className="text-2xl font-bold font-headline text-center mb-4 flex items-center justify-center gap-2 text-red-400"><Flame className="animate-pulse" />Limited Time Offers</h2>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {limitedTimeOffers.map(item => (
+                        <div key={item.name} className="relative">
+                            <ItemCard item={item} onPurchase={() => handlePurchase(item)} isOwned={inventory.includes(item.name)} />
+                            <Badge className="absolute -top-2 -right-2 flex items-center gap-1 bg-destructive text-destructive-foreground"><Clock className="h-3 w-3" />{item.endsIn}</Badge>
+                        </div>
+                    ))}
+                </div>
             </div>
-           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                {addOns.map((item, i) => {
-                    const ItemIcon = item.icon;
-                    const isOwned = inventory.includes(item.name);
-                    return (
-                        <motion.div
-                            key={item.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: i * 0.05 }}
-                            whileHover={{ y: -5, scale: 1.02 }}
-                            className="h-full"
-                        >
-                            <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                                <CardHeader className="p-0 relative">
-                                <AiImage prompt={item.imageHint} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
-                                <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>
-                                </CardHeader>
-                                <CardContent className="p-4 flex-grow">
-                                    <CardTitle className="font-headline text-lg mb-2">{item.name}</CardTitle>
-                                    <CardDescription>{item.type}</CardDescription>
-                                </CardContent>
-                                <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
-                                <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)} disabled={isOwned}>
-                                    {isOwned ? (
-                                        <>
-                                            <Check className="mr-2" /> Owned
-                                        </>
-                                    ) : (
-                                        <div className="flex items-center">
-                                            <Gem className="h-4 w-4 mr-2 text-cyan-400"/>
-                                            {item.price.toLocaleString()}
-                                        </div>
-                                    )}
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        </motion.div>
-                    )
-                })}
-           </div>
-        </TabsContent>
-        <TabsContent value="power-ups">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {powerUps.map((item) => {
-                    const ItemIcon = item.icon;
-                    const isOwned = inventory.includes(item.name);
-                    return (
-                        <Card key={item.name} className="flex flex-col">
-                            <CardHeader>
-                                <div className="flex items-center gap-4">
-                                    <ItemIcon className="h-8 w-8 text-primary"/>
-                                    <CardTitle className="font-headline text-lg">{item.name}</CardTitle>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-muted-foreground">{item.description}</p>
-                            </CardContent>
-                            <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
-                                <Button className="w-full" onClick={() => handlePurchase(item.price, item.currency as 'coins' | 'gems', item.name)} disabled={isOwned}>
-                                    {isOwned ? (
-                                        <>
-                                            <Check className="mr-2" /> Owned
-                                        </>
-                                     ) : (
-                                        <div className="flex items-center">
-                                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400"/> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
-                                            {item.price.toLocaleString()}
-                                        </div>
-                                     )}
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    )
-                })}
+            
+            <div className="border-t pt-8">
+                 <h2 className="text-2xl font-bold font-headline text-center mb-4">Permanent Collection</h2>
+                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {addOns.map((item, i) => (
+                        <ItemCard key={item.name} item={item} onPurchase={() => handlePurchase(item)} isOwned={inventory.includes(item.name)} />
+                    ))}
+                </div>
             </div>
         </TabsContent>
+        
         <TabsContent value="currencies">
             <div className="text-center mb-8">
                 <h2 className="text-2xl font-headline font-bold">Refill Your Wallet</h2>

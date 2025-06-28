@@ -8,23 +8,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Trophy, ArrowLeft, Star, Zap, Swords, Shield as ShieldIcon, Skull, Users, BarChart3, User } from "lucide-react";
+import { Trophy, ArrowLeft, Star, Zap, Swords, Shield as ShieldIcon, Skull, Users, BarChart3, User, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-
+import { allShopItems } from '@/lib/shop-data';
 
 const leaderboardData = [
-  { rank: 1, name: 'QuantumLeap', xp: 0, prestige: 0, wins: 0, losses: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'], guild: 'The Void Runners', bossFights: 5 },
-  { rank: 2, name: 'SynthWave', xp: 9500, prestige: 0, wins: 110, losses: 20, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'], guild: 'Design Dynasty', bossFights: 3 },
-  { rank: 3, name: 'CodeNinja', xp: 9200, prestige: 0, wins: 105, losses: 18, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'], guild: 'Frontend Forces', bossFights: 2 },
-  { rank: 4, name: 'DataDynamo', xp: 8900, prestige: 0, wins: 100, losses: 25, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'], guild: 'Data Mavericks', bossFights: 4 },
-  { rank: 5, name: 'PixelPerfect', xp: 8750, prestige: 0, wins: 98, losses: 30, avatarHint: 'designer serious', badges: ['UI/UX Expert'], guild: 'Design Dynasty', bossFights: 1 },
-  { rank: 6, name: 'LogicLord', xp: 8500, prestige: 0, wins: 95, losses: 15, avatarHint: 'philosopher thinking', badges: ['Algorithm Ace'], guild: null, bossFights: 6 },
-  { rank: 7, name: 'CloudChaser', xp: 8300, prestige: 0, wins: 90, losses: 22, avatarHint: 'devops engineer female', badges: ['DevOps King'], guild: 'Backend Brigade', bossFights: 3 },
-  { rank: 8, name: 'ScriptKiddie', xp: 8100, prestige: 0, wins: 88, losses: 35, avatarHint: 'young male student', badges: ['JS Jedi'], guild: null, bossFights: 0 },
-  { rank: 9, name: 'SecureShell', xp: 7900, prestige: 0, wins: 85, losses: 12, avatarHint: 'female hacker hood', badges: ['Security Sentinel'], guild: 'Cyber Sentinels', bossFights: 8 },
-  { rank: 10, name: 'APIAdept', xp: 7700, prestige: 0, wins: 80, losses: 28, avatarHint: 'male backend developer', badges: ['Backend Baron'], guild: 'Backend Brigade', bossFights: 2 },
+  { rank: 1, name: 'QuantumLeap', xp: 0, prestige: 0, wins: 0, losses: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'], guild: 'The Void Runners', bossFights: 5, showcase: [] },
+  { rank: 2, name: 'SynthWave', xp: 9500, prestige: 0, wins: 110, losses: 20, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'], guild: 'Design Dynasty', bossFights: 3, showcase: ['Neon Glow Profile FX', 'The Legend Title'] },
+  { rank: 3, name: 'CodeNinja', xp: 9200, prestige: 0, wins: 105, losses: 18, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'], guild: 'Frontend Forces', bossFights: 2, showcase: ['Glitch-in-the-Matrix FX', 'The Master Title'] },
+  { rank: 4, name: 'DataDynamo', xp: 8900, prestige: 0, wins: 100, losses: 25, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'], guild: 'Data Mavericks', bossFights: 4, showcase: ['AI Companion: Bit', 'The Adept Title'] },
+  { rank: 5, name: 'PixelPerfect', xp: 8750, prestige: 0, wins: 98, losses: 30, avatarHint: 'designer serious', badges: ['UI/UX Expert'], guild: 'Design Dynasty', bossFights: 1, showcase: ['Clockwork Frame'] },
+  { rank: 6, name: 'LogicLord', xp: 8500, prestige: 0, wins: 95, losses: 15, avatarHint: 'philosopher thinking', badges: ['Algorithm Ace'], guild: null, bossFights: 6, showcase: [] },
+  { rank: 7, name: 'CloudChaser', xp: 8300, prestige: 0, wins: 90, losses: 22, avatarHint: 'devops engineer female', badges: ['DevOps King'], guild: 'Backend Brigade', bossFights: 3, showcase: [] },
+  { rank: 8, name: 'ScriptKiddie', xp: 8100, prestige: 0, wins: 88, losses: 35, avatarHint: 'young male student', badges: ['JS Jedi'], guild: null, bossFights: 0, showcase: ['The Apprentice Title'] },
+  { rank: 9, name: 'SecureShell', xp: 7900, prestige: 0, wins: 85, losses: 12, avatarHint: 'female hacker hood', badges: ['Security Sentinel'], guild: 'Cyber Sentinels', bossFights: 8, showcase: ['Dark Matter Theme', 'AI Companion: Specter'] },
+  { rank: 10, name: 'APIAdept', xp: 7700, prestige: 0, wins: 80, losses: 28, avatarHint: 'male backend developer', badges: ['Backend Baron'], guild: 'Backend Brigade', bossFights: 2, showcase: [] },
 ];
 
 const USER_NAME = 'QuantumLeap';
@@ -58,6 +58,7 @@ export default function LeaderboardPage() {
       const userStats = userProfile.stats || { wins: 128, losses: 34, bossesDefeated: 3 };
       const userGuildData = JSON.parse(localStorage.getItem('userGuild') || 'null');
       const userGuildName = userGuildData ? userGuildData.guildName : null;
+      const userShowcase = JSON.parse(localStorage.getItem('pinnedItems') || '[]');
       
       const updatedLeaderboard = leaderboardData.map(player => 
           player.name === USER_NAME ? { 
@@ -67,7 +68,8 @@ export default function LeaderboardPage() {
               wins: userStats.wins, 
               losses: userStats.losses,
               bossFights: userStats.bossesDefeated,
-              guild: userGuildName
+              guild: userGuildName,
+              showcase: userShowcase,
             } : player
       );
       
@@ -210,6 +212,34 @@ export default function LeaderboardPage() {
                         <StatCard icon={Skull} label="Bosses Defeated" value={selectedPlayer.bossFights} />
                         <StatCard icon={BarChart3} label="Win Rate" value={`${((selectedPlayer.wins / (selectedPlayer.wins + selectedPlayer.losses || 1)) * 100).toFixed(0)}%`} />
                     </div>
+                     {selectedPlayer.showcase.length > 0 && (
+                        <div className="pt-4 border-t">
+                            <h3 className="font-headline font-semibold mb-2 flex items-center gap-2"><Package/> Player Showcase</h3>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                {selectedPlayer.showcase.map(itemName => {
+                                    const item = allShopItems.find(i => i.name === itemName);
+                                    if (!item) return null;
+                                    const Icon = item.icon;
+                                    return (
+                                        <TooltipProvider key={item.name}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg h-full">
+                                                        <Icon className="h-8 w-8 mb-1 text-primary"/>
+                                                        <p className="text-xs font-semibold truncate">{item.name}</p>
+                                                    </div>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p className="font-bold">{item.name}</p>
+                                                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
         </DialogContent>

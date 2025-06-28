@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart, Package, ToyBrick } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -25,44 +25,27 @@ import { AiAvatar } from '@/components/ui/ai-avatar';
 import { motion } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Checkbox } from '@/components/ui/checkbox';
+import { allShopItems, ShopItem } from '@/lib/shop-data';
 
 const PRESTIGE_LEVEL_REQUIREMENT = 100;
 const PRESTIGE_GEM_REWARD = 100;
 
-const baseUserData = {
-    name: 'QuantumLeap',
-    title: 'Senior AI Engineer',
-    bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning. Let\'s connect and build the future!',
-    avatarHint: 'cyberpunk woman portrait',
-    bannerHint: 'abstract purple and blue nebula',
-    links: {
-        github: 'https://github.com/QuantumLeap',
-        youtube: 'https://youtube.com/@QuantumLeap',
-        instagram: 'https://instagram.com/QuantumLeap',
-        discord: 'quantumleap#1234'
-    },
-    stats: {
-        wins: 128,
-        losses: 34,
-        streak: 5,
-        longestStreak: 12,
-        bossesDefeated: 3,
-    },
-    achievements: [
-        { name: 'Master Coder', description: 'Achieved mastery in advanced coding challenges.', icon: Award, color: 'text-purple-400' },
-        { name: 'AI Guru', description: 'Demonstrated deep knowledge in AI and Machine Learning.', icon: Zap, color: 'text-sky-400' },
-        { name: 'TS Wizard', description: 'Mastered the art of TypeScript.', icon: ShieldCheck, color: 'text-green-400' },
-        { name: '5 Wins Streak', description: 'Achieved a winning streak of 5 consecutive battles.', icon: Flame, color: 'text-red-500' },
-        { name: 'Top 10 Player', description: 'Ranked among the top 10 players on the leaderboard.', icon: Trophy, color: 'text-orange-400' },
-        { name: 'React Pro', description: 'Showcased expert-level skills in React development.', icon: Star, color: 'text-yellow-400' },
-    ],
-    battleHistory: [
-        { id: 1, challenge: 'React Hooks Quiz', opponent: { name: 'SynthWave', avatarHint: 'cyberpunk man portrait' }, result: 'Win', xp: '+150 XP' },
-        { id: 2, challenge: 'Node.js Performance Battle', opponent: { name: 'CodeNinja', avatarHint: 'hacker with glasses' }, result: 'Win', xp: '+200 XP' },
-        { id: 3, challenge: 'CSS Specificity Simulation', opponent: { name: 'PixelPerfect', avatarHint: 'designer serious' }, result: 'Loss', xp: '-50 XP' },
-        { id: 4, challenge: 'Python Algorithm Challenge', opponent: { name: 'DataDynamo', avatarHint: 'data scientist smiling' }, result: 'Win', xp: '+180 XP' },
-    ],
+type Achievement = {
+    name: string;
+    description: string;
+    icon: React.ElementType;
+    color: string;
+    type: 'Achievement'
 };
+
+const baseAchievements: Achievement[] = [
+    { name: 'Master Coder', description: 'Achieved mastery in advanced coding challenges.', icon: Award, color: 'text-purple-400', type: 'Achievement' },
+    { name: 'AI Guru', description: 'Demonstrated deep knowledge in AI and Machine Learning.', icon: Zap, color: 'text-sky-400', type: 'Achievement' },
+    { name: 'TS Wizard', description: 'Mastered the art of TypeScript.', icon: ShieldCheck, color: 'text-green-400', type: 'Achievement' },
+    { name: '5 Wins Streak', description: 'Achieved a winning streak of 5 consecutive battles.', icon: Flame, color: 'text-red-500', type: 'Achievement' },
+    { name: 'Top 10 Player', description: 'Ranked among the top 10 players on the leaderboard.', icon: Trophy, color: 'text-orange-400', type: 'Achievement' },
+    { name: 'React Pro', description: 'Showcased expert-level skills in React development.', icon: Star, color: 'text-yellow-400', type: 'Achievement' },
+];
 
 const mockSkillData = [
   { subject: 'Frontend', score: 95, fullMark: 100 },
@@ -87,10 +70,19 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-type UserData = typeof baseUserData & {
+type UserProfileData = {
+    name: string;
+    title: string;
+    bio: string;
+    avatarHint: string;
+    bannerHint: string;
+    links: { github: string; youtube: string; instagram: string; discord: string; };
+    stats: { wins: number; losses: number; streak: number; longestStreak: number; bossesDefeated: number; };
     guild: { name: string; role: string; } | null;
-    achievements: { name: string; description: string; icon: React.ElementType, color: string }[];
+    battleHistory: { id: number; challenge: string; opponent: { name: string; avatarHint: string; }; result: string; xp: string; }[];
 };
+
+type UnlockableItem = (Achievement | ShopItem);
 
 const StatItem = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ElementType }) => (
     <motion.div 
@@ -104,7 +96,7 @@ const StatItem = ({ label, value, icon: Icon }: { label: string, value: string |
     </motion.div>
 );
 
-const Socials = ({ links }: { links: UserData['links']}) => {
+const Socials = ({ links }: { links: UserProfileData['links']}) => {
     const hasLinks = Object.values(links).some(link => !!link);
     if (!hasLinks) return null;
     return (
@@ -133,18 +125,18 @@ const SkillRadarChart = ({ data }: { data: typeof mockSkillData }) => (
     </ResponsiveContainer>
 );
 
-const EditShowcaseDialog = ({ isOpen, onOpenChange, allAchievements, currentPinned, onSave }: { isOpen: boolean, onOpenChange: (open: boolean) => void, allAchievements: UserData['achievements'], currentPinned: string[], onSave: (newPinned: string[]) => void }) => {
+const EditShowcaseDialog = ({ isOpen, onOpenChange, allItems, currentPinned, onSave }: { isOpen: boolean, onOpenChange: (open: boolean) => void, allItems: UnlockableItem[], currentPinned: string[], onSave: (newPinned: string[]) => void }) => {
     const [selected, setSelected] = useState(new Set(currentPinned));
     const MAX_PINNED = 4;
 
-    const handleSelect = (achName: string) => {
+    const handleSelect = (itemName: string) => {
         setSelected(prev => {
             const newSelection = new Set(prev);
-            if (newSelection.has(achName)) {
-                newSelection.delete(achName);
+            if (newSelection.has(itemName)) {
+                newSelection.delete(itemName);
             } else {
                 if (newSelection.size < MAX_PINNED) {
-                    newSelection.add(achName);
+                    newSelection.add(itemName);
                 }
             }
             return newSelection;
@@ -156,21 +148,21 @@ const EditShowcaseDialog = ({ isOpen, onOpenChange, allAchievements, currentPinn
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Customize Your Showcase</DialogTitle>
-                    <DialogDescription>Select up to {MAX_PINNED} achievements to display on your profile.</DialogDescription>
+                    <DialogDescription>Select up to {MAX_PINNED} achievements and items to display on your profile.</DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-4 max-h-[50vh] overflow-y-auto pr-2">
-                    {allAchievements.map((ach) => {
-                        const Icon = ach.icon;
-                        const isSelected = selected.has(ach.name);
+                    {allItems.map((item) => {
+                        const Icon = item.icon;
+                        const isSelected = selected.has(item.name);
                         const isDisabled = !isSelected && selected.size >= MAX_PINNED;
                         return (
-                            <div key={ach.name} className={cn("flex items-center space-x-3 p-3 rounded-md border", isSelected && "border-primary bg-primary/10", isDisabled && "opacity-50")}>
-                                <Checkbox id={ach.name} checked={isSelected} onCheckedChange={() => handleSelect(ach.name)} disabled={isDisabled} />
-                                <label htmlFor={ach.name} className={cn("flex items-center gap-3 w-full", isDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
-                                    <Icon className={cn("h-8 w-8 p-1 rounded-md", ach.color, isSelected ? "bg-primary/20" : "bg-muted")} />
+                            <div key={item.name} className={cn("flex items-center space-x-3 p-3 rounded-md border", isSelected && "border-primary bg-primary/10", isDisabled && "opacity-50")}>
+                                <Checkbox id={item.name} checked={isSelected} onCheckedChange={() => handleSelect(item.name)} disabled={isDisabled} />
+                                <label htmlFor={item.name} className={cn("flex items-center gap-3 w-full", isDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
+                                    <Icon className={cn("h-8 w-8 p-1 rounded-md", ('color' in item) ? item.color : 'text-primary', isSelected ? "bg-primary/20" : "bg-muted")} />
                                     <div>
-                                        <p className="font-semibold">{ach.name}</p>
-                                        <p className="text-xs text-muted-foreground">{ach.description}</p>
+                                        <p className="font-semibold">{item.name}</p>
+                                        <p className="text-xs text-muted-foreground">{item.description}</p>
                                     </div>
                                 </label>
                             </div>
@@ -185,11 +177,10 @@ const EditShowcaseDialog = ({ isOpen, onOpenChange, allAchievements, currentPinn
     );
 };
 
-
 export default function ProfileClient() {
     const router = useRouter();
     const { toast } = useToast();
-    const [userData, setUserData] = useState<UserData | null>(null);
+    const [userData, setUserData] = useState<UserProfileData | null>(null);
     const [totalXp, setTotalXp] = useState(0);
     const [level, setLevel] = useState(1);
     const [prestigeLevel, setPrestigeLevel] = useState(0);
@@ -197,8 +188,9 @@ export default function ProfileClient() {
     const [xpForCurrentLevel, setXpForCurrentLevel] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
     const [membership, setMembership] = useState('Free');
-    const [allAchievements, setAllAchievements] = useState(baseUserData.achievements);
-    const [pinnedAchievements, setPinnedAchievements] = useState<string[]>([]);
+    const [unlockableItems, setUnlockableItems] = useState<UnlockableItem[]>([]);
+    const [ownedItems, setOwnedItems] = useState<ShopItem[]>([]);
+    const [pinnedItems, setPinnedItems] = useState<string[]>([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
 
@@ -209,8 +201,13 @@ export default function ProfileClient() {
 
     const updateAllStats = () => {
         const storedProfile = localStorage.getItem('careerClashUserProfile');
-        let profileData: Omit<UserData, 'guild' | 'links'> & { links?: UserData['links'] };
-        profileData = storedProfile ? JSON.parse(storedProfile) : baseUserData;
+        const profileData = storedProfile ? JSON.parse(storedProfile) : {
+            name: 'QuantumLeap', title: 'Senior AI Engineer', bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning.',
+            avatarHint: 'cyberpunk woman portrait', bannerHint: 'abstract purple and blue nebula',
+            links: { github: '', youtube: '', instagram: '', discord: '' },
+            stats: { wins: 128, losses: 34, streak: 5, longestStreak: 12, bossesDefeated: 3 },
+            battleHistory: baseAchievements.slice(0, 4).map((ach, i) => ({ id: i, challenge: `${ach.name} Trial`, opponent: { name: 'AI Bot', avatarHint: 'robot face'}, result: 'Win', xp: '+100 XP' })),
+        };
 
         const storedGuild = localStorage.getItem('userGuild');
         let guild = null;
@@ -220,7 +217,7 @@ export default function ProfileClient() {
             guild = { name: guildData.guildName, role: userMemberData?.role || 'Member' };
         }
         
-        setUserData({ ...baseUserData, ...profileData, guild });
+        setUserData({ ...profileData, guild });
         form.reset({
             name: profileData.name,
             title: profileData.title,
@@ -251,27 +248,16 @@ export default function ProfileClient() {
         setMembership(storedMembership);
 
         const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-        const purchasedTitles = inventory
-            .filter((name: string) => name.toLowerCase().includes('title'))
-            .map((name: string) => ({ 
-                name, 
-                icon: Award, 
-                color: 'text-cyan-400',
-                description: `A title purchased from the shop to showcase your status.`
-            }));
-        const combinedAchievements = [...baseUserData.achievements];
-        purchasedTitles.forEach((purchased: any) => {
-            if (!combinedAchievements.some(existing => existing.name === purchased.name)) {
-                combinedAchievements.push(purchased);
-            }
-        });
-        setAllAchievements(combinedAchievements);
+        const currentOwnedItems = allShopItems.filter(item => inventory.includes(item.name));
+        setOwnedItems(currentOwnedItems);
 
-        const storedPinned = localStorage.getItem('pinnedAchievements');
+        setUnlockableItems([...baseAchievements, ...currentOwnedItems]);
+
+        const storedPinned = localStorage.getItem('pinnedItems');
         if (storedPinned) {
-            setPinnedAchievements(JSON.parse(storedPinned));
+            setPinnedItems(JSON.parse(storedPinned));
         } else {
-            setPinnedAchievements(combinedAchievements.slice(0, 4).map(a => a.name));
+            setPinnedItems(baseAchievements.slice(0, 4).map(a => a.name));
         }
     };
 
@@ -341,7 +327,7 @@ export default function ProfileClient() {
         return <div className="flex justify-center items-center h-96"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
-    const displayedAchievements = allAchievements.filter(ach => pinnedAchievements.includes(ach.name));
+    const displayedItems = unlockableItems.filter(item => pinnedItems.includes(item.name));
 
   return (
     <>
@@ -371,11 +357,11 @@ export default function ProfileClient() {
         <EditShowcaseDialog 
             isOpen={isShowcaseModalOpen} 
             onOpenChange={setIsShowcaseModalOpen} 
-            allAchievements={allAchievements} 
-            currentPinned={pinnedAchievements} 
+            allItems={unlockableItems} 
+            currentPinned={pinnedItems} 
             onSave={(newPinned) => {
-                setPinnedAchievements(newPinned);
-                localStorage.setItem('pinnedAchievements', JSON.stringify(newPinned));
+                setPinnedItems(newPinned);
+                localStorage.setItem('pinnedItems', JSON.stringify(newPinned));
                 toast({ title: 'Showcase Updated!' });
                 setIsShowcaseModalOpen(false);
             }} 
@@ -456,10 +442,11 @@ export default function ProfileClient() {
 
         <div className="w-full lg:w-2/3">
              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="collection">Collection</TabsTrigger>
                     <TabsTrigger value="statistics">Statistics</TabsTrigger>
-                    <TabsTrigger value="achievements">Achievements</TabsTrigger>
+                    <TabsTrigger value="history">History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="mt-6 space-y-8">
                     <Card>
@@ -471,24 +458,80 @@ export default function ProfileClient() {
                             <Button variant="outline" size="sm" onClick={() => setIsShowcaseModalOpen(true)}><Pencil className="mr-2 h-4 w-4"/>Edit</Button>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {displayedAchievements.map((ach, i) => {
-                                    const Icon = ach.icon;
-                                    return (
-                                        <TooltipProvider key={i}><Tooltip><TooltipTrigger asChild>
-                                            <motion.div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer h-full"
-                                                initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: i * 0.05 }}
-                                                whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
-                                            >
-                                                <Icon className={cn("h-10 w-10 mb-2", ach.color)} />
-                                                <p className="text-sm font-semibold">{ach.name}</p>
-                                            </motion.div>
-                                        </TooltipTrigger><TooltipContent><p className="font-bold">{ach.name}</p>{ach.description && <p className="text-xs text-muted-foreground">{ach.description}</p>}</TooltipContent></Tooltip></TooltipProvider>
-                                    )
-                                })}
-                            </div>
+                            {displayedItems.length > 0 ? (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    {displayedItems.map((item, i) => {
+                                        const Icon = item.icon;
+                                        return (
+                                            <TooltipProvider key={i}><Tooltip><TooltipTrigger asChild>
+                                                <motion.div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg transition-all cursor-pointer h-full"
+                                                    initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: i * 0.05 }}
+                                                    whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
+                                                >
+                                                    <Icon className={cn("h-10 w-10 mb-2", ('color' in item) ? item.color : 'text-primary' )} />
+                                                    <p className="text-sm font-semibold">{item.name}</p>
+                                                </motion.div>
+                                            </TooltipTrigger><TooltipContent><p className="font-bold">{item.name}</p>{item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}</TooltipContent></Tooltip></TooltipProvider>
+                                        )
+                                    })}
+                                </div>
+                            ) : (
+                                <p className="text-center text-muted-foreground py-4">Your showcase is empty. Pin some items to show them off!</p>
+                            )}
                         </CardContent>
                     </Card>
+                </TabsContent>
+                <TabsContent value="collection" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline flex items-center gap-2"><Package /> Your Collection</CardTitle>
+                            <CardDescription>All the cosmetic items you've purchased from the shop.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             {ownedItems.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {ownedItems.map((item, i) => {
+                                        const Icon = item.icon;
+                                        return (
+                                            <div key={i} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
+                                                <Icon className={cn("h-10 w-10 p-2 rounded-md", 'text-primary', 'bg-background/50')} />
+                                                <div>
+                                                    <p className="font-bold">{item.name}</p>
+                                                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                             ) : (
+                                <div className="text-center py-10">
+                                    <Package className="h-12 w-12 mx-auto text-muted-foreground" />
+                                    <p className="mt-4 text-muted-foreground">Your collection is empty.</p>
+                                    <Button variant="link" asChild><Link href="/shop?tab=addons">Visit the Shop</Link></Button>
+                                </div>
+                             )}
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="statistics" className="mt-6 space-y-8">
+                     <Card>
+                        <CardHeader><CardTitle className="font-headline">Battle Statistics</CardTitle><CardDescription>Your performance across all competitions.</CardDescription></CardHeader>
+                        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <StatItem label="Total Battles" value={userData.stats.wins + userData.stats.losses} icon={Swords} />
+                            <StatItem label="Wins" value={userData.stats.wins} icon={Trophy} />
+                            <StatItem label="Losses" value={userData.stats.losses} icon={Shield} />
+                            <StatItem label="Win Rate" value={winRate} icon={Percent} />
+                            <StatItem label="Current Streak" value={userData.stats.streak} icon={Flame} />
+                            <StatItem label="Longest Streak" value={userData.stats.longestStreak} icon={Flame} />
+                            <StatItem label="Bosses Defeated" value={userData.stats.bossesDefeated} icon={Skull} />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader><CardTitle className="font-headline flex items-center gap-2"><LineChart/>Skill Analysis</CardTitle><CardDescription>Your strengths based on recent performance data.</CardDescription></CardHeader>
+                        <CardContent className="pl-0 pr-4 -mt-4"><SkillRadarChart data={mockSkillData} /></CardContent>
+                    </Card>
+                </TabsContent>
+                 <TabsContent value="history" className="mt-6">
                     <Card>
                         <CardHeader><CardTitle className="font-headline">Recent Battles</CardTitle><CardDescription>Latest competition history.</CardDescription></CardHeader>
                         <CardContent>
@@ -512,46 +555,6 @@ export default function ProfileClient() {
                                     </motion.div>
                                 ))}
                             </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="statistics" className="mt-6 space-y-8">
-                     <Card>
-                        <CardHeader><CardTitle className="font-headline">Battle Statistics</CardTitle><CardDescription>Your performance across all competitions.</CardDescription></CardHeader>
-                        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <StatItem label="Total Battles" value={userData.stats.wins + userData.stats.losses} icon={Swords} />
-                            <StatItem label="Wins" value={userData.stats.wins} icon={Trophy} />
-                            <StatItem label="Losses" value={userData.stats.losses} icon={Shield} />
-                            <StatItem label="Win Rate" value={winRate} icon={Percent} />
-                            <StatItem label="Current Streak" value={userData.stats.streak} icon={Flame} />
-                            <StatItem label="Longest Streak" value={userData.stats.longestStreak} icon={Flame} />
-                            <StatItem label="Bosses Defeated" value={userData.stats.bossesDefeated} icon={Skull} />
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader><CardTitle className="font-headline flex items-center gap-2"><LineChart/>Skill Analysis</CardTitle><CardDescription>Your strengths based on recent performance data.</CardDescription></CardHeader>
-                        <CardContent className="pl-0 pr-4 -mt-4"><SkillRadarChart data={mockSkillData} /></CardContent>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="achievements" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="font-headline">All Achievements</CardTitle>
-                            <CardDescription>Your entire collection of awards and titles.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {allAchievements.map((ach, i) => {
-                                const Icon = ach.icon;
-                                return (
-                                    <div key={i} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-                                         <Icon className={cn("h-10 w-10 p-2 rounded-md", ach.color, 'bg-background/50')} />
-                                         <div>
-                                            <p className="font-bold">{ach.name}</p>
-                                            <p className="text-xs text-muted-foreground">{ach.description}</p>
-                                         </div>
-                                    </div>
-                                )
-                            })}
                         </CardContent>
                     </Card>
                 </TabsContent>
