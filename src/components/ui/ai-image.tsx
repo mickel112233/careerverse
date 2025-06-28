@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Image, { ImageProps } from 'next/image';
-import { generateImage } from '@/ai/flows/image-generator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { useAiImage } from '@/hooks/use-ai-image';
 
 interface AiImageProps extends Omit<ImageProps, 'src' | 'alt'> {
     prompt: string;
@@ -12,52 +11,7 @@ interface AiImageProps extends Omit<ImageProps, 'src' | 'alt'> {
 }
 
 export function AiImage({ prompt, alt, width, height, className, ...props }: AiImageProps) {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        let isCancelled = false;
-        const cacheKey = `ai-image-cache:${prompt}`;
-
-        const fetchImage = async () => {
-            setIsLoading(true);
-            const cachedUrl = localStorage.getItem(cacheKey);
-
-            if (cachedUrl) {
-                if (!isCancelled) {
-                    setImageUrl(cachedUrl);
-                    setIsLoading(false);
-                }
-                return;
-            }
-
-            try {
-                const generatedUrl = await generateImage(prompt);
-                if (!isCancelled) {
-                    try {
-                        localStorage.setItem(cacheKey, generatedUrl);
-                    } catch (error) {
-                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
-                    }
-                    setImageUrl(generatedUrl);
-                }
-            } catch (error) {
-                console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
-            } finally {
-                if (!isCancelled) {
-                    setIsLoading(false);
-                }
-            }
-        };
-        
-        if (prompt) {
-            fetchImage();
-        } else {
-            setIsLoading(false);
-        }
-
-        return () => { isCancelled = true; };
-    }, [prompt]);
+    const { imageUrl, isLoading } = useAiImage(prompt);
 
     if (isLoading) {
         if (props.layout === 'fill') {
