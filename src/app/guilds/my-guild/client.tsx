@@ -18,7 +18,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger as DialogPrimitiveTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -26,7 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { mockGuilds } from '@/lib/guild-data';
 
 
@@ -61,6 +61,13 @@ type ChatMessage = {
     message: string;
     timestamp: string;
 };
+
+type GuildChallenge = {
+    id: string;
+    opponentName: string;
+    betAmount: number;
+    status: 'Pending' | 'Victory' | 'Defeat';
+}
 
 const roleIcons: { [key: string]: React.ElementType } = { Leader: Crown, Officer: Star, Member: Shield, Admin: Shield, Friend: Shield, Don: Shield, Ghost: Shield, Hacker: Shield };
 const premiumRoles = ['Admin', 'Friend', 'Don', 'Ghost', 'Hacker'];
@@ -201,6 +208,11 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange }: { guild: GuildData, is
     )
 }
 
+const declareWarSchema = z.object({
+  opponentId: z.string().min(1, { message: "Please select an opponent." }),
+  betAmount: z.coerce.number().min(50, { message: "Bet must be at least 50 gems." }),
+});
+
 export default function MyGuildClient() {
     const router = useRouter();
     const [guild, setGuild] = useState<GuildData | null>(null);
@@ -211,7 +223,16 @@ export default function MyGuildClient() {
     const { toast } = useToast();
     const [isManageMemberOpen, setIsManageMemberOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const [challenges, setChallenges] = useState<any[]>([]);
+    const [challenges, setChallenges] = useState<GuildChallenge[]>([]);
+    const [isDeclareWarOpen, setIsDeclareWarOpen] = useState(false);
+    
+    const declareWarForm = useForm<z.infer<typeof declareWarSchema>>({
+        resolver: zodResolver(declareWarSchema),
+        defaultValues: {
+            opponentId: '',
+            betAmount: 50,
+        }
+    });
 
     useEffect(() => {
         const membership = localStorage.getItem('careerClashMembership');
@@ -274,6 +295,51 @@ export default function MyGuildClient() {
         toast({ title: "You have left the guild." });
         router.push('/guilds');
     }
+    
+    function onDeclareWarSubmit(values: z.infer<typeof declareWarSchema>) {
+        if (!guild) return;
+        const opponentGuild = mockGuilds.find(g => g.id === values.opponentId);
+        if (!opponentGuild) {
+            toast({ variant: 'destructive', title: 'Opponent not found.' });
+            return;
+        }
+        
+        const totalGems = guild.members.reduce((acc, member) => acc + member.gems, 0);
+        if (totalGems < values.betAmount) {
+            toast({ variant: 'destructive', title: 'Insufficient Gems', description: `Your guild does not have enough gems to place this bet.` });
+            return;
+        }
+
+        const newChallenge: GuildChallenge = {
+            id: `WAR-${Date.now()}`,
+            opponentName: opponentGuild.name,
+            betAmount: values.betAmount,
+            status: 'Pending'
+        };
+        const updatedChallenges = [...challenges, newChallenge];
+        setChallenges(updatedChallenges);
+        localStorage.setItem('guildChallenges', JSON.stringify(updatedChallenges));
+        
+        toast({ title: 'War Declared!', description: `You have challenged ${opponentGuild.name} to a Guild War!` });
+        setIsDeclareWarOpen(false);
+        declareWarForm.reset();
+    }
+    
+    const handleSimulateWar = (challengeId: string) => {
+        const winner = Math.random() > 0.5 ? 'player' : 'opponent';
+        const updatedChallenges = challenges.map(c => 
+            c.id === challengeId ? { ...c, status: winner === 'player' ? 'Victory' : 'Defeat' } : c
+        );
+        setChallenges(updatedChallenges);
+        localStorage.setItem('guildChallenges', JSON.stringify(updatedChallenges));
+        
+        toast({ 
+            title: `War with ${updatedChallenges.find(c => c.id === challengeId)?.opponentName} Complete!`,
+            description: `Your guild was ${winner === 'player' ? 'victorious' : 'defeated'}.`,
+            className: winner === 'player' ? 'bg-green-500 text-white' : 'bg-destructive text-white',
+        });
+    };
+
 
     if (isLoading) {
         return (
@@ -302,7 +368,94 @@ export default function MyGuildClient() {
             <Tabs defaultValue="dashboard" className="w-full"><TabsList className="grid w-full grid-cols-3 md:grid-cols-5"><TabsTrigger value="dashboard">Dashboard</TabsTrigger><TabsTrigger value="members">Members</TabsTrigger><TabsTrigger value="battles">Battles</TabsTrigger><TabsTrigger value="chat">Chat</TabsTrigger><TabsTrigger value="settings">Settings</TabsTrigger></TabsList>
                 <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-3 gap-6 mb-6"><StatCard icon={Trophy} label="Guild Rank" value="#12" /><StatCard icon={BarChart3} label="Total XP" value={totalXp.toLocaleString()} /><StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} /></div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
                 <TabsContent value="members" className="mt-6"><Card><CardHeader><CardTitle>Member Roster</CardTitle><CardDescription>The backbone of our guild.</CardDescription></CardHeader><CardContent><motion.ul className="space-y-4" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05, }, }, }} >{guild.members.map((member) => { const RoleIcon = roleIcons[member.role] || Shield; return (<motion.li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }, }}><div className="flex items-center gap-4"><AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0, 2)} /><div><p className="font-semibold">{member.name}</p><TooltipProvider><Tooltip><TooltipTrigger asChild><div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer"><RoleIcon className="h-4 w-4" /> {member.role}</div></TooltipTrigger><TooltipContent><p>{member.role}</p></TooltipContent></Tooltip></TooltipProvider></div></div><div className="flex items-center gap-4"><p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>{isOwner && member.name !== 'QuantumLeap' && (<Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}><UserCog className="h-5 w-5" /></Button>)}</div></motion.li>)})}</motion.ul></CardContent></Card></TabsContent>
-                <TabsContent value="battles" className="mt-6"><div className="grid md:grid-cols-2 gap-6"><Card className="bg-gradient-to-br from-primary/10 to-transparent"><CardHeader><CardTitle>Start a Guild War</CardTitle><CardDescription>Challenge a rival guild to a team-based battle for glory and gems.</CardDescription></CardHeader><CardFooter><DialogPrimitiveTrigger asChild><Button size="lg"><Swords className="mr-2 h-5 w-5" />Declare War</Button></DialogPrimitiveTrigger></CardFooter></Card><Card><CardHeader><CardTitle>War Room</CardTitle><CardDescription>Active and past war declarations.</CardDescription></CardHeader><CardContent><ul className="space-y-3">{challenges.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active wars. Time to start one!</p>}{challenges.map((c, i) => <li key={i} className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-lg"><div><p>vs <span className="font-semibold">{c.opponentName}</span></p><p className="text-xs text-muted-foreground">Bet: {c.betAmount} Gems</p></div><Badge>{c.status}</Badge></li>)}</ul></CardContent></Card></div></TabsContent>
+                <TabsContent value="battles" className="mt-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                         <Dialog open={isDeclareWarOpen} onOpenChange={setIsDeclareWarOpen}>
+                            <Card className="bg-gradient-to-br from-primary/10 to-transparent">
+                                <CardHeader>
+                                    <CardTitle>Start a Guild War</CardTitle>
+                                    <CardDescription>Challenge a rival guild to a team-based battle for glory and gems.</CardDescription>
+                                </CardHeader>
+                                <CardFooter>
+                                    <DialogTrigger asChild>
+                                        <Button size="lg"><Swords className="mr-2 h-5 w-5" />Declare War</Button>
+                                    </DialogTrigger>
+                                </CardFooter>
+                            </Card>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Declare a Guild War</DialogTitle>
+                                    <DialogDescription>Challenge another guild. The winner takes the entire gem pot.</DialogDescription>
+                                </DialogHeader>
+                                <Form {...declareWarForm}>
+                                    <form onSubmit={declareWarForm.handleSubmit(onDeclareWarSubmit)} className="space-y-4">
+                                        <FormField
+                                            control={declareWarForm.control}
+                                            name="opponentId"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Opponent Guild</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select a guild to challenge" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            {mockGuilds.filter(g => g.id !== guild?.id).map(g => (
+                                                                <SelectItem key={g.id} value={g.id}>{g.name}</SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={declareWarForm.control}
+                                            name="betAmount"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Gem Wager (Each Guild Bets)</FormLabel>
+                                                    <FormControl>
+                                                        <Input type="number" min="50" {...field} />
+                                                    </FormControl>
+                                                    <FormDescription>Your guild must have at least this many gems total.</FormDescription>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <Button type="submit" className="w-full" disabled={declareWarForm.formState.isSubmitting}>
+                                            {declareWarForm.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                            Send Challenge
+                                        </Button>
+                                    </form>
+                                </Form>
+                            </DialogContent>
+                        </Dialog>
+                        <Card>
+                            <CardHeader><CardTitle>War Room</CardTitle><CardDescription>Active and past war declarations.</CardDescription></CardHeader>
+                            <CardContent>
+                                <ul className="space-y-3">
+                                    {challenges.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No active wars. Time to start one!</p>}
+                                    {challenges.map((c) => (
+                                         <li key={c.id} className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded-lg">
+                                            <div>
+                                                <p>vs <span className="font-semibold">{c.opponentName}</span></p>
+                                                <p className="text-xs text-muted-foreground flex items-center gap-1"><Gem className="h-3 w-3 text-primary" /> Bet: {c.betAmount} Gems</p>
+                                            </div>
+                                             {c.status === 'Pending' ? (
+                                                <Button size="sm" onClick={() => handleSimulateWar(c.id)}>Simulate War</Button>
+                                            ) : (
+                                                <Badge variant={c.status === 'Victory' ? 'default' : 'destructive'} className={cn(c.status === 'Victory' && 'bg-green-500/80')}>{c.status}</Badge>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </TabsContent>
                 <TabsContent value="chat" className="mt-6"><ChatInterface guildId={guild.id} members={guild.members} /></TabsContent>
                 <TabsContent value="settings" className="mt-6"><Card><CardHeader><CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle><CardDescription>Manage your guild's public information or leave the guild.</CardDescription></CardHeader><CardContent className="space-y-6">{isOwner && <Button onClick={() => setIsEditDialogOpen(true)}><Pencil className="mr-2 h-4 w-4" /> Edit Guild Details</Button>}<Card className="border-destructive/50"><CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle><CardDescription>These actions are irreversible. Proceed with caution.</CardDescription></CardHeader><CardContent>{isOwner ? (<div><h3 className="font-semibold">Disband Guild</h3><p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Disband {guild.guildName}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone. This will permanently disband your guild and remove all your members.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>) : (<div><h3 className="font-semibold">Leave Guild</h3><p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Leave {guild.guildName}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle><AlertDialogDescription>You will be removed from the guild. You can rejoin later.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Stay in Guild</AlertDialogCancel><AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>)}</CardContent></Card></CardContent></Card></TabsContent>
             </Tabs>
