@@ -26,6 +26,7 @@ import { motion } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Checkbox } from '@/components/ui/checkbox';
 import { allShopItems, ShopItem } from '@/lib/shop-data';
+import Link from 'next/link';
 
 const PRESTIGE_LEVEL_REQUIREMENT = 100;
 const PRESTIGE_GEM_REWARD = 100;
@@ -201,13 +202,28 @@ export default function ProfileClient() {
 
     const updateAllStats = () => {
         const storedProfile = localStorage.getItem('careerClashUserProfile');
-        const profileData = storedProfile ? JSON.parse(storedProfile) : {
-            name: 'QuantumLeap', title: 'Senior AI Engineer', bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning.',
-            avatarHint: 'cyberpunk woman portrait', bannerHint: 'abstract purple and blue nebula',
-            links: { github: '', youtube: '', instagram: '', discord: '' },
-            stats: { wins: 128, losses: 34, streak: 5, longestStreak: 12, bossesDefeated: 3 },
-            battleHistory: baseAchievements.slice(0, 4).map((ach, i) => ({ id: i, challenge: `${ach.name} Trial`, opponent: { name: 'AI Bot', avatarHint: 'robot face'}, result: 'Win', xp: '+100 XP' })),
-        };
+        let profileData;
+
+        if (storedProfile) {
+            profileData = JSON.parse(storedProfile);
+        } else {
+            profileData = {
+                name: 'QuantumLeap', 
+                title: 'Senior AI Engineer', 
+                bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning.',
+                avatarHint: 'cyberpunk woman portrait', 
+                bannerHint: 'abstract purple and blue nebula',
+                links: { github: '', youtube: '', instagram: '', discord: '' },
+                stats: { wins: 128, losses: 34, streak: 5, longestStreak: 12, bossesDefeated: 3 },
+                battleHistory: [
+                    { id: 1, challenge: "React Basics Quiz", opponent: { name: "AI Bot", avatarHint: "robot face" }, result: "Win", xp: "+50 XP" },
+                    { id: 2, challenge: "CSS Fundamentals", opponent: { name: "CodeNinja", avatarHint: "hacker with glasses" }, result: "Loss", xp: "+10 XP" },
+                    { id: 3, challenge: "JS Algorithms", opponent: { name: "LogicLord", avatarHint: "philosopher thinking" }, result: "Win", xp: "+75 XP" },
+                    { id: 4, challenge: "Time Rush: Data Science", opponent: { name: "DataDynamo", avatarHint: "data scientist smiling" }, result: "Win", xp: "+120 XP" }
+                ],
+            };
+            localStorage.setItem('careerClashUserProfile', JSON.stringify(profileData));
+        }
 
         const storedGuild = localStorage.getItem('userGuild');
         let guild = null;

@@ -123,27 +123,28 @@ export default function BossRaidClient() {
         setSelectedAnswer(answer);
         const isCorrect = answer === currentQuestion?.correctAnswer;
         
+        let newBossHealth = bossCurrentHealth;
+        let newPartyHealth = partyHealth;
+
         if (isCorrect) {
             const damage = currentQuestion!.damage;
+            newBossHealth = Math.max(0, bossCurrentHealth - damage);
+            setBossCurrentHealth(newBossHealth);
             addEventLog(`You strike a critical vulnerability! Dealt ${damage} damage.`, 'player');
-            setBossCurrentHealth(prev => Math.max(0, prev - damage));
             setIsBossShaking(true);
             setTimeout(() => setIsBossShaking(false), 350);
         } else {
             const bossDamage = currentQuestion!.bossAttackDamage;
+            newPartyHealth = Math.max(0, partyHealth - bossDamage);
+            setPartyHealth(newPartyHealth);
             addEventLog(`${bossData?.bossName} retaliates! Your party takes ${bossDamage} damage.`, 'boss');
-            setPartyHealth(prev => Math.max(0, prev - bossDamage));
             setIsPartyHit(true);
             setTimeout(() => setIsPartyHit(false), 350);
         }
 
         setTimeout(() => {
             // Check for victory or defeat
-            const newBossHealth = bossCurrentHealth - (isCorrect ? (currentQuestion?.damage ?? 0) : 0);
-            const newPartyHealth = partyHealth - (!isCorrect ? (currentQuestion?.bossAttackDamage ?? 0) : 0);
             if (newBossHealth <= 0 || newPartyHealth <= 0) {
-                if (newBossHealth <= 0) setBossCurrentHealth(0);
-                if (newPartyHealth <= 0) setPartyHealth(0);
                 setRaidState('finished');
                 return;
             }
@@ -165,6 +166,11 @@ export default function BossRaidClient() {
         if (raidState !== 'active' || !bossData || partyHealth <= 0 || bossCurrentHealth <= 0 || teammates.length === 0) return;
 
         const interval = setInterval(() => {
+            if (raidState !== 'active') { // Extra guard
+                 clearInterval(interval);
+                 return;
+            }
+
             const teammate = teammates[Math.floor(Math.random() * teammates.length)];
             const damage = Math.floor(Math.random() * 50) + 25; // 25-75 damage
             

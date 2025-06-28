@@ -12,7 +12,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft, Send, Gem, Loader2, Pencil, Clock } from 'lucide-react';
+import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft, Send, Gem, Loader2, Pencil, Clock, Coins } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
@@ -34,8 +34,8 @@ type GuildMember = {
     name: string;
     role: string;
     xp: number;
-    coins: number;
-    gems: number;
+    coins?: number;
+    gems?: number;
     avatarHint: string;
 };
 
@@ -281,8 +281,22 @@ export default function MyGuildClient() {
     }, []);
 
     const fetchGuild = () => {
-        const storedGuild = localStorage.getItem('userGuild');
-        setGuild(storedGuild ? JSON.parse(storedGuild) : null);
+        const storedGuildString = localStorage.getItem('userGuild');
+        if (storedGuildString) {
+            const guildData: GuildData = JSON.parse(storedGuildString);
+            
+            // Find user in guild and update their stats to be fresh
+            const userIndex = guildData.members.findIndex(m => m.name === 'QuantumLeap');
+            if (userIndex !== -1) {
+                guildData.members[userIndex].xp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+                guildData.members[userIndex].coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
+                guildData.members[userIndex].gems = parseInt(localStorage.getItem('careerClashGems') || '5', 10);
+            }
+
+            setGuild(guildData);
+        } else {
+            setGuild(null);
+        }
         setIsLoading(false);
     }
 
@@ -320,6 +334,7 @@ export default function MyGuildClient() {
         const updatedGuild = { ...guild, members: updatedMembers };
         setGuild(updatedGuild);
         localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+        window.dispatchEvent(new Event('guildChange'));
         setIsManageMemberOpen(false);
         setManagingMember(null);
         toast({ title: "Role Updated", description: `${managingMember.name} is now a ${selectedRole}.` });
@@ -331,6 +346,7 @@ export default function MyGuildClient() {
         const updatedGuild = { ...guild, members: updatedMembers };
         setGuild(updatedGuild);
         localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+        window.dispatchEvent(new Event('guildChange'));
         setIsManageMemberOpen(false);
         setManagingMember(null);
         toast({ title: "Member Removed", description: `${managingMember.name} has been removed from the guild.`, variant: 'destructive' });
@@ -365,7 +381,7 @@ export default function MyGuildClient() {
             return;
         }
         
-        const totalGems = guild.members.reduce((acc, member) => acc + member.gems, 0);
+        const totalGems = guild.members.reduce((acc, member) => acc + (member.gems || 0), 0);
         if (totalGems < values.betAmount) {
             toast({ variant: 'destructive', title: 'Insufficient Gems', description: `Your guild does not have enough gems to place this bet.` });
             return;
@@ -417,6 +433,9 @@ export default function MyGuildClient() {
 
     const isOwner = guild.owner === 'QuantumLeap';
     const totalXp = guild.members.reduce((acc, member) => acc + member.xp, 0);
+    const totalCoins = guild.members.reduce((acc, member) => acc + (member.coins || 0), 0);
+    const totalGems = guild.members.reduce((acc, member) => acc + (member.gems || 0), 0);
+
 
     return (
         <div>
@@ -428,7 +447,7 @@ export default function MyGuildClient() {
             <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div></div></Card>
 
             <Tabs defaultValue="dashboard" className="w-full"><TabsList className="grid w-full grid-cols-3 md:grid-cols-5"><TabsTrigger value="dashboard">Dashboard</TabsTrigger><TabsTrigger value="members">Members</TabsTrigger><TabsTrigger value="battles">Battles</TabsTrigger><TabsTrigger value="chat">Chat</TabsTrigger><TabsTrigger value="settings">Settings</TabsTrigger></TabsList>
-                <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-3 gap-6 mb-6"><StatCard icon={Trophy} label="Guild Rank" value="#12" /><StatCard icon={BarChart3} label="Total XP" value={totalXp.toLocaleString()} /><StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} /></div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
+                <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"><StatCard icon={BarChart3} label="Guild Rank" value="#12" /><StatCard icon={Trophy} label="Total XP" value={totalXp.toLocaleString()} /><StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} /><StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} /><StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} /></div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
                 <TabsContent value="members" className="mt-6"><Card><CardHeader><CardTitle>Member Roster</CardTitle><CardDescription>The backbone of our guild.</CardDescription></CardHeader><CardContent><motion.ul className="space-y-4" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05, }, }, }} >{guild.members.map((member) => { const RoleIcon = roleIcons[member.role] || Shield; return (<motion.li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }, }}><div className="flex items-center gap-4"><AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0, 2)} /><div><p className="font-semibold">{member.name}</p><TooltipProvider><Tooltip><TooltipTrigger asChild><div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer"><RoleIcon className="h-4 w-4" /> {member.role}</div></TooltipTrigger><TooltipContent><p>{member.role}</p></TooltipContent></Tooltip></TooltipProvider></div></div><div className="flex items-center gap-4"><p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>{isOwner && member.name !== 'QuantumLeap' && (<Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}><UserCog className="h-5 w-5" /></Button>)}</div></motion.li>)})}</motion.ul></CardContent></Card></TabsContent>
                 <TabsContent value="battles" className="mt-6">
                     <div className="grid md:grid-cols-2 gap-6">
@@ -528,5 +547,3 @@ export default function MyGuildClient() {
         </div>
     );
 }
-
-    

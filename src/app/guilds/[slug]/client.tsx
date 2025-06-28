@@ -130,8 +130,8 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
     }
 
     const totalXp = guild.members.reduce((acc, member) => acc + member.xp, 0);
-    const totalCoins = guild.members.reduce((acc, member) => acc + member.coins, 0);
-    const totalGems = guild.members.reduce((acc, member) => acc + member.gems, 0);
+    const totalCoins = guild.members.reduce((acc, member) => acc + (member.coins || 0), 0);
+    const totalGems = guild.members.reduce((acc, member) => acc + (member.gems || 0), 0);
 
     return (
         <div>

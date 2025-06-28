@@ -5,8 +5,8 @@ export type GuildMember = {
     name: string;
     role: 'Leader' | 'Officer' | 'Member' | 'Admin' | 'Friend' | 'Don' | 'Ghost' | 'Hacker';
     xp: number;
-    coins: number;
-    gems: number;
+    coins?: number;
+    gems?: number;
     avatarHint: string;
 };
 
@@ -29,33 +29,33 @@ export type Guild = {
 
 const guildMembers = {
     frontend: [
-        { name: 'ReactDev', role: 'Leader', xp: 15000, coins: 50000, gems: 500, avatarHint: 'futuristic developer intense' },
-        { name: 'VueVixen', role: 'Officer', xp: 12000, coins: 35000, gems: 300, avatarHint: 'female developer purple hair' },
-        { name: 'CSSWizard', role: 'Member', xp: 9500, coins: 15000, gems: 100, avatarHint: 'wizard casting spell code' },
+        { name: 'ReactDev', role: 'Leader', xp: 15000, avatarHint: 'futuristic developer intense' },
+        { name: 'VueVixen', role: 'Officer', xp: 12000, avatarHint: 'female developer purple hair' },
+        { name: 'CSSWizard', role: 'Member', xp: 9500, avatarHint: 'wizard casting spell code' },
     ],
     backend: [
-        { name: 'NodeKing', role: 'Leader', xp: 16000, coins: 60000, gems: 700, avatarHint: 'king on a throne of servers' },
-        { name: 'PyQueen', role: 'Officer', xp: 13500, coins: 40000, gems: 450, avatarHint: 'queen with python snake' },
-        { name: 'GoGopher', role: 'Member', xp: 10500, coins: 20000, gems: 150, avatarHint: 'happy gopher mascot' },
+        { name: 'NodeKing', role: 'Leader', xp: 16000, avatarHint: 'king on a throne of servers' },
+        { name: 'PyQueen', role: 'Officer', xp: 13500, avatarHint: 'queen with python snake' },
+        { name: 'GoGopher', role: 'Member', xp: 10500, avatarHint: 'happy gopher mascot' },
     ],
     design: [
-        { name: 'Figmaster', role: 'Leader', xp: 14000, coins: 45000, gems: 600, avatarHint: 'designer with glowing pen' },
-        { name: 'SketchSensei', role: 'Officer', xp: 11000, coins: 30000, gems: 250, avatarHint: 'wise old design master' },
-        { name: 'AdobeAce', role: 'Member', xp: 9000, coins: 18000, gems: 80, avatarHint: 'artist painting on tablet' },
+        { name: 'Figmaster', role: 'Leader', xp: 14000, avatarHint: 'designer with glowing pen' },
+        { name: 'SketchSensei', role: 'Officer', xp: 11000, avatarHint: 'wise old design master' },
+        { name: 'AdobeAce', role: 'Member', xp: 9000, avatarHint: 'artist painting on tablet' },
     ],
     data: [
-        { name: 'TensorFlowTamer', role: 'Leader', xp: 18000, coins: 80000, gems: 1200, avatarHint: 'scientist with neural network' },
-        { name: 'PandasPatron', role: 'Officer', xp: 14500, coins: 55000, gems: 550, avatarHint: 'woman with a friendly panda' },
-        { name: 'SQLSorcerer', role: 'Member', xp: 11500, coins: 25000, gems: 200, avatarHint: 'sorcerer with glowing data tables' },
+        { name: 'TensorFlowTamer', role: 'Leader', xp: 18000, avatarHint: 'scientist with neural network' },
+        { name: 'PandasPatron', role: 'Officer', xp: 14500, avatarHint: 'woman with a friendly panda' },
+        { name: 'SQLSorcerer', role: 'Member', xp: 11500, avatarHint: 'sorcerer with glowing data tables' },
     ],
     security: [
-        { name: 'FirewallFox', role: 'Leader', xp: 17000, coins: 75000, gems: 1000, avatarHint: 'red fox wearing a headset' },
-        { name: 'KernelKnight', role: 'Officer', xp: 13000, coins: 42000, gems: 400, avatarHint: 'knight with a glowing shield' },
-        { name: 'BugBountyHunter', role: 'Member', xp: 10000, coins: 22000, gems: 180, avatarHint: 'bounty hunter in a cyberpunk city' },
+        { name: 'FirewallFox', role: 'Leader', xp: 17000, avatarHint: 'red fox wearing a headset' },
+        { name: 'KernelKnight', role: 'Officer', xp: 13000, avatarHint: 'knight with a glowing shield' },
+        { name: 'BugBountyHunter', role: 'Member', xp: 10000, avatarHint: 'bounty hunter in a cyberpunk city' },
     ],
     void: [
-        { name: 'NullPointer', role: 'Leader', xp: 25000, coins: 150000, gems: 2500, avatarHint: 'figure dissolving into static' },
-        { name: 'ShadowByte', role: 'Officer', xp: 20000, coins: 100000, gems: 1500, avatarHint: 'ninja in the shadows' },
+        { name: 'NullPointer', role: 'Leader', xp: 25000, avatarHint: 'figure dissolving into static' },
+        { name: 'ShadowByte', role: 'Officer', xp: 20000, avatarHint: 'ninja in the shadows' },
     ]
 };
 
