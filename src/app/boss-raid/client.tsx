@@ -21,15 +21,9 @@ type RaidState = 'idle' | 'generating' | 'active' | 'finished';
 type Player = { name: string; avatarHint: string; type: 'human' | 'bot' };
 type EventLogMessage = { id: number; message: string; type: 'player' | 'boss' | 'system' };
 type QuizQuestion = GenerateBossRaidOutput['quizBank'][0];
-type GuildData = { id: string, guildName: string };
+type GuildData = { id: string, guildName: string, members: Player[] };
 
 const player: Player = { name: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', type: 'human' };
-const allPossibleTeammates: Player[] = [
-    { name: 'AI-Bot-Alpha', avatarHint: 'sleek friendly robot', type: 'bot' },
-    { name: 'AI-Bot-Beta', avatarHint: 'wise old android', type: 'bot' },
-    { name: 'AI-Bot-Gamma', avatarHint: 'aggressive combat drone', type: 'bot' },
-    { name: 'AI-Bot-Delta', avatarHint: 'support medic droid', type: 'bot' },
-];
 
 const LoadingSkeleton = () => (
      <div className="space-y-6">
@@ -63,6 +57,7 @@ export default function BossRaidClient() {
     const [bossLevel, setBossLevel] = useState(10);
     const [maxPlayers, setMaxPlayers] = useState(3);
     const [userGuild, setUserGuild] = useState<GuildData | null>(null);
+    const [guildTeammates, setGuildTeammates] = useState<Player[]>([]);
     const [isLoadingGuild, setIsLoadingGuild] = useState(true);
     
     const eventLogRef = useRef<HTMLDivElement>(null);
@@ -71,14 +66,21 @@ export default function BossRaidClient() {
     useEffect(() => {
         const guildData = localStorage.getItem('userGuild');
         if (guildData) {
-            setUserGuild(JSON.parse(guildData));
+            const parsedGuild = JSON.parse(guildData);
+            setUserGuild(parsedGuild);
+            const members: Player[] = parsedGuild.members
+                .filter((m: any) => m.name !== player.name)
+                .map((m: any) => ({ name: m.name, avatarHint: m.avatarHint, type: 'bot' }));
+            setGuildTeammates(members);
         }
         setIsLoadingGuild(false);
     }, []);
 
     const teammates = useMemo(() => {
-        return allPossibleTeammates.slice(0, maxPlayers - 1);
-    }, [maxPlayers]);
+        // Shuffle teammates to get a random group for each raid
+        const shuffled = [...guildTeammates].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, maxPlayers - 1);
+    }, [maxPlayers, guildTeammates]);
 
     const addEventLog = useCallback((message: string, type: EventLogMessage['type']) => {
         setEventLog(prev => [...prev, { id: prev.length, message, type }]);

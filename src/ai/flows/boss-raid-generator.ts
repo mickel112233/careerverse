@@ -35,7 +35,7 @@ const GenerateBossRaidOutputSchema = z.object({
   quizBank: z.array(QuizQuestionSchema).min(20).describe("A large bank of at least 20 difficult questions related to the boss's theme."),
   rewards: z.object({
     xp: z.number().int().min(1000).describe("A large amount of XP awarded for defeating the boss."),
-    coins: z.number().int().min(500).describe("A large amount of coins awarded for defeating the boss."),
+    coins: z.number().int().describe("Coins awarded for defeating the boss. For levels 1-14, this must be between 100-300. For levels 15-35, this must be between 300-1000."),
     title: z.string().describe("An exclusive title awarded to the player (e.g., 'Hydra Slayer')."),
   }),
 });
@@ -72,7 +72,11 @@ INSTRUCTIONS:
     *   Each question must have 4 options, a correct answer, a "damage" value, and a "bossAttackDamage" value. These values must also be scaled based on the \`bossLevel\`.
 
 3.  **Define the Spoils**:
-    *   Determine the rewards for victory: a large amount of XP and coins, and an exclusive, cool-sounding player title. These rewards should also scale with the \`bossLevel\`.
+    *   Determine the rewards for victory: a large amount of XP, an exclusive player title, and a specific amount of coins.
+    *   The coin reward MUST follow these rules based on the \`bossLevel\`:
+        *   If \`bossLevel\` is between 1 and 14, the 'coins' reward must be an integer between 100 and 300.
+        *   If \`bossLevel\` is 15 or higher, the 'coins' reward must be an integer between 300 and 1000.
+    *   XP and the coolness of the title should also scale with the \`bossLevel\`.
 
 Return the entire raid encounter as a single JSON object.
 `,
