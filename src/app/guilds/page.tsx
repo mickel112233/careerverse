@@ -147,7 +147,7 @@ export default function GuildsPage() {
                     >
                         <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300">
                             <CardHeader className="p-0">
-                            <AiImage prompt={guild.imageHint} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" />
+                            <AiImage prompt={guild.prompt} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" />
                             </CardHeader>
                             <CardContent className="p-6 flex-grow">
                                 <div className="flex items-start gap-4">

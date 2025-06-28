@@ -32,7 +32,7 @@ const ItemCard = ({ item, onPurchase, isOwned }: { item: ShopItem, onPurchase: (
         >
             <Card className={cn("flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300 overflow-hidden border-2", item.rarity && rarityColors[item.rarity])}>
                 <CardHeader className="p-0 relative">
-                    <AiImage prompt={item.imageHint} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
+                    <AiImage prompt={item.prompt} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
                     <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>
                 </CardHeader>
                 <CardContent className="p-4 flex-grow">

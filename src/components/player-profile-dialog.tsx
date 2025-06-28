@@ -32,7 +32,7 @@ export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProf
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-4">
-            <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className="w-16 h-16 ring-2 ring-primary" />
+            <AiAvatar prompt={player.prompt} alt={player.name} fallback={player.name.charAt(0)} className="w-16 h-16 ring-2 ring-primary" />
             <div>
               <DialogTitle className="text-2xl font-headline">{player.name}</DialogTitle>
               <DialogDescription>

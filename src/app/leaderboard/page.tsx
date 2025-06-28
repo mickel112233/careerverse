@@ -115,7 +115,7 @@ export default function LeaderboardPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        <AiAvatar prompt={player.avatarHint} alt={player.name} fallback={player.name.charAt(0)} className={cn(
+                        <AiAvatar prompt={player.prompt} alt={player.name} fallback={player.name.charAt(0)} className={cn(
                             player.rank <= 3 && "ring-2 ring-primary",
                             player.name === USER_NAME && "ring-2 ring-accent"
                             )} />

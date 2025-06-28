@@ -61,8 +61,8 @@ const profileFormSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters.").max(30, "Name must be at most 30 characters."),
   title: z.string().min(3, "Title must be at least 3 characters.").max(50, "Title must be at most 50 characters."),
   bio: z.string().max(160, "Bio cannot exceed 160 characters.").optional(),
-  avatarHint: z.string().max(100, "Avatar hint must be at most 100 characters."),
-  bannerHint: z.string().max(100, "Banner hint must be at most 100 characters."),
+  avatarPrompt: z.string().max(100, "Avatar prompt must be at most 100 characters."),
+  bannerPrompt: z.string().max(100, "Banner prompt must be at most 100 characters."),
   github: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
   youtube: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
   instagram: z.string().url("Please enter a valid URL.").or(z.literal('')).optional(),
@@ -75,12 +75,12 @@ type UserProfileData = {
     name: string;
     title: string;
     bio: string;
-    avatarHint: string;
-    bannerHint: string;
+    avatarPrompt: string;
+    bannerPrompt: string;
     links: { github: string; youtube: string; instagram: string; discord: string; };
     stats: { wins: number; losses: number; streak: number; longestStreak: number; bossesDefeated: number; };
     guild: { name: string; role: string; } | null;
-    battleHistory: { id: number; challenge: string; opponent: { name: string; avatarHint: string; }; result: string; xp: string; }[];
+    battleHistory: { id: number; challenge: string; opponent: { name: string; prompt: string; }; result: string; xp: string; }[];
 };
 
 type UnlockableItem = (Achievement | ShopItem);
@@ -197,7 +197,7 @@ export default function ProfileClient() {
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
-        defaultValues: { name: '', title: '', bio: '', avatarHint: '', bannerHint: '', github: '', youtube: '', instagram: '', discord: '' },
+        defaultValues: { name: '', title: '', bio: '', avatarPrompt: '', bannerPrompt: '', github: '', youtube: '', instagram: '', discord: '' },
     });
 
     const updateAllStats = () => {
@@ -211,15 +211,15 @@ export default function ProfileClient() {
                 name: 'QuantumLeap', 
                 title: 'Senior AI Engineer', 
                 bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning.',
-                avatarHint: 'cyberpunk woman portrait', 
-                bannerHint: 'abstract purple and blue nebula',
+                avatarPrompt: 'cyberpunk woman portrait', 
+                bannerPrompt: 'abstract purple and blue nebula',
                 links: { github: '', youtube: '', instagram: '', discord: '' },
                 stats: { wins: 128, losses: 34, streak: 5, longestStreak: 12, bossesDefeated: 3 },
                 battleHistory: [
-                    { id: 1, challenge: "React Basics Quiz", opponent: { name: "AI Bot", avatarHint: "robot face" }, result: "Win", xp: "+50 XP" },
-                    { id: 2, challenge: "CSS Fundamentals", opponent: { name: "CodeNinja", avatarHint: "hacker with glasses" }, result: "Loss", xp: "+10 XP" },
-                    { id: 3, challenge: "JS Algorithms", opponent: { name: "LogicLord", avatarHint: "philosopher thinking" }, result: "Win", xp: "+75 XP" },
-                    { id: 4, challenge: "Time Rush: Data Science", opponent: { name: "DataDynamo", avatarHint: "data scientist smiling" }, result: "Win", xp: "+120 XP" }
+                    { id: 1, challenge: "React Basics Quiz", opponent: { name: "AI Bot", prompt: "robot face" }, result: "Win", xp: "+50 XP" },
+                    { id: 2, challenge: "CSS Fundamentals", opponent: { name: "CodeNinja", prompt: "hacker with glasses" }, result: "Loss", xp: "+10 XP" },
+                    { id: 3, challenge: "JS Algorithms", opponent: { name: "LogicLord", prompt: "philosopher thinking" }, result: "Win", xp: "+75 XP" },
+                    { id: 4, challenge: "Time Rush: Data Science", opponent: { name: "DataDynamo", prompt: "data scientist smiling" }, result: "Win", xp: "+120 XP" }
                 ],
             };
             localStorage.setItem('careerClashUserProfile', JSON.stringify(profileData));
@@ -238,8 +238,8 @@ export default function ProfileClient() {
             name: profileData.name,
             title: profileData.title,
             bio: profileData.bio || '',
-            avatarHint: profileData.avatarHint,
-            bannerHint: profileData.bannerHint,
+            avatarPrompt: profileData.avatarPrompt,
+            bannerPrompt: profileData.bannerPrompt,
             github: profileData.links?.github || '',
             youtube: profileData.links?.youtube || '',
             instagram: profileData.links?.instagram || '',
@@ -355,8 +355,8 @@ export default function ProfileClient() {
                         <FormField control={form.control} name="name" render={({ field }) => (<FormItem><FormLabel>Display Name</FormLabel><FormControl><Input placeholder="Your in-game name" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="title" render={({ field }) => (<FormItem><FormLabel>Title / Role</FormLabel><FormControl><Input placeholder="e.g. Aspiring Developer" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="bio" render={({ field }) => (<FormItem><FormLabel>Bio</FormLabel><FormControl><Textarea placeholder="A short description about yourself" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="avatarHint" render={({ field }) => (<FormItem><FormLabel>Avatar AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired avatar" {...field} /></FormControl><FormDescription>This will regenerate your avatar image.</FormDescription><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="bannerHint" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired banner" {...field} /></FormControl><FormDescription>This will regenerate your profile banner.</FormDescription><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="avatarPrompt" render={({ field }) => (<FormItem><FormLabel>Avatar AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired avatar" {...field} /></FormControl><FormDescription>This will regenerate your avatar image.</FormDescription><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="bannerPrompt" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired banner" {...field} /></FormControl><FormDescription>This will regenerate your profile banner.</FormDescription><FormMessage /></FormItem>)} />
                         <h3 className="text-md font-semibold pt-2 border-b pb-2">Social Links</h3>
                         <FormField control={form.control} name="github" render={({ field }) => (<FormItem><FormLabel>GitHub URL</FormLabel><FormControl><Input placeholder="https://github.com/your-username" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="youtube" render={({ field }) => (<FormItem><FormLabel>YouTube URL</FormLabel><FormControl><Input placeholder="https://youtube.com/@your-channel" {...field} /></FormControl><FormMessage /></FormItem>)} />
@@ -385,7 +385,7 @@ export default function ProfileClient() {
 
        <div className="mb-4"><Button variant="ghost" onClick={() => router.back()}><ArrowLeft className="mr-2 h-4 w-4" />Back</Button></div>
        <div className="relative mb-8 h-32 sm:h-48 rounded-lg overflow-hidden">
-            <AiImage prompt={userData.bannerHint} alt="Profile banner" layout="fill" objectFit="cover" />
+            <AiImage prompt={userData.bannerPrompt} alt="Profile banner" layout="fill" objectFit="cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
        </div>
        
@@ -393,7 +393,7 @@ export default function ProfileClient() {
         <div className="w-full lg:w-1/3 space-y-8 -mt-20 sm:-mt-24 z-10">
             <Card className="text-center p-6 pt-0 border-2 border-transparent relative">
                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}><Pencil className="h-4 w-4" /></Button>
-                <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarHint} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
+                <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarPrompt} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
                 <div className="flex items-center justify-center gap-2">
                     <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
                     {prestigeLevel > 0 && (
@@ -560,7 +560,7 @@ export default function ProfileClient() {
                                             <p className="font-semibold">{battle.challenge}</p>
                                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                                 <span>vs</span>
-                                                <AiAvatar prompt={battle.opponent.avatarHint} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-5 h-5" />
+                                                <AiAvatar prompt={battle.opponent.prompt} alt={battle.opponent.name} fallback={battle.opponent.name.substring(0,1)} className="w-5 h-5" />
                                                 <span>{battle.opponent.name}</span>
                                             </div>
                                         </div>

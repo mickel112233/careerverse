@@ -33,12 +33,15 @@ export function AiAvatar({ prompt, alt, fallback, className }: AiAvatarProps) {
         'f44336/ef5350', // Red
     ];
     const placeholderUrl = `https://placehold.co/100x100/${colors[colorSeed]}.png`;
+    
+    const hint = prompt.split(' ').slice(0, 2).join(' ');
 
     return (
         <Avatar className={cn(className)}>
             <AvatarImage
                 src={placeholderUrl}
                 alt={alt}
+                data-ai-hint={hint}
             />
             <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>

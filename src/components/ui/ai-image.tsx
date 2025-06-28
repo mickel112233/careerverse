@@ -35,6 +35,8 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
     ];
     const placeholderUrl = `https://placehold.co/${w}x${h}/${colors[colorSeed]}.png`;
 
+    const hint = prompt.split(' ').slice(0, 2).join(' ');
+
     return (
         <Image
             src={placeholderUrl}
@@ -42,6 +44,7 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
             width={width}
             height={height}
             className={cn(className)}
+            data-ai-hint={hint}
             {...props}
         />
     );

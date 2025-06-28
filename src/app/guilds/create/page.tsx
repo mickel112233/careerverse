@@ -96,8 +96,8 @@ export default function CreateGuildPage() {
         id: guildId,
         slug: slug,
         capacity: memberCapacity,
-        bannerHint: `abstract futuristic guild banner, ${values.guildName}`,
-        crestHint: `futuristic guild crest emblem, ${slug}`,
+        bannerPrompt: `abstract futuristic guild banner, ${values.guildName}`,
+        crestPrompt: `futuristic guild crest emblem, ${slug}`,
         owner: 'QuantumLeap',
         members: [
             { 
@@ -106,7 +106,7 @@ export default function CreateGuildPage() {
                 xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10),
                 coins: parseInt(localStorage.getItem('careerClashCoins') || '100', 10),
                 gems: parseInt(localStorage.getItem('careerClashGems') || '5', 10),
-                avatarHint: 'cyberpunk woman portrait' 
+                prompt: 'cyberpunk woman portrait' 
             }
         ]
     };

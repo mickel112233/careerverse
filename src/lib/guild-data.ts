@@ -7,7 +7,7 @@ export type GuildMember = {
     xp: number;
     coins?: number;
     gems?: number;
-    avatarHint: string;
+    prompt: string;
 };
 
 export type Guild = {
@@ -18,9 +18,9 @@ export type Guild = {
   requirements: string;
   members: GuildMember[];
   icon: React.ElementType;
-  imageHint: string;
-  bannerHint: string;
-  crestHint: string;
+  prompt: string;
+  bannerPrompt: string;
+  crestPrompt: string;
   type: 'public' | 'private';
   password?: string;
   owner: string;
@@ -29,33 +29,33 @@ export type Guild = {
 
 const guildMembers = {
     frontend: [
-        { name: 'ReactDev', role: 'Leader', xp: 15000, avatarHint: 'futuristic developer intense' },
-        { name: 'VueVixen', role: 'Officer', xp: 12000, avatarHint: 'female developer purple hair' },
-        { name: 'CSSWizard', role: 'Member', xp: 9500, avatarHint: 'wizard casting spell code' },
+        { name: 'ReactDev', role: 'Leader', xp: 15000, prompt: 'futuristic developer intense' },
+        { name: 'VueVixen', role: 'Officer', xp: 12000, prompt: 'female developer purple hair' },
+        { name: 'CSSWizard', role: 'Member', xp: 9500, prompt: 'wizard casting spell code' },
     ],
     backend: [
-        { name: 'NodeKing', role: 'Leader', xp: 16000, avatarHint: 'king on a throne of servers' },
-        { name: 'PyQueen', role: 'Officer', xp: 13500, avatarHint: 'queen with python snake' },
-        { name: 'GoGopher', role: 'Member', xp: 10500, avatarHint: 'happy gopher mascot' },
+        { name: 'NodeKing', role: 'Leader', xp: 16000, prompt: 'king on a throne of servers' },
+        { name: 'PyQueen', role: 'Officer', xp: 13500, prompt: 'queen with python snake' },
+        { name: 'GoGopher', role: 'Member', xp: 10500, prompt: 'happy gopher mascot' },
     ],
     design: [
-        { name: 'Figmaster', role: 'Leader', xp: 14000, avatarHint: 'designer with glowing pen' },
-        { name: 'SketchSensei', role: 'Officer', xp: 11000, avatarHint: 'wise old design master' },
-        { name: 'AdobeAce', role: 'Member', xp: 9000, avatarHint: 'artist painting on tablet' },
+        { name: 'Figmaster', role: 'Leader', xp: 14000, prompt: 'designer with glowing pen' },
+        { name: 'SketchSensei', role: 'Officer', xp: 11000, prompt: 'wise old design master' },
+        { name: 'AdobeAce', role: 'Member', xp: 9000, prompt: 'artist painting on tablet' },
     ],
     data: [
-        { name: 'TensorFlowTamer', role: 'Leader', xp: 18000, avatarHint: 'scientist with neural network' },
-        { name: 'PandasPatron', role: 'Officer', xp: 14500, avatarHint: 'woman with a friendly panda' },
-        { name: 'SQLSorcerer', role: 'Member', xp: 11500, avatarHint: 'sorcerer with glowing data tables' },
+        { name: 'TensorFlowTamer', role: 'Leader', xp: 18000, prompt: 'scientist with neural network' },
+        { name: 'PandasPatron', role: 'Officer', xp: 14500, prompt: 'woman with a friendly panda' },
+        { name: 'SQLSorcerer', role: 'Member', xp: 11500, prompt: 'sorcerer with glowing data tables' },
     ],
     security: [
-        { name: 'FirewallFox', role: 'Leader', xp: 17000, avatarHint: 'red fox wearing a headset' },
-        { name: 'KernelKnight', role: 'Officer', xp: 13000, avatarHint: 'knight with a glowing shield' },
-        { name: 'BugBountyHunter', role: 'Member', xp: 10000, avatarHint: 'bounty hunter in a cyberpunk city' },
+        { name: 'FirewallFox', role: 'Leader', xp: 17000, prompt: 'red fox wearing a headset' },
+        { name: 'KernelKnight', role: 'Officer', xp: 13000, prompt: 'knight with a glowing shield' },
+        { name: 'BugBountyHunter', role: 'Member', xp: 10000, prompt: 'bounty hunter in a cyberpunk city' },
     ],
     void: [
-        { name: 'NullPointer', role: 'Leader', xp: 25000, avatarHint: 'figure dissolving into static' },
-        { name: 'ShadowByte', role: 'Officer', xp: 20000, avatarHint: 'ninja in the shadows' },
+        { name: 'NullPointer', role: 'Leader', xp: 25000, prompt: 'figure dissolving into static' },
+        { name: 'ShadowByte', role: 'Officer', xp: 20000, prompt: 'ninja in the shadows' },
     ]
 };
 
@@ -68,9 +68,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Must have a passion for beautiful interfaces and clean code. Minimum Level 10.',
     members: guildMembers.frontend, 
     icon: Code, 
-    imageHint: 'abstract code interface', 
-    bannerHint: 'abstract blue code interface banner',
-    crestHint: 'futuristic guild crest emblem, frontend forces',
+    prompt: 'abstract code interface', 
+    bannerPrompt: 'abstract blue code interface banner',
+    crestPrompt: 'futuristic guild crest emblem, frontend forces',
     type: 'public',
     owner: 'ReactDev',
     capacity: 50,
@@ -83,9 +83,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Strong understanding of system design and database management. Minimum Level 15.',
     members: guildMembers.backend, 
     icon: Database, 
-    imageHint: 'futuristic server room', 
-    bannerHint: 'futuristic server room banner',
-    crestHint: 'futuristic guild crest emblem, backend brigade',
+    prompt: 'futuristic server room', 
+    bannerPrompt: 'futuristic server room banner',
+    crestPrompt: 'futuristic guild crest emblem, backend brigade',
     type: 'public',
     owner: 'NodeKing',
     capacity: 50,
@@ -98,9 +98,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'A strong portfolio and a keen eye for detail. Figma proficiency is a must.',
     members: guildMembers.design, 
     icon: PenTool, 
-    imageHint: 'glowing design sketch', 
-    bannerHint: 'abstract glowing design tools banner',
-    crestHint: 'futuristic guild crest emblem, design dynasty',
+    prompt: 'glowing design sketch', 
+    bannerPrompt: 'abstract glowing design tools banner',
+    crestPrompt: 'futuristic guild crest emblem, design dynasty',
     type: 'public',
     owner: 'Figmaster',
     capacity: 50,
@@ -113,9 +113,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Proficiency in Python (Pandas, NumPy) and SQL. Experience with ML frameworks is a plus.',
     members: guildMembers.data, 
     icon: BarChart2, 
-    imageHint: 'holographic data visualization', 
-    bannerHint: 'holographic data visualization banner',
-    crestHint: 'futuristic guild crest emblem, data mavericks',
+    prompt: 'holographic data visualization', 
+    bannerPrompt: 'holographic data visualization banner',
+    crestPrompt: 'futuristic guild crest emblem, data mavericks',
     type: 'public',
     owner: 'TensorFlowTamer',
     capacity: 50,
@@ -128,9 +128,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Knowledge of network security, ethical hacking, and cryptography. Certifications are a plus.',
     members: guildMembers.security, 
     icon: Shield, 
-    imageHint: 'cyber security matrix', 
-    bannerHint: 'cyber security matrix banner',
-    crestHint: 'futuristic guild crest emblem, cyber sentinels',
+    prompt: 'cyber security matrix', 
+    bannerPrompt: 'cyber security matrix banner',
+    crestPrompt: 'futuristic guild crest emblem, cyber sentinels',
     type: 'public',
     owner: 'FirewallFox',
     capacity: 50,
@@ -143,9 +143,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Unknown. You must be invited.',
     members: guildMembers.void, 
     icon: Shield, 
-    imageHint: 'dark cosmic void', 
-    bannerHint: 'dark cosmic void banner',
-    crestHint: 'futuristic guild crest emblem, void runners',
+    prompt: 'dark cosmic void', 
+    bannerPrompt: 'dark cosmic void banner',
+    crestPrompt: 'futuristic guild crest emblem, void runners',
     type: 'private', 
     password: 'secret',
     owner: 'NullPointer',

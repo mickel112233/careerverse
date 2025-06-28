@@ -36,7 +36,7 @@ type GuildMember = {
     xp: number;
     coins?: number;
     gems?: number;
-    avatarHint: string;
+    prompt: string;
 };
 
 type GuildData = {
@@ -47,8 +47,8 @@ type GuildData = {
     type: 'public' | 'private';
     password?: string;
     capacity: number;
-    bannerHint: string;
-    crestHint: string;
+    bannerPrompt: string;
+    crestPrompt: string;
     slug: string;
     owner: string;
     members: GuildMember[];
@@ -57,7 +57,7 @@ type GuildData = {
 type ChatMessage = {
     id: number;
     sender: string;
-    avatarHint: string;
+    prompt: string;
     message: string;
     timestamp: string;
 };
@@ -105,7 +105,7 @@ const ChatInterface = ({ guildId, members }: { guildId: string, members: GuildMe
         const newMessage: ChatMessage = {
             id: Date.now(),
             sender: currentUser.name,
-            avatarHint: currentUser.avatarHint,
+            prompt: currentUser.prompt,
             message: inputValue,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
@@ -126,7 +126,7 @@ const ChatInterface = ({ guildId, members }: { guildId: string, members: GuildMe
                                 const isUser = msg.sender === currentUser?.name;
                                 return (
                                     <motion.div key={msg.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className={cn("flex items-end gap-3", isUser && "flex-row-reverse")}>
-                                        <AiAvatar prompt={msg.avatarHint} alt={msg.sender} fallback={msg.sender.substring(0, 2)} className="w-8 h-8 shrink-0" />
+                                        <AiAvatar prompt={msg.prompt} alt={msg.sender} fallback={msg.sender.substring(0, 2)} className="w-8 h-8 shrink-0" />
                                         <div className="flex flex-col gap-1 max-w-[75%]">
                                             <div className={cn("flex items-center gap-2 text-xs text-muted-foreground", isUser && "flex-row-reverse")}>
                                                 <span>{msg.sender}</span>
@@ -155,8 +155,8 @@ const editGuildSchema = z.object({
   guildName: z.string().min(3, "Must be at least 3 characters.").max(30),
   description: z.string().min(10, "Must be at least 10 characters.").max(200),
   requirements: z.string().max(200).optional(),
-  crestHint: z.string().min(5, "Must be at least 5 characters.").max(100),
-  bannerHint: z.string().min(5, "Must be at least 5 characters.").max(100),
+  crestPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
+  bannerPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
 });
 
 const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: GuildData, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: GuildData) => void }) => {
@@ -167,8 +167,8 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
             guildName: guild.guildName,
             description: guild.description,
             requirements: guild.requirements,
-            crestHint: guild.crestHint,
-            bannerHint: guild.bannerHint,
+            crestPrompt: guild.crestPrompt,
+            bannerPrompt: guild.bannerPrompt,
         }
     });
 
@@ -191,8 +191,8 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
                     <FormField control={form.control} name="guildName" render={({ field }) => (<FormItem><FormLabel>Guild Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="requirements" render={({ field }) => (<FormItem><FormLabel>Requirements</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="crestHint" render={({ field }) => (<FormItem><FormLabel>Crest AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your crest image.</FormDescription><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="bannerHint" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your banner image.</FormDescription><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="crestPrompt" render={({ field }) => (<FormItem><FormLabel>Crest AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your crest image.</FormDescription><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="bannerPrompt" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your banner image.</FormDescription><FormMessage /></FormItem>)} />
                     <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save Changes</Button>
                 </form></Form>
             </DialogContent>
@@ -356,7 +356,7 @@ export default function MyGuildClient() {
             
             {isOwner && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={updateGuildInStorage} />}
 
-            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
+            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerPrompt} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestPrompt} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
             {isOwner && <Button variant="outline" size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/80" onClick={() => setIsEditDialogOpen(true)}><Pencil className="h-4 w-4" /></Button>}
             </div></Card>
 
@@ -412,7 +412,7 @@ export default function MyGuildClient() {
                     <StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} />
                     <StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} />
                 </div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
-                <TabsContent value="members" className="mt-6"><Card><CardHeader><CardTitle>Member Roster</CardTitle><CardDescription>The backbone of our guild.</CardDescription></CardHeader><CardContent><motion.ul className="space-y-4" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05, }, }, }} >{guild.members.map((member) => { const RoleIcon = roleIcons[member.role] || Shield; return (<motion.li key={member.name} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }, }}><div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"><button className="flex items-center gap-4 text-left flex-grow min-w-0" onClick={() => showPlayerProfile(member.name)}><AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0, 2)} /><div><p className="font-semibold truncate">{member.name}</p><TooltipProvider><Tooltip><TooltipTrigger asChild><div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer"><RoleIcon className="h-4 w-4" /> {member.role}</div></TooltipTrigger><TooltipContent><p>{member.role}</p></TooltipContent></Tooltip></TooltipProvider></div></button><div className="flex items-center gap-4 flex-shrink-0"><p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>{isOwner && member.name !== 'QuantumLeap' && (<Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}><UserCog className="h-5 w-5" /></Button>)}</div></div></motion.li>)})}</motion.ul></CardContent></Card></TabsContent>
+                <TabsContent value="members" className="mt-6"><Card><CardHeader><CardTitle>Member Roster</CardTitle><CardDescription>The backbone of our guild.</CardDescription></CardHeader><CardContent><motion.ul className="space-y-4" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05, }, }, }} >{guild.members.map((member) => { const RoleIcon = roleIcons[member.role] || Shield; return (<motion.li key={member.name} variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }, }}><div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"><button className="flex items-center gap-4 text-left flex-grow min-w-0" onClick={() => showPlayerProfile(member.name)}><AiAvatar prompt={member.prompt} alt={member.name} fallback={member.name.substring(0, 2)} /><div><p className="font-semibold truncate">{member.name}</p><TooltipProvider><Tooltip><TooltipTrigger asChild><div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer"><RoleIcon className="h-4 w-4" /> {member.role}</div></TooltipTrigger><TooltipContent><p>{member.role}</p></TooltipContent></Tooltip></TooltipProvider></div></button><div className="flex items-center gap-4 flex-shrink-0"><p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>{isOwner && member.name !== 'QuantumLeap' && (<Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}><UserCog className="h-5 w-5" /></Button>)}</div></div></motion.li>)})}</motion.ul></CardContent></Card></TabsContent>
                 <TabsContent value="battles" className="mt-6">
                      <Card>
                         <CardHeader>

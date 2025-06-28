@@ -26,7 +26,7 @@ export const PlayerProfileProvider = ({ children }: { children: React.ReactNode 
         rank: 999,
         name: playerName,
         xp: 100, prestige: 0, wins: 1, losses: 1,
-        avatarHint: 'mysterious stranger',
+        prompt: 'mysterious stranger',
         badges: [],
         guild: null,
         bossFights: 0,
