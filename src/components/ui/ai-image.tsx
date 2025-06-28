@@ -25,7 +25,9 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
             try {
                 const cachedUrl = localStorage.getItem(cacheKey);
                 if (cachedUrl) {
-                    if (!isCancelled) setImageUrl(cachedUrl);
+                    if (!isCancelled) {
+                        setImageUrl(cachedUrl);
+                    }
                     return;
                 }
                 const generatedUrl = await generateImage(prompt);
@@ -39,8 +41,11 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
                 }
             } catch (error) {
                 console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
+                // On error, imageUrl remains null, so a fallback will be shown.
             } finally {
-                if (!isCancelled) setIsLoading(false);
+                if (!isCancelled) {
+                    setIsLoading(false);
+                }
             }
         };
         
@@ -53,7 +58,7 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
         return () => { isCancelled = true; };
     }, [prompt]);
 
-    if (isLoading || !imageUrl) {
+    if (isLoading) {
         if (props.layout === 'fill') {
             return <Skeleton className={cn('w-full h-full', className)} />;
         }
@@ -64,6 +69,23 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
         }
         // Fallback skeleton if width/height are not available
         return <Skeleton className={cn('w-full h-48', className)} />;
+    }
+
+    if (!imageUrl) {
+        // Fallback to a placeholder if image generation failed or is missing prompt
+        const w = Number(width) || 400;
+        const h = Number(height) || 200;
+        return (
+            <Image
+                src={`https://placehold.co/${w}x${h}.png`}
+                alt={`Placeholder for: ${alt}`}
+                width={width}
+                height={height}
+                className={cn(className)}
+                data-ai-hint={prompt.split(' ').slice(0, 2).join(' ')}
+                {...props}
+            />
+        );
     }
 
     return (
