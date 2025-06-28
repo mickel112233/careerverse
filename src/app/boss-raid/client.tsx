@@ -2,12 +2,15 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { generateBossRaid, GenerateBossRaidOutput } from "@/ai/flows/boss-raid-generator";
-import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot, HeartCrack } from 'lucide-react';
+import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot, HeartCrack, Users, PlusCircle } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
@@ -18,11 +21,14 @@ type RaidState = 'idle' | 'generating' | 'active' | 'finished';
 type Player = { name: string; avatarHint: string; type: 'human' | 'bot' };
 type EventLogMessage = { id: number; message: string; type: 'player' | 'boss' | 'system' };
 type QuizQuestion = GenerateBossRaidOutput['quizBank'][0];
+type GuildData = { id: string, guildName: string };
 
 const player: Player = { name: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', type: 'human' };
-const teammates: Player[] = [
+const allPossibleTeammates: Player[] = [
     { name: 'AI-Bot-Alpha', avatarHint: 'sleek friendly robot', type: 'bot' },
     { name: 'AI-Bot-Beta', avatarHint: 'wise old android', type: 'bot' },
+    { name: 'AI-Bot-Gamma', avatarHint: 'aggressive combat drone', type: 'bot' },
+    { name: 'AI-Bot-Delta', avatarHint: 'support medic droid', type: 'bot' },
 ];
 
 const LoadingSkeleton = () => (
@@ -54,8 +60,25 @@ export default function BossRaidClient() {
     const [isBossShaking, setIsBossShaking] = useState(false);
     const [isPartyHit, setIsPartyHit] = useState(false);
     
+    const [bossLevel, setBossLevel] = useState(10);
+    const [maxPlayers, setMaxPlayers] = useState(3);
+    const [userGuild, setUserGuild] = useState<GuildData | null>(null);
+    const [isLoadingGuild, setIsLoadingGuild] = useState(true);
+    
     const eventLogRef = useRef<HTMLDivElement>(null);
     const { toast } = useToast();
+
+    useEffect(() => {
+        const guildData = localStorage.getItem('userGuild');
+        if (guildData) {
+            setUserGuild(JSON.parse(guildData));
+        }
+        setIsLoadingGuild(false);
+    }, []);
+
+    const teammates = useMemo(() => {
+        return allPossibleTeammates.slice(0, maxPlayers - 1);
+    }, [maxPlayers]);
 
     const addEventLog = useCallback((message: string, type: EventLogMessage['type']) => {
         setEventLog(prev => [...prev, { id: prev.length, message, type }]);
@@ -74,8 +97,8 @@ export default function BossRaidClient() {
 
         try {
             const stream = localStorage.getItem('careerClashStream') || 'Software Development';
-            addEventLog(`A new threat emerges from the ${stream} sector...`, 'system');
-            const data = await generateBossRaid({ streamName: stream });
+            addEventLog(`A powerful threat (Lvl ${bossLevel}) emerges from the ${stream} sector...`, 'system');
+            const data = await generateBossRaid({ streamName: stream, bossLevel: bossLevel });
             
             setBossData(data);
             setBossCurrentHealth(data.bossHealth);
@@ -137,7 +160,7 @@ export default function BossRaidClient() {
     
     // Simulate teammates' attacks
     useEffect(() => {
-        if (raidState !== 'active' || !bossData || partyHealth <= 0 || bossCurrentHealth <= 0) return;
+        if (raidState !== 'active' || !bossData || partyHealth <= 0 || bossCurrentHealth <= 0 || teammates.length === 0) return;
 
         const interval = setInterval(() => {
             const teammate = teammates[Math.floor(Math.random() * teammates.length)];
@@ -154,7 +177,7 @@ export default function BossRaidClient() {
         }, 5000);
 
         return () => clearInterval(interval);
-    }, [raidState, bossData, partyHealth, bossCurrentHealth, addEventLog]);
+    }, [raidState, bossData, partyHealth, bossCurrentHealth, addEventLog, teammates]);
     
     // Check for raid end conditions from passive events
     useEffect(() => {
@@ -173,21 +196,71 @@ export default function BossRaidClient() {
         return (partyHealth / bossData.partyHealth) * 100;
     }, [partyHealth, bossData]);
     
-    if (raidState === 'generating') {
+    if (raidState === 'generating' || isLoadingGuild) {
         return <LoadingSkeleton />;
     }
     
     if (raidState === 'idle') {
+        if (!userGuild) {
+            return (
+                <Card className="text-center bg-gradient-to-br from-card to-muted/30 border-primary/20">
+                    <CardHeader>
+                        <Shield className="h-16 w-16 mx-auto text-primary" />
+                        <CardTitle className="font-headline text-3xl">Guild Membership Required</CardTitle>
+                        <CardDescription>You must be a member of a guild to summon a boss. Join a guild or create your own to face these challenges.</CardDescription>
+                    </CardHeader>
+                    <CardFooter className="justify-center gap-4">
+                        <Button asChild>
+                           <Link href="/guilds"><Users className="mr-2 h-5 w-5"/> Explore Guilds</Link>
+                        </Button>
+                        <Button asChild variant="outline">
+                           <Link href="/guilds/create"><PlusCircle className="mr-2 h-5 w-5"/> Create a Guild</Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
+            );
+        }
+        
         return (
             <Card className="text-center bg-gradient-to-br from-card to-muted/30 border-primary/20">
                 <CardHeader>
                     <motion.div initial={{ scale: 0.8, opacity: 0}} animate={{ scale: 1, opacity: 1}} transition={{ delay: 0.2, type: 'spring' }}>
                         <Skull className="h-16 w-16 mx-auto text-primary animate-pulse" />
                     </motion.div>
-                    <CardTitle className="font-headline text-3xl">The Raid Altar is Silent</CardTitle>
-                    <CardDescription>A powerful entity slumbers, waiting to be challenged. Gather your courage and prepare for battle.</CardDescription>
+                    <CardTitle className="font-headline text-3xl">Configure Your Raid</CardTitle>
+                    <CardDescription>Adjust the settings below and prepare for battle.</CardDescription>
                 </CardHeader>
-                <CardFooter className="justify-center">
+                <CardContent className="space-y-8 max-w-md mx-auto px-4">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label htmlFor="boss-level" className="text-lg font-semibold">Boss Level</Label>
+                            <span className="w-12 text-center text-xl font-bold font-headline text-primary p-2 bg-background/50 rounded-md">{bossLevel}</span>
+                        </div>
+                        <Slider
+                            id="boss-level"
+                            min={1}
+                            max={35}
+                            step={1}
+                            value={[bossLevel]}
+                            onValueChange={(value) => setBossLevel(value[0])}
+                        />
+                    </div>
+                     <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <Label htmlFor="max-players" className="text-lg font-semibold">Max Players</Label>
+                             <span className="w-12 text-center text-xl font-bold font-headline text-primary p-2 bg-background/50 rounded-md">{maxPlayers}</span>
+                        </div>
+                        <Slider
+                            id="max-players"
+                            min={1}
+                            max={5}
+                            step={1}
+                            value={[maxPlayers]}
+                            onValueChange={(value) => setMaxPlayers(value[0])}
+                        />
+                    </div>
+                </CardContent>
+                <CardFooter className="justify-center pt-6">
                     <Button size="lg" onClick={startRaid}>
                         <Swords className="mr-2 h-5 w-5"/> Summon the Boss
                     </Button>

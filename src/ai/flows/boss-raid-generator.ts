@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -13,6 +14,7 @@ import {z} from 'zod';
 
 const GenerateBossRaidInputSchema = z.object({
   streamName: z.string().describe('The career stream for the boss theme (e.g., "Software Development").'),
+  bossLevel: z.number().min(1).max(35).describe('The difficulty level of the boss, from 1 to 35.'),
 });
 export type GenerateBossRaidInput = z.infer<typeof GenerateBossRaidInputSchema>;
 
@@ -51,21 +53,26 @@ const prompt = ai.definePrompt({
 
 The boss must be themed around a major, difficult challenge within the '{{{streamName}}}' career path. Answering a question correctly damages the boss. Answering incorrectly results in the boss attacking the player's party.
 
+The difficulty of the entire encounter MUST be scaled according to the provided bossLevel: {{{bossLevel}}}.
+- A level 1 boss should be a moderately challenging introduction.
+- A level 35 boss should be a nearly impossible, monumental challenge for a full party.
+- All stats (boss health, party health, question damage, boss attack damage) and question difficulty must scale exponentially with the level.
+
 INSTRUCTIONS:
 
 1.  **Design the Boss**:
     *   Create a fearsome, creative name for the boss.
     *   Write a compelling description that introduces the threat.
     *   Provide a detailed image prompt for the boss's avatar, making it sound epic and menacing.
-    *   Set a high health value for the boss.
-    *   Set a health value for the player's party.
+    *   Set a health value for the boss, scaled by \`bossLevel\`.
+    *   Set a health value for the player's party, scaled by \`bossLevel\`.
 
 2.  **Create the Challenge**:
-    *   Generate a bank of at least 20 very difficult, expert-level multiple-choice questions about the '{{{streamName}}}' field.
-    *   Each question must have 4 options, a correct answer, a "damage" value (how much damage the player deals to the boss), and a "bossAttackDamage" value (how much damage the boss deals to the player on a wrong answer). More difficult questions should have higher values for both.
+    *   Generate a bank of at least 20 multiple-choice questions about the '{{{streamName}}}' field. The difficulty of these questions must increase significantly with the \`bossLevel\`.
+    *   Each question must have 4 options, a correct answer, a "damage" value, and a "bossAttackDamage" value. These values must also be scaled based on the \`bossLevel\`.
 
 3.  **Define the Spoils**:
-    *   Determine the rewards for victory: a large amount of XP and coins, and an exclusive, cool-sounding player title.
+    *   Determine the rewards for victory: a large amount of XP and coins, and an exclusive, cool-sounding player title. These rewards should also scale with the \`bossLevel\`.
 
 Return the entire raid encounter as a single JSON object.
 `,
