@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -24,7 +25,7 @@ const RoadmapNodeSchema = z.object({
 export type RoadmapNode = z.infer<typeof RoadmapNodeSchema>;
 
 const GenerateLearningRoadmapOutputSchema = z.object({
-  roadmap: z.array(RoadmapNodeSchema).describe('An array of at least 200 learning levels that form the roadmap.'),
+  roadmap: z.array(RoadmapNodeSchema).describe('An array of at least 250 learning levels that form a very long and extensive roadmap.'),
 });
 export type GenerateLearningRoadmapOutput = z.infer<typeof GenerateLearningRoadmapOutputSchema>;
 
@@ -38,9 +39,9 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateLearningRoadmapOutputSchema},
   prompt: `You are an expert curriculum designer for a gamified learning platform called "Career Clash".
   
-Your task is to generate a detailed learning roadmap for a specific subject stream. The roadmap must be broken down into a series of levels, starting from fundamental concepts and progressively advancing to expert-level topics.
+Your task is to generate a very long and detailed learning roadmap for a specific subject stream. The roadmap must be broken down into a large series of levels, starting from fundamental concepts and progressively advancing to expert-level topics. The goal is to create a long-term learning journey for the player.
 
-For the subject '{{{streamName}}}', create a comprehensive list of at least 200 learning levels. Base the content on the most popular and authoritative books, courses, and real-world skills for this field.
+For the subject '{{{streamName}}}', create a comprehensive list of at least 250 learning levels. Base the content on the most popular and authoritative books, courses, and real-world skills for this field.
 
 For each level, provide:
 1.  A concise, engaging title for the learning module.
