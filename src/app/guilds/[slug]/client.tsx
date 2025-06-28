@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from '@/components/ui/badge';
-import { Users, Trophy, Shield, ArrowLeft, BarChart3, Lock, PlusCircle } from 'lucide-react';
+import { Users, Trophy, Shield, ArrowLeft, BarChart3, Lock, PlusCircle, Coins, Gem } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
@@ -81,10 +81,12 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
 
         if (!guild) return;
         
-        const userAsNewMember = { 
+        const userAsNewMember: GuildMember = { 
             name: 'QuantumLeap', 
             role: 'Member', 
-            xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10), 
+            xp: parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10),
+            coins: parseInt(localStorage.getItem('careerClashCoins') || '100', 10),
+            gems: parseInt(localStorage.getItem('careerClashGems') || '5', 10),
             avatarHint: 'cyberpunk woman portrait' 
         };
 
@@ -128,6 +130,8 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
     }
 
     const totalXp = guild.members.reduce((acc, member) => acc + member.xp, 0);
+    const totalCoins = guild.members.reduce((acc, member) => acc + member.coins, 0);
+    const totalGems = guild.members.reduce((acc, member) => acc + member.gems, 0);
 
     return (
         <div>
@@ -154,10 +158,12 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                 </div>
             </Card>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-6">
-                <StatCard icon={Trophy} label="Total Guild XP" value={totalXp.toLocaleString()} />
-                <StatCard icon={Users} label="Members" value={`${guild.members.length}`} />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                 <StatCard icon={BarChart3} label="Guild Rank" value={`#${mockGuilds.findIndex(g => g.id === guild.id) + 1}`} />
+                <StatCard icon={Users} label="Members" value={`${guild.members.length}`} />
+                <StatCard icon={Trophy} label="Total Guild XP" value={totalXp.toLocaleString()} />
+                <StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} />
+                <StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} />
             </div>
 
             <div className="grid lg:grid-cols-2 gap-6">
