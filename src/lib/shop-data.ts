@@ -1,5 +1,5 @@
 
-import { Gem, Shield, Star, Zap, Paintbrush, Sparkles, Crown, Trophy, Percent, FileText, Package, Bot, Ghost, Flame } from "lucide-react";
+import { Gem, Shield, Star, Zap, Paintbrush, Sparkles, Crown, Trophy, Percent, FileText, Package, Bot, Ghost, Flame, Wand2 } from "lucide-react";
 
 export type ShopItem = {
     name: string;

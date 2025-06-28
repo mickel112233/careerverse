@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import MainLayout from '@/components/layout/main-layout';
 import { Inter, Poppins } from 'next/font/google';
 import { cn } from '@/lib/utils';
+import { PlayerProfileProvider } from '@/contexts/PlayerProfileProvider';
 
 const fontSans = Inter({
   subsets: ['latin'],
@@ -30,10 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={cn("font-sans antialiased", fontSans.variable, fontHeading.variable)}>
-        <MainLayout>
-          {children}
-        </MainLayout>
-        <Toaster />
+        <PlayerProfileProvider>
+            <MainLayout>
+            {children}
+            </MainLayout>
+            <Toaster />
+        </PlayerProfileProvider>
       </body>
     </html>
   );

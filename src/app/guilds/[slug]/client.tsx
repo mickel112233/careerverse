@@ -13,6 +13,7 @@ import { AiImage } from '@/components/ui/ai-image';
 import { useToast } from '@/hooks/use-toast';
 import { mockGuilds, Guild, GuildMember } from '@/lib/guild-data';
 import { motion } from 'framer-motion';
+import { usePlayerProfile } from '@/contexts/PlayerProfileProvider';
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
     <Card className="bg-muted/50 h-full">
@@ -48,6 +49,7 @@ const LoadingSkeleton = () => (
 export default function GuildDetailClient({ slug }: { slug: string }) {
     const router = useRouter();
     const { toast } = useToast();
+    const { showPlayerProfile } = usePlayerProfile();
     const [guild, setGuild] = useState<Guild | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [userGuild, setUserGuild] = useState<any | null>(null);
@@ -194,20 +196,21 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
                             return (
                                 <motion.li 
                                     key={member.name} 
-                                    className="flex items-center justify-between p-2 bg-muted/50 rounded-lg"
                                     variants={{
                                         hidden: { opacity: 0, y: 20 },
                                         visible: { opacity: 1, y: 0 },
                                     }}
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0,2)} />
-                                        <div>
-                                            <p className="font-semibold">{member.name}</p>
-                                            <p className="text-xs text-muted-foreground">{member.role}</p>
+                                    <button className="flex items-center justify-between p-2 bg-muted/50 rounded-lg w-full text-left hover:bg-muted transition-colors" onClick={() => showPlayerProfile(member.name)}>
+                                        <div className="flex items-center gap-3">
+                                            <AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0,2)} />
+                                            <div>
+                                                <p className="font-semibold">{member.name}</p>
+                                                <p className="text-xs text-muted-foreground">{member.role}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
+                                        <p className="font-mono text-primary font-semibold">{member.xp.toLocaleString()} XP</p>
+                                    </button>
                                 </motion.li>
                             )
                         })}

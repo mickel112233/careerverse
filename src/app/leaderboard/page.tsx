@@ -7,48 +7,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Trophy, ArrowLeft, Star, Zap, Swords, Shield as ShieldIcon, Skull, Users, BarChart3, User, Package } from "lucide-react";
+import { Trophy, ArrowLeft, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { allShopItems } from '@/lib/shop-data';
-
-const leaderboardData = [
-  { rank: 1, name: 'QuantumLeap', xp: 0, prestige: 0, wins: 0, losses: 0, avatarHint: 'cyberpunk woman portrait', badges: ['Master Coder', 'AI Guru'], guild: 'The Void Runners', bossFights: 5, showcase: [] },
-  { rank: 2, name: 'SynthWave', xp: 9500, prestige: 0, wins: 110, losses: 20, avatarHint: 'cyberpunk man portrait', badges: ['Design Sensei'], guild: 'Design Dynasty', bossFights: 3, showcase: ['Neon Glow Profile FX', 'The Legend Title'] },
-  { rank: 3, name: 'CodeNinja', xp: 9200, prestige: 0, wins: 105, losses: 18, avatarHint: 'hacker with glasses', badges: ['React Pro', 'TS Wizard'], guild: 'Frontend Forces', bossFights: 2, showcase: ['Glitch-in-the-Matrix FX', 'The Master Title'] },
-  { rank: 4, name: 'DataDynamo', xp: 8900, prestige: 0, wins: 100, losses: 25, avatarHint: 'data scientist smiling', badges: ['Pythonista', 'Data Whisperer'], guild: 'Data Mavericks', bossFights: 4, showcase: ['AI Companion: Bit', 'The Adept Title'] },
-  { rank: 5, name: 'PixelPerfect', xp: 8750, prestige: 0, wins: 98, losses: 30, avatarHint: 'designer serious', badges: ['UI/UX Expert'], guild: 'Design Dynasty', bossFights: 1, showcase: ['Clockwork Frame'] },
-  { rank: 6, name: 'LogicLord', xp: 8500, prestige: 0, wins: 95, losses: 15, avatarHint: 'philosopher thinking', badges: ['Algorithm Ace'], guild: null, bossFights: 6, showcase: [] },
-  { rank: 7, name: 'CloudChaser', xp: 8300, prestige: 0, wins: 90, losses: 22, avatarHint: 'devops engineer female', badges: ['DevOps King'], guild: 'Backend Brigade', bossFights: 3, showcase: [] },
-  { rank: 8, name: 'ScriptKiddie', xp: 8100, prestige: 0, wins: 88, losses: 35, avatarHint: 'young male student', badges: ['JS Jedi'], guild: null, bossFights: 0, showcase: ['The Apprentice Title'] },
-  { rank: 9, name: 'SecureShell', xp: 7900, prestige: 0, wins: 85, losses: 12, avatarHint: 'female hacker hood', badges: ['Security Sentinel'], guild: 'Cyber Sentinels', bossFights: 8, showcase: ['Dark Matter Theme', 'AI Companion: Specter'] },
-  { rank: 10, name: 'APIAdept', xp: 7700, prestige: 0, wins: 80, losses: 28, avatarHint: 'male backend developer', badges: ['Backend Baron'], guild: 'Backend Brigade', bossFights: 2, showcase: [] },
-];
+import { mockLeaderboardData, calculateScore, PlayerData } from '@/lib/leaderboard-data';
+import { usePlayerProfile } from '@/contexts/PlayerProfileProvider';
 
 const USER_NAME = 'QuantumLeap';
 
-const calculateScore = (player: { xp: number, wins: number, losses: number }) => {
-    return Math.pow(player.xp, 2) + Math.pow(player.wins, 2) - Math.pow(player.losses, 2);
-};
-
-type PlayerData = (typeof leaderboardData)[0];
-
-const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
-    <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
-        <Icon className="h-6 w-6 text-primary mt-1" />
-        <div>
-            <p className="text-sm text-muted-foreground">{label}</p>
-            <p className="text-xl font-bold font-headline">{value}</p>
-        </div>
-    </div>
-);
-
 export default function LeaderboardPage() {
   const router = useRouter();
-  const [leaderboard, setLeaderboard] = useState(leaderboardData);
-  const [selectedPlayer, setSelectedPlayer] = useState<PlayerData | null>(null);
+  const { showPlayerProfile } = usePlayerProfile();
+  const [leaderboard, setLeaderboard] = useState<PlayerData[]>([]);
 
   useEffect(() => {
     const updateLeaderboard = () => {
@@ -60,7 +31,7 @@ export default function LeaderboardPage() {
       const userGuildName = userGuildData ? userGuildData.guildName : null;
       const userShowcase = JSON.parse(localStorage.getItem('pinnedItems') || '[]');
       
-      const updatedLeaderboard = leaderboardData.map(player => 
+      const updatedLeaderboard = mockLeaderboardData.map(player => 
           player.name === USER_NAME ? { 
               ...player, 
               xp: userXp, 
@@ -95,7 +66,6 @@ export default function LeaderboardPage() {
   }, []);
 
   return (
-    <>
       <div className="container mx-auto p-4 sm:p-6 md:p-8">
         <Button variant="ghost" onClick={() => router.back()} className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
@@ -134,7 +104,7 @@ export default function LeaderboardPage() {
                       player.rank <= 3 && "bg-primary/5",
                       player.name === USER_NAME && "bg-accent/20 border-accent"
                     )}
-                    onClick={() => setSelectedPlayer(player)}
+                    onClick={() => showPlayerProfile(player.name)}
                   >
                     <TableCell className="text-center">
                       <div className={cn(`flex items-center justify-center w-8 h-8 rounded-full font-bold`,
@@ -184,66 +154,5 @@ export default function LeaderboardPage() {
           </CardContent>
         </Card>
       </div>
-
-      <Dialog open={!!selectedPlayer} onOpenChange={(isOpen) => !isOpen && setSelectedPlayer(null)}>
-        <DialogContent className="sm:max-w-md">
-            {selectedPlayer && (
-                <>
-                    <DialogHeader>
-                        <div className="flex items-center gap-4">
-                            <AiAvatar prompt={selectedPlayer.avatarHint} alt={selectedPlayer.name} fallback={selectedPlayer.name.charAt(0)} className="w-16 h-16 ring-2 ring-primary" />
-                            <div>
-                                <DialogTitle className="text-2xl font-headline">{selectedPlayer.name}</DialogTitle>
-                                <DialogDescription>
-                                    {selectedPlayer.guild ? (
-                                        <span className="flex items-center gap-1.5"><ShieldIcon className="h-4 w-4" /> Member of {selectedPlayer.guild}</span>
-                                    ) : (
-                                        <span className="flex items-center gap-1.5"><User className="h-4 w-4" /> Lone Wolf</span>
-                                    )}
-                                </DialogDescription>
-                            </div>
-                        </div>
-                    </DialogHeader>
-                    <div className="grid grid-cols-2 gap-4 py-4">
-                        <StatCard icon={Trophy} label="Rank" value={`#${selectedPlayer.rank}`} />
-                        <StatCard icon={Zap} label="XP" value={selectedPlayer.xp.toLocaleString()} />
-                        <StatCard icon={Swords} label="Wins" value={selectedPlayer.wins} />
-                        <StatCard icon={ShieldIcon} label="Losses" value={selectedPlayer.losses} />
-                        <StatCard icon={Skull} label="Bosses Defeated" value={selectedPlayer.bossFights} />
-                        <StatCard icon={BarChart3} label="Win Rate" value={`${((selectedPlayer.wins / (selectedPlayer.wins + selectedPlayer.losses || 1)) * 100).toFixed(0)}%`} />
-                    </div>
-                     {selectedPlayer.showcase.length > 0 && (
-                        <div className="pt-4 border-t">
-                            <h3 className="font-headline font-semibold mb-2 flex items-center gap-2"><Package/> Player Showcase</h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                {selectedPlayer.showcase.map(itemName => {
-                                    const item = allShopItems.find(i => i.name === itemName);
-                                    if (!item) return null;
-                                    const Icon = item.icon;
-                                    return (
-                                        <TooltipProvider key={item.name}>
-                                            <Tooltip>
-                                                <TooltipTrigger asChild>
-                                                    <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg h-full">
-                                                        <Icon className="h-8 w-8 mb-1 text-primary"/>
-                                                        <p className="text-xs font-semibold truncate">{item.name}</p>
-                                                    </div>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    <p className="font-bold">{item.name}</p>
-                                                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                                                </TooltipContent>
-                                            </Tooltip>
-                                        </TooltipProvider>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    )}
-                </>
-            )}
-        </DialogContent>
-      </Dialog>
-    </>
   );
 }
