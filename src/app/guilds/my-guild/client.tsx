@@ -264,7 +264,9 @@ export default function MyGuildClient() {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [challenges, setChallenges] = useState<GuildChallenge[]>([]);
     const [isDeclareWarOpen, setIsDeclareWarOpen] = useState(false);
-    
+    const [isUpgradeCapacityOpen, setIsUpgradeCapacityOpen] = useState(false);
+    const [userGems, setUserGems] = useState(0);
+
     const declareWarForm = useForm<z.infer<typeof declareWarSchema>>({
         resolver: zodResolver(declareWarSchema),
         defaultValues: {
@@ -272,6 +274,12 @@ export default function MyGuildClient() {
             betAmount: 50,
         }
     });
+
+    const capacityUpgrades = [
+        { slots: 10, cost: 100, currency: 'gems' },
+        { slots: 50, cost: 450, currency: 'gems' },
+        { slots: 100, cost: 800, currency: 'gems' },
+    ];
 
     useEffect(() => {
         const membership = localStorage.getItem('careerClashMembership');
@@ -285,14 +293,16 @@ export default function MyGuildClient() {
         if (storedGuildString) {
             const guildData: GuildData = JSON.parse(storedGuildString);
             
-            // Find user in guild and update their stats to be fresh
             const userIndex = guildData.members.findIndex(m => m.name === 'QuantumLeap');
             if (userIndex !== -1) {
                 guildData.members[userIndex].xp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
                 guildData.members[userIndex].coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
                 guildData.members[userIndex].gems = parseInt(localStorage.getItem('careerClashGems') || '5', 10);
             }
-
+            const currentUser = guildData.members.find(m => m.name === 'QuantumLeap');
+            if (currentUser) {
+                setUserGems(currentUser.gems || 0);
+            }
             setGuild(guildData);
         } else {
             setGuild(null);
@@ -362,11 +372,7 @@ export default function MyGuildClient() {
     const handleLeaveGuild = () => {
         if (!guild) return;
         const updatedMembers = guild.members.filter(member => member.name !== 'QuantumLeap');
-        // This is a bit tricky. We are leaving a "mock" guild. The best we can do is remove ourselves from our local copy.
-        // In a real app, this would be a backend call.
         const updatedGuild = { ...guild, members: updatedMembers };
-        // We need to update the mock guild source if we want this to be "real" but that's beyond scope.
-        // So we just remove ourselves locally.
         localStorage.removeItem('userGuild');
         window.dispatchEvent(new Event('guildChange'));
         toast({ title: "You have left the guild." });
@@ -418,6 +424,41 @@ export default function MyGuildClient() {
         });
     };
 
+    const handleUpgradeCapacity = (slots: number, cost: number) => {
+        if (!guild || userGems < cost) {
+            toast({
+                variant: 'destructive',
+                title: 'Insufficient Gems',
+                description: 'You do not have enough gems for this upgrade.'
+            });
+            return;
+        }
+
+        const newCapacity = guild.capacity + slots;
+        const newGems = userGems - cost;
+
+        const updatedGuild = {
+            ...guild,
+            capacity: newCapacity,
+            members: guild.members.map(m =>
+                m.name === 'QuantumLeap' ? { ...m, gems: newGems } : m
+            )
+        };
+
+        localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+        localStorage.setItem('careerClashGems', newGems.toString());
+        window.dispatchEvent(new Event('guildChange'));
+        window.dispatchEvent(new Event('currencyChange'));
+
+        toast({
+            title: 'Capacity Upgraded!',
+            description: `Your guild can now hold ${newCapacity} members.`,
+            className: 'bg-green-500 text-white'
+        });
+
+        setIsUpgradeCapacityOpen(false);
+    };
+
 
     if (isLoading) {
         return (
@@ -447,7 +488,57 @@ export default function MyGuildClient() {
             <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerHint} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestHint} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div></div></Card>
 
             <Tabs defaultValue="dashboard" className="w-full"><TabsList className="grid w-full grid-cols-3 md:grid-cols-5"><TabsTrigger value="dashboard">Dashboard</TabsTrigger><TabsTrigger value="members">Members</TabsTrigger><TabsTrigger value="battles">Battles</TabsTrigger><TabsTrigger value="chat">Chat</TabsTrigger><TabsTrigger value="settings">Settings</TabsTrigger></TabsList>
-                <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"><StatCard icon={BarChart3} label="Guild Rank" value="#12" /><StatCard icon={Trophy} label="Total XP" value={totalXp.toLocaleString()} /><StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`} /><StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} /><StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} /></div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
+                <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
+                    <StatCard icon={BarChart3} label="Guild Rank" value="#12" />
+                    <StatCard icon={Trophy} label="Total XP" value={totalXp.toLocaleString()} />
+                    <Dialog open={isUpgradeCapacityOpen} onOpenChange={setIsUpgradeCapacityOpen}>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="h-full">
+                            <Card className="bg-muted/50 h-full relative">
+                                <CardContent className="p-4 flex items-center gap-4">
+                                    <Users className="h-8 w-8 text-primary" />
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Members</p>
+                                        <p className="text-2xl font-bold font-headline">{`${guild.members.length} / ${guild.capacity}`}</p>
+                                    </div>
+                                </CardContent>
+                                {isOwner && (
+                                    <DialogTrigger asChild>
+                                         <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7">
+                                            <PlusCircle className="h-4 w-4" />
+                                            <span className="sr-only">Upgrade Capacity</span>
+                                        </Button>
+                                    </DialogTrigger>
+                                )}
+                            </Card>
+                        </motion.div>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Upgrade Guild Capacity</DialogTitle>
+                                <DialogDescription>
+                                    Purchase more member slots for your guild. You currently have {userGems.toLocaleString()} Gems.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 py-4">
+                                {capacityUpgrades.map(upgrade => (
+                                    <Card key={upgrade.slots} className="flex items-center justify-between p-4 bg-muted/50">
+                                        <div>
+                                            <p className="font-bold text-lg">+{upgrade.slots} Member Slots</p>
+                                            <p className="text-sm text-muted-foreground">Increase capacity to {guild.capacity + upgrade.slots}</p>
+                                        </div>
+                                        <Button 
+                                            onClick={() => handleUpgradeCapacity(upgrade.slots, upgrade.cost)}
+                                            disabled={userGems < upgrade.cost}
+                                        >
+                                            <Gem className="mr-2 h-4 w-4" /> {upgrade.cost}
+                                        </Button>
+                                    </Card>
+                                ))}
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                    <StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} />
+                    <StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} />
+                </div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>
                 <TabsContent value="members" className="mt-6"><Card><CardHeader><CardTitle>Member Roster</CardTitle><CardDescription>The backbone of our guild.</CardDescription></CardHeader><CardContent><motion.ul className="space-y-4" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.05, }, }, }} >{guild.members.map((member) => { const RoleIcon = roleIcons[member.role] || Shield; return (<motion.li key={member.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg" variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 }, }}><div className="flex items-center gap-4"><AiAvatar prompt={member.avatarHint} alt={member.name} fallback={member.name.substring(0, 2)} /><div><p className="font-semibold">{member.name}</p><TooltipProvider><Tooltip><TooltipTrigger asChild><div className="flex items-center gap-1 text-sm text-muted-foreground cursor-pointer"><RoleIcon className="h-4 w-4" /> {member.role}</div></TooltipTrigger><TooltipContent><p>{member.role}</p></TooltipContent></Tooltip></TooltipProvider></div></div><div className="flex items-center gap-4"><p className="font-mono text-primary font-semibold text-sm sm:text-base">{member.xp.toLocaleString()} XP</p>{isOwner && member.name !== 'QuantumLeap' && (<Button variant="ghost" size="icon" onClick={() => { setManagingMember(member); setIsManageMemberOpen(true); setSelectedRole(member.role); }}><UserCog className="h-5 w-5" /></Button>)}</div></motion.li>)})}</motion.ul></CardContent></Card></TabsContent>
                 <TabsContent value="battles" className="mt-6">
                     <div className="grid md:grid-cols-2 gap-6">
