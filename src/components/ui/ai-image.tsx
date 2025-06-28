@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -22,26 +21,28 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
 
         const fetchImage = async () => {
             setIsLoading(true);
+            const cachedUrl = localStorage.getItem(cacheKey);
+
+            if (cachedUrl) {
+                if (!isCancelled) {
+                    setImageUrl(cachedUrl);
+                    setIsLoading(false);
+                }
+                return;
+            }
+
             try {
-                const cachedUrl = localStorage.getItem(cacheKey);
-                if (cachedUrl) {
-                    if (!isCancelled) {
-                        setImageUrl(cachedUrl);
+                const generatedUrl = await generateImage(prompt);
+                if (!isCancelled) {
+                    try {
+                        localStorage.setItem(cacheKey, generatedUrl);
+                    } catch (error) {
+                        console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
                     }
-                } else {
-                    const generatedUrl = await generateImage(prompt);
-                    if (!isCancelled) {
-                        try {
-                            localStorage.setItem(cacheKey, generatedUrl);
-                        } catch (error) {
-                            console.warn(`Failed to cache image for prompt "${prompt}". Storage may be full.`, error);
-                        }
-                        setImageUrl(generatedUrl);
-                    }
+                    setImageUrl(generatedUrl);
                 }
             } catch (error) {
                 console.error(`Failed to generate AI image for prompt "${prompt}":`, error);
-                // On error, imageUrl remains null, so a fallback will be shown.
             } finally {
                 if (!isCancelled) {
                     setIsLoading(false);
@@ -67,12 +68,10 @@ export function AiImage({ prompt, alt, width, height, className, ...props }: AiI
         if (!isNaN(w) && !isNaN(h)) {
             return <Skeleton className={cn(className)} style={{ width: w, height: h }} />;
         }
-        // Fallback skeleton if width/height are not available
         return <Skeleton className={cn('w-full h-48', className)} />;
     }
 
     if (!imageUrl) {
-        // Fallback to a placeholder if image generation failed or is missing prompt
         const w = Number(width) || 400;
         const h = Number(height) || 200;
         return (
