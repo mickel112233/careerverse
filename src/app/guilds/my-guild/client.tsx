@@ -12,7 +12,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft, Send, Gem, Loader2, Pencil } from 'lucide-react';
+import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCircle, Crown, Settings, Trash2, UserCog, ArrowLeft, Send, Gem, Loader2, Pencil, Clock } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
@@ -66,7 +66,8 @@ type GuildChallenge = {
     id: string;
     opponentName: string;
     betAmount: number;
-    status: 'Pending' | 'Victory' | 'Defeat';
+    status: 'Pending' | 'Active' | 'Victory' | 'Defeat';
+    startTime: number;
 }
 
 const roleIcons: { [key: string]: React.ElementType } = { Leader: Crown, Officer: Star, Member: Shield, Admin: Shield, Friend: Shield, Don: Shield, Ghost: Shield, Hacker: Shield };
@@ -213,6 +214,44 @@ const declareWarSchema = z.object({
   betAmount: z.coerce.number().min(50, { message: "Bet must be at least 50 gems." }),
 });
 
+const CountdownTimer = ({ targetDate }: { targetDate: number }) => {
+    const [timeLeft, setTimeLeft] = useState(targetDate - Date.now());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTimeLeft(targetDate - Date.now());
+        }, 1000);
+
+        if (timeLeft <= 0) {
+            clearInterval(intervalId);
+        }
+
+        return () => clearInterval(intervalId);
+    }, [targetDate, timeLeft]);
+
+    if (timeLeft <= 0) {
+        return (
+            <div className="flex items-center gap-2 text-primary animate-pulse">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span className="font-mono">Starting...</span>
+            </div>
+        );
+    }
+
+    const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+    const seconds = Math.floor((timeLeft / 1000) % 60);
+
+    return (
+        <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4"/>
+            <span className="font-mono">
+                {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+            </span>
+        </div>
+    );
+};
+
+
 export default function MyGuildClient() {
     const router = useRouter();
     const [guild, setGuild] = useState<GuildData | null>(null);
@@ -252,6 +291,28 @@ export default function MyGuildClient() {
         window.addEventListener('guildChange', fetchGuild);
         return () => window.removeEventListener('guildChange', fetchGuild);
     }, []);
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            let challengesUpdated = false;
+            const updatedChallenges = challenges.map(c => {
+                if (c.status === 'Pending' && c.startTime && now >= c.startTime) {
+                    challengesUpdated = true;
+                    return { ...c, status: 'Active' as const };
+                }
+                return c;
+            });
+
+            if (challengesUpdated) {
+                setChallenges(updatedChallenges);
+                localStorage.setItem('guildChallenges', JSON.stringify(updatedChallenges));
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [challenges]);
+
 
     const handleRoleChange = () => {
         if (!guild || !managingMember || !selectedRole) return;
@@ -314,7 +375,8 @@ export default function MyGuildClient() {
             id: `WAR-${Date.now()}`,
             opponentName: opponentGuild.name,
             betAmount: values.betAmount,
-            status: 'Pending'
+            status: 'Pending',
+            startTime: Date.now() + 2 * 60 * 1000, // Starts in 2 minutes
         };
         const updatedChallenges = [...challenges, newChallenge];
         setChallenges(updatedChallenges);
@@ -444,7 +506,11 @@ export default function MyGuildClient() {
                                                 <p>vs <span className="font-semibold">{c.opponentName}</span></p>
                                                 <p className="text-xs text-muted-foreground flex items-center gap-1"><Gem className="h-3 w-3 text-primary" /> Bet: {c.betAmount} Gems</p>
                                             </div>
-                                             {c.status === 'Pending' ? (
+                                             {c.status === 'Pending' && c.startTime ? (
+                                                <div className="text-sm text-muted-foreground">
+                                                    <CountdownTimer targetDate={c.startTime} />
+                                                </div>
+                                            ) : c.status === 'Active' ? (
                                                 <Button size="sm" onClick={() => handleSimulateWar(c.id)}>Simulate War</Button>
                                             ) : (
                                                 <Badge variant={c.status === 'Victory' ? 'default' : 'destructive'} className={cn(c.status === 'Victory' && 'bg-green-500/80')}>{c.status}</Badge>
@@ -462,3 +528,5 @@ export default function MyGuildClient() {
         </div>
     );
 }
+
+    
