@@ -58,45 +58,6 @@ type Stage = {
   levels: Level[];
 };
 
-const roadmapIcons = [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2];
-
-const LevelCard = ({ level, isStageLocked }: { level: Level, isStageLocked: boolean }) => {
-  const Icon = roadmapIcons[Math.floor(Math.random() * roadmapIcons.length)];
-  const isPlayable = !isStageLocked && level.status !== 'locked';
-
-  return (
-    <Card className={cn('w-full transition-all', 
-        !isPlayable && 'bg-muted/50 opacity-70',
-        level.status === 'unlocked' && !isStageLocked && 'border-primary shadow-md shadow-primary/20', 
-        level.status === 'completed' && 'border-green-500/30'
-    )}>
-        <CardHeader className="flex-row items-center gap-4 space-y-0 p-4">
-            <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-full', 
-                level.status === 'completed' ? 'bg-green-400/20' : 'bg-muted',
-                level.status === 'unlocked' && !isStageLocked && 'ring-2 ring-primary animate-pulse-slow'
-            )}>
-                {level.status === 'completed' ? <CheckCircle className="h-6 w-6 text-green-400" /> : <Icon className="h-6 w-6 text-muted-foreground" />}
-            </div>
-            <div>
-                <CardTitle className="text-base font-semibold leading-tight">{level.title}</CardTitle>
-                <CardDescription className="text-xs mt-1">{level.description}</CardDescription>
-                <div className="flex items-center gap-4 text-xs font-bold mt-2">
-                    <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {level.xp} XP</span>
-                    <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {level.coins}</span>
-                </div>
-            </div>
-        </CardHeader>
-        <CardFooter className="p-4 pt-0">
-            <Button asChild size="sm" className="w-full" disabled={!isPlayable}>
-            <Link href={isPlayable ? `/learning/${level.slug}` : '#'}>
-                {level.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
-            </Link>
-            </Button>
-        </CardFooter>
-    </Card>
-  )
-}
-
 const RoadmapSkeleton = () => (
     <div className="space-y-4">
         {[...Array(3)].map((_, index) => (
@@ -119,9 +80,9 @@ export default function DashboardClient() {
 
   useEffect(() => {
     const checkPremium = () => {
-        const membership = localStorage.getItem('careerClashMembership');
-        setIsPremium(membership !== null && membership !== 'Free' && membership !== 'Basic');
-    }
+      const membership = localStorage.getItem('careerClashMembership');
+      setIsPremium(membership !== null && membership !== 'Free' && membership !== 'Basic');
+    };
     checkPremium();
     window.addEventListener('currencyChange', checkPremium);
 
@@ -129,18 +90,49 @@ export default function DashboardClient() {
     const storedRoadmap = localStorage.getItem('careerClashRoadmap');
 
     if (storedStream && storedRoadmap) {
-        setSelectedStream(storedStream);
-        try {
-          const parsedRoadmap = JSON.parse(storedRoadmap);
-          setRoadmap(parsedRoadmap);
-        } catch (e) {
-          console.error("Failed to parse roadmap from localStorage", e);
-          // Handle corrupted data, e.g., by clearing it
-          localStorage.removeItem('careerClashRoadmap');
-          setIsDialogOpen(true);
+      setSelectedStream(storedStream);
+      try {
+        const parsedRoadmap: Stage[] = JSON.parse(storedRoadmap);
+        
+        // Robustly correct statuses on every load to handle old data or inconsistencies.
+        let previousStageCompleted = true; // The "stage" before the first one is considered complete.
+        const correctedRoadmap = parsedRoadmap.map(stage => {
+          // Ensure levels exist to prevent crashes from corrupted data.
+          if (!stage.levels || !Array.isArray(stage.levels)) {
+            stage.levels = [];
+          }
+
+          const isCurrentStageComplete = stage.levels.every(l => l.status === 'completed');
+          let newStatus: 'completed' | 'unlocked' | 'locked';
+
+          if (isCurrentStageComplete) {
+            newStatus = 'completed';
+          } else if (previousStageCompleted) {
+            newStatus = 'unlocked';
+          } else {
+            newStatus = 'locked';
+          }
+          
+          // The completion of the *current* stage determines if the *next* one can be unlocked.
+          previousStageCompleted = isCurrentStageComplete;
+
+          return { ...stage, status: newStatus };
+        });
+
+        setRoadmap(correctedRoadmap);
+        // Persist the corrected data if it has changed
+        if (JSON.stringify(correctedRoadmap) !== storedRoadmap) {
+          localStorage.setItem('careerClashRoadmap', JSON.stringify(correctedRoadmap));
         }
+
+      } catch (e) {
+        console.error("Failed to parse or correct roadmap from localStorage", e);
+        // Handle corrupted data by clearing it and forcing a new selection.
+        localStorage.removeItem('careerClashRoadmap');
+        setIsDialogOpen(true);
+      }
     } else {
-        setIsDialogOpen(true); // Force selection on first visit
+      setIsDialogOpen(true); // Force selection on first visit
     }
     setIsLoadingRoadmap(false);
 
@@ -157,14 +149,14 @@ export default function DashboardClient() {
     try {
         const result = await generateLearningRoadmap({ streamName });
 
-        if (!result || !result.roadmap) {
+        if (!result || !result.roadmap || !Array.isArray(result.roadmap)) {
             throw new Error("Invalid roadmap data received from AI.");
         }
 
         const newRoadmap: Stage[] = result.roadmap.map((stage, stageIndex) => ({
             stageName: stage.stageName,
             status: stageIndex === 0 ? 'unlocked' : 'locked',
-            levels: stage.levels.map((node, levelIndex) => ({
+            levels: (stage.levels || []).map((node, levelIndex) => ({
                 title: node.title,
                 slug: node.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
                 status: stageIndex === 0 && levelIndex === 0 ? 'unlocked' : 'locked',
@@ -204,7 +196,7 @@ export default function DashboardClient() {
     setStreamToConfirm(null);
   };
 
-  const activeStageIndex = roadmap.findLastIndex(stage => stage.status === 'unlocked' && stage.levels && !stage.levels.every(l => l.status === 'completed'))
+  const activeStageIndex = roadmap.findIndex(stage => stage.status === 'unlocked' && stage.levels && !stage.levels.every(l => l.status === 'completed'))
 
   return (
     <>
@@ -329,7 +321,35 @@ export default function DashboardClient() {
                         </AccordionTrigger>
                         <AccordionContent className="pt-4 space-y-4">
                             {stage.levels && stage.levels.length > 0 ? stage.levels.map((level, levelIndex) => (
-                                <LevelCard key={levelIndex} level={level} isStageLocked={isStageLocked} />
+                                <Card key={levelIndex} className={cn('w-full transition-all', 
+                                    !(!isStageLocked && level.status !== 'locked') && 'bg-muted/50 opacity-70',
+                                    level.status === 'unlocked' && !isStageLocked && 'border-primary shadow-md shadow-primary/20', 
+                                    level.status === 'completed' && 'border-green-500/30'
+                                )}>
+                                    <CardHeader className="flex-row items-center gap-4 space-y-0 p-4">
+                                        <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-full', 
+                                            level.status === 'completed' ? 'bg-green-400/20' : 'bg-muted',
+                                            level.status === 'unlocked' && !isStageLocked && 'ring-2 ring-primary animate-pulse-slow'
+                                        )}>
+                                            {level.status === 'completed' ? <CheckCircle className="h-6 w-6 text-green-400" /> : <PenTool className="h-6 w-6 text-muted-foreground" />}
+                                        </div>
+                                        <div>
+                                            <CardTitle className="text-base font-semibold leading-tight">{level.title}</CardTitle>
+                                            <CardDescription className="text-xs mt-1">{level.description}</CardDescription>
+                                            <div className="flex items-center gap-4 text-xs font-bold mt-2">
+                                                <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {level.xp} XP</span>
+                                                <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {level.coins}</span>
+                                            </div>
+                                        </div>
+                                    </CardHeader>
+                                    <CardFooter className="p-4 pt-0">
+                                        <Button asChild size="sm" className="w-full" disabled={isStageLocked || level.status === 'locked'}>
+                                        <Link href={(isStageLocked || level.status === 'locked') ? '#' : `/learning/${level.slug}`}>
+                                            {level.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
+                                        </Link>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
                             )) : <p className="text-muted-foreground text-center py-4">Levels for this stage are being prepared.</p>}
                         </AccordionContent>
                     </AccordionItem>

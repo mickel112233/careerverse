@@ -162,7 +162,9 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                             if (currentStageIndex + 1 < roadmap.length) {
                                 roadmap[currentStageIndex + 1].status = 'unlocked';
                                 // Unlock first level of next stage
-                                roadmap[currentStageIndex + 1].levels[0].status = 'unlocked';
+                                if (roadmap[currentStageIndex + 1].levels?.[0]) {
+                                    roadmap[currentStageIndex + 1].levels[0].status = 'unlocked';
+                                }
                                  toast({
                                     title: "Stage Complete!",
                                     description: `You've mastered ${roadmap[currentStageIndex].stageName}. The next stage is unlocked!`,
