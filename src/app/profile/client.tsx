@@ -195,21 +195,22 @@ export default function ProfileClient() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
     const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+    const [isRemovePlayerDialogOpen, setIsRemovePlayerDialogOpen] = useState(false);
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: { name: '', title: '', bio: '', avatarPrompt: '', bannerPrompt: '', github: '', youtube: '', instagram: '', discord: '' },
     });
     
-    const handleResetProfile = () => {
+    const handleDataWipe = (title: string, description: string) => {
         Object.keys(localStorage).forEach(key => {
             if (key.startsWith('careerClash') || key.startsWith('userGuild') || key.startsWith('chat_') || key.startsWith('pinnedItems')) {
                 localStorage.removeItem(key);
             }
         });
         toast({
-            title: "Profile Reset",
-            description: "Your data has been wiped. The page will now reload."
+            title: title,
+            description: description,
         });
         setTimeout(() => {
             window.location.href = '/';
@@ -479,7 +480,7 @@ export default function ProfileClient() {
 
         <div className="w-full lg:w-2/3">
              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
+                <TabsList className="grid grid-cols-5">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="collection">Collection</TabsTrigger>
                     <TabsTrigger value="statistics">Statistics</TabsTrigger>
@@ -603,10 +604,10 @@ export default function ProfileClient() {
                                 <Trash2 /> Danger Zone
                             </CardTitle>
                             <CardDescription>
-                                This action is permanent and cannot be undone.
+                                These actions are permanent and cannot be undone.
                             </CardDescription>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-6">
                             <div>
                                 <h3 className="font-semibold">Reset Your Profile</h3>
                                 <p className="text-sm text-muted-foreground mb-4">
@@ -614,7 +615,7 @@ export default function ProfileClient() {
                                 </p>
                                 <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
                                     <AlertDialogTrigger asChild>
-                                        <Button variant="destructive">Reset All My Data</Button>
+                                        <Button variant="destructive" className="bg-orange-600 hover:bg-orange-700 focus:ring-orange-500">Reset All My Data</Button>
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
@@ -627,9 +628,37 @@ export default function ProfileClient() {
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                                             <AlertDialogAction
                                                 className={cn(buttonVariants({ variant: "destructive" }))}
-                                                onClick={handleResetProfile}
+                                                onClick={() => handleDataWipe("Profile Reset", "Your data has been wiped. The page will now reload.")}
                                             >
                                                 I understand, reset everything
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                            <div className="border-t border-destructive/30 pt-6">
+                                <h3 className="font-semibold text-destructive">Delete Your Account</h3>
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    This will permanently delete your player account and all associated data from the game. This action is irreversible.
+                                </p>
+                                <AlertDialog open={isRemovePlayerDialogOpen} onOpenChange={setIsRemovePlayerDialogOpen}>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="destructive">Delete My Account</Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you sure you want to delete your account?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                 This will permanently delete all your data. You will be removed from the game completely and will have to start over from the landing page.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                                className={cn(buttonVariants({ variant: "destructive" }))}
+                                                onClick={() => handleDataWipe("Account Deleted", "Your account has been permanently deleted.")}
+                                            >
+                                                I understand, delete my account
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
