@@ -87,7 +87,7 @@ export default function Home() {
             </motion.p>
 
             <motion.div variants={itemVariants}>
-              <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-[0_0_20px_theme(colors.primary)] hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_40px_theme(colors.primary)] transition-all duration-300">
+              <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
                 <Link href="/dashboard">
                   BEGIN ADVENTURE
                   <MoveRight className="ml-2 h-5 w-5" />

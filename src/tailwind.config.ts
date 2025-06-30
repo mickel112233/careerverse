@@ -18,6 +18,10 @@ export default {
       },
     },
     extend: {
+      boxShadow: {
+        'primary': '0 0 20px hsl(var(--primary))',
+        'primary-hover': '0 0 40px hsl(var(--primary))',
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         headline: ["var(--font-heading)", ...fontFamily.sans],
