@@ -196,7 +196,7 @@ export default function DashboardClient() {
     setStreamToConfirm(null);
   };
 
-  const activeStageIndex = roadmap.findLastIndex(stage => stage.status === 'unlocked' && !stage.levels.every(l => l.status === 'completed'))
+  const activeStageIndex = roadmap.findLastIndex(stage => stage.status === 'unlocked' && stage.levels && !stage.levels.every(l => l.status === 'completed'))
 
   return (
     <>
@@ -272,9 +272,9 @@ export default function DashboardClient() {
         <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={activeStageIndex !== -1 ? `stage-${activeStageIndex}` : undefined}>
             {roadmap.map((stage, index) => {
                 const isStageLocked = stage.status === 'locked' && !isPremium;
-                const completedLevels = stage.levels.filter(l => l.status === 'completed').length;
-                const totalLevels = stage.levels.length;
-                const isStageComplete = completedLevels === totalLevels;
+                const completedLevels = stage.levels ? stage.levels.filter(l => l.status === 'completed').length : 0;
+                const totalLevels = stage.levels ? stage.levels.length : 0;
+                const isStageComplete = totalLevels > 0 && completedLevels === totalLevels;
 
                 return (
                     <AccordionItem value={`stage-${index}`} key={index} className="border bg-card rounded-lg px-4" >
@@ -286,7 +286,7 @@ export default function DashboardClient() {
                            </div>
                         </AccordionTrigger>
                         <AccordionContent className="pt-4 space-y-4">
-                            {stage.levels.map((level, levelIndex) => (
+                            {stage.levels && stage.levels.map((level, levelIndex) => (
                                 <LevelCard key={levelIndex} level={level} isStageLocked={isStageLocked} />
                             ))}
                         </AccordionContent>
