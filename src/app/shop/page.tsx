@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { memberships, guildPerks, currencyPacks, GuildPerk } from '@/lib/shop-data';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const CountdownTimer = ({ expiryTimestamp, onExpire }: { expiryTimestamp: number, onExpire: () => void }) => {
     const [timeLeft, setTimeLeft] = useState(expiryTimestamp - Date.now());
@@ -44,7 +45,7 @@ const CountdownTimer = ({ expiryTimestamp, onExpire }: { expiryTimestamp: number
     return <span className="text-xs text-muted-foreground">{days}d {hours}h {minutes}m left</span>;
 };
 
-const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: GuildPerk) => void }) => {
+const PerkCard = ({ item, onPurchase, disabled }: { item: GuildPerk, onPurchase: (perk: GuildPerk) => void, disabled: boolean }) => {
     const ItemIcon = item.icon;
     const rarityColors: { [key: string]: string } = {
         Common: 'border-gray-400',
@@ -52,6 +53,15 @@ const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: Gu
         Epic: 'border-purple-500',
         Legendary: 'border-orange-400 animate-pulse-slow',
     }
+    const buttonContent = (
+         <Button className="w-full" onClick={() => onPurchase(item)} disabled={disabled}>
+            <div className="flex items-center">
+                <Gem className="h-4 w-4 mr-2 text-cyan-400"/>
+                {item.price.toLocaleString()}
+            </div>
+        </Button>
+    )
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -66,12 +76,20 @@ const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: Gu
                     <CardDescription>{item.description}</CardDescription>
                 </CardHeader>
                 <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
-                <Button className="w-full" onClick={() => onPurchase(item)}>
-                    <div className="flex items-center">
-                        <Gem className="h-4 w-4 mr-2 text-cyan-400"/>
-                        {item.price.toLocaleString()}
-                    </div>
-                </Button>
+                    {disabled ? (
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span className="w-full cursor-not-allowed">
+                                        {buttonContent}
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Guests cannot purchase perks. Please sign up.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    ) : buttonContent}
                 </CardFooter>
             </Card>
         </motion.div>
@@ -87,11 +105,18 @@ export default function ShopPage() {
 
   const [billingCycle, setBillingCycle] = useState('monthly');
   const [activeSub, setActiveSub] = useState<{name: string, expires: number} | null>(null);
+  const [isGuest, setIsGuest] = useState(false);
 
   const checkActiveSubscription = () => {
     const subName = localStorage.getItem('careerClashMembership') || 'Basic';
     const subDate = localStorage.getItem('careerClashMembershipPurchaseDate');
     const subCycle = localStorage.getItem('careerClashMembershipCycle') || 'monthly';
+    const profile = JSON.parse(localStorage.getItem('careerClashUserProfile') || '{}');
+    if (profile.name && profile.name.startsWith('Guest-')) {
+        setIsGuest(true);
+    } else {
+        setIsGuest(false);
+    }
     
     if (subName && subName !== 'Free' && subName !== 'Basic' && subDate) {
         const purchaseTime = parseInt(subDate, 10);
@@ -116,10 +141,18 @@ export default function ShopPage() {
   useEffect(() => {
     checkActiveSubscription();
     window.addEventListener('currencyChange', checkActiveSubscription);
-    return () => window.removeEventListener('currencyChange', checkActiveSubscription);
+    window.addEventListener('profileChange', checkActiveSubscription); // Listen for profile changes (e.g., guest to real user)
+    return () => {
+        window.removeEventListener('currencyChange', checkActiveSubscription);
+        window.removeEventListener('profileChange', checkActiveSubscription);
+    }
   }, []);
 
   const handlePerkPurchase = (perk: GuildPerk) => {
+    if (isGuest) {
+        toast({ variant: 'destructive', title: 'Account Required', description: 'Guests cannot purchase perks. Please sign up for an account.' });
+        return;
+    }
     const userGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
     const guildString = localStorage.getItem('userGuild');
 
@@ -165,6 +198,10 @@ export default function ShopPage() {
   }
 
   const handleMembershipPurchase = (planName: string, cycle: 'monthly' | 'yearly') => {
+    if (isGuest) {
+        toast({ variant: 'destructive', title: 'Account Required', description: 'Guests cannot purchase memberships. Please sign up for an account.' });
+        return;
+    }
     if (planName === 'Basic') return;
     
     const plan = memberships.find(p => p.name === planName);
@@ -232,6 +269,14 @@ export default function ShopPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {memberships.map((plan) => {
                     const isCurrentPlan = activeSub?.name === plan.name;
+                    const isDisabled = isCurrentPlan || (isGuest && plan.name !== 'Basic');
+                    
+                    const button = (
+                        <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name, billingCycle as 'monthly' | 'yearly')} disabled={isDisabled}>
+                            {isCurrentPlan ? "Current Plan" : "Subscribe"}
+                        </Button>
+                    );
+
                     return (
                         <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20", isCurrentPlan && plan.name !== 'Basic' && "border-green-500 ring-2 ring-green-500")}>
                             <CardHeader>
@@ -256,9 +301,18 @@ export default function ShopPage() {
                                 ))}
                             </CardContent>
                             <CardFooter className="flex-col items-stretch">
-                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name, billingCycle as 'monthly' | 'yearly')} disabled={isCurrentPlan}>
-                                    {isCurrentPlan ? "Current Plan" : "Subscribe"}
-                                </Button>
+                                 {isGuest && plan.name !== 'Basic' ? (
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span className="w-full cursor-not-allowed">{button}</span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>Guests cannot purchase memberships. Please sign up.</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                 ) : button}
                                 {isCurrentPlan && activeSub && activeSub.expires > 0 && (
                                     <div className="flex items-center justify-center gap-2 pt-2">
                                         <Clock className="h-3 w-3 text-muted-foreground" />
@@ -278,7 +332,7 @@ export default function ShopPage() {
                  <p className="text-muted-foreground text-center mb-6">Purchase one-time upgrades for your guild.</p>
                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                     {guildPerks.map((item) => (
-                        <PerkCard key={item.name} item={item} onPurchase={handlePerkPurchase} />
+                        <PerkCard key={item.name} item={item} onPurchase={handlePerkPurchase} disabled={isGuest} />
                     ))}
                 </div>
             </div>

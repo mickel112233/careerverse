@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -18,6 +19,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 const GridBackground = () => (
   <div className="absolute inset-0 -z-10 h-full w-full bg-background">
@@ -48,6 +52,8 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const [isNewUser, setIsNewUser] = useState(true);
   const [isGuestDialogOpen, setIsGuestDialogOpen] = useState(false);
+  const [isTermsDialogOpen, setIsTermsDialogOpen] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -119,6 +125,28 @@ export default function Home() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      
+      <AlertDialog open={isTermsDialogOpen} onOpenChange={setIsTermsDialogOpen}>
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>Terms and Conditions</AlertDialogTitle>
+                <AlertDialogDescription className="max-h-[60vh] overflow-y-auto pr-4 text-sm">
+                    <p className="mb-2">Welcome to Career Clash. By using our service, you agree to these terms.</p>
+                    <h3 className="font-bold mt-4 mb-2">1. Account Data</h3>
+                    <p>Your game progress, currency, and items are stored locally in your browser. Clearing your browser data will result in permanent loss of this information. Guest accounts are temporary and data loss is expected.</p>
+                    <h3 className="font-bold mt-4 mb-2">2. In-App Purchases</h3>
+                    <p>All purchases of virtual currency (Coins, Gems), memberships, or other items are final and non-refundable. There are no exceptions.</p>
+                    <h3 className="font-bold mt-4 mb-2">3. Data Reset and Deletion</h3>
+                    <p>Using the "Reset Profile" or "Delete Account" feature is an irreversible action. It will permanently erase all your game data, including any purchased items and memberships, from your browser. This data cannot be recovered, and you will not be eligible for a refund.</p>
+                     <h3 className="font-bold mt-4 mb-2">4. User Conduct</h3>
+                    <p>You agree not to exploit bugs or use any unauthorized third-party software to gain an unfair advantage. We reserve the right to modify these terms at any time.</p>
+                </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogAction onClick={() => setIsTermsDialogOpen(false)}>Close</AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4 text-center">
         <motion.div
@@ -139,17 +167,29 @@ export default function Home() {
               Enter the Ultimate Career Arena. <br className="hidden sm:block" /> Where Learning Meets Gaming • Forge Your Future
             </motion.p>
             {isNewUser ? (
-                 <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mt-8">
-                    <Button asChild size="lg" className="font-bold text-lg px-8 py-6 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
-                        <Link href="/login">
-                            <LogIn className="mr-2 h-5 w-5" />
-                            Sign In / Sign Up
-                        </Link>
-                    </Button>
-                    <Button size="lg" variant="secondary" className="font-bold text-lg px-8 py-6 rounded-full" onClick={() => setIsGuestDialogOpen(true)}>
-                        <User className="mr-2 h-5 w-5" />
-                        Continue as Guest
-                    </Button>
+                 <motion.div variants={itemVariants} className="flex flex-col items-center gap-4 mt-8">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <Button asChild size="lg" className="font-bold text-lg px-8 py-6 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300" disabled={!termsAccepted}>
+                            <Link href="/login">
+                                <LogIn className="mr-2 h-5 w-5" />
+                                Sign In / Sign Up
+                            </Link>
+                        </Button>
+                        <Button size="lg" variant="secondary" className="font-bold text-lg px-8 py-6 rounded-full" onClick={() => setIsGuestDialogOpen(true)} disabled={!termsAccepted}>
+                            <User className="mr-2 h-5 w-5" />
+                            Continue as Guest
+                        </Button>
+                    </div>
+                     <div className="flex items-center space-x-2 mt-4">
+                        <Checkbox id="terms" checked={termsAccepted} onCheckedChange={(checked) => setTermsAccepted(checked as boolean)} />
+                        <Label htmlFor="terms" className="text-sm text-muted-foreground">
+                            I agree to the{' '}
+                            <button onClick={() => setIsTermsDialogOpen(true)} className="underline hover:text-primary transition-colors">
+                            Terms and Conditions
+                            </button>
+                            .
+                        </Label>
+                    </div>
                 </motion.div>
             ) : (
                 <motion.div variants={itemVariants}>
