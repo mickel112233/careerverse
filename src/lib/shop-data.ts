@@ -31,6 +31,8 @@ export const guildPerks: GuildPerk[] = [
   { name: 'Guild Expansion II', price: 225, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 25 slots.', rarity: 'Common', value: 25 },
   { name: 'Guild Expansion III', price: 400, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 50 slots.', rarity: 'Rare', value: 50 },
   { name: 'Guild Expansion IV', price: 750, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 100 slots.', rarity: 'Epic', value: 100 },
+  { name: 'Guild Expansion V', price: 1400, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 200 slots.', rarity: 'Legendary', value: 200 },
+  { name: 'Guild Expansion VI', price: 3000, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 500 slots.', rarity: 'Legendary', value: 500 },
 ];
 
 export const memberships: MembershipPlan[] = [
