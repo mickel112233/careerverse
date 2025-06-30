@@ -137,8 +137,8 @@ const editGuildSchema = z.object({
 
 const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Guild, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: Guild) => void }) => {
     const { toast } = useToast();
-    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage.toString());
-    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage.toString());
+    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage ? (typeof guild.crestImage === 'string' ? guild.crestImage : guild.crestImage.src) : null);
+    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage ? (typeof guild.bannerImage === 'string' ? guild.bannerImage : guild.bannerImage.src) : null);
 
     const form = useForm<z.infer<typeof editGuildSchema>>({
         resolver: zodResolver(editGuildSchema),
