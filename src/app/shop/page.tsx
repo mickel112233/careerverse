@@ -6,16 +6,45 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Star, ShoppingCart, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, Flame } from "lucide-react";
+import { Gem, Star, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
-import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
-import { memberships, addOns, currencyPacks, limitedTimeOffers, ShopItem } from '@/lib/shop-data';
+import { memberships, guildPerks, currencyPacks, GuildPerk } from '@/lib/shop-data';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Badge } from '@/components/ui/badge';
 
+const CountdownTimer = ({ expiryTimestamp, onExpire }: { expiryTimestamp: number, onExpire: () => void }) => {
+    const [timeLeft, setTimeLeft] = useState(expiryTimestamp - Date.now());
 
-const ItemCard = ({ item, onPurchase, isOwned }: { item: ShopItem, onPurchase: () => void, isOwned: boolean }) => {
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            onExpire();
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const newTimeLeft = expiryTimestamp - Date.now();
+            if (newTimeLeft <= 0) {
+                clearInterval(interval);
+                onExpire();
+            }
+            setTimeLeft(newTimeLeft);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [expiryTimestamp, onExpire, timeLeft]);
+
+    if (timeLeft <= 0) return <span className="text-xs text-destructive">Expired</span>;
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return <span className="text-xs text-muted-foreground">{days}d {hours}h {minutes}m left</span>;
+};
+
+const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: GuildPerk) => void }) => {
     const ItemIcon = item.icon;
     const rarityColors: { [key: string]: string } = {
         Common: 'border-gray-400',
@@ -31,27 +60,18 @@ const ItemCard = ({ item, onPurchase, isOwned }: { item: ShopItem, onPurchase: (
             className="h-full"
         >
             <Card className={cn("flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300 overflow-hidden border-2", item.rarity && rarityColors[item.rarity])}>
-                <CardHeader className="p-0 relative">
-                    <AiImage prompt={item.prompt} alt={item.name} width={400} height={400} className="w-full h-48 object-cover" />
-                    <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-md"><ItemIcon className="h-5 w-5 text-accent"/></div>
-                </CardHeader>
-                <CardContent className="p-4 flex-grow">
-                    <CardTitle className="font-headline text-lg mb-2">{item.name}</CardTitle>
+                <CardHeader className="p-4 items-center text-center">
+                    <ItemIcon className="h-10 w-10 mb-2 text-accent"/>
+                    <CardTitle className="font-headline text-lg">{item.name}</CardTitle>
                     <CardDescription>{item.description}</CardDescription>
-                </CardContent>
+                </CardHeader>
                 <CardFooter className="bg-card-foreground/5 p-4 mt-auto">
-                <Button className="w-full" onClick={onPurchase} disabled={isOwned}>
-                    {isOwned ? (
-                        <>
-                            <Check className="mr-2" /> Owned
-                        </>
-                    ) : (
-                        <div className="flex items-center">
-                            {item.currency === 'coins' ? <Coins className="h-4 w-4 mr-2 text-yellow-400" /> : <Gem className="h-4 w-4 mr-2 text-cyan-400"/>}
-                            {item.price.toLocaleString()}
-                        </div>
-                    )}
-                    </Button>
+                <Button className="w-full" onClick={() => onPurchase(item)}>
+                    <div className="flex items-center">
+                        <Gem className="h-4 w-4 mr-2 text-cyan-400"/>
+                        {item.price.toLocaleString()}
+                    </div>
+                </Button>
                 </CardFooter>
             </Card>
         </motion.div>
@@ -65,61 +85,70 @@ export default function ShopPage() {
   const defaultTab = searchParams.get('tab') || 'memberships';
   const { toast } = useToast();
 
-  const [inventory, setInventory] = useState<string[]>([]);
-  const [membership, setMembership] = useState('Free');
+  const [billingCycle, setBillingCycle] = useState('monthly');
+  const [activeSub, setActiveSub] = useState<{name: string, expires: number} | null>(null);
+
+  const checkActiveSubscription = () => {
+    const subName = localStorage.getItem('careerClashMembership');
+    const subDate = localStorage.getItem('careerClashMembershipPurchaseDate');
+    
+    if (subName && subName !== 'Free' && subDate) {
+        const purchaseTime = parseInt(subDate, 10);
+        const expires = purchaseTime + 30 * 24 * 60 * 60 * 1000;
+        if (Date.now() < expires) {
+            setActiveSub({ name: subName, expires });
+        } else {
+            // Subscription expired, clear it
+            localStorage.setItem('careerClashMembership', 'Free');
+            localStorage.removeItem('careerClashMembershipPurchaseDate');
+            setActiveSub(null);
+            window.dispatchEvent(new Event('currencyChange'));
+        }
+    } else {
+        setActiveSub(null);
+    }
+  }
 
   useEffect(() => {
-    const storedInventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-    setInventory(storedInventory);
-    const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
-    setMembership(storedMembership);
-  }, []);
-  
-  useEffect(() => {
-    const handleStorageChange = () => {
-        const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
-        setMembership(storedMembership);
-        const storedInventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-        setInventory(storedInventory);
-    };
-    window.addEventListener('currencyChange', handleStorageChange);
-    return () => window.removeEventListener('currencyChange', handleStorageChange);
+    checkActiveSubscription();
+    window.addEventListener('currencyChange', checkActiveSubscription);
+    return () => window.removeEventListener('currencyChange', checkActiveSubscription);
   }, []);
 
-  const handlePurchase = (item: ShopItem) => {
-    if (inventory.includes(item.name)) {
-        toast({ variant: 'destructive', title: 'Already Owned', description: `You already own ${item.name}.` });
+  const handlePerkPurchase = (perk: GuildPerk) => {
+    const userGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
+    const guildString = localStorage.getItem('userGuild');
+
+    if (!guildString) {
+        toast({ variant: 'destructive', title: 'No Guild Found', description: 'You must be in a guild to purchase this perk.' });
+        return;
+    }
+    
+    const guild = JSON.parse(guildString);
+    if (guild.owner !== 'QuantumLeap') {
+         toast({ variant: 'destructive', title: 'Permission Denied', description: 'Only the guild leader can purchase capacity upgrades.' });
         return;
     }
 
-    const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
-    const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
-
-    if (item.currency === 'coins') {
-        if (currentCoins < item.price) {
-            toast({ variant: 'destructive', title: 'Insufficient Coins', description: 'You do not have enough coins to purchase this item.' });
-            return;
-        }
-        localStorage.setItem('careerClashCoins', (currentCoins - item.price).toString());
-    } else {
-        if (currentGems < item.price) {
-            toast({ variant: 'destructive', title: 'Insufficient Gems', description: 'You do not have enough gems to purchase this item.' });
-            return;
-        }
-        localStorage.setItem('careerClashGems', (currentGems - item.price).toString());
+    if (userGems < perk.price) {
+        toast({ variant: 'destructive', title: 'Insufficient Gems', description: 'You do not have enough gems for this perk.' });
+        return;
     }
+
+    const newGems = userGems - perk.price;
+    localStorage.setItem('careerClashGems', newGems.toString());
+
+    const newCapacity = guild.capacity + perk.value;
+    const updatedGuild = { ...guild, capacity: newCapacity };
+    localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
     
-    const newInventory = [...inventory, item.name];
-    setInventory(newInventory);
-    localStorage.setItem('careerClashInventory', JSON.stringify(newInventory));
-
     window.dispatchEvent(new Event('currencyChange'));
-    window.dispatchEvent(new Event('profileChange'));
+    window.dispatchEvent(new Event('guildChange'));
 
-    toast({ title: 'Purchase Successful!', description: `You have successfully purchased ${item.name}.`, className: "bg-green-500 text-white" });
+    toast({ title: 'Perk Purchased!', description: `Your guild capacity has increased by ${perk.value} slots!`, className: "bg-green-500 text-white" });
   };
 
-  const handleCurrencyPurchase = (amount: number, currency: 'coins' | 'gems', packName: string) => {
+  const handleCurrencyPurchase = (amount: number, currency: 'coins' | 'gems') => {
      if (currency === 'coins') {
         const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
         localStorage.setItem('careerClashCoins', (currentCoins + amount).toString());
@@ -132,8 +161,23 @@ export default function ShopPage() {
   }
 
   const handleMembershipPurchase = (planName: string) => {
+    const purchaseTime = Date.now();
     localStorage.setItem('careerClashMembership', planName);
+    localStorage.setItem('careerClashMembershipPurchaseDate', purchaseTime.toString());
+    
+    // Also unlock all learning stages
+    const storedRoadmap = localStorage.getItem('careerClashRoadmap');
+    if (storedRoadmap) {
+        const roadmap = JSON.parse(storedRoadmap);
+        const unlockedRoadmap = roadmap.map((stage: any) => ({
+            ...stage,
+            isUnlocked: true
+        }));
+        localStorage.setItem('careerClashRoadmap', JSON.stringify(unlockedRoadmap));
+    }
+
     window.dispatchEvent(new Event('currencyChange'));
+    
     toast({ title: 'Subscription Activated!', description: `You are now subscribed to the ${planName} plan.`, className: "bg-green-500 text-white" });
   };
 
@@ -147,7 +191,7 @@ export default function ShopPage() {
         <div>
             <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
             <p className="mt-2 max-w-2xl text-muted-foreground">
-            Purchase cosmetics, power-ups, memberships, and career-boosting tools.
+            Purchase perks, memberships, and currencies to enhance your experience.
             </p>
         </div>
       </div>
@@ -155,25 +199,33 @@ export default function ShopPage() {
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="memberships">Memberships</TabsTrigger>
-          <TabsTrigger value="addons">Add-ons</TabsTrigger>
+          <TabsTrigger value="perks">Perks</TabsTrigger>
           <TabsTrigger value="currencies">Currencies</TabsTrigger>
         </TabsList>
         
         <TabsContent value="memberships">
+             <div className="flex justify-center mb-6">
+                 <ToggleGroup type="single" value={billingCycle} onValueChange={(value) => value && setBillingCycle(value)} aria-label="Billing Cycle">
+                    <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
+                    <ToggleGroupItem value="yearly">Yearly <Badge variant="secondary" className="ml-2 bg-green-500/20 text-green-400">Save 16%</Badge></ToggleGroupItem>
+                </ToggleGroup>
+            </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {memberships.map((plan) => {
-                    const PlanIcon = plan.icon;
-                    const isCurrentPlan = membership === plan.name;
+                    const isCurrentPlan = activeSub?.name === plan.name;
                     return (
                         <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20", isCurrentPlan && "border-green-500 ring-2 ring-green-500")}>
                             <CardHeader>
-                                <div className="flex items-center gap-3 mb-2">
-                                    <PlanIcon className={cn("h-8 w-8", plan.color)} />
-                                    <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
+                                <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center gap-3">
+                                        <plan.icon className={cn("h-8 w-8", plan.color)} />
+                                        <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
+                                    </div>
+                                    {isCurrentPlan && <Badge variant="secondary" className="bg-green-500 text-white">Active</Badge>}
                                 </div>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-3xl font-bold">{plan.price.split('/')[0]}</span>
-                                    <span className="text-muted-foreground">/{plan.price.split('/')[1]}</span>
+                                    <span className="text-3xl font-bold">{billingCycle === 'monthly' ? plan.monthlyPrice.split('/')[0] : plan.yearlyPrice.split('/')[0]}</span>
+                                    <span className="text-muted-foreground">/{billingCycle === 'monthly' ? 'mo' : 'yr'}</span>
                                 </div>
                             </CardHeader>
                             <CardContent className="flex-grow space-y-2">
@@ -184,10 +236,16 @@ export default function ShopPage() {
                                     </div>
                                 ))}
                             </CardContent>
-                            <CardFooter>
+                            <CardFooter className="flex-col items-stretch">
                                 <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)} disabled={isCurrentPlan}>
                                     {isCurrentPlan ? "Current Plan" : "Subscribe"}
                                 </Button>
+                                {isCurrentPlan && activeSub && (
+                                    <div className="flex items-center justify-center gap-2 pt-2">
+                                        <Clock className="h-3 w-3 text-muted-foreground" />
+                                        <CountdownTimer expiryTimestamp={activeSub.expires} onExpire={checkActiveSubscription} />
+                                    </div>
+                                )}
                             </CardFooter>
                         </Card>
                     )
@@ -195,24 +253,13 @@ export default function ShopPage() {
             </div>
         </TabsContent>
 
-        <TabsContent value="addons" className="space-y-8">
+        <TabsContent value="perks" className="space-y-8">
             <div>
-                <h2 className="text-2xl font-bold font-headline text-center mb-4 flex items-center justify-center gap-2 text-red-400"><Flame className="animate-pulse" />Limited Time Offers</h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    {limitedTimeOffers.map(item => (
-                        <div key={item.name} className="relative">
-                            <ItemCard item={item} onPurchase={() => handlePurchase(item)} isOwned={inventory.includes(item.name)} />
-                            <Badge className="absolute -top-2 -right-2 flex items-center gap-1 bg-destructive text-destructive-foreground"><Clock className="h-3 w-3" />{item.endsIn}</Badge>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            
-            <div className="border-t pt-8">
-                 <h2 className="text-2xl font-bold font-headline text-center mb-4">Permanent Collection</h2>
+                 <h2 className="text-2xl font-bold font-headline text-center mb-4">Guild Perks</h2>
+                 <p className="text-muted-foreground text-center mb-6">Purchase one-time upgrades for your guild.</p>
                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                    {addOns.map((item, i) => (
-                        <ItemCard key={item.name} item={item} onPurchase={() => handlePurchase(item)} isOwned={inventory.includes(item.name)} />
+                    {guildPerks.map((item) => (
+                        <PerkCard key={item.name} item={item} onPurchase={handlePerkPurchase} />
                     ))}
                 </div>
             </div>
@@ -232,7 +279,7 @@ export default function ShopPage() {
                             <CardDescription>{pack.amount.toLocaleString()} {pack.currency}</CardDescription>
                         </CardHeader>
                         <CardFooter>
-                            <Button className="w-full" onClick={() => handleCurrencyPurchase(pack.amount, pack.currency as 'coins' | 'gems', pack.name)}>
+                            <Button className="w-full" onClick={() => handleCurrencyPurchase(pack.amount, pack.currency as 'coins' | 'gems')}>
                                {pack.price}
                             </Button>
                         </CardFooter>

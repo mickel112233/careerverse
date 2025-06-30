@@ -48,7 +48,11 @@ For each level, you MUST provide:
 2.  A one-sentence 'description' of the key topics covered.
 3.  An 'xp' value (Experience Points) a user would gain upon completion. Use values between 100 and 500, with XP increasing for more advanced levels.
 
-**CRITICAL INSTRUCTION**: The final output MUST be a valid JSON object. Every single level object in the 'roadmap' array MUST be a complete object containing the 'title', 'description', and 'xp' fields. Do not leave any objects incomplete. Double-check your final output to ensure the JSON is not truncated and every entry is complete.
+**CRITICAL INSTRUCTIONS**:
+1. The final output MUST be a valid JSON object.
+2. The 'roadmap' array must contain AT LEAST 150 complete level objects.
+3. Every single level object in the 'roadmap' array MUST be a complete object containing the 'title', 'description', and 'xp' fields.
+4. Do not leave any objects incomplete. Double-check your final output to ensure the JSON is not truncated and every entry is complete before finishing your response.
 
 Return the entire roadmap as a single JSON object.
 `,

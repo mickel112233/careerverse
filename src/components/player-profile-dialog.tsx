@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { Swords, Shield as ShieldIcon, Skull, BarChart3, User, Package, Trophy, Zap } from "lucide-react";
 import { PlayerData, mockLeaderboardData } from '@/lib/leaderboard-data';
-import { allShopItems } from '@/lib/shop-data';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
@@ -23,6 +22,9 @@ interface PlayerProfileDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+// Since cosmetic items are removed, we have an empty list for now.
+const allShopItems: any[] = [];
 
 export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProfileDialogProps) {
   if (!player) return null;

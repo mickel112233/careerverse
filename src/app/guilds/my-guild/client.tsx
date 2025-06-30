@@ -65,9 +65,9 @@ type ChatMessage = {
 const roleIcons: { [key: string]: React.ElementType } = { Leader: Crown, Officer: Star, Member: Shield, Admin: Shield, Friend: Shield, Don: Shield, Ghost: Shield, Hacker: Shield };
 const premiumRoles = ['Admin', 'Friend', 'Don', 'Ghost', 'Hacker'];
 
-const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
+const StatCard = ({ icon: Icon, label, value, children }: { icon: React.ElementType, label: string, value: string | number, children?: React.ReactNode }) => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <Card className="bg-muted/50 h-full">
+        <Card className="bg-muted/50 h-full relative">
             <CardContent className="p-4 flex items-center gap-4">
                 <Icon className="h-8 w-8 text-primary" />
                 <div>
@@ -75,6 +75,7 @@ const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label
                     <p className="text-2xl font-bold font-headline">{value}</p>
                 </div>
             </CardContent>
+             {children}
         </Card>
     </motion.div>
 );
@@ -211,14 +212,6 @@ export default function MyGuildClient() {
     const { toast } = useToast();
     const [isManageMemberOpen, setIsManageMemberOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const [isUpgradeCapacityOpen, setIsUpgradeCapacityOpen] = useState(false);
-    const [userGems, setUserGems] = useState(0);
-
-    const capacityUpgrades = [
-        { slots: 10, cost: 100, currency: 'gems' },
-        { slots: 50, cost: 450, currency: 'gems' },
-        { slots: 100, cost: 800, currency: 'gems' },
-    ];
 
     useEffect(() => {
         const membership = localStorage.getItem('careerClashMembership');
@@ -241,10 +234,7 @@ export default function MyGuildClient() {
                 guildData.members[userIndex].coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
                 guildData.members[userIndex].gems = parseInt(localStorage.getItem('careerClashGems') || '5', 10);
             }
-            const currentUser = guildData.members.find(m => m.name === 'QuantumLeap');
-            if (currentUser) {
-                setUserGems(currentUser.gems || 0);
-            }
+
             setGuild(guildData);
         } else {
             setGuild(null);
@@ -289,47 +279,11 @@ export default function MyGuildClient() {
 
     const handleLeaveGuild = () => {
         if (!guild) return;
-        // In a real app, you'd make an API call to update the guild on the server
         localStorage.removeItem('userGuild');
         window.dispatchEvent(new Event('guildChange'));
         toast({ title: "You have left the guild." });
         router.push('/guilds');
     }
-
-    const handleUpgradeCapacity = (slots: number, cost: number) => {
-        if (!guild || userGems < cost) {
-            toast({
-                variant: 'destructive',
-                title: 'Insufficient Gems',
-                description: 'You do not have enough gems for this upgrade.'
-            });
-            return;
-        }
-
-        const newCapacity = guild.capacity + slots;
-        const newGems = userGems - cost;
-
-        const updatedGuild = {
-            ...guild,
-            capacity: newCapacity,
-            members: guild.members.map(m =>
-                m.name === 'QuantumLeap' ? { ...m, gems: newGems } : m
-            )
-        };
-
-        updateGuildInStorage(updatedGuild);
-        localStorage.setItem('careerClashGems', newGems.toString());
-        window.dispatchEvent(new Event('currencyChange'));
-
-        toast({
-            title: 'Capacity Upgraded!',
-            description: `Your guild can now hold ${newCapacity} members.`,
-            className: 'bg-green-500 text-white'
-        });
-
-        setIsUpgradeCapacityOpen(false);
-    };
-
 
     if (isLoading) {
         return (
@@ -364,51 +318,16 @@ export default function MyGuildClient() {
                 <TabsContent value="dashboard" className="mt-6"><div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
                     <StatCard icon={BarChart3} label="Guild Rank" value="#12" />
                     <StatCard icon={Trophy} label="Total XP" value={totalXp.toLocaleString()} />
-                    <Dialog open={isUpgradeCapacityOpen} onOpenChange={setIsUpgradeCapacityOpen}>
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="h-full">
-                            <Card className="bg-muted/50 h-full relative">
-                                <CardContent className="p-4 flex items-center gap-4">
-                                    <Users className="h-8 w-8 text-primary" />
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">Members</p>
-                                        <p className="text-2xl font-bold font-headline">{`${guild.members.length} / ${guild.capacity}`}</p>
-                                    </div>
-                                </CardContent>
-                                {isOwner && (
-                                    <DialogTrigger asChild>
-                                         <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7">
-                                            <PlusCircle className="h-4 w-4" />
-                                            <span className="sr-only">Upgrade Capacity</span>
-                                        </Button>
-                                    </DialogTrigger>
-                                )}
-                            </Card>
-                        </motion.div>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Upgrade Guild Capacity</DialogTitle>
-                                <DialogDescription>
-                                    Purchase more member slots for your guild. You currently have {userGems.toLocaleString()} Gems.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="space-y-4 py-4">
-                                {capacityUpgrades.map(upgrade => (
-                                    <Card key={upgrade.slots} className="flex items-center justify-between p-4 bg-muted/50">
-                                        <div>
-                                            <p className="font-bold text-lg">+{upgrade.slots} Member Slots</p>
-                                            <p className="text-sm text-muted-foreground">Increase capacity to {guild.capacity + upgrade.slots}</p>
-                                        </div>
-                                        <Button 
-                                            onClick={() => handleUpgradeCapacity(upgrade.slots, upgrade.cost)}
-                                            disabled={userGems < upgrade.cost}
-                                        >
-                                            <Gem className="mr-2 h-4 w-4" /> {upgrade.cost}
-                                        </Button>
-                                    </Card>
-                                ))}
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                     <StatCard icon={Users} label="Members" value={`${guild.members.length} / ${guild.capacity}`}>
+                        {isOwner && (
+                            <Button asChild variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7">
+                                <Link href="/shop?tab=perks">
+                                    <PlusCircle className="h-4 w-4" />
+                                    <span className="sr-only">Upgrade Capacity</span>
+                                </Link>
+                            </Button>
+                        )}
+                    </StatCard>
                     <StatCard icon={Coins} label="Total Coins" value={totalCoins.toLocaleString()} />
                     <StatCard icon={Gem} label="Total Gems" value={totalGems.toLocaleString()} />
                 </div><Card><CardHeader><CardTitle>Announcements</CardTitle></CardHeader><CardContent className="space-y-4"><div className="p-4 bg-muted/50 rounded-lg"><h3 className="font-semibold">Guild Wars are now active!</h3><p className="text-sm text-muted-foreground">Challenge other guilds from the 'Battles' tab. Winner takes the pot!</p><p className="text-xs text-muted-foreground/70 mt-2">Just now</p></div></CardContent></Card></TabsContent>

@@ -25,7 +25,6 @@ import { AiAvatar } from '@/components/ui/ai-avatar';
 import { motion } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Checkbox } from '@/components/ui/checkbox';
-import { allShopItems, ShopItem } from '@/lib/shop-data';
 import Link from 'next/link';
 
 const PRESTIGE_LEVEL_REQUIREMENT = 100;
@@ -83,7 +82,7 @@ type UserProfileData = {
     battleHistory: { id: number; challenge: string; opponent: { name: string; prompt: string; }; result: string; xp: string; }[];
 };
 
-type UnlockableItem = (Achievement | ShopItem);
+type UnlockableItem = (Achievement);
 
 const StatItem = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ElementType }) => (
     <motion.div 
@@ -98,6 +97,7 @@ const StatItem = ({ label, value, icon: Icon }: { label: string, value: string |
 );
 
 const Socials = ({ links }: { links: UserProfileData['links']}) => {
+    if (!links) return null;
     const hasLinks = Object.values(links).some(link => !!link);
     if (!hasLinks) return null;
     return (
@@ -190,7 +190,7 @@ export default function ProfileClient() {
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
     const [membership, setMembership] = useState('Free');
     const [unlockableItems, setUnlockableItems] = useState<UnlockableItem[]>([]);
-    const [ownedItems, setOwnedItems] = useState<ShopItem[]>([]);
+    const [ownedItems, setOwnedItems] = useState<any[]>([]);
     const [pinnedItems, setPinnedItems] = useState<string[]>([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
@@ -264,7 +264,8 @@ export default function ProfileClient() {
         setMembership(storedMembership);
 
         const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-        const currentOwnedItems = allShopItems.filter(item => inventory.includes(item.name));
+        // Since cosmetic items are removed, this will be empty
+        const currentOwnedItems: any[] = []; 
         setOwnedItems(currentOwnedItems);
 
         setUnlockableItems([...baseAchievements, ...currentOwnedItems]);
@@ -523,7 +524,7 @@ export default function ProfileClient() {
                                 <div className="text-center py-10">
                                     <Package className="h-12 w-12 mx-auto text-muted-foreground" />
                                     <p className="mt-4 text-muted-foreground">Your collection is empty.</p>
-                                    <Button variant="link" asChild><Link href="/shop?tab=addons">Visit the Shop</Link></Button>
+                                    <Button variant="link" asChild><Link href="/shop">Visit the Shop</Link></Button>
                                 </div>
                              )}
                         </CardContent>
