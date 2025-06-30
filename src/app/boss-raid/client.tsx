@@ -10,20 +10,36 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { generateBossRaid, GenerateBossRaidOutput } from "@/ai/flows/boss-raid-generator";
-import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot, HeartCrack, Users, PlusCircle } from 'lucide-react';
+import { Loader2, Swords, Skull, CheckCircle, XCircle, Zap, Coins, Trophy, Shield, Bot, HeartCrack, Users, PlusCircle, BrainCircuit, Code, Megaphone, Briefcase, Palette, Gamepad2, PenSquare, Cloud, ClipboardList, Handshake } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { AiImage } from '@/components/ui/ai-image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type RaidState = 'idle' | 'generating' | 'active' | 'finished';
-type Player = { name: string; avatarHint: string; type: 'human' | 'bot' };
+type Player = { name: string; prompt: string; type: 'human' | 'bot' };
 type EventLogMessage = { id: number; message: string; type: 'player' | 'boss' | 'system' };
 type QuizQuestion = GenerateBossRaidOutput['quizBank'][0];
 type GuildData = { id: string, guildName: string, members: Player[] };
 
-const player: Player = { name: 'QuantumLeap', avatarHint: 'cyberpunk woman portrait', type: 'human' };
+const player: Player = { name: 'QuantumLeap', prompt: 'cyberpunk woman portrait', type: 'human' };
+
+const streams = [
+    { name: 'Software Development', icon: Code },
+    { name: 'Data Science & AI', icon: BrainCircuit },
+    { name: 'Digital Marketing', icon: Megaphone },
+    { name: 'Business & Finance', icon: Briefcase },
+    { name: 'Graphic Design', icon: Palette },
+    { name: 'AI Prompt Engineering', icon: Bot },
+    { name: 'Game Development', icon: Gamepad2 },
+    { name: 'Content Creation', icon: PenSquare },
+    { name: 'Cybersecurity', icon: Shield },
+    { name: 'Cloud Computing', icon: Cloud },
+    { name: 'Project Management', icon: ClipboardList },
+    { name: 'Sales & Business Development', icon: Handshake },
+];
 
 const LoadingSkeleton = () => (
      <div className="space-y-6">
@@ -54,6 +70,7 @@ export default function BossRaidClient() {
     const [isBossShaking, setIsBossShaking] = useState(false);
     const [isPartyHit, setIsPartyHit] = useState(false);
     
+    const [selectedStream, setSelectedStream] = useState('Software Development');
     const [bossLevel, setBossLevel] = useState(10);
     const [maxPlayers, setMaxPlayers] = useState(3);
     const [userGuild, setUserGuild] = useState<GuildData | null>(null);
@@ -70,8 +87,12 @@ export default function BossRaidClient() {
             setUserGuild(parsedGuild);
             const members: Player[] = parsedGuild.members
                 .filter((m: any) => m.name !== player.name)
-                .map((m: any) => ({ name: m.name, avatarHint: m.avatarHint, type: 'bot' }));
+                .map((m: any) => ({ name: m.name, prompt: m.prompt, type: 'bot' }));
             setGuildTeammates(members);
+        }
+        const storedStream = localStorage.getItem('careerClashStream');
+        if (storedStream) {
+            setSelectedStream(storedStream);
         }
         setIsLoadingGuild(false);
     }, []);
@@ -98,9 +119,8 @@ export default function BossRaidClient() {
         setEventLog([]);
 
         try {
-            const stream = localStorage.getItem('careerClashStream') || 'Software Development';
-            addEventLog(`A powerful threat (Lvl ${bossLevel}) emerges from the ${stream} sector...`, 'system');
-            const data = await generateBossRaid({ streamName: stream, bossLevel: bossLevel });
+            addEventLog(`A powerful threat (Lvl ${bossLevel}) emerges from the ${selectedStream} sector...`, 'system');
+            const data = await generateBossRaid({ streamName: selectedStream, bossLevel: bossLevel });
             
             setBossData(data);
             setBossCurrentHealth(data.bossHealth);
@@ -239,6 +259,27 @@ export default function BossRaidClient() {
                     <CardDescription>Adjust the settings below and prepare for battle.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-8 max-w-md mx-auto px-4">
+                    <div className="space-y-4 text-left">
+                        <Label htmlFor="stream-select" className="text-lg font-semibold">Boss Subject</Label>
+                        <Select value={selectedStream} onValueChange={setSelectedStream}>
+                            <SelectTrigger id="stream-select">
+                                <SelectValue placeholder="Select a subject" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {streams.map(stream => {
+                                    const Icon = stream.icon;
+                                    return (
+                                        <SelectItem key={stream.name} value={stream.name}>
+                                            <div className="flex items-center gap-2">
+                                                <Icon className="h-4 w-4" />
+                                                <span>{stream.name}</span>
+                                            </div>
+                                        </SelectItem>
+                                    )
+                                })}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
                             <Label htmlFor="boss-level" className="text-lg font-semibold">Boss Level</Label>
@@ -400,7 +441,7 @@ export default function BossRaidClient() {
                             <div className="space-y-3">
                                 {[player, ...teammates].map(p => (
                                     <div key={p.name} className="flex items-center gap-3 p-2 bg-muted/50 rounded-lg">
-                                        <AiAvatar prompt={p.avatarHint} alt={p.name} fallback={p.name.substring(0,2)} />
+                                        <AiAvatar prompt={p.prompt} alt={p.name} fallback={p.name.substring(0,2)} />
                                         <div>
                                             <p className="font-semibold">{p.name}</p>
                                             <p className="text-xs text-muted-foreground">{p.type === 'human' ? 'You' : 'AI Teammate'}</p>
