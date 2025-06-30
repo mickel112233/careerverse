@@ -11,11 +11,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Crown, ArrowRight, Loader2, Users, Lock, Globe, ArrowLeft } from "lucide-react";
+import { Crown, ArrowRight, Loader2, Users, Lock, Globe, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 
 
 const formSchema = z.object({
@@ -61,6 +62,9 @@ export default function CreateGuildPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const [crestImage, setCrestImage] = useState<string | null>(null);
+  const [bannerImage, setBannerImage] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,27 +85,47 @@ export default function CreateGuildPage() {
     if (membership === 'Premium+') capacity = 200;
     if (membership === 'Elite' || membership === 'Super') capacity = 500;
     
-    if (membership !== 'Free') {
+    if (membership !== 'Free' && membership !== 'Basic') {
         setIsPremium(true);
     }
     setMemberCapacity(capacity);
     setIsLoading(false);
   }, []);
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
+      const file = e.target.files?.[0];
+      if (file) {
+          if (file.size > 2 * 1024 * 1024) { // 2MB limit
+              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 2MB.'});
+              return;
+          }
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              const base64String = reader.result as string;
+              if (type === 'crest') {
+                  setCrestImage(base64String);
+              } else {
+                  setBannerImage(base64String);
+              }
+          };
+          reader.readAsDataURL(file);
+      }
+  };
+
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const guildId = `GUILD-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const slug = values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
-    
-    const { guildName, ...restValues } = values;
 
     const newGuild = {
-        ...restValues,
+        ...values,
         id: guildId,
-        name: guildName,
+        name: values.guildName,
         slug: slug,
         capacity: memberCapacity,
-        bannerPrompt: `abstract futuristic guild banner, ${values.guildName}`,
-        crestPrompt: `futuristic guild crest emblem, ${slug}`,
+        crestImage: crestImage || `https://placehold.co/256x256.png`,
+        bannerImage: bannerImage || `https://placehold.co/1200x300.png`,
+        image: crestImage || `https://placehold.co/600x400.png`,
         owner: 'QuantumLeap',
         members: [
             { 
@@ -226,6 +250,26 @@ export default function CreateGuildPage() {
                         </FormItem>
                         )}
                     />
+                    
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <FormItem>
+                            <FormLabel>Guild Crest</FormLabel>
+                            <FormControl>
+                                <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'crest')} />
+                            </FormControl>
+                             <FormDescription>Square image (e.g., 256x256). Max 2MB.</FormDescription>
+                             {crestImage && <Image src={crestImage} alt="Crest preview" width={128} height={128} className="rounded-lg mt-2 border" />}
+                        </FormItem>
+                        <FormItem>
+                            <FormLabel>Guild Banner</FormLabel>
+                            <FormControl>
+                                 <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'banner')} />
+                            </FormControl>
+                            <FormDescription>Wide image (e.g., 1200x300). Max 2MB.</FormDescription>
+                             {bannerImage && <Image src={bannerImage} alt="Banner preview" width={250} height={62.5} className="rounded-lg mt-2 border aspect-[4/1] object-cover" />}
+                        </FormItem>
+                    </div>
+
                      <FormField
                         control={form.control}
                         name="type"

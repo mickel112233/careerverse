@@ -3,11 +3,11 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Shield, PlusCircle, Loader2, Lock, Search } from "lucide-react";
 import Link from "next/link";
-import { AiImage } from '@/components/ui/ai-image';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -146,8 +146,8 @@ export default function GuildsPage() {
                         className="h-full"
                     >
                         <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300">
-                            <CardHeader className="p-0">
-                            <AiImage prompt={guild.prompt} alt={guild.name} width={600} height={400} className="w-full h-40 object-cover" />
+                            <CardHeader className="p-0 relative w-full h-40">
+                                <Image src={guild.image} alt={guild.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
                             </CardHeader>
                             <CardContent className="p-6 flex-grow">
                                 <div className="flex items-start gap-4">

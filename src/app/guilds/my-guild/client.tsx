@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +17,6 @@ import { Users, Trophy, Shield, Swords, MessageSquare, BarChart3, Star, PlusCirc
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiAvatar } from '@/components/ui/ai-avatar';
-import { AiImage } from '@/components/ui/ai-image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from '@/components/ui/alert-dialog';
@@ -133,28 +133,51 @@ const editGuildSchema = z.object({
   name: z.string().min(3, "Must be at least 3 characters.").max(30),
   description: z.string().min(10, "Must be at least 10 characters.").max(200),
   requirements: z.string().max(200).optional(),
-  crestPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
-  bannerPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
 });
 
 const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Guild, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: Guild) => void }) => {
     const { toast } = useToast();
+    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage.toString());
+    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage.toString());
+
     const form = useForm<z.infer<typeof editGuildSchema>>({
         resolver: zodResolver(editGuildSchema),
         defaultValues: {
             name: guild.name,
             description: guild.description,
             requirements: guild.requirements,
-            crestPrompt: guild.crestPrompt,
-            bannerPrompt: guild.bannerPrompt,
         }
     });
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
+        const file = e.target.files?.[0];
+        if (file) {
+             if (file.size > 2 * 1024 * 1024) { // 2MB limit
+              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 2MB.'});
+              return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                if (type === 'crest') {
+                    setCrestImage(base64String);
+                } else {
+                    setBannerImage(base64String);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+
     function onSubmit(values: z.infer<typeof editGuildSchema>) {
-        const updatedGuild = {
+        const updatedGuild: Guild = {
             ...guild,
             ...values,
             slug: values.name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+            crestImage: crestImage || guild.crestImage,
+            bannerImage: bannerImage || guild.bannerImage,
+            image: crestImage || guild.crestImage, // Update main image too
         };
         onUpdate(updatedGuild);
         toast({ title: 'Guild Updated!', description: 'Your guild details have been saved.' });
@@ -169,8 +192,18 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
                     <FormField control={form.control} name="name" render={({ field }) => (<FormItem><FormLabel>Guild Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="requirements" render={({ field }) => (<FormItem><FormLabel>Requirements</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="crestPrompt" render={({ field }) => (<FormItem><FormLabel>Crest AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your crest image.</FormDescription><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="bannerPrompt" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your banner image.</FormDescription><FormMessage /></FormItem>)} />
+                    
+                    <div className="space-y-2">
+                        <Label>Guild Crest</Label>
+                        <Input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'crest')} />
+                        {crestImage && <Image src={crestImage} alt="Crest preview" width={128} height={128} className="rounded-lg mt-2 border" />}
+                    </div>
+                     <div className="space-y-2">
+                        <Label>Guild Banner</Label>
+                        <Input type="file" accept="image/*" onChange={(e) => handleFileChange(e, 'banner')} />
+                        {bannerImage && <Image src={bannerImage} alt="Banner preview" width={250} height={62.5} className="rounded-lg mt-2 border aspect-[4/1] object-cover" />}
+                    </div>
+                    
                     <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save Changes</Button>
                 </form></Form>
             </DialogContent>
@@ -192,7 +225,7 @@ export default function MyGuildClient() {
 
     useEffect(() => {
         const membership = localStorage.getItem('careerClashMembership');
-        if (membership && membership !== 'Free') setIsPremium(true);
+        if (membership && membership !== 'Free' && membership !== 'Basic') setIsPremium(true);
     }, []);
     
     const updateGuildInStorage = (updatedGuild: Guild) => {
@@ -285,9 +318,9 @@ export default function MyGuildClient() {
             <Button variant="ghost" onClick={() => router.push('/guilds')} className="mb-4"><ArrowLeft className="mr-2 h-4 w-4" />Back to Guilds</Button>
             <Dialog open={isManageMemberOpen} onOpenChange={(isOpen) => { setIsManageMemberOpen(isOpen); if (!isOpen) setManagingMember(null); }}><DialogContent><DialogHeader><DialogTitle>Manage {managingMember?.name}</DialogTitle><DialogDescription>Assign a new role or remove this member from the guild.</DialogDescription></DialogHeader><div className="space-y-4 py-4"><div className="space-y-2"><Label htmlFor="role-select">Assign Role</Label><TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn(!isPremium && "cursor-not-allowed")}><Select onValueChange={setSelectedRole} defaultValue={managingMember?.role} disabled={!isPremium}><SelectTrigger id="role-select" className="w-full"><SelectValue placeholder="Select a role" /></SelectTrigger><SelectContent><SelectItem value="Member">Member</SelectItem><SelectItem value="Officer">Officer</SelectItem>{premiumRoles.map(role => (<SelectItem key={role} value={role}>{role}</SelectItem>))}</SelectContent></Select></div></TooltipTrigger>{!isPremium && <TooltipContent><p>Upgrade your membership to assign premium roles.</p></TooltipContent>}</Tooltip></TooltipProvider></div><Button onClick={handleRoleChange} disabled={!selectedRole || selectedRole === managingMember?.role}>Update Role</Button></div><div className="border-t pt-4"><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive" className="w-full" disabled={!managingMember}><Trash2 className="mr-2 h-4 w-4" /> Kick {managingMember?.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently remove {managingMember?.name} from the guild.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleKickMember} className={cn(buttonVariants({ variant: "destructive" }))}>Kick Member</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div></DialogContent></Dialog>
             
-            {isOwner && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={updateGuildInStorage} />}
+            {isOwner && guild && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={updateGuildInStorage} />}
 
-            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerPrompt} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestPrompt} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
+            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><Image src={guild.bannerImage} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><Image src={guild.crestImage} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
             {isOwner && <Button variant="outline" size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/80" onClick={() => setIsEditDialogOpen(true)}><Pencil className="h-4 w-4" /></Button>}
             </div></Card>
 

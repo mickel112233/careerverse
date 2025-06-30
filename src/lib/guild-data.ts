@@ -1,5 +1,6 @@
 
 import { Code, PenTool, Database, BarChart2, Shield } from "lucide-react";
+import type { StaticImageData } from "next/image";
 
 export type GuildMember = {
     name: string;
@@ -18,9 +19,9 @@ export type Guild = {
   requirements: string;
   members: GuildMember[];
   icon: React.ElementType;
-  prompt: string;
-  bannerPrompt: string;
-  crestPrompt: string;
+  image: string | StaticImageData;
+  bannerImage: string | StaticImageData;
+  crestImage: string | StaticImageData;
   type: 'public' | 'private';
   password?: string;
   owner: string;
@@ -68,9 +69,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Must have a passion for beautiful interfaces and clean code. Minimum Level 10.',
     members: guildMembers.frontend, 
     icon: Code, 
-    prompt: 'abstract code interface', 
-    bannerPrompt: 'abstract blue code interface banner',
-    crestPrompt: 'futuristic guild crest emblem, frontend forces',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'public',
     owner: 'ReactDev',
     capacity: 50,
@@ -83,9 +84,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Strong understanding of system design and database management. Minimum Level 15.',
     members: guildMembers.backend, 
     icon: Database, 
-    prompt: 'futuristic server room', 
-    bannerPrompt: 'futuristic server room banner',
-    crestPrompt: 'futuristic guild crest emblem, backend brigade',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'public',
     owner: 'NodeKing',
     capacity: 50,
@@ -98,9 +99,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'A strong portfolio and a keen eye for detail. Figma proficiency is a must.',
     members: guildMembers.design, 
     icon: PenTool, 
-    prompt: 'glowing design sketch', 
-    bannerPrompt: 'abstract glowing design tools banner',
-    crestPrompt: 'futuristic guild crest emblem, design dynasty',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'public',
     owner: 'Figmaster',
     capacity: 50,
@@ -113,9 +114,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Proficiency in Python (Pandas, NumPy) and SQL. Experience with ML frameworks is a plus.',
     members: guildMembers.data, 
     icon: BarChart2, 
-    prompt: 'holographic data visualization', 
-    bannerPrompt: 'holographic data visualization banner',
-    crestPrompt: 'futuristic guild crest emblem, data mavericks',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'public',
     owner: 'TensorFlowTamer',
     capacity: 50,
@@ -128,9 +129,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Knowledge of network security, ethical hacking, and cryptography. Certifications are a plus.',
     members: guildMembers.security, 
     icon: Shield, 
-    prompt: 'cyber security matrix', 
-    bannerPrompt: 'cyber security matrix banner',
-    crestPrompt: 'futuristic guild crest emblem, cyber sentinels',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'public',
     owner: 'FirewallFox',
     capacity: 50,
@@ -143,9 +144,9 @@ export const mockGuilds: Guild[] = [
     requirements: 'Unknown. You must be invited.',
     members: guildMembers.void, 
     icon: Shield, 
-    prompt: 'dark cosmic void', 
-    bannerPrompt: 'dark cosmic void banner',
-    crestPrompt: 'futuristic guild crest emblem, void runners',
+    image: 'https://placehold.co/600x400.png',
+    bannerImage: 'https://placehold.co/1200x300.png',
+    crestImage: 'https://placehold.co/256x256.png',
     type: 'private', 
     password: 'secret',
     owner: 'NullPointer',
