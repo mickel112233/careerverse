@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from "@/components/ui/progress";
@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart, Package, ToyBrick } from "lucide-react";
+import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart, Package, ToyBrick, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -194,11 +194,27 @@ export default function ProfileClient() {
     const [pinnedItems, setPinnedItems] = useState<string[]>([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
+    const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: { name: '', title: '', bio: '', avatarPrompt: '', bannerPrompt: '', github: '', youtube: '', instagram: '', discord: '' },
     });
+    
+    const handleResetProfile = () => {
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('careerClash') || key.startsWith('userGuild') || key.startsWith('chat_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        toast({
+            title: "Profile Reset",
+            description: "Your data has been wiped. The page will now reload."
+        });
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+    };
 
     const updateAllStats = () => {
         const storedProfile = localStorage.getItem('careerClashUserProfile');
@@ -357,7 +373,7 @@ export default function ProfileClient() {
                         <FormField control={form.control} name="title" render={({ field }) => (<FormItem><FormLabel>Title / Role</FormLabel><FormControl><Input placeholder="e.g. Aspiring Developer" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="bio" render={({ field }) => (<FormItem><FormLabel>Bio</FormLabel><FormControl><Textarea placeholder="A short description about yourself" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="avatarPrompt" render={({ field }) => (<FormItem><FormLabel>Avatar AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired avatar" {...field} /></FormControl><FormDescription>This will regenerate your avatar image.</FormDescription><FormMessage /></FormItem>)} />
-                        <FormField control={form.control} name="bannerPrompt" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired banner" {...field} /></FormControl><FormDescription>This will regenerate your profile banner.</FormDescription><FormMessage /></FormItem>)} />
+                        <FormField control={form.control} name="bannerPrompt" render={({ field }) => (<FormItem><FormLabel>Banner AI Prompt</FormLabel><FormControl><Input placeholder="Describe your desired profile banner" {...field} /></FormControl><FormDescription>This will regenerate your profile banner.</FormDescription><FormMessage /></FormItem>)} />
                         <h3 className="text-md font-semibold pt-2 border-b pb-2">Social Links</h3>
                         <FormField control={form.control} name="github" render={({ field }) => (<FormItem><FormLabel>GitHub URL</FormLabel><FormControl><Input placeholder="https://github.com/your-username" {...field} /></FormControl><FormMessage /></FormItem>)} />
                         <FormField control={form.control} name="youtube" render={({ field }) => (<FormItem><FormLabel>YouTube URL</FormLabel><FormControl><Input placeholder="https://youtube.com/@your-channel" {...field} /></FormControl><FormMessage /></FormItem>)} />
@@ -462,11 +478,12 @@ export default function ProfileClient() {
 
         <div className="w-full lg:w-2/3">
              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="collection">Collection</TabsTrigger>
                     <TabsTrigger value="statistics">Statistics</TabsTrigger>
                     <TabsTrigger value="history">History</TabsTrigger>
+                    <TabsTrigger value="settings">Settings</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="mt-6 space-y-8">
                     <Card>
@@ -574,6 +591,48 @@ export default function ProfileClient() {
                                         </div>
                                     </motion.div>
                                 ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="settings" className="mt-6">
+                    <Card className="border-destructive/50">
+                        <CardHeader>
+                            <CardTitle className="text-destructive flex items-center gap-2">
+                                <Trash2 /> Danger Zone
+                            </CardTitle>
+                            <CardDescription>
+                                This action is permanent and cannot be undone.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div>
+                                <h3 className="font-semibold">Reset Your Profile</h3>
+                                <p className="text-sm text-muted-foreground mb-4">
+                                    This will completely wipe all your progress, including XP, coins, gems, memberships, and roadmap data, resetting you to a new player state.
+                                </p>
+                                <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="destructive">Reset All My Data</Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action is irreversible. It will delete all your local progress, currency, and membership status. You will start over as a new basic member.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                                className={cn(buttonVariants({ variant: "destructive" }))}
+                                                onClick={handleResetProfile}
+                                            >
+                                                I understand, reset everything
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </div>
                         </CardContent>
                     </Card>
