@@ -1,5 +1,16 @@
 
-import { Gem, Shield, Star, Zap, Paintbrush, Sparkles, Crown, Trophy, Users, Wand2 } from "lucide-react";
+import { Gem, Shield, Star, Zap, Paintbrush, Sparkles, Crown, Trophy, Users, Wand2, UserCircle } from "lucide-react";
+
+export type MembershipPlan = {
+    name: string;
+    monthlyPrice: string;
+    yearlyPrice: string;
+    coinGrant: number;
+    icon: React.ElementType;
+    color: string;
+    features: string[];
+    highlight: boolean;
+};
 
 export type PurchasableItem = {
     name: string;
@@ -22,20 +33,35 @@ export const guildPerks: GuildPerk[] = [
   { name: 'Guild Expansion IV', price: 750, currency: 'gems', type: 'Guild Perk', icon: Users, description: 'Increase your guild\'s member capacity by 100 slots.', rarity: 'Epic', value: 100 },
 ];
 
-export const memberships = [
+export const memberships: MembershipPlan[] = [
+    {
+        name: 'Basic',
+        monthlyPrice: 'Free',
+        yearlyPrice: 'Free',
+        coinGrant: 0,
+        icon: UserCircle,
+        color: 'text-muted-foreground',
+        features: [
+            'Access to "Beginning" Stage',
+            'Standard learning experience',
+            'Community guild access',
+        ],
+        highlight: false,
+    },
     {
         name: 'Premium',
         monthlyPrice: '₹200/mo',
         yearlyPrice: '₹2000/yr',
+        coinGrant: 1000,
         icon: Star,
         color: 'text-cyan-400',
         features: [
             'Ability to Create a Guild',
-            'Unlock All Learning Stages Instantly',
+            'Unlock All Learning Stages',
             'Exclusive Profile Badge',
             'Ad-Free Experience',
             '5% Shop Discount',
-            'Monthly 1,000 Coins',
+            'One-time bonus: 1,000 Coins',
         ],
         highlight: false,
     },
@@ -43,14 +69,14 @@ export const memberships = [
         name: 'Premium+',
         monthlyPrice: '₹350/mo',
         yearlyPrice: '₹3500/yr',
+        coinGrant: 2500,
         icon: Sparkles,
         color: 'text-fuchsia-400',
         features: [
             'All Premium Benefits',
             'Golden Username Effect',
-            'Exclusive Animated Avatar Frame',
             '10% Shop Discount',
-            'Monthly 2,500 Coins',
+            'One-time bonus: 2,500 Coins',
         ],
         highlight: true,
     },
@@ -58,6 +84,7 @@ export const memberships = [
         name: 'Elite',
         monthlyPrice: '₹550/mo',
         yearlyPrice: '₹5500/yr',
+        coinGrant: 6000,
         icon: Crown,
         color: 'text-yellow-400',
         features: [
@@ -65,7 +92,7 @@ export const memberships = [
             'Custom Guild Roles',
             'Beta Access to New Features',
             '15% Shop Discount',
-            'Monthly 6,000 Coins',
+            'One-time bonus: 6,000 Coins',
         ],
         highlight: false,
     },
@@ -73,6 +100,7 @@ export const memberships = [
         name: 'Super',
         monthlyPrice: '₹800/mo',
         yearlyPrice: '₹8000/yr',
+        coinGrant: 15000,
         icon: Wand2,
         color: 'text-purple-400',
         features: [
@@ -80,7 +108,7 @@ export const memberships = [
             'Unique "Super" Title & Badge',
             'Direct line to support',
             '20% Shop Discount',
-            'Monthly 15,000 Coins',
+            'One-time bonus: 15,000 Coins',
         ],
         highlight: false,
     },

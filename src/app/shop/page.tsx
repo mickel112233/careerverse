@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Gem, Star, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, Users } from "lucide-react";
+import { Gem, Star, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, Users, UserCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
@@ -89,23 +89,23 @@ export default function ShopPage() {
   const [activeSub, setActiveSub] = useState<{name: string, expires: number} | null>(null);
 
   const checkActiveSubscription = () => {
-    const subName = localStorage.getItem('careerClashMembership');
+    const subName = localStorage.getItem('careerClashMembership') || 'Basic';
     const subDate = localStorage.getItem('careerClashMembershipPurchaseDate');
     
-    if (subName && subName !== 'Free' && subDate) {
+    if (subName && subName !== 'Free' && subName !== 'Basic' && subDate) {
         const purchaseTime = parseInt(subDate, 10);
         const expires = purchaseTime + 30 * 24 * 60 * 60 * 1000;
         if (Date.now() < expires) {
             setActiveSub({ name: subName, expires });
         } else {
             // Subscription expired, clear it
-            localStorage.setItem('careerClashMembership', 'Free');
+            localStorage.setItem('careerClashMembership', 'Basic');
             localStorage.removeItem('careerClashMembershipPurchaseDate');
             setActiveSub(null);
             window.dispatchEvent(new Event('currencyChange'));
         }
     } else {
-        setActiveSub(null);
+        setActiveSub({ name: 'Basic', expires: 0 });
     }
   }
 
@@ -161,24 +161,38 @@ export default function ShopPage() {
   }
 
   const handleMembershipPurchase = (planName: string) => {
+    if (planName === 'Basic') return;
+    
+    const plan = memberships.find(p => p.name === planName);
+    if (!plan) return;
+
     const purchaseTime = Date.now();
-    localStorage.setItem('careerClashMembership', planName);
+    localStorage.setItem('careerClashMembership', plan.name);
     localStorage.setItem('careerClashMembershipPurchaseDate', purchaseTime.toString());
     
+    if (plan.coinGrant && plan.coinGrant > 0) {
+        const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+        localStorage.setItem('careerClashCoins', (currentCoins + plan.coinGrant).toString());
+    }
+
     // Also unlock all learning stages
     const storedRoadmap = localStorage.getItem('careerClashRoadmap');
     if (storedRoadmap) {
         const roadmap = JSON.parse(storedRoadmap);
         const unlockedRoadmap = roadmap.map((stage: any) => ({
             ...stage,
-            isUnlocked: true
+            status: 'unlocked'
         }));
         localStorage.setItem('careerClashRoadmap', JSON.stringify(unlockedRoadmap));
     }
 
     window.dispatchEvent(new Event('currencyChange'));
     
-    toast({ title: 'Subscription Activated!', description: `You are now subscribed to the ${planName} plan.`, className: "bg-green-500 text-white" });
+    toast({ 
+        title: 'Subscription Activated!', 
+        description: `You are now subscribed to the ${plan.name} plan. ${plan.coinGrant > 0 ? `${plan.coinGrant.toLocaleString()} coins have been added to your wallet.` : ''}`,
+        className: "bg-green-500 text-white" 
+    });
   };
 
   return (
@@ -210,18 +224,18 @@ export default function ShopPage() {
                     <ToggleGroupItem value="yearly">Yearly <Badge variant="secondary" className="ml-2 bg-green-500/20 text-green-400">Save 16%</Badge></ToggleGroupItem>
                 </ToggleGroup>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {memberships.map((plan) => {
                     const isCurrentPlan = activeSub?.name === plan.name;
                     return (
-                        <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20", isCurrentPlan && "border-green-500 ring-2 ring-green-500")}>
+                        <Card key={plan.name} className={cn("flex flex-col", plan.highlight && "border-primary ring-2 ring-primary shadow-lg shadow-primary/20", isCurrentPlan && plan.name !== 'Basic' && "border-green-500 ring-2 ring-green-500")}>
                             <CardHeader>
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-3">
                                         <plan.icon className={cn("h-8 w-8", plan.color)} />
                                         <CardTitle className="font-headline text-2xl">{plan.name}</CardTitle>
                                     </div>
-                                    {isCurrentPlan && <Badge variant="secondary" className="bg-green-500 text-white">Active</Badge>}
+                                    {isCurrentPlan && plan.name !== 'Basic' && <Badge variant="secondary" className="bg-green-500 text-white">Active</Badge>}
                                 </div>
                                 <div className="flex items-baseline gap-2">
                                     <span className="text-3xl font-bold">{billingCycle === 'monthly' ? plan.monthlyPrice.split('/')[0] : plan.yearlyPrice.split('/')[0]}</span>
@@ -240,7 +254,7 @@ export default function ShopPage() {
                                 <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)} disabled={isCurrentPlan}>
                                     {isCurrentPlan ? "Current Plan" : "Subscribe"}
                                 </Button>
-                                {isCurrentPlan && activeSub && (
+                                {isCurrentPlan && activeSub && activeSub.expires > 0 && (
                                     <div className="flex items-center justify-center gap-2 pt-2">
                                         <Clock className="h-3 w-3 text-muted-foreground" />
                                         <CountdownTimer expiryTimestamp={activeSub.expires} onExpire={checkActiveSubscription} />

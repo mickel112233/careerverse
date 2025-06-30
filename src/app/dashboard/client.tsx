@@ -114,10 +114,13 @@ export default function DashboardClient() {
   const [isPremium, setIsPremium] = useState(false);
   const { toast } = useToast();
 
+  const [isUnlockInfoOpen, setIsUnlockInfoOpen] = useState(false);
+  const [stageForInfo, setStageForInfo] = useState<{ stageName: string; requiredStage: string | null; } | null>(null);
+
   useEffect(() => {
     const checkPremium = () => {
         const membership = localStorage.getItem('careerClashMembership');
-        setIsPremium(membership !== null && membership !== 'Free');
+        setIsPremium(membership !== null && membership !== 'Free' && membership !== 'Basic');
     }
     checkPremium();
     window.addEventListener('currencyChange', checkPremium);
@@ -153,6 +156,11 @@ export default function DashboardClient() {
 
     try {
         const result = await generateLearningRoadmap({ streamName });
+
+        if (!result || !result.roadmap) {
+            throw new Error("Invalid roadmap data received from AI.");
+        }
+
         const newRoadmap: Stage[] = result.roadmap.map((stage, stageIndex) => ({
             stageName: stage.stageName,
             status: stageIndex === 0 ? 'unlocked' : 'locked',
@@ -260,6 +268,28 @@ export default function DashboardClient() {
             </AlertDialogContent>
         </AlertDialog>
 
+        <AlertDialog open={isUnlockInfoOpen} onOpenChange={setIsUnlockInfoOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Stage Locked: {stageForInfo?.stageName}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        {stageForInfo?.requiredStage
+                            ? `You need to complete all levels in the "${stageForInfo.requiredStage}" stage to unlock this.`
+                            : "This is an advanced stage that requires completion of previous stages."}
+                        <br /><br />
+                        Want to skip ahead? <strong>Purchase any premium membership</strong> to unlock all stages instantly!
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Close</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                        <Link href="/shop?tab=memberships">View Memberships</Link>
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+
+
       {!selectedStream ? (
         <div className="text-center py-20">
           <h2 className="text-2xl font-bold font-headline">Welcome to Career Clash!</h2>
@@ -278,7 +308,19 @@ export default function DashboardClient() {
 
                 return (
                     <AccordionItem value={`stage-${index}`} key={index} className="border bg-card rounded-lg px-4" >
-                        <AccordionTrigger className="hover:no-underline disabled:opacity-50">
+                        <AccordionTrigger
+                            onClick={(e) => {
+                                if (isStageLocked) {
+                                    e.preventDefault();
+                                    setStageForInfo({
+                                        stageName: stage.stageName,
+                                        requiredStage: index > 0 ? roadmap[index - 1].stageName : null,
+                                    });
+                                    setIsUnlockInfoOpen(true);
+                                }
+                            }}
+                            className="hover:no-underline"
+                        >
                            <div className="flex items-center gap-4">
                                 {isStageLocked ? <Lock className="h-6 w-6 text-muted-foreground" /> : isStageComplete ? <CheckCircle className="h-6 w-6 text-green-400" /> : <CircleDot className="h-6 w-6 text-primary animate-pulse" />}
                                 <h3 className="text-xl font-headline">{stage.stageName}</h3>
@@ -286,9 +328,9 @@ export default function DashboardClient() {
                            </div>
                         </AccordionTrigger>
                         <AccordionContent className="pt-4 space-y-4">
-                            {stage.levels && stage.levels.map((level, levelIndex) => (
+                            {stage.levels && stage.levels.length > 0 ? stage.levels.map((level, levelIndex) => (
                                 <LevelCard key={levelIndex} level={level} isStageLocked={isStageLocked} />
-                            ))}
+                            )) : <p className="text-muted-foreground text-center py-4">Levels for this stage are being prepared.</p>}
                         </AccordionContent>
                     </AccordionItem>
                 )
