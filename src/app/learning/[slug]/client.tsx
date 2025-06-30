@@ -20,13 +20,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
-type RoadmapNode = {
+
+type Level = {
     title: string;
     slug: string;
     status: 'completed' | 'unlocked' | 'locked';
     xp: number;
     coins: number;
 };
+
+type Stage = {
+  stageName: string;
+  status: 'completed' | 'unlocked' | 'locked';
+  levels: Level[];
+};
+
 type QuizResult = {
     question: string;
     yourAnswer: string;
@@ -74,8 +82,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
                 if (storedRoadmap) {
-                    const roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
-                    const currentNode = roadmap.find(node => node.slug === slug);
+                    const roadmap: Stage[] = JSON.parse(storedRoadmap);
+                    let currentNode: Level | undefined;
+                    roadmap.forEach(stage => {
+                        const foundLevel = stage.levels.find(level => level.slug === slug);
+                        if(foundLevel) currentNode = foundLevel;
+                    });
+                    
                     if (currentNode) {
                         setLevelXp(currentNode.xp || 0);
                         setLevelCoins(currentNode.coins || 0);
@@ -104,37 +117,63 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         if (percentage >= 60) {
             const storedRoadmap = localStorage.getItem('careerClashRoadmap');
             if (storedRoadmap) {
-                let roadmap: RoadmapNode[] = JSON.parse(storedRoadmap);
-                const currentIndex = roadmap.findIndex(node => node.slug === slug);
-                if (currentIndex !== -1 && roadmap[currentIndex].status !== 'completed') {
-                    roadmap[currentIndex].status = 'completed';
-                    if (currentIndex + 1 < roadmap.length) {
-                        roadmap[currentIndex + 1].status = 'unlocked';
+                let roadmap: Stage[] = JSON.parse(storedRoadmap);
+                let currentStageIndex = -1;
+                let currentLevelIndex = -1;
+
+                roadmap.forEach((stage, sIndex) => {
+                    const lIndex = stage.levels.findIndex(level => level.slug === slug);
+                    if (lIndex !== -1) {
+                        currentStageIndex = sIndex;
+                        currentLevelIndex = lIndex;
+                    }
+                });
+
+                if (currentStageIndex !== -1 && currentLevelIndex !== -1) {
+                    // Update current level status if not already completed
+                    if (roadmap[currentStageIndex].levels[currentLevelIndex].status !== 'completed') {
+                         roadmap[currentStageIndex].levels[currentLevelIndex].status = 'completed';
+
+                         const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+                         const newTotalXp = currentTotalXp + levelXp;
+                         localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+                         
+                         const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+                         const newTotalCoins = currentCoins + levelCoins;
+                         localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+
+                         window.dispatchEvent(new Event('currencyChange'));
+                         
+                         toast({
+                            title: "Level Complete!",
+                            description: `You earned ${levelXp} XP and ${levelCoins} Coins!`,
+                            className: "bg-green-500 text-white border-green-600",
+                        });
                     }
 
-                    const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
-                    const newTotalXp = currentTotalXp + levelXp;
-                    localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
-                    
-                    const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
-                    const newTotalCoins = currentCoins + levelCoins;
-                    localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+                    // Unlock next level in the same stage
+                    if (currentLevelIndex + 1 < roadmap[currentStageIndex].levels.length) {
+                        roadmap[currentStageIndex].levels[currentLevelIndex + 1].status = 'unlocked';
+                    } else {
+                        // This was the last level, check if we can unlock next stage
+                        const isStageComplete = roadmap[currentStageIndex].levels.every(l => l.status === 'completed');
+                        if (isStageComplete) {
+                            roadmap[currentStageIndex].status = 'completed';
+                            if (currentStageIndex + 1 < roadmap.length) {
+                                roadmap[currentStageIndex + 1].status = 'unlocked';
+                                // Unlock first level of next stage
+                                roadmap[currentStageIndex + 1].levels[0].status = 'unlocked';
+                                 toast({
+                                    title: "Stage Complete!",
+                                    description: `You've mastered ${roadmap[currentStageIndex].stageName}. The next stage is unlocked!`,
+                                });
+                            }
+                        }
+                    }
 
-                    window.dispatchEvent(new Event('currencyChange'));
-                    
-                    const serializableRoadmap = roadmap.map(node => {
-                        const { icon, ...rest } = node;
-                        // Assuming icon is not needed for serialization or can be derived
-                        return rest; 
-                    });
-                    localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableRoadmap));
+                    localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
                 }
             }
-            toast({
-                title: "Level Complete!",
-                description: `You earned ${levelXp} XP and ${levelCoins} Coins! The next level is unlocked.`,
-                className: "bg-green-500 text-white border-green-600",
-            });
         } else {
             toast({
                 variant: "destructive",

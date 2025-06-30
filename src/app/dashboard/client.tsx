@@ -25,10 +25,11 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
-import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Check, Lock, Star, Swords, PenTool, Trophy, Zap, Coins } from 'lucide-react';
+import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Lock, Star, Swords, PenTool, Trophy, Zap, Coins, CheckCircle, CircleDot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { motion } from 'framer-motion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
 
 
 const streams = [
@@ -42,82 +43,105 @@ const streams = [
   { name: 'Content Creation', icon: PenSquare },
 ];
 
-type RoadmapNode = {
+type Level = {
   title: string;
   slug: string;
-  icon: React.ElementType;
   status: 'completed' | 'unlocked' | 'locked';
   description: string;
   xp: number;
   coins: number;
 };
 
+type Stage = {
+  stageName: string;
+  status: 'completed' | 'unlocked' | 'locked';
+  levels: Level[];
+};
+
 const roadmapIcons = [Code, Swords, PenTool, Star, Trophy, BrainCircuit, Gamepad2];
 
-const NodeIcon = ({ icon, status }: { icon: React.ElementType, status: string }) => {
-  const Icon = icon;
-  const colors = {
-    completed: 'text-green-400 bg-green-400/10',
-    unlocked: 'text-primary bg-primary/10',
-    locked: 'text-muted-foreground bg-muted/20',
-  }
-  return <Icon className={cn('h-8 w-8 p-1.5 rounded-md', colors[status])} />
-}
+const LevelCard = ({ level, isStageLocked }: { level: Level, isStageLocked: boolean }) => {
+  const Icon = roadmapIcons[Math.floor(Math.random() * roadmapIcons.length)];
+  const isPlayable = !isStageLocked && level.status !== 'locked';
 
-const NodeStatusIcon = ({ status }: { status: string }) => {
-  if (status === 'completed') return <Check className="h-5 w-5 text-green-400" />;
-  if (status === 'locked') return <Lock className="h-5 w-5 text-muted-foreground" />;
-  return null;
+  return (
+    <Card className={cn('w-full transition-all', 
+        !isPlayable && 'bg-muted/50 opacity-70',
+        level.status === 'unlocked' && !isStageLocked && 'border-primary shadow-md shadow-primary/20', 
+        level.status === 'completed' && 'border-green-500/30'
+    )}>
+        <CardHeader className="flex-row items-center gap-4 space-y-0 p-4">
+            <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-full', 
+                level.status === 'completed' ? 'bg-green-400/20' : 'bg-muted',
+                level.status === 'unlocked' && !isStageLocked && 'ring-2 ring-primary animate-pulse-slow'
+            )}>
+                {level.status === 'completed' ? <CheckCircle className="h-6 w-6 text-green-400" /> : <Icon className="h-6 w-6 text-muted-foreground" />}
+            </div>
+            <div>
+                <CardTitle className="text-base font-semibold leading-tight">{level.title}</CardTitle>
+                <CardDescription className="text-xs mt-1">{level.description}</CardDescription>
+                <div className="flex items-center gap-4 text-xs font-bold mt-2">
+                    <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {level.xp} XP</span>
+                    <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {level.coins}</span>
+                </div>
+            </div>
+        </CardHeader>
+        <CardFooter className="p-4 pt-0">
+            <Button asChild size="sm" className="w-full" disabled={!isPlayable}>
+            <Link href={isPlayable ? `/learning/${level.slug}` : '#'}>
+                {level.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
+            </Link>
+            </Button>
+        </CardFooter>
+    </Card>
+  )
 }
 
 const RoadmapSkeleton = () => (
-    <div className="space-y-8">
-        <div className="flex justify-between items-center">
-            <div className="space-y-2">
-                 <Skeleton className="h-10 w-64" />
-                <Skeleton className="h-6 w-96" />
-            </div>
-             <Skeleton className="h-10 w-36" />
-        </div>
-        <div className="relative pl-6 max-w-2xl mx-auto">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-border/50" />
-            <div className="space-y-12">
-                {[...Array(3)].map((_, index) => (
-                    <div key={index} className="relative pl-16">
-                        <div className="absolute top-0 -left-6 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background"><Skeleton className="h-10 w-10 rounded-full" /></div>
-                        <Skeleton className="h-36 w-full max-w-sm" />
-                    </div>
-                ))}
-            </div>
-        </div>
+    <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+            <Skeleton key={index} className="h-16 w-full" />
+        ))}
     </div>
 );
 
 export default function DashboardClient() {
   const [selectedStream, setSelectedStream] = useState<string | null>(null);
-  const [roadmapNodes, setRoadmapNodes] = useState<RoadmapNode[]>([]);
+  const [roadmap, setRoadmap] = useState<Stage[]>([]);
   const [streamToConfirm, setStreamToConfirm] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoadingRoadmap, setIsLoadingRoadmap] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
+    const checkPremium = () => {
+        const membership = localStorage.getItem('careerClashMembership');
+        setIsPremium(membership !== null && membership !== 'Free');
+    }
+    checkPremium();
+    window.addEventListener('currencyChange', checkPremium);
+
     const storedStream = localStorage.getItem('careerClashStream');
     const storedRoadmap = localStorage.getItem('careerClashRoadmap');
 
     if (storedStream && storedRoadmap) {
         setSelectedStream(storedStream);
-        const parsedRoadmap = JSON.parse(storedRoadmap);
-        // Re-hydrate the icon components after parsing from localStorage
-        const hydratedNodes = parsedRoadmap.map((node: any, index: number) => ({
-            ...node,
-            icon: roadmapIcons[index % roadmapIcons.length] || roadmapIcons[0],
-        }));
-        setRoadmapNodes(hydratedNodes);
+        try {
+          const parsedRoadmap = JSON.parse(storedRoadmap);
+          setRoadmap(parsedRoadmap);
+        } catch (e) {
+          console.error("Failed to parse roadmap from localStorage", e);
+          // Handle corrupted data, e.g., by clearing it
+          localStorage.removeItem('careerClashRoadmap');
+          setIsDialogOpen(true);
+        }
     } else {
         setIsDialogOpen(true); // Force selection on first visit
     }
     setIsLoadingRoadmap(false);
+
+    return () => window.removeEventListener('currencyChange', checkPremium);
   }, []);
 
   const handleStreamChange = async (streamName: string) => {
@@ -125,32 +149,27 @@ export default function DashboardClient() {
     setIsDialogOpen(false); 
     setIsLoadingRoadmap(true);
     setSelectedStream(streamName);
-    setRoadmapNodes([]);
+    setRoadmap([]);
 
     try {
         const result = await generateLearningRoadmap({ streamName });
-        const newNodes: RoadmapNode[] = result.roadmap.map((node, index) => ({
-            title: node.title,
-            slug: node.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
-            icon: roadmapIcons[index % roadmapIcons.length],
-            status: index === 0 ? 'unlocked' : 'locked',
-            description: node.description,
-            xp: node.xp,
-            coins: Math.floor(node.xp / 5),
+        const newRoadmap: Stage[] = result.roadmap.map((stage, stageIndex) => ({
+            stageName: stage.stageName,
+            status: stageIndex === 0 ? 'unlocked' : 'locked',
+            levels: stage.levels.map((node, levelIndex) => ({
+                title: node.title,
+                slug: node.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+                status: stageIndex === 0 && levelIndex === 0 ? 'unlocked' : 'locked',
+                description: node.description,
+                xp: node.xp,
+                coins: Math.floor(node.xp / 5),
+            }))
         }));
         
-        setRoadmapNodes(newNodes);
+        setRoadmap(newRoadmap);
         
-        const serializableNodes = newNodes.map((node) => {
-            const { icon, ...rest } = node;
-            return {
-                ...rest,
-                iconIndex: roadmapIcons.indexOf(node.icon)
-            };
-        });
-
         localStorage.setItem('careerClashStream', streamName);
-        localStorage.setItem('careerClashRoadmap', JSON.stringify(serializableNodes));
+        localStorage.setItem('careerClashRoadmap', JSON.stringify(newRoadmap));
         localStorage.setItem('careerClashTotalXp', '0');
         localStorage.setItem('careerClashCoins', '100');
         localStorage.setItem('careerClashGems', '5');
@@ -177,14 +196,7 @@ export default function DashboardClient() {
     setStreamToConfirm(null);
   };
 
-  if (isLoadingRoadmap && !selectedStream) {
-    return (
-        <div className="flex flex-col justify-center items-center py-20 gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary"/>
-            <p className="text-lg text-muted-foreground">Loading your dashboard...</p>
-        </div>
-    );
-  }
+  const activeStageIndex = roadmap.findLastIndex(stage => stage.status === 'unlocked' && !stage.levels.every(l => l.status === 'completed'))
 
   return (
     <>
@@ -192,7 +204,7 @@ export default function DashboardClient() {
         <div className="max-w-2xl">
           <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Your Learning Roadmap</h1>
           <p className="mt-2 text-muted-foreground">
-            {selectedStream ? `Your path to mastering ${selectedStream}.` : 'Choose a subject to begin. Complete challenges to unlock new skills and climb the ranks.'}
+            {selectedStream ? `Your path to mastering ${selectedStream}.` : 'Choose a subject to begin.'}
           </p>
         </div>
         <div>
@@ -203,25 +215,25 @@ export default function DashboardClient() {
                 {selectedStream ? 'Change Subject' : 'Choose Subject'}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
                 <DialogTitle>Choose Your Subject</DialogTitle>
                 <DialogDescription>
-                    Select a learning path to begin your journey.
+                    Select a learning path to begin your journey. This will reset your current progress.
                 </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
                 {streams.map((stream) => {
                     const Icon = stream.icon;
                     return (
                         <Button
                         key={stream.name}
                         variant="outline"
-                        className="h-24 flex flex-col items-center justify-center gap-2 text-center p-2"
+                        className="h-28 flex flex-col items-center justify-center gap-2 text-center p-2"
                         onClick={() => openConfirmation(stream.name)}
                         >
                         <Icon className="h-8 w-8 text-primary" />
-                        <span className="text-xs font-semibold">{stream.name}</span>
+                        <span className="text-sm font-semibold">{stream.name}</span>
                         </Button>
                     );
                 })}
@@ -257,66 +269,31 @@ export default function DashboardClient() {
       ) : isLoadingRoadmap ? (
           <RoadmapSkeleton />
       ) : (
-        <div className="relative w-full max-w-2xl mx-auto">
-          <div className="absolute left-5 top-5 bottom-5 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
+        <Accordion type="single" collapsible className="w-full space-y-4" defaultValue={activeStageIndex !== -1 ? `stage-${activeStageIndex}` : undefined}>
+            {roadmap.map((stage, index) => {
+                const isStageLocked = stage.status === 'locked' && !isPremium;
+                const completedLevels = stage.levels.filter(l => l.status === 'completed').length;
+                const totalLevels = stage.levels.length;
+                const isStageComplete = completedLevels === totalLevels;
 
-          <div className="space-y-12">
-            {roadmapNodes.map((node, index) => (
-              <div key={index} className="relative pl-16">
-                <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true, amount: 0.8 }}
-                    transition={{ duration: 0.3, delay: 0.1, type: 'spring' }}
-                    className="absolute top-0 -left-[2px] z-10 flex h-12 w-12 items-center justify-center"
-                >
-                    <div className="h-full w-full rounded-full bg-background flex items-center justify-center">
-                        <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
-                            node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
-                            node.status === 'unlocked' && 'ring-primary animate-pulse-slow'
-                        )}>
-                            <NodeStatusIcon status={node.status} />
-                        </div>
-                    </div>
-                </motion.div>
-                
-                 <motion.div
-                     initial={{ opacity: 0, x: 20 }}
-                     whileInView={{ opacity: 1, x: 0 }}
-                     viewport={{ once: true, amount: 0.5 }}
-                     transition={{ duration: 0.5, delay: 0.1 }}
-                     className="w-full"
-                  >
-                    <Card className={cn('w-full transition-all', 
-                        node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', 
-                        node.status === 'completed' && 'bg-muted/30 border-green-500/30'
-                    )}>
-                        <CardHeader className="flex-row items-start gap-4 space-y-0 p-4">
-                        <NodeIcon icon={node.icon} status={node.status} />
-                        <div>
-                            <CardTitle className="text-base font-semibold">{node.title}</CardTitle>
-                            <CardDescription className="text-xs mt-1">{node.description}</CardDescription>
-                            <div className="flex items-center gap-4 text-sm font-bold mt-2">
-                            <span className="flex items-center text-yellow-400"><Zap className="h-4 w-4 mr-1" /> {node.xp} XP</span>
-                            <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {node.coins}</span>
-                            </div>
-                        </div>
-                        </CardHeader>
-                        {node.status !== 'locked' && (
-                        <CardFooter className="p-4 pt-0">
-                            <Button asChild size="sm" className="w-full" disabled={node.status === 'completed'}>
-                            <Link href={`/learning/${node.slug}`}>
-                                {node.status === 'completed' ? 'Review Challenge' : 'Start Challenge'}
-                            </Link>
-                            </Button>
-                        </CardFooter>
-                        )}
-                    </Card>
-                  </motion.div>
-              </div>
-            ))}
-          </div>
-        </div>
+                return (
+                    <AccordionItem value={`stage-${index}`} key={index} className="border bg-card rounded-lg px-4" >
+                        <AccordionTrigger className="hover:no-underline disabled:opacity-50">
+                           <div className="flex items-center gap-4">
+                                {isStageLocked ? <Lock className="h-6 w-6 text-muted-foreground" /> : isStageComplete ? <CheckCircle className="h-6 w-6 text-green-400" /> : <CircleDot className="h-6 w-6 text-primary animate-pulse" />}
+                                <h3 className="text-xl font-headline">{stage.stageName}</h3>
+                                <Badge variant={isStageLocked ? 'secondary' : 'default'}>{completedLevels} / {totalLevels}</Badge>
+                           </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pt-4 space-y-4">
+                            {stage.levels.map((level, levelIndex) => (
+                                <LevelCard key={levelIndex} level={level} isStageLocked={isStageLocked} />
+                            ))}
+                        </AccordionContent>
+                    </AccordionItem>
+                )
+            })}
+        </Accordion>
       )}
     </>
   );

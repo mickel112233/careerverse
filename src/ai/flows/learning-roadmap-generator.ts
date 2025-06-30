@@ -2,9 +2,9 @@
 'use server';
 
 /**
- * @fileOverview Generates a gamified learning roadmap using AI.
+ * @fileOverview Generates a gamified, multi-stage learning roadmap using AI.
  *
- * - generateLearningRoadmap - A function that creates a multi-level learning path for a given subject.
+ * - generateLearningRoadmap - A function that creates a multi-stage learning path for a given subject.
  * - GenerateLearningRoadmapInput - The input type for the generateLearningRoadmap function.
  * - GenerateLearningRoadmapOutput - The return type for the generateLearningRoadmap function.
  */
@@ -24,8 +24,13 @@ const RoadmapNodeSchema = z.object({
 });
 export type RoadmapNode = z.infer<typeof RoadmapNodeSchema>;
 
+const StageSchema = z.object({
+  stageName: z.enum(['Beginning', 'Intermediate', 'Advance']),
+  levels: z.array(RoadmapNodeSchema).describe('An array of learning levels within this stage.'),
+});
+
 const GenerateLearningRoadmapOutputSchema = z.object({
-  roadmap: z.array(RoadmapNodeSchema).describe('An array of at least 150 learning levels that form a very long and extensive roadmap.'),
+  roadmap: z.array(StageSchema).describe('An array of learning stages, each containing multiple levels.'),
 });
 export type GenerateLearningRoadmapOutput = z.infer<typeof GenerateLearningRoadmapOutputSchema>;
 
@@ -39,20 +44,25 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateLearningRoadmapOutputSchema},
   prompt: `You are an expert curriculum designer for a gamified learning platform called "Career Clash".
   
-Your task is to generate a very long and detailed learning roadmap for a specific subject stream. The roadmap must be broken down into a large series of levels, starting from fundamental concepts and progressively advancing to expert-level topics. The goal is to create a long-term learning journey for the player.
+Your task is to generate a detailed, multi-stage learning roadmap for the subject '{{{streamName}}}'.
 
-For the subject '{{{streamName}}}', create a comprehensive list of at least 150 learning levels. Base the content on the most popular and authoritative books, courses, and real-world skills for this field.
+The roadmap must be divided into exactly three stages, in this order: "Beginning", "Intermediate", and "Advance".
+- The "Beginning" stage should have 30 levels, starting with the most fundamental concepts.
+- The "Intermediate" stage should have 50 levels, building upon the basics.
+- The "Advance" stage should have 70 levels, covering expert-level topics.
 
-For each level, you MUST provide:
+For EACH level within EACH stage, you MUST provide:
 1.  A concise, engaging 'title' for the learning module.
 2.  A one-sentence 'description' of the key topics covered.
-3.  An 'xp' value (Experience Points) a user would gain upon completion. Use values between 100 and 500, with XP increasing for more advanced levels.
+3.  An 'xp' value between 100 and 500, with XP increasing for more advanced levels.
 
 **CRITICAL INSTRUCTIONS**:
 1. The final output MUST be a valid JSON object.
-2. The 'roadmap' array must contain AT LEAST 150 complete level objects.
-3. Every single level object in the 'roadmap' array MUST be a complete object containing the 'title', 'description', and 'xp' fields.
-4. Do not leave any objects incomplete. Double-check your final output to ensure the JSON is not truncated and every entry is complete before finishing your response.
+2. The root object must have a 'roadmap' property which is an array of stage objects.
+3. There must be exactly THREE stage objects in the 'roadmap' array.
+4. Each stage object must have a 'stageName' ("Beginning", "Intermediate", or "Advance") and a 'levels' array.
+5. Every single level object in every 'levels' array MUST be a complete object containing the 'title', 'description', and 'xp' fields.
+6. Do not leave any objects incomplete. Double-check your final output to ensure the JSON is not truncated and every entry is complete before finishing your response.
 
 Return the entire roadmap as a single JSON object.
 `,
