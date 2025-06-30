@@ -395,11 +395,14 @@ export default function ProfileClient() {
             <Card className="text-center p-6 pt-0 border-2 border-transparent relative">
                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}><Pencil className="h-4 w-4" /></Button>
                 <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarPrompt} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
                     <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
+                    {membership !== 'Free' && (
+                        <Badge variant="outline" className="border-primary text-primary font-bold">{membership}</Badge>
+                    )}
                     {prestigeLevel > 0 && (
                         <TooltipProvider><Tooltip><TooltipTrigger>
-                             <div className="flex items-center text-yellow-400 gap-1">
+                                <div className="flex items-center text-yellow-400 gap-1">
                                 <Star className="h-5 w-5"/>
                                 <span className="font-bold text-lg">{prestigeLevel}</span>
                             </div>
