@@ -48,6 +48,8 @@ For each level, provide:
 2.  A one-sentence description of the key topics covered.
 3.  The XP (Experience Points) a user would gain upon completion. Use values between 100 and 500, with XP increasing for more advanced levels.
 
+Crucially, ensure every single level object in the array contains the 'title', 'description', and 'xp' fields, without exception.
+
 Return the entire roadmap as a single JSON object.
 `,
 });
