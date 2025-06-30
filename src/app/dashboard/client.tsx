@@ -25,7 +25,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
-import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Lock, Star, Swords, PenTool, Trophy, Zap, Coins, CheckCircle, CircleDot } from 'lucide-react';
+import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Lock, Star, Swords, PenTool, Trophy, Zap, Coins, CheckCircle, CircleDot, Shield, Cloud, ClipboardList, Handshake } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -41,6 +41,10 @@ const streams = [
   { name: 'AI Prompt Engineering', icon: Bot },
   { name: 'Game Development', icon: Gamepad2 },
   { name: 'Content Creation', icon: PenSquare },
+  { name: 'Cybersecurity', icon: Shield },
+  { name: 'Cloud Computing', icon: Cloud },
+  { name: 'Project Management', icon: ClipboardList },
+  { name: 'Sales & Business Development', icon: Handshake },
 ];
 
 type Level = {

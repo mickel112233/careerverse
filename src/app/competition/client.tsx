@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut, Info } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut, Info, Cloud, ClipboardList, Handshake } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -28,6 +28,10 @@ const streams = [
     { name: 'AI Prompt Engineering', icon: Bot },
     { name: 'Game Development', icon: Gamepad2 },
     { name: 'Content Creation', icon: PenSquare },
+    { name: 'Cybersecurity', icon: Shield },
+    { name: 'Cloud Computing', icon: Cloud },
+    { name: 'Project Management', icon: ClipboardList },
+    { name: 'Sales & Business Development', icon: Handshake },
 ];
 const questionCounts = [5, 10, 15, 20];
 const timeLimits = [ { value: 60, label: '1 min' }, { value: 120, label: '2 min' }, { value: 300, label: '5 min' }, { value: 600, label: '10 min' }, { value: 1200, label: '20 min' }];
