@@ -161,12 +161,12 @@ export default function GuildDetailClient({ slug }: { slug: string }) {
             </Button>
              <Card className="mb-8 overflow-hidden">
                 <div className="relative h-32 sm:h-48 bg-muted">
-                    <Image src={guild.bannerImage} alt={`${guild.name} Banner`} layout="fill" objectFit="cover" />
+                    <Image src={guild.bannerImage || `https://placehold.co/1200x300.png`} alt={`${guild.name} Banner`} layout="fill" objectFit="cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                 </div>
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent">
                     <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6">
-                        <Image src={guild.crestImage} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" />
+                        <Image src={guild.crestImage || `https://placehold.co/256x256.png`} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" />
                         <div className="text-center sm:text-left">
                             <h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1>
                             <p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p>

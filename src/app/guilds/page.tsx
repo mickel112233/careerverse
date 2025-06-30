@@ -147,7 +147,7 @@ export default function GuildsPage() {
                     >
                         <Card className="flex flex-col h-full hover:shadow-primary/30 hover:shadow-lg transition-shadow duration-300">
                             <CardHeader className="p-0 relative w-full h-40">
-                                <Image src={guild.image} alt={guild.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
+                                <Image src={guild.image || `https://placehold.co/600x400.png`} alt={guild.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
                             </CardHeader>
                             <CardContent className="p-6 flex-grow">
                                 <div className="flex items-start gap-4">
