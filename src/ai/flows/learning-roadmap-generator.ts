@@ -25,7 +25,7 @@ const RoadmapNodeSchema = z.object({
 export type RoadmapNode = z.infer<typeof RoadmapNodeSchema>;
 
 const GenerateLearningRoadmapOutputSchema = z.object({
-  roadmap: z.array(RoadmapNodeSchema).describe('An array of at least 250 learning levels that form a very long and extensive roadmap.'),
+  roadmap: z.array(RoadmapNodeSchema).describe('An array of at least 150 learning levels that form a very long and extensive roadmap.'),
 });
 export type GenerateLearningRoadmapOutput = z.infer<typeof GenerateLearningRoadmapOutputSchema>;
 
@@ -41,14 +41,14 @@ const prompt = ai.definePrompt({
   
 Your task is to generate a very long and detailed learning roadmap for a specific subject stream. The roadmap must be broken down into a large series of levels, starting from fundamental concepts and progressively advancing to expert-level topics. The goal is to create a long-term learning journey for the player.
 
-For the subject '{{{streamName}}}', create a comprehensive list of at least 250 learning levels. Base the content on the most popular and authoritative books, courses, and real-world skills for this field.
+For the subject '{{{streamName}}}', create a comprehensive list of at least 150 learning levels. Base the content on the most popular and authoritative books, courses, and real-world skills for this field.
 
-For each level, provide:
-1.  A concise, engaging title for the learning module.
-2.  A one-sentence description of the key topics covered.
-3.  The XP (Experience Points) a user would gain upon completion. Use values between 100 and 500, with XP increasing for more advanced levels.
+For each level, you MUST provide:
+1.  A concise, engaging 'title' for the learning module.
+2.  A one-sentence 'description' of the key topics covered.
+3.  An 'xp' value (Experience Points) a user would gain upon completion. Use values between 100 and 500, with XP increasing for more advanced levels.
 
-Crucially, ensure every single level object in the array contains the 'title', 'description', and 'xp' fields, without exception.
+**CRITICAL INSTRUCTION**: The final output MUST be a valid JSON object. Every single level object in the 'roadmap' array MUST be a complete object containing the 'title', 'description', and 'xp' fields. Do not leave any objects incomplete. Double-check your final output to ensure the JSON is not truncated and every entry is complete.
 
 Return the entire roadmap as a single JSON object.
 `,
