@@ -203,7 +203,7 @@ export default function ProfileClient() {
     
     const handleResetProfile = () => {
         Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('careerClash') || key.startsWith('userGuild') || key.startsWith('chat_')) {
+            if (key.startsWith('careerClash') || key.startsWith('userGuild') || key.startsWith('chat_') || key.startsWith('pinnedItems')) {
                 localStorage.removeItem(key);
             }
         });
@@ -224,19 +224,14 @@ export default function ProfileClient() {
             profileData = JSON.parse(storedProfile);
         } else {
             profileData = {
-                name: 'QuantumLeap', 
-                title: 'Senior AI Engineer', 
-                bio: 'Aspiring to bridge the gap between human creativity and artificial intelligence through gamified learning.',
-                avatarPrompt: 'cyberpunk woman portrait', 
+                name: 'QuantumLeap',
+                title: 'Aspiring Adventurer',
+                bio: 'Just starting my journey in Career Clash!',
+                avatarPrompt: 'cyberpunk woman portrait',
                 bannerPrompt: 'abstract purple and blue nebula',
                 links: { github: '', youtube: '', instagram: '', discord: '' },
-                stats: { wins: 128, losses: 34, streak: 5, longestStreak: 12, bossesDefeated: 3 },
-                battleHistory: [
-                    { id: 1, challenge: "React Basics Quiz", opponent: { name: "AI Bot", prompt: "robot face" }, result: "Win", xp: "+50 XP" },
-                    { id: 2, challenge: "CSS Fundamentals", opponent: { name: "CodeNinja", prompt: "hacker with glasses" }, result: "Loss", xp: "+10 XP" },
-                    { id: 3, challenge: "JS Algorithms", opponent: { name: "LogicLord", prompt: "philosopher thinking" }, result: "Win", xp: "+75 XP" },
-                    { id: 4, challenge: "Time Rush: Data Science", opponent: { name: "DataDynamo", prompt: "data scientist smiling" }, result: "Win", xp: "+120 XP" }
-                ],
+                stats: { wins: 0, losses: 0, streak: 0, longestStreak: 0, bossesDefeated: 0 },
+                battleHistory: [],
             };
             localStorage.setItem('careerClashUserProfile', JSON.stringify(profileData));
         }

@@ -44,12 +44,7 @@ export default function LeaderboardPage() {
             } : player
       );
       
-      updatedLeaderboard.sort((a, b) => {
-        if (b.prestige !== a.prestige) {
-          return b.prestige - a.prestige;
-        }
-        return calculateScore(b) - calculateScore(a);
-      });
+      updatedLeaderboard.sort((a, b) => calculateScore(b) - calculateScore(a));
       
       const rankedLeaderboard = updatedLeaderboard.map((player, index) => ({ ...player, rank: index + 1 }));
       

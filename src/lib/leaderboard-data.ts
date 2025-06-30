@@ -46,6 +46,9 @@ export const mockLeaderboardData: Omit<PlayerData, 'rank'>[] = [
 ].map((p, i) => ({...p, rank: i + 1 }));
 
 
-export const calculateScore = (player: { xp: number, wins: number, losses: number }) => {
-    return Math.pow(player.xp, 2) + Math.pow(player.wins, 2) - Math.pow(player.losses, 2);
+export const calculateScore = (player: { xp: number; prestige: number; wins: number; losses: number; }) => {
+    const prestigeBonus = player.prestige * 100000; // 1 prestige level = 100 regular levels * 1000xp/level
+    const winScore = player.wins * 100;
+    const lossPenalty = player.losses * 50;
+    return player.xp + prestigeBonus + winScore - lossPenalty;
 };
