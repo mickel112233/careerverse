@@ -12,4 +12,5 @@ if (!apiKey) {
 export const ai = genkit({
   plugins: [googleAI({apiKey: apiKey})],
   model: 'googleai/gemini-2.0-flash',
+  logger: [], // Disable default OpenTelemetry-based logger to prevent build issues
 });
