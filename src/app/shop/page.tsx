@@ -10,7 +10,7 @@ import { Gem, Star, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, User
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
-import { memberships, guildPerks, currencyPacks, GuildPerk } from '@/lib/shop-data';
+import { memberships, guildPerks, GuildPerk } from '@/lib/shop-data';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -211,9 +211,19 @@ export default function ShopPage() {
         localStorage.setItem('careerClashMembershipPurchaseDate', purchaseTime.toString());
         localStorage.setItem('careerClashMembershipCycle', cycle);
         
+        let toastDescription = `You are now subscribed to the ${plan.name} plan.`;
+        const rewards = [];
+        
         if (plan.coinGrant && plan.coinGrant > 0) {
             const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
             localStorage.setItem('careerClashCoins', (currentCoins + plan.coinGrant).toString());
+            rewards.push(`${plan.coinGrant.toLocaleString()} coins`);
+        }
+        
+        if (plan.gemGrant && plan.gemGrant > 0) {
+            const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
+            localStorage.setItem('careerClashGems', (currentGems + plan.gemGrant).toString());
+            rewards.push(`${plan.gemGrant.toLocaleString()} gems`);
         }
 
         const storedRoadmap = localStorage.getItem('careerClashRoadmap');
@@ -228,9 +238,13 @@ export default function ShopPage() {
 
         window.dispatchEvent(new Event('currencyChange'));
         
+        if (rewards.length > 0) {
+            toastDescription += ` ${rewards.join(' and ')} have been added to your wallet.`;
+        }
+
         toast({ 
             title: 'Subscription Activated!', 
-            description: `You are now subscribed to the ${plan.name} plan. ${plan.coinGrant > 0 ? `${plan.coinGrant.toLocaleString()} coins have been added to your wallet.` : ''}`,
+            description: toastDescription,
             className: "bg-green-500 text-white" 
         });
     });

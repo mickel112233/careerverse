@@ -6,6 +6,7 @@ export type MembershipPlan = {
     monthlyPrice: string;
     yearlyPrice: string;
     coinGrant: number;
+    gemGrant: number;
     icon: React.ElementType;
     color: string;
     features: string[];
@@ -41,6 +42,7 @@ export const memberships: MembershipPlan[] = [
         monthlyPrice: 'Free',
         yearlyPrice: 'Free',
         coinGrant: 0,
+        gemGrant: 0,
         icon: UserCircle,
         color: 'text-muted-foreground',
         features: [
@@ -55,6 +57,7 @@ export const memberships: MembershipPlan[] = [
         monthlyPrice: '₹200/mo',
         yearlyPrice: '₹2000/yr',
         coinGrant: 1000,
+        gemGrant: 100,
         icon: Star,
         color: 'text-cyan-400',
         features: [
@@ -64,6 +67,7 @@ export const memberships: MembershipPlan[] = [
             'Ad-Free Experience',
             '5% Shop Discount',
             'One-time bonus: 1,000 Coins',
+            'One-time bonus: 100 Gems',
         ],
         highlight: false,
     },
@@ -72,6 +76,7 @@ export const memberships: MembershipPlan[] = [
         monthlyPrice: '₹350/mo',
         yearlyPrice: '₹3500/yr',
         coinGrant: 2500,
+        gemGrant: 250,
         icon: Sparkles,
         color: 'text-fuchsia-400',
         features: [
@@ -79,6 +84,7 @@ export const memberships: MembershipPlan[] = [
             'Golden Username Effect',
             '10% Shop Discount',
             'One-time bonus: 2,500 Coins',
+            'One-time bonus: 250 Gems',
         ],
         highlight: true,
     },
@@ -87,6 +93,7 @@ export const memberships: MembershipPlan[] = [
         monthlyPrice: '₹550/mo',
         yearlyPrice: '₹5500/yr',
         coinGrant: 6000,
+        gemGrant: 600,
         icon: Crown,
         color: 'text-yellow-400',
         features: [
@@ -95,6 +102,7 @@ export const memberships: MembershipPlan[] = [
             'Beta Access to New Features',
             '15% Shop Discount',
             'One-time bonus: 6,000 Coins',
+            'One-time bonus: 600 Gems',
         ],
         highlight: false,
     },
@@ -103,6 +111,7 @@ export const memberships: MembershipPlan[] = [
         monthlyPrice: '₹800/mo',
         yearlyPrice: '₹8000/yr',
         coinGrant: 15000,
+        gemGrant: 1500,
         icon: Wand2,
         color: 'text-purple-400',
         features: [
@@ -111,6 +120,7 @@ export const memberships: MembershipPlan[] = [
             'Direct line to support',
             '20% Shop Discount',
             'One-time bonus: 15,000 Coins',
+            'One-time bonus: 1,500 Gems',
         ],
         highlight: false,
     },
