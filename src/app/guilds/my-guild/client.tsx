@@ -361,7 +361,66 @@ export default function MyGuildClient() {
                     </Card>
                 </TabsContent>
                 <TabsContent value="chat" className="mt-6"><ChatInterface guildId={guild.id} members={guild.members} /></TabsContent>
-                <TabsContent value="settings" className="mt-6"><Card><CardHeader><CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle><CardDescription>Manage your guild's public information or leave the guild.</CardDescription></CardHeader><CardContent className="space-y-6">{isOwner && <Button onClick={() => setIsEditDialogOpen(true)}><Pencil className="mr-2 h-4 w-4" /> Edit Guild Details</Button>}<Card className="border-destructive/50"><CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle><CardDescription>These actions are irreversible. Proceed with caution.</CardDescription></CardHeader><CardContent>{isOwner ? (<div><h3 className="font-semibold">Disband Guild</h3><p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Disband {guild.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone. This will permanently disband your guild and remove all your members.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>) : (<div><h3 className="font-semibold">Leave Guild</h3><p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Leave {guild.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle><AlertDialogDescription>You will be removed from the guild. You can rejoin later.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Stay in Guild</AlertDialogCancel><AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>)}</CardContent></Card></CardContent></TabsContent>
+                <TabsContent value="settings" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle>
+                            <CardDescription>Manage your guild's public information or leave the guild.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {isOwner && <Button onClick={() => setIsEditDialogOpen(true)}><Pencil className="mr-2 h-4 w-4" /> Edit Guild Details</Button>}
+                            <Card className="border-destructive/50">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle>
+                                    <CardDescription>These actions are irreversible. Proceed with caution.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    {isOwner ? (
+                                    <div>
+                                        <h3 className="font-semibold">Disband Guild</h3>
+                                        <p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button variant="destructive">Disband {guild.name}</Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>This action cannot be undone. This will permanently disband your guild and remove all your members.</AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </div>
+                                    ) : (
+                                    <div>
+                                        <h3 className="font-semibold">Leave Guild</h3>
+                                        <p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button variant="destructive">Leave {guild.name}</Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle>
+                                                    <AlertDialogDescription>You will be removed from the guild. You can rejoin later.</AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Stay in Guild</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
             </Tabs>
         </div>
     );
