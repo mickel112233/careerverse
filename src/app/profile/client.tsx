@@ -212,7 +212,7 @@ export default function ProfileClient() {
             description: "Your data has been wiped. The page will now reload."
         });
         setTimeout(() => {
-            window.location.reload();
+            window.location.href = '/';
         }, 1500);
     };
 
@@ -408,7 +408,7 @@ export default function ProfileClient() {
                 <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarPrompt} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
                 <div className="flex items-center justify-center gap-2 flex-wrap">
                     <h1 className="text-2xl font-bold font-headline">{userData.name}</h1>
-                    {membership !== 'Free' && (
+                    {membership !== 'Free' && membership !== 'Basic' && (
                         <Badge variant="outline" className="border-primary text-primary font-bold">{membership}</Badge>
                     )}
                     {prestigeLevel > 0 && (
@@ -424,7 +424,13 @@ export default function ProfileClient() {
                 {userData.bio && <p className="text-sm text-muted-foreground mt-4 text-center">{userData.bio}</p>}
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
                     {userData.guild && <motion.div whileHover={{ scale: 1.05 }}><Badge variant="secondary" className="text-accent"><Users className="h-3 w-3 mr-1" />{userData.guild.name} ({userData.guild.role})</Badge></motion.div>}
-                    {membership !== 'Free' && <motion.div whileHover={{ scale: 1.05 }}><Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500"><Star className="h-3 w-3 mr-1" />{membership} Member</Badge></motion.div>}
+                    {membership !== 'Free' && membership !== 'Basic' && (
+                        <motion.div whileHover={{ scale: 1.05 }}>
+                            <Badge className="bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500">
+                                <Star className="h-3 w-3 mr-1" />{membership} Member
+                            </Badge>
+                        </motion.div>
+                    )}
                 </div>
                 <Button className="mt-4 w-full" asChild><a href="https://www.linkedin.com/in/" target="_blank" rel="noopener noreferrer"><Linkedin className="mr-2 h-4 w-4" />Connect with LinkedIn</a></Button>
             </Card>

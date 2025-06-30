@@ -36,7 +36,8 @@ const NavLink = ({ href, label, icon: Icon, pathname }: { href: string; label: s
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  if (pathname === '/') {
+  const noLayoutPages = ['/', '/login', '/welcome'];
+  if (noLayoutPages.includes(pathname)) {
     return <>{children}</>;
   }
 

@@ -1,13 +1,23 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/icons/logo';
 import Link from 'next/link';
-import { MoveRight, Target } from 'lucide-react';
+import { MoveRight, Target, LogIn, User } from 'lucide-react';
 import SplashScreen from '@/components/splash-screen';
 import { motion } from 'framer-motion';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const GridBackground = () => (
   <div className="absolute inset-0 -z-10 h-full w-full bg-background">
@@ -36,7 +46,36 @@ const GridBackground = () => (
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(true);
+  const [isGuestDialogOpen, setIsGuestDialogOpen] = useState(false);
+  const router = useRouter();
 
+  useEffect(() => {
+    // Check if the user has any progress to determine if they are "new"
+    const userProfile = localStorage.getItem('careerClashUserProfile');
+    if (userProfile) {
+      setIsNewUser(false);
+    }
+  }, []);
+
+  const handleContinueAsGuest = () => {
+    const guestId = Math.floor(1000 + Math.random() * 9000);
+    const guestProfile = {
+      name: `Guest-${guestId}`,
+      title: 'Curious Explorer',
+      bio: 'Playing as a guest.',
+      avatarPrompt: 'mysterious shadow figure',
+      bannerPrompt: 'abstract grey geometric pattern',
+      links: {},
+      stats: { wins: 0, losses: 0, streak: 0, longestStreak: 0, bossesDefeated: 0 },
+      battleHistory: [],
+    };
+    localStorage.setItem('careerClashUserProfile', JSON.stringify(guestProfile));
+    
+    setIsGuestDialogOpen(false);
+    router.push('/welcome');
+  };
+  
   if (showSplash) {
     return <SplashScreen onFinished={() => setShowSplash(false)} />;
   }
@@ -66,6 +105,20 @@ export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white">
       <GridBackground />
+      <AlertDialog open={isGuestDialogOpen} onOpenChange={setIsGuestDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Continue as Guest?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your name will be displayed as a random guest (e.g., Guest-1234), and your progress will not be saved. For the full experience, please create an account.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleContinueAsGuest}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4 text-center">
         <motion.div
@@ -85,15 +138,29 @@ export default function Home() {
             <motion.p variants={itemVariants} className="mt-4 max-w-2xl text-lg text-slate-300 md:text-xl">
               Enter the Ultimate Career Arena. <br className="hidden sm:block" /> Where Learning Meets Gaming • Forge Your Future
             </motion.p>
-
-            <motion.div variants={itemVariants}>
-              <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
-                <Link href="/dashboard">
-                  BEGIN ADVENTURE
-                  <MoveRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </motion.div>
+            {isNewUser ? (
+                 <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mt-8">
+                    <Button asChild size="lg" className="font-bold text-lg px-8 py-6 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
+                        <Link href="/login">
+                            <LogIn className="mr-2 h-5 w-5" />
+                            Sign In / Sign Up
+                        </Link>
+                    </Button>
+                    <Button size="lg" variant="secondary" className="font-bold text-lg px-8 py-6 rounded-full" onClick={() => setIsGuestDialogOpen(true)}>
+                        <User className="mr-2 h-5 w-5" />
+                        Continue as Guest
+                    </Button>
+                </motion.div>
+            ) : (
+                <motion.div variants={itemVariants}>
+                <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
+                    <Link href="/dashboard">
+                    BEGIN ADVENTURE
+                    <MoveRight className="ml-2 h-5 w-5" />
+                    </Link>
+                </Button>
+                </motion.div>
+            )}
 
             <motion.div variants={itemVariants} className="mt-8 flex items-center gap-2 rounded-full border border-border bg-card/50 p-2 px-4 text-sm text-slate-300 backdrop-blur-sm">
               <Target className="h-5 w-5 text-lime-400 animate-pulse" />
