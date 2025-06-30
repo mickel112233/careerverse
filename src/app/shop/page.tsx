@@ -10,7 +10,7 @@ import { Gem, Star, Crown, Sparkles, Wand2, Check, ArrowLeft, Coins, Clock, User
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
-import { memberships, guildPerks, GuildPerk } from '@/lib/shop-data';
+import { memberships, guildPerks, GuildPerk, currencyPacks } from '@/lib/shop-data';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Badge } from '@/components/ui/badge';
 import {
