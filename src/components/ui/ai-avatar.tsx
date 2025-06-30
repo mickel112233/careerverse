@@ -12,7 +12,7 @@ interface AiAvatarProps {
 const slugify = (str: string) => str.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
 
 export function AiAvatar({ prompt, alt, fallback, className }: AiAvatarProps) {
-    const imageUrl = `/image/${slugify(prompt)}.png`;
+    const imageUrl = prompt ? `/image/${slugify(prompt)}.png` : undefined;
 
     return (
         <Avatar className={cn(className)}>

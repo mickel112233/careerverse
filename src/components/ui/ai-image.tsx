@@ -13,9 +13,9 @@ const slugify = (str: string) => str.toLowerCase().replace(/[^a-z0-9\s-]/g, "").
 export function AiImage({ prompt, alt, width, height, className, ...props }: AiImageProps) {
     const w = Number(width) || (props.layout === 'fill' ? 600 : 400);
     const h = Number(height) || (props.layout === 'fill' ? 400 : 200);
-
-    const imageUrl = `/image/${slugify(prompt)}.png`;
     const fallbackUrl = `https://placehold.co/${w}x${h}.png`;
+
+    const imageUrl = prompt ? `/image/${slugify(prompt)}.png` : fallbackUrl;
 
     return (
         <Image
