@@ -137,17 +137,27 @@ const editGuildSchema = z.object({
 
 const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Guild, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: Guild) => void }) => {
     const { toast } = useToast();
-    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage?.toString() ?? null);
-    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage?.toString() ?? null);
-
+    
     const form = useForm<z.infer<typeof editGuildSchema>>({
         resolver: zodResolver(editGuildSchema),
-        defaultValues: {
-            name: guild.name ?? '',
-            description: guild.description ?? '',
-            requirements: guild.requirements ?? '',
-        }
+        defaultValues: { name: '', description: '', requirements: '' }
     });
+
+    const [crestImage, setCrestImage] = useState<string | null>(null);
+    const [bannerImage, setBannerImage] = useState<string | null>(null);
+
+    // Effect to sync form and image states when the dialog opens or guild data changes
+    useEffect(() => {
+        if (isOpen) {
+            form.reset({
+                name: guild.name ?? '',
+                description: guild.description ?? '',
+                requirements: guild.requirements ?? '',
+            });
+            setCrestImage(guild.crestImage?.toString() ?? null);
+            setBannerImage(guild.bannerImage?.toString() ?? null);
+        }
+    }, [isOpen, guild, form]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
         const file = e.target.files?.[0];
@@ -175,9 +185,9 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
             ...guild,
             ...values,
             slug: values.name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
-            crestImage: crestImage || guild.crestImage,
-            bannerImage: bannerImage || guild.bannerImage,
-            image: crestImage || guild.image, // Update main image too
+            crestImage: crestImage,
+            bannerImage: bannerImage,
+            image: crestImage, // Keep the main image in sync with the crest
         };
         onUpdate(updatedGuild);
         toast({ title: 'Guild Updated!', description: 'Your guild details have been saved.' });
@@ -383,7 +393,7 @@ export default function MyGuildClient() {
                                     <CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle>
                                     <CardDescription>These actions are irreversible. Proceed with caution.</CardDescription>
                                 </CardHeader>
-                                <CardContent>
+                                <CardContent className="space-y-4">
                                     {isOwner ? (
                                     <div>
                                         <h3 className="font-semibold">Disband Guild</h3>
