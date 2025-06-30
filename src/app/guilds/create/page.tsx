@@ -91,9 +91,13 @@ export default function CreateGuildPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const guildId = `GUILD-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
     const slug = values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
+    
+    const { guildName, ...restValues } = values;
+
     const newGuild = {
-        ...values,
+        ...restValues,
         id: guildId,
+        name: guildName,
         slug: slug,
         capacity: memberCapacity,
         bannerPrompt: `abstract futuristic guild banner, ${values.guildName}`,

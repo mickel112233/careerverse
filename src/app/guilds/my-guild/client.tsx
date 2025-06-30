@@ -28,31 +28,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { usePlayerProfile } from '@/contexts/PlayerProfileProvider';
+import type { Guild, GuildMember } from '@/lib/guild-data';
 
-
-type GuildMember = {
-    name: string;
-    role: string;
-    xp: number;
-    coins?: number;
-    gems?: number;
-    prompt: string;
-};
-
-type GuildData = {
-    id: string;
-    guildName: string;
-    description: string;
-    requirements: string;
-    type: 'public' | 'private';
-    password?: string;
-    capacity: number;
-    bannerPrompt: string;
-    crestPrompt: string;
-    slug: string;
-    owner: string;
-    members: GuildMember[];
-};
 
 type ChatMessage = {
     id: number;
@@ -153,19 +130,19 @@ const ChatInterface = ({ guildId, members }: { guildId: string, members: GuildMe
 };
 
 const editGuildSchema = z.object({
-  guildName: z.string().min(3, "Must be at least 3 characters.").max(30),
+  name: z.string().min(3, "Must be at least 3 characters.").max(30),
   description: z.string().min(10, "Must be at least 10 characters.").max(200),
   requirements: z.string().max(200).optional(),
   crestPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
   bannerPrompt: z.string().min(5, "Must be at least 5 characters.").max(100),
 });
 
-const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: GuildData, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: GuildData) => void }) => {
+const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Guild, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: Guild) => void }) => {
     const { toast } = useToast();
     const form = useForm<z.infer<typeof editGuildSchema>>({
         resolver: zodResolver(editGuildSchema),
         defaultValues: {
-            guildName: guild.guildName,
+            name: guild.name,
             description: guild.description,
             requirements: guild.requirements,
             crestPrompt: guild.crestPrompt,
@@ -177,7 +154,7 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
         const updatedGuild = {
             ...guild,
             ...values,
-            slug: values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+            slug: values.name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
         };
         onUpdate(updatedGuild);
         toast({ title: 'Guild Updated!', description: 'Your guild details have been saved.' });
@@ -189,7 +166,7 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
             <DialogContent>
                 <DialogHeader><DialogTitle>Edit Guild</DialogTitle><DialogDescription>Modify your guild's public details and appearance.</DialogDescription></DialogHeader>
                 <Form {...form}><form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
-                    <FormField control={form.control} name="guildName" render={({ field }) => (<FormItem><FormLabel>Guild Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="name" render={({ field }) => (<FormItem><FormLabel>Guild Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="requirements" render={({ field }) => (<FormItem><FormLabel>Requirements</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="crestPrompt" render={({ field }) => (<FormItem><FormLabel>Crest AI Prompt</FormLabel><FormControl><Input {...field} /></FormControl><FormDescription>This will regenerate your crest image.</FormDescription><FormMessage /></FormItem>)} />
@@ -204,7 +181,7 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
 export default function MyGuildClient() {
     const router = useRouter();
     const { showPlayerProfile } = usePlayerProfile();
-    const [guild, setGuild] = useState<GuildData | null>(null);
+    const [guild, setGuild] = useState<Guild | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isPremium, setIsPremium] = useState(false);
     const [managingMember, setManagingMember] = useState<GuildMember | null>(null);
@@ -218,7 +195,7 @@ export default function MyGuildClient() {
         if (membership && membership !== 'Free') setIsPremium(true);
     }, []);
     
-    const updateGuildInStorage = (updatedGuild: GuildData) => {
+    const updateGuildInStorage = (updatedGuild: Guild) => {
         localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
         window.dispatchEvent(new Event('guildChange'));
     }
@@ -226,7 +203,7 @@ export default function MyGuildClient() {
     const fetchGuild = () => {
         const storedGuildString = localStorage.getItem('userGuild');
         if (storedGuildString) {
-            const guildData: GuildData = JSON.parse(storedGuildString);
+            const guildData: Guild = JSON.parse(storedGuildString);
             
             const userIndex = guildData.members.findIndex(m => m.name === 'QuantumLeap');
             if (userIndex !== -1) {
@@ -250,7 +227,7 @@ export default function MyGuildClient() {
 
     const handleRoleChange = () => {
         if (!guild || !managingMember || !selectedRole) return;
-        const updatedMembers = guild.members.map(member => member.name === managingMember.name ? { ...member, role: selectedRole } : member);
+        const updatedMembers = guild.members.map(member => member.name === managingMember.name ? { ...member, role: selectedRole as GuildMember['role'] } : member);
         const updatedGuild = { ...guild, members: updatedMembers };
         setGuild(updatedGuild);
         updateGuildInStorage(updatedGuild);
@@ -310,7 +287,7 @@ export default function MyGuildClient() {
             
             {isOwner && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={updateGuildInStorage} />}
 
-            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerPrompt} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestPrompt} width={128} height={128} alt={guild.guildName} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.guildName}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
+            <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><AiImage prompt={guild.bannerPrompt} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><AiImage prompt={guild.crestPrompt} width={128} height={128} alt={guild.name} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
             {isOwner && <Button variant="outline" size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/80" onClick={() => setIsEditDialogOpen(true)}><Pencil className="h-4 w-4" /></Button>}
             </div></Card>
 
@@ -351,7 +328,7 @@ export default function MyGuildClient() {
                     </Card>
                 </TabsContent>
                 <TabsContent value="chat" className="mt-6"><ChatInterface guildId={guild.id} members={guild.members} /></TabsContent>
-                <TabsContent value="settings" className="mt-6"><Card><CardHeader><CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle><CardDescription>Manage your guild's public information or leave the guild.</CardDescription></CardHeader><CardContent className="space-y-6">{isOwner && <Button onClick={() => setIsEditDialogOpen(true)}><Pencil className="mr-2 h-4 w-4" /> Edit Guild Details</Button>}<Card className="border-destructive/50"><CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle><CardDescription>These actions are irreversible. Proceed with caution.</CardDescription></CardHeader><CardContent>{isOwner ? (<div><h3 className="font-semibold">Disband Guild</h3><p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Disband {guild.guildName}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone. This will permanently disband your guild and remove all your members.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>) : (<div><h3 className="font-semibold">Leave Guild</h3><p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Leave {guild.guildName}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle><AlertDialogDescription>You will be removed from the guild. You can rejoin later.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Stay in Guild</AlertDialogCancel><AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>)}</CardContent></Card></CardContent></Card></TabsContent>
+                <TabsContent value="settings" className="mt-6"><Card><CardHeader><CardTitle className="flex items-center gap-2"><Settings /> Guild Settings</CardTitle><CardDescription>Manage your guild's public information or leave the guild.</CardDescription></CardHeader><CardContent className="space-y-6">{isOwner && <Button onClick={() => setIsEditDialogOpen(true)}><Pencil className="mr-2 h-4 w-4" /> Edit Guild Details</Button>}<Card className="border-destructive/50"><CardHeader><CardTitle className="flex items-center gap-2 text-destructive"><Trash2 /> Danger Zone</CardTitle><CardDescription>These actions are irreversible. Proceed with caution.</CardDescription></CardHeader><CardContent>{isOwner ? (<div><h3 className="font-semibold">Disband Guild</h3><p className="text-sm text-muted-foreground mb-4">Disbanding the guild will permanently delete all associated data and remove all members. This cannot be undone.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Disband {guild.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone. This will permanently disband your guild and remove all your members.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleDisbandGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Disband Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>) : (<div><h3 className="font-semibold">Leave Guild</h3><p className="text-sm text-muted-foreground mb-4">Leaving the guild will remove your access to its chat and events. You can rejoin later if it's public or you have an invite.</p><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive">Leave {guild.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure you want to leave?</AlertDialogTitle><AlertDialogDescription>You will be removed from the guild. You can rejoin later.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Stay in Guild</AlertDialogCancel><AlertDialogAction onClick={handleLeaveGuild} className={cn(buttonVariants({ variant: "destructive" }))}>Leave Guild</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div>)}</CardContent></Card></CardContent></Card></TabsContent>
             </Tabs>
         </div>
     );
