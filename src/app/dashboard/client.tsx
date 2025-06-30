@@ -71,20 +71,24 @@ const NodeStatusIcon = ({ status }: { status: string }) => {
 }
 
 const RoadmapSkeleton = () => (
-    <div className="relative pt-8">
-        <div className="absolute left-6 md:left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
-        <div className="space-y-16">
-            {[...Array(3)].map((_, index) => (
-                <div key={index} className="relative flex items-center md:justify-center">
-                    <div className="w-12 h-12 flex-shrink-0" />
-                    <div className="flex-grow pl-8 md:pl-0 md:w-[calc(50%-3rem)] md:flex">
+    <div className="space-y-8">
+        <div className="flex justify-between items-center">
+            <div className="space-y-2">
+                 <Skeleton className="h-10 w-64" />
+                <Skeleton className="h-6 w-96" />
+            </div>
+             <Skeleton className="h-10 w-36" />
+        </div>
+        <div className="relative pl-6 max-w-2xl mx-auto">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-border/50" />
+            <div className="space-y-12">
+                {[...Array(3)].map((_, index) => (
+                    <div key={index} className="relative pl-16">
+                        <div className="absolute top-0 -left-6 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background"><Skeleton className="h-10 w-10 rounded-full" /></div>
                         <Skeleton className="h-36 w-full max-w-sm" />
                     </div>
-                    <div className="absolute top-0 left-0 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background md:left-1/2 md:-translate-x-1/2">
-                         <Skeleton className="h-10 w-10 rounded-full" />
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     </div>
 );
@@ -184,39 +188,48 @@ export default function DashboardClient() {
 
   return (
     <>
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 z-20">
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon">
-              <BookOpenCheck className="h-4 w-4" />
-              <span className="sr-only">Choose Subject</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Choose Your Subject</DialogTitle>
-              <DialogDescription>
-                Select a learning path to begin your journey.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-4">
-              {streams.map((stream) => {
-                const Icon = stream.icon;
-                return (
-                    <Button
-                      key={stream.name}
-                      variant="outline"
-                      className="h-24 flex flex-col items-center justify-center gap-2 text-center p-2"
-                      onClick={() => openConfirmation(stream.name)}
-                    >
-                      <Icon className="h-8 w-8 text-primary" />
-                      <span className="text-xs font-semibold">{stream.name}</span>
-                    </Button>
-                );
-              })}
-            </div>
-          </DialogContent>
-        </Dialog>
+      <div className="flex flex-wrap gap-4 justify-between items-start mb-8">
+        <div className="max-w-2xl">
+          <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Your Learning Roadmap</h1>
+          <p className="mt-2 text-muted-foreground">
+            {selectedStream ? `Your path to mastering ${selectedStream}.` : 'Choose a subject to begin. Complete challenges to unlock new skills and climb the ranks.'}
+          </p>
+        </div>
+        <div>
+           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+                <Button variant="outline">
+                <BookOpenCheck className="mr-2 h-4 w-4" />
+                {selectedStream ? 'Change Subject' : 'Choose Subject'}
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                <DialogTitle>Choose Your Subject</DialogTitle>
+                <DialogDescription>
+                    Select a learning path to begin your journey.
+                </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-4">
+                {streams.map((stream) => {
+                    const Icon = stream.icon;
+                    return (
+                        <Button
+                        key={stream.name}
+                        variant="outline"
+                        className="h-24 flex flex-col items-center justify-center gap-2 text-center p-2"
+                        onClick={() => openConfirmation(stream.name)}
+                        >
+                        <Icon className="h-8 w-8 text-primary" />
+                        <span className="text-xs font-semibold">{stream.name}</span>
+                        </Button>
+                    );
+                })}
+                </div>
+            </DialogContent>
+            </Dialog>
+        </div>
+      </div>
         
         <AlertDialog open={!!streamToConfirm} onOpenChange={(open) => !open && cancelConfirmation()}>
             <AlertDialogContent>
@@ -234,7 +247,6 @@ export default function DashboardClient() {
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-      </div>
 
       {!selectedStream ? (
         <div className="text-center py-20">
@@ -245,23 +257,35 @@ export default function DashboardClient() {
       ) : isLoadingRoadmap ? (
           <RoadmapSkeleton />
       ) : (
-        <div className="relative">
-          <div className="absolute left-6 md:left-1/2 top-12 bottom-12 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
+        <div className="relative w-full max-w-2xl mx-auto">
+          <div className="absolute left-5 top-5 bottom-5 w-1 -translate-x-1/2 bg-border/50 rounded-full" />
 
-          <div className="space-y-16">
+          <div className="space-y-12">
             {roadmapNodes.map((node, index) => (
-              <div key={index} className="relative flex items-center md:justify-center">
-                 {/* This empty div is for spacing on desktop */}
-                 <div className={`hidden md:block w-[calc(50%-3rem)] ${index % 2 === 0 ? 'order-2' : ''}`} />
+              <div key={index} className="relative pl-16">
+                <motion.div 
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true, amount: 0.8 }}
+                    transition={{ duration: 0.3, delay: 0.1, type: 'spring' }}
+                    className="absolute top-0 -left-[2px] z-10 flex h-12 w-12 items-center justify-center"
+                >
+                    <div className="h-full w-full rounded-full bg-background flex items-center justify-center">
+                        <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
+                            node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
+                            node.status === 'unlocked' && 'ring-primary animate-pulse-slow'
+                        )}>
+                            <NodeStatusIcon status={node.status} />
+                        </div>
+                    </div>
+                </motion.div>
                 
-                 {/* The card itself */}
-                 <div className={`w-full pl-14 md:pl-0 md:w-[calc(50%-3rem)] ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                  <motion.div
-                     initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
+                 <motion.div
+                     initial={{ opacity: 0, x: 20 }}
                      whileInView={{ opacity: 1, x: 0 }}
-                     viewport={{ once: true }}
+                     viewport={{ once: true, amount: 0.5 }}
                      transition={{ duration: 0.5, delay: 0.1 }}
-                     className="inline-block w-full max-w-sm text-left"
+                     className="w-full"
                   >
                     <Card className={cn('w-full transition-all', 
                         node.status === 'unlocked' ? 'border-primary shadow-lg shadow-primary/20' : 'border-transparent', 
@@ -289,23 +313,6 @@ export default function DashboardClient() {
                         )}
                     </Card>
                   </motion.div>
-                </div>
-
-                {/* The center status icon */}
-                <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.2, type: 'spring' }}
-                    className="absolute top-0 left-0 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background ring-4 ring-background md:left-1/2 md:-translate-x-1/2"
-                >
-                  <div className={cn('flex h-10 w-10 items-center justify-center rounded-full', 
-                      node.status === 'completed' ? 'bg-green-400/20 ring-2 ring-green-400' : 'bg-muted ring-2 ring-border',
-                      node.status === 'unlocked' && 'ring-primary animate-pulse-slow'
-                    )}>
-                     <NodeStatusIcon status={node.status} />
-                  </div>
-                </motion.div>
               </div>
             ))}
           </div>
