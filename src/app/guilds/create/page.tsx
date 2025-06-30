@@ -20,7 +20,7 @@ import Image from 'next/image';
 
 
 const formSchema = z.object({
-  guildName: z.string().min(3, "Guild name must be at least 3 characters.").max(30, "Guild name cannot exceed 30 characters."),
+  name: z.string().min(3, "Guild name must be at least 3 characters.").max(30, "Guild name cannot exceed 30 characters."),
   description: z.string().min(10, "Description must be at least 10 characters.").max(200, "Description cannot exceed 200 characters."),
   requirements: z.string().max(200, "Requirements cannot exceed 200 characters.").optional(),
   type: z.enum(["public", "private"], { required_error: "You must select a guild type." }),
@@ -68,7 +68,7 @@ export default function CreateGuildPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      guildName: "",
+      name: "",
       description: "",
       requirements: "",
       type: "public",
@@ -95,8 +95,8 @@ export default function CreateGuildPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
       const file = e.target.files?.[0];
       if (file) {
-          if (file.size > 2 * 1024 * 1024) { // 2MB limit
-              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 2MB.'});
+          if (file.size > 100 * 1024) { // 100KB limit
+              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 100KB to save it.'});
               return;
           }
           const reader = new FileReader();
@@ -115,12 +115,11 @@ export default function CreateGuildPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const guildId = `GUILD-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    const slug = values.guildName.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
+    const slug = values.name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
 
     const newGuild = {
         ...values,
         id: guildId,
-        name: values.guildName,
         slug: slug,
         capacity: memberCapacity,
         crestImage: crestImage || `https://placehold.co/256x256.png`,
@@ -141,7 +140,7 @@ export default function CreateGuildPage() {
 
     toast({
       title: "Guild Founded!",
-      description: `Your guild "${values.guildName}" has been successfully established.`,
+      description: `Your guild "${values.name}" has been successfully established.`,
       className: "bg-green-500 text-white border-green-600",
     });
     
@@ -211,7 +210,7 @@ export default function CreateGuildPage() {
                 <CardContent className="space-y-6">
                     <FormField
                         control={form.control}
-                        name="guildName"
+                        name="name"
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Guild Name</FormLabel>
@@ -257,7 +256,7 @@ export default function CreateGuildPage() {
                             <FormControl>
                                 <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'crest')} />
                             </FormControl>
-                             <FormDescription>Square image (e.g., 256x256). Max 2MB.</FormDescription>
+                             <FormDescription>Square image (e.g., 256x256). Max 100KB.</FormDescription>
                              {crestImage && <Image src={crestImage} alt="Crest preview" width={128} height={128} className="rounded-lg mt-2 border" />}
                         </FormItem>
                         <FormItem>
@@ -265,7 +264,7 @@ export default function CreateGuildPage() {
                             <FormControl>
                                  <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'banner')} />
                             </FormControl>
-                            <FormDescription>Wide image (e.g., 1200x300). Max 2MB.</FormDescription>
+                            <FormDescription>Wide image (e.g., 1200x300). Max 100KB.</FormDescription>
                              {bannerImage && <Image src={bannerImage} alt="Banner preview" width={250} height={62.5} className="rounded-lg mt-2 border aspect-[4/1] object-cover" />}
                         </FormItem>
                     </div>

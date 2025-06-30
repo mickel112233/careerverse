@@ -137,8 +137,8 @@ const editGuildSchema = z.object({
 
 const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Guild, isOpen: boolean, onOpenChange: (open: boolean) => void, onUpdate: (newGuild: Guild) => void }) => {
     const { toast } = useToast();
-    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage ? guild.crestImage.toString() : null);
-    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage ? guild.bannerImage.toString() : null);
+    const [crestImage, setCrestImage] = useState<string | null>(guild.crestImage?.toString() ?? null);
+    const [bannerImage, setBannerImage] = useState<string | null>(guild.bannerImage?.toString() ?? null);
 
     const form = useForm<z.infer<typeof editGuildSchema>>({
         resolver: zodResolver(editGuildSchema),
@@ -152,8 +152,8 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
         const file = e.target.files?.[0];
         if (file) {
-             if (file.size > 2 * 1024 * 1024) { // 2MB limit
-              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 2MB.'});
+             if (file.size > 100 * 1024) { // 100KB limit
+              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 100KB to save it.'});
               return;
             }
             const reader = new FileReader();
@@ -177,7 +177,7 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
             slug: values.name.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
             crestImage: crestImage || guild.crestImage,
             bannerImage: bannerImage || guild.bannerImage,
-            image: crestImage || guild.crestImage, // Update main image too
+            image: crestImage || guild.image, // Update main image too
         };
         onUpdate(updatedGuild);
         toast({ title: 'Guild Updated!', description: 'Your guild details have been saved.' });
@@ -191,7 +191,7 @@ const EditGuildDialog = ({ guild, isOpen, onOpenChange, onUpdate }: { guild: Gui
                 <Form {...form}><form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1 pr-4">
                     <FormField control={form.control} name="name" render={({ field }) => (<FormItem><FormLabel>Guild Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="description" render={({ field }) => (<FormItem><FormLabel>Description</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="requirements" render={({ field }) => (<FormItem><FormLabel>Requirements</FormLabel><FormControl><Textarea {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="requirements" render={({ field }) => (<FormItem><FormLabel>Requirements</FormLabel><FormControl><Textarea {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem>)} />
                     
                     <div className="space-y-2">
                         <Label>Guild Crest</Label>
@@ -229,8 +229,17 @@ export default function MyGuildClient() {
     }, []);
     
     const updateGuildInStorage = (updatedGuild: Guild) => {
-        localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
-        window.dispatchEvent(new Event('guildChange'));
+        try {
+            localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+            window.dispatchEvent(new Event('guildChange'));
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: 'Error Saving Guild',
+                description: 'Could not save guild details. Your browser storage might be full.'
+            });
+            console.error("Failed to save guild to localStorage:", error);
+        }
     }
 
     const fetchGuild = () => {
