@@ -91,16 +91,20 @@ export default function ShopPage() {
   const checkActiveSubscription = () => {
     const subName = localStorage.getItem('careerClashMembership') || 'Basic';
     const subDate = localStorage.getItem('careerClashMembershipPurchaseDate');
+    const subCycle = localStorage.getItem('careerClashMembershipCycle') || 'monthly';
     
     if (subName && subName !== 'Free' && subName !== 'Basic' && subDate) {
         const purchaseTime = parseInt(subDate, 10);
-        const expires = purchaseTime + 30 * 24 * 60 * 60 * 1000;
+        const duration = subCycle === 'yearly' ? 365 * 24 * 60 * 60 * 1000 : 30 * 24 * 60 * 60 * 1000;
+        const expires = purchaseTime + duration;
+
         if (Date.now() < expires) {
             setActiveSub({ name: subName, expires });
         } else {
             // Subscription expired, clear it
             localStorage.setItem('careerClashMembership', 'Basic');
             localStorage.removeItem('careerClashMembershipPurchaseDate');
+            localStorage.removeItem('careerClashMembershipCycle');
             setActiveSub(null);
             window.dispatchEvent(new Event('currencyChange'));
         }
@@ -160,7 +164,7 @@ export default function ShopPage() {
     toast({ title: 'Purchase Successful!', description: `Added ${amount.toLocaleString()} ${currency} to your wallet.`, className: "bg-green-500 text-white" });
   }
 
-  const handleMembershipPurchase = (planName: string) => {
+  const handleMembershipPurchase = (planName: string, cycle: 'monthly' | 'yearly') => {
     if (planName === 'Basic') return;
     
     const plan = memberships.find(p => p.name === planName);
@@ -169,6 +173,7 @@ export default function ShopPage() {
     const purchaseTime = Date.now();
     localStorage.setItem('careerClashMembership', plan.name);
     localStorage.setItem('careerClashMembershipPurchaseDate', purchaseTime.toString());
+    localStorage.setItem('careerClashMembershipCycle', cycle);
     
     if (plan.coinGrant && plan.coinGrant > 0) {
         const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
@@ -251,7 +256,7 @@ export default function ShopPage() {
                                 ))}
                             </CardContent>
                             <CardFooter className="flex-col items-stretch">
-                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name)} disabled={isCurrentPlan}>
+                                <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'} onClick={() => handleMembershipPurchase(plan.name, billingCycle as 'monthly' | 'yearly')} disabled={isCurrentPlan}>
                                     {isCurrentPlan ? "Current Plan" : "Subscribe"}
                                 </Button>
                                 {isCurrentPlan && activeSub && activeSub.expires > 0 && (
