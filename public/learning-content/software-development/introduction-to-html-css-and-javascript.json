@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Introduction to Web Development</h3><p>Welcome to the first step in your software development journey! This lesson covers the three fundamental technologies that form the backbone of virtually every website and web application: HTML, CSS, and JavaScript.</p><h4>HTML: The Structure</h4><p>HTML stands for HyperText Markup Language. It's the standard language used to create the structure and content of web pages. Think of it as the skeleton of a house. It defines all the elements like headings, paragraphs, links, images, and more.</p><ul><li><strong>Elements:</strong> Building blocks of HTML, represented by tags (e.g., <code>&lt;p&gt;</code> for a paragraph).</li><li><strong>Tags:</strong> Usually come in pairs, like <code>&lt;h1&gt;</code> and <code>&lt;/h1&gt;</code>, to open and close an element.</li><li><strong>Attributes:</strong> Provide additional information about an element, like <code>src</code> in an <code>&lt;img&gt;</code> tag to specify the image source.</li></ul><h4>CSS: The Style</h4><p>CSS, or Cascading Style Sheets, is the language used to describe the presentation and styling of a document written in HTML. If HTML is the skeleton, CSS is the paint, furniture, and decor. It controls colors, fonts, spacing, layout, and even animations.</p><ul><li><strong>Selectors:</strong> Patterns used to select the HTML elements you want to style (e.g., <code>h1</code>, <code>.my-class</code>, <code>#unique-id</code>).</li><li><strong>Properties:</strong> The specific style you want to apply, like <code>color</code>, <code>font-size</code>, or <code>margin</code>.</li><li><strong>Values:</strong> The setting for a property, such as <code>blue</code> for the <code>color</code> property.</li></ul><h4>JavaScript: The Interactivity</h4><p>JavaScript (JS) is a programming language that enables you to create dynamically updating content, control multimedia, animate images, and much more. It's the 'engine' of the house that makes things happen. When you click a button, see a popup, or watch a page update without reloading, that's JavaScript at work.</p><ul><li><strong>Variables:</strong> Containers for storing data values.</li><li><strong>Functions:</strong> Blocks of code designed to perform a particular task.</li><li><strong>Events:</strong> Actions that can be detected by JavaScript, like a mouse click or a key press, which can then trigger a function.</li></ul><h3>Summary</h3><p>Together, HTML, CSS, and JavaScript are the core trio of front-end web development. HTML provides the content and structure, CSS handles the visual presentation, and JavaScript adds the layer of interactivity that makes modern web applications so powerful and engaging.</p>",
+  "quiz": {
+    "title": "HTML, CSS, & JavaScript Basics",
+    "questions": [
+      {
+        "question": "What is the primary role of HTML in web development?",
+        "options": [
+          "To define the structure and content of a web page.",
+          "To style the visual presentation of a web page.",
+          "To add interactivity and dynamic behavior.",
+          "To manage the server-side logic."
+        ],
+        "correctAnswer": "To define the structure and content of a web page.",
+        "explanation": "HTML (HyperText Markup Language) is used to create the skeleton or structure of a web page by defining elements like headings, paragraphs, and images."
+      },
+      {
+        "question": "Which technology is used to control the layout, colors, and fonts of a website?",
+        "options": [
+          "HTML",
+          "JavaScript",
+          "CSS",
+          "Python"
+        ],
+        "correctAnswer": "CSS",
+        "explanation": "CSS (Cascading Style Sheets) is specifically designed to control the visual presentation and styling of HTML documents."
+      },
+      {
+        "question": "What does CSS stand for?",
+        "options": [
+          "Creative Style Sheets",
+          "Cascading Style Sheets",
+          "Computer Style Syntax",
+          "Colorful Style System"
+        ],
+        "correctAnswer": "Cascading Style Sheets",
+        "explanation": "CSS stands for Cascading Style Sheets, which describes how the style rules are applied (cascade) to the document."
+      },
+      {
+        "question": "Which of the following would you use to make a button do something when a user clicks it?",
+        "options": [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "A server"
+        ],
+        "correctAnswer": "JavaScript",
+        "explanation": "JavaScript is the programming language of the web that handles events like user clicks and adds interactivity to the page."
+      },
+      {
+        "question": "In HTML, which tag is used to create a hyperlink?",
+        "options": [
+          "&lt;link&gt;",
+          "&lt;a&gt;",
+          "&lt;href&gt;",
+          "&lt;p&gt;"
+        ],
+        "correctAnswer": "&lt;a&gt;",
+        "explanation": "The &lt;a&gt; (anchor) tag is used to create hyperlinks. The 'href' attribute within the tag specifies the link's destination."
+      },
+      {
+        "question": "In CSS, what is a 'selector'?",
+        "options": [
+          "A color value like 'blue' or '#FF0000'.",
+          "A pattern used to select which HTML elements to style.",
+          "A property like 'font-size' or 'margin'.",
+          "A file that contains all the styles."
+        ],
+        "correctAnswer": "A pattern used to select which HTML elements to style.",
+        "explanation": "Selectors (like 'p', '.button', or '#header') are used to target specific HTML elements so you can apply styles to them."
+      },
+      {
+        "question": "Which of these is NOT a fundamental technology of the web?",
+        "options": [
+          "HTML",
+          "CSS",
+          "Java",
+          "JavaScript"
+        ],
+        "correctAnswer": "Java",
+        "explanation": "While Java is a powerful programming language, it is not a core, fundamental technology of the web in the same way as HTML, CSS, and JavaScript. Java and JavaScript are completely different languages."
+      },
+      {
+        "question": "What is the purpose of a JavaScript 'function'?",
+        "options": [
+          "To store a single piece of data.",
+          "To define the layout of the page.",
+          "To perform a specific, reusable task or block of code.",
+          "To select an HTML element for styling."
+        ],
+        "correctAnswer": "To perform a specific, reusable task or block of code.",
+        "explanation": "Functions are reusable blocks of code that can be called upon to perform a specific action, making code more organized and efficient."
+      }
+    ]
+  }
+}

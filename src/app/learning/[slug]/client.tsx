@@ -12,7 +12,7 @@ import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
-import { generateLearningContent, GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
+import type { GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
 import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -76,8 +76,25 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         const fetchContent = async () => {
             setState('loading');
             try {
-                const streamName = localStorage.getItem('careerClashStream') || 'general knowledge';
-                const data = await generateLearningContent({ topicTitle: topic, streamName });
+                const streamName = localStorage.getItem('careerClashStream') || 'Software Development';
+                const streamSlug = streamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
+                
+                const response = await fetch(`/learning-content/${streamSlug}/${slug}.json`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        toast({
+                            variant: "destructive",
+                            title: "Content Not Generated",
+                            description: "The learning content for this level has not been generated yet. Please ask the AI to create it.",
+                        });
+                        router.push('/dashboard');
+                        return;
+                    }
+                    throw new Error(`Failed to load content. Status: ${response.status}`);
+                }
+
+                const data: GenerateLearningContentOutput = await response.json();
                 setLearningData(data);
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
@@ -97,7 +114,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 
                 setState('studying');
             } catch (error) {
-                console.error("Failed to generate learning content:", error);
+                console.error("Failed to fetch learning content:", error);
                 toast({
                     variant: "destructive",
                     title: "Error",
@@ -402,7 +419,7 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
                                     <Zap className="h-5 w-5 mr-2" /> +{levelXp} XP Gained
                                 </div>
                                 <div className="flex items-center text-lg text-amber-500 font-bold bg-amber-500/10 px-4 py-2 rounded-md">
-                                    <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Coins Gained
+                                    <Coins className="h-5 w-5 mr-2" /> +{levelCoins} Gained
                                 </div>
                             </motion.div>
                         )}

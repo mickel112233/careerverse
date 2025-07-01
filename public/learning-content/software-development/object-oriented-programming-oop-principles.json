@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Core Principles of Object-Oriented Programming (OOP)</h3><p>Object-Oriented Programming is a programming paradigm based on the concept of 'objects', which can contain data in the form of fields (often known as attributes or properties) and code in the form of procedures (often known as methods). A key feature of OOP is that an object's own procedures can access and often modify its own data fields. This lesson explores the four fundamental principles of OOP.</p><h4>1. Encapsulation</h4><p>Encapsulation is the bundling of data (attributes) and the methods that operate on that data into a single unit, or 'class'. It restricts direct access to some of an object's components, which is a means of preventing accidental interference and misuse of the data. The internal representation of an object is hidden from the outside. Access to that data is typically achieved through special functions called getters and setters.</p><ul><li><strong>Analogy:</strong> Think of a pill capsule. You don't know the exact chemical formula inside, but you know what it does and how to take it. The capsule bundles the medicine and protects it from the outside environment.</li></ul><h4>2. Abstraction</h4><p>Abstraction means hiding the complex implementation details and showing only the essential features of the object. It's about simplifying complex reality by modeling classes appropriate to the problem. We create a simple, high-level interface to interact with our objects, without needing to know the complex logic underneath.</p><ul><li><strong>Analogy:</strong> When you drive a car, you use a steering wheel, pedals, and a gear stick. You don't need to know how the engine, transmission, or brakes work internally. The car's interface is an abstraction of its complex machinery.</li></ul><h4>3. Inheritance</h4><p>Inheritance is a mechanism wherein a new class (subclass or derived class) inherits attributes and methods from an existing class (superclass or base class). This promotes code reusability. The subclass can add its own unique attributes and methods, and it can also override the methods of its superclass.</p><ul><li><strong>Analogy:</strong> You, a person, inherit traits like eye color and height from your parents. You are a 'subclass' of your parents, inheriting their general features but also having your own unique characteristics. A 'Dog' class can inherit properties from an 'Animal' class, like `hasLegs` or the `eat()` method.</li></ul><h4>4. Polymorphism</h4><p>Polymorphism, which means 'many forms', is the ability of a variable, function, or object to take on multiple forms. In OOP, it most commonly refers to the ability of a method to do different things based on the object that it is acting upon. For example, a superclass can define a method `makeSound()`, and different subclasses like `Dog`, `Cat`, and `Bird` can each implement that method in their own unique way (`bark()`, `meow()`, `chirp()`).</p><ul><li><strong>Analogy:</strong> Think of a 'draw' command. For a circle object, 'draw' means drawing a circle. For a square object, 'draw' means drawing a square. The same command results in different actions depending on the object.</li></ul>",
+  "quiz": {
+    "title": "OOP Principles",
+    "questions": [
+      {
+        "question": "Which OOP principle involves bundling data and methods together within a class and restricting access?",
+        "options": [
+          "Inheritance",
+          "Abstraction",
+          "Polymorphism",
+          "Encapsulation"
+        ],
+        "correctAnswer": "Encapsulation",
+        "explanation": "Encapsulation is the practice of bundling data and the methods that operate on that data into a single unit called a class, and hiding the internal state from the outside."
+      },
+      {
+        "question": "A 'Car' class having a 'startEngine()' method that hides the complexity of the ignition system is an example of what?",
+        "options": [
+          "Inheritance",
+          "Abstraction",
+          "Polymorphism",
+          "Encapsulation"
+        ],
+        "correctAnswer": "Abstraction",
+        "explanation": "Abstraction simplifies complex systems by hiding unnecessary details and showing only the essential features. The driver only needs to know about the 'startEngine()' method, not the underlying mechanics."
+      },
+      {
+        "question": "If a 'Poodle' class acquires properties from a 'Dog' class, which in turn acquires properties from an 'Animal' class, what principle is being demonstrated?",
+        "options": [
+          "Inheritance",
+          "Abstraction",
+          "Polymorphism",
+          "Composition"
+        ],
+        "correctAnswer": "Inheritance",
+        "explanation": "Inheritance allows a new class (subclass) to inherit attributes and methods from an existing class (superclass), promoting code reuse."
+      },
+      {
+        "question": "The ability of different objects to respond to the same message or method call in different, specific ways is known as:",
+        "options": [
+          "Encapsulation",
+          "Abstraction",
+          "Polymorphism",
+          "Inheritance"
+        ],
+        "correctAnswer": "Polymorphism",
+        "explanation": "Polymorphism ('many forms') allows objects of different classes to be treated as objects of a common superclass and respond to the same method call differently."
+      },
+      {
+        "question": "What is the main benefit of Inheritance?",
+        "options": [
+          "Data hiding",
+          "Code reusability",
+          "Simplifying complex systems",
+          "Allowing one interface for multiple functions"
+        ],
+        "correctAnswer": "Code reusability",
+        "explanation": "By allowing classes to inherit from other classes, you can reuse existing code and avoid duplication, which is a primary advantage of inheritance."
+      },
+      {
+        "question": "Protecting an object's internal data from being modified arbitrarily from outside the object is a key part of which concept?",
+        "options": [
+          "Polymorphism",
+          "Encapsulation",
+          "Inheritance",
+          "Abstraction"
+        ],
+        "correctAnswer": "Encapsulation",
+        "explanation": "Encapsulation restricts direct access to an object's internal state, protecting it from unintended external modification."
+      },
+      {
+        "question": "Having a single function name `calculateArea()` that works for a `Circle` object, a `Square` object, and a `Triangle` object is an example of:",
+        "options": [
+          "Inheritance",
+          "Polymorphism",
+          "Encapsulation",
+          "Abstraction"
+        ],
+        "correctAnswer": "Polymorphism",
+        "explanation": "This is a classic example of polymorphism, where a single interface (`calculateArea()`) can be used for different types of objects, each implementing the logic differently."
+      },
+      {
+        "question": "Which principle helps in managing complexity by hiding implementation details?",
+        "options": [
+          "Abstraction",
+          "Polymorphism",
+          "Inheritance",
+          "Encapsulation"
+        ],
+        "correctAnswer": "Abstraction",
+        "explanation": "Abstraction's primary goal is to manage complexity by providing a simplified interface and hiding the complex code that lies beneath it."
+      }
+    ]
+  }
+}
