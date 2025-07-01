@@ -7,22 +7,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { allQuests, Quest } from '@/lib/quest-data';
-import { CheckSquare, Coins, Zap } from 'lucide-react';
+import { Coins, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
-const QuestCard = ({ quest, isCompleted, onClaim }: { quest: Quest, isCompleted: boolean, onClaim: (quest: Quest) => void }) => {
+const QuestCard = ({ quest, progress, isCompleted, onClaim }: { quest: Quest, progress: number, isCompleted: boolean, onClaim: (quest: Quest) => void }) => {
     const Icon = quest.icon;
-    const [progress, setProgress] = useState(0);
-
-    useEffect(() => {
-        // This ensures the random number is only generated on the client after hydration
-        if (isCompleted) {
-            setProgress(100);
-        } else {
-            setProgress(Math.floor(Math.random() * 80) + 10);
-        }
-    }, [isCompleted]);
+    
+    const progressPercentage = quest.goal > 0 ? (Math.min(progress, quest.goal) / quest.goal) * 100 : 0;
+    const canClaim = progress >= quest.goal;
 
     return (
         <Card className={cn("flex flex-col", isCompleted && "opacity-60 bg-muted/30")}>
@@ -41,15 +34,15 @@ const QuestCard = ({ quest, isCompleted, onClaim }: { quest: Quest, isCompleted:
                     <span className="flex items-center text-amber-500"><Coins className="h-4 w-4 mr-1" /> {quest.coins}</span>
                 </div>
                 <div>
-                    <Progress value={progress} />
+                    <Progress value={progressPercentage} />
                     <p className="text-xs text-muted-foreground text-right mt-1">
-                        {progress > 0 ? `${progress}% Complete` : `...`}
+                        {Math.min(progress, quest.goal)} / {quest.goal}
                     </p>
                 </div>
             </CardContent>
             <div className="p-4 pt-0">
-                <Button className="w-full" disabled={isCompleted} onClick={() => onClaim(quest)}>
-                    {isCompleted ? "Claimed" : "Claim Reward"}
+                <Button className="w-full" disabled={isCompleted || !canClaim} onClick={() => onClaim(quest)}>
+                    {isCompleted ? "Claimed" : (canClaim ? "Claim Reward" : "In Progress")}
                 </Button>
             </div>
         </Card>
@@ -59,17 +52,58 @@ const QuestCard = ({ quest, isCompleted, onClaim }: { quest: Quest, isCompleted:
 
 export default function QuestsClient() {
     const { toast } = useToast();
-    // In a real app, completed quests would be stored in localStorage or fetched from a server
     const [completedQuests, setCompletedQuests] = useState<Set<string>>(new Set());
+    const [questProgress, setQuestProgress] = useState<{ [key: string]: number }>({});
+
+    useEffect(() => {
+        const storedCompleted = localStorage.getItem('careerClashCompletedQuests');
+        if (storedCompleted) {
+            try {
+                setCompletedQuests(new Set(JSON.parse(storedCompleted)));
+            } catch (e) {
+                console.error("Failed to parse completed quests:", e);
+                setCompletedQuests(new Set());
+            }
+        }
+        
+        const storedProgress = localStorage.getItem('careerClashQuestProgress');
+        if (storedProgress) {
+             try {
+                setQuestProgress(JSON.parse(storedProgress));
+            } catch (e) {
+                console.error("Failed to parse quest progress:", e);
+                setQuestProgress({});
+            }
+        }
+        
+        // NOTE TO DEVELOPER: To update quest progress from other parts of the app (e.g., after a battle),
+        // you would retrieve the current progress from localStorage, update the relevant quest count,
+        // and save it back. Then, dispatch a 'storage' event to ensure the UI updates in real-time.
+        // Example:
+        // const progress = JSON.parse(localStorage.getItem('careerClashQuestProgress') || '{}');
+        // progress['daily3'] = (progress['daily3'] || 0) + 1; // Increment battle quest
+        // localStorage.setItem('careerClashQuestProgress', JSON.stringify(progress));
+        // window.dispatchEvent(new Event('storage'));
+
+    }, []);
 
     const claimReward = (quest: Quest) => {
         if(completedQuests.has(quest.id)) return;
 
-        // Add to completed set
-        setCompletedQuests(prev => new Set(prev).add(quest.id));
+        const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+        const newTotalXp = currentTotalXp + quest.xp;
+        localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+        
+        const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+        const newTotalCoins = currentCoins + quest.coins;
+        localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+        
+        window.dispatchEvent(new Event('currencyChange'));
 
-        // In a real app, you would add these to the user's total in localStorage
-        console.log(`Claimed ${quest.xp} XP and ${quest.coins} Coins`);
+        const newCompletedQuests = new Set(completedQuests).add(quest.id);
+        setCompletedQuests(newCompletedQuests);
+        localStorage.setItem('careerClashCompletedQuests', JSON.stringify(Array.from(newCompletedQuests)));
+
         toast({
             title: "Quest Complete!",
             description: `You earned ${quest.xp} XP and ${quest.coins} Coins.`,
@@ -84,6 +118,7 @@ export default function QuestsClient() {
                 <QuestCard 
                     key={quest.id} 
                     quest={quest} 
+                    progress={questProgress[quest.id] || 0}
                     isCompleted={completedQuests.has(quest.id)} 
                     onClaim={claimReward} 
                 />
