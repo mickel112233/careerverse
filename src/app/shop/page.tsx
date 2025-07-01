@@ -1,6 +1,4 @@
 
-'use client';
-
 import ShopClient from './client';
 import { Suspense } from 'react';
 
