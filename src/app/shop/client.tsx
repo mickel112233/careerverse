@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -90,10 +90,9 @@ const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: Gu
 };
 
 
-export default function ShopClient() {
+export default function ShopClient({ searchParams }: { searchParams?: { tab?: string } }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const defaultTab = searchParams.get('tab') || 'memberships';
+  const defaultTab = searchParams?.tab || 'memberships';
   const { toast } = useToast();
 
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -278,19 +277,11 @@ export default function ShopClient() {
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>
-    <div className="container mx-auto p-4 sm:p-6 md:p-8">
+    <div>
       <Button variant="ghost" onClick={() => router.back()} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back
       </Button>
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <div>
-            <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Item Shop</h1>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-            Purchase perks, memberships, and currencies to enhance your experience.
-            </p>
-        </div>
-      </div>
 
       <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
