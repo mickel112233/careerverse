@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Understanding Control Structures</h3><p>In programming, control structures are blocks of code that can analyze variables and choose a direction in which to go based on given parameters. The most fundamental control structure is the <strong>if-else</strong> statement.</p><h4>The 'if' Statement</h4><p>The <strong>if</strong> statement is used to execute a block of code only if a specified condition is true. Think of it as a simple question: 'Is this condition met?' If the answer is yes, the code inside the 'if' block runs. If not, the program skips it.</p><pre><code>// Example in JavaScript\nlet temperature = 25;\n\nif (temperature > 20) {\n  console.log('It is a warm day.');\n}</code></pre><h4>The 'else' Statement</h4><p>Often, you want to execute a different block of code if the 'if' condition is false. This is where the <strong>else</strong> statement comes in. It provides an alternative path for the program to take.</p><pre><code>let score = 75;\n\nif (score >= 60) {\n  console.log('You passed!');\n} else {\n  console.log('You need to study more.');\n}</code></pre><h4>The 'else if' Statement</h4><p>What if you have multiple conditions to check? You can use the <strong>else if</strong> statement to chain conditions together. The program checks them one by one and executes the code for the first true condition it finds.</p><pre><code>let time = 14;\n\nif (time < 12) {\n  console.log('Good morning.');\n} else if (time < 18) {\n  console.log('Good afternoon.');\n} else {\n  console.log('Good evening.');\n}</code></pre><h4>Summary</h4><p>Control structures like if-else are the decision-making brains of your programs. They allow your code to respond dynamically to different inputs and conditions, making your applications much more powerful and interactive.</p>",
+  "quiz": {
+    "title": "Control Structures: If-Else",
+    "questions": [
+      {
+        "question": "What is the primary purpose of an 'if' statement?",
+        "options": [
+          "To execute a block of code only if a condition is true",
+          "To always execute a block of code",
+          "To repeat a block of code multiple times",
+          "To define a new variable"
+        ],
+        "correctAnswer": "To execute a block of code only if a condition is true",
+        "explanation": "The 'if' statement is a conditional statement that runs a specific block of code only when its condition evaluates to true."
+      },
+      {
+        "question": "When does the code inside an 'else' block get executed?",
+        "options": [
+          "When the preceding 'if' condition is true",
+          "When the preceding 'if' condition is false",
+          "It always executes after the 'if' block",
+          "Only when there is also an 'else if' statement"
+        ],
+        "correctAnswer": "When the preceding 'if' condition is false",
+        "explanation": "The 'else' block provides an alternative code path that is executed only when the condition in the corresponding 'if' statement is not met (i.e., it's false)."
+      },
+      {
+        "question": "What is the 'else if' statement used for?",
+        "options": [
+          "To end the program",
+          "To specify a new condition to test, if the first condition is false",
+          "To run the same code as the 'if' block",
+          "To define a function"
+        ],
+        "correctAnswer": "To specify a new condition to test, if the first condition is false",
+        "explanation": "'else if' allows you to check for multiple, different conditions in a sequence. If the first 'if' is false, it moves to the 'else if' to check another condition."
+      },
+      {
+        "question": "In the code `if (x > 10) { ... } else { ... }`, what happens if x is exactly 10?",
+        "options": [
+          "The 'if' block executes",
+          "Both blocks execute",
+          "Neither block executes",
+          "The 'else' block executes"
+        ],
+        "correctAnswer": "The 'else' block executes",
+        "explanation": "The condition is `x > 10`. Since 10 is not greater than 10, the condition is false, and the code jumps to the 'else' block."
+      },
+      {
+        "question": "Can you have an 'else' statement without a preceding 'if' statement?",
+        "options": [
+          "Yes, it will run if no other conditions are met",
+          "No, an 'else' must always follow an 'if' or 'else if'",
+          "Only in JavaScript",
+          "Yes, but it's considered bad practice"
+        ],
+        "correctAnswer": "No, an 'else' must always follow an 'if' or 'else if'",
+        "explanation": "The 'else' statement is grammatically and logically tied to a preceding 'if' or 'else if'. It doesn't make sense on its own."
+      },
+      {
+        "question": "What will be printed by `let grade = 'B'; if (grade === 'A') { console.log('Excellent'); } else if (grade === 'B') { console.log('Good'); } else { console.log('Pass'); }`?",
+        "options": [
+          "Excellent",
+          "Good",
+          "Pass",
+          "Nothing will be printed"
+        ],
+        "correctAnswer": "Good",
+        "explanation": "The program first checks if `grade === 'A'`, which is false. It then checks the `else if` condition, `grade === 'B'`, which is true. It prints 'Good' and stops checking further conditions."
+      },
+      {
+        "question": "What is a 'nested' if statement?",
+        "options": [
+          "An 'if' statement that is never executed",
+          "An 'if' statement inside another 'if' statement",
+          "An 'if' statement that contains more than 10 lines of code",
+          "An 'if' statement with no 'else' part"
+        ],
+        "correctAnswer": "An 'if' statement inside another 'if' statement",
+        "explanation": "Nesting is the practice of placing one control structure inside another to handle more complex logic, like checking a secondary condition after a primary one is met."
+      },
+      {
+        "question": "Which of these is a boolean value used in conditions?",
+        "options": [
+          "100",
+          "\"hello\"",
+          "true",
+          "myVariable"
+        ],
+        "correctAnswer": "true",
+        "explanation": "Conditions in if-statements evaluate to a boolean value, which can be either `true` or `false`."
+      }
+    ]
+  }
+}

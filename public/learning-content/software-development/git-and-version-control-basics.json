@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Tracking Changes: Introduction to Version Control</h3><p>Have you ever worked on a document and saved multiple versions like `report_v1.docx`, `report_v2.docx`, and `report_final_final.docx`? This is a basic form of version control. In software development, where many people might be working on the same code, a more powerful system is needed. This is where <strong>Version Control Systems (VCS)</strong> come in.</p><h4>What is Version Control?</h4><p>A Version Control System is software that tracks and manages changes to a set of files over time. It allows you to recall specific versions later, compare changes, and see who made what changes and when. It's like a time machine for your code.</p><h4>What is Git?</h4><p><strong>Git</strong> is the most popular, free, and open-source Distributed Version Control System (DVCS) in the world. 'Distributed' means that every developer has a full copy of the project's history on their local machine. This makes it fast and allows people to work offline.</p><h4>Core Git Concepts</h4><ul><li><strong>Repository (Repo):</strong> This is your project's folder. The repo contains all your project files and the entire history of changes, which is stored in a hidden sub-folder named `.git`.</li><li><strong>Commit:</strong> A 'commit' is a snapshot of your files at a specific point in time. When you make changes and are happy with them, you 'commit' them. Each commit has a unique ID and a message describing the changes. This is like saving a named version of your project.</li><li><strong>Branch:</strong> A branch is an independent line of development. The main branch is usually called `main` or `master`. You can create new branches to work on new features or fix bugs without affecting the main codebase. Once your work is complete, you can merge your branch back into the main branch.</li><li><strong>Merge:</strong> The process of taking the changes from one branch and integrating them into another. For example, merging a `new-feature` branch into the `main` branch.</li></ul><h4>Why Use Git?</h4><ul><li><strong>Collaboration:</strong> Git makes it easy for many people to work on the same project simultaneously without overwriting each other's work.</li><li><strong>History:</strong> You have a complete history of every change made to the project. If a bug is introduced, you can look back to see what change caused it.</li><li><strong>Branching and Merging:</strong> You can experiment with new ideas on separate branches without fear of breaking the main project.</li><li><strong>Industry Standard:</strong> Knowing Git is a fundamental skill for almost every software development job.</li></ul>",
+  "quiz": {
+    "title": "Git and Version Control Basics",
+    "questions": [
+      {
+        "question": "What is the primary purpose of a Version Control System (VCS)?",
+        "options": [
+          "To automatically write code for you",
+          "To track and manage changes to files over time",
+          "To host websites",
+          "To compile code into an executable program"
+        ],
+        "correctAnswer": "To track and manage changes to files over time",
+        "explanation": "A VCS acts like a 'time machine' for your project, allowing you to see the entire history of changes, who made them, and revert to previous versions if needed."
+      },
+      {
+        "question": "What is Git?",
+        "options": [
+          "A type of web server",
+          "A programming language",
+          "A popular Distributed Version Control System (DVCS)",
+          "A text editor for coding"
+        ],
+        "correctAnswer": "A popular Distributed Version Control System (DVCS)",
+        "explanation": "Git is the software used to perform version control. The 'Distributed' part means every developer has a full copy of the project's history."
+      },
+      {
+        "question": "In Git, what is a 'repository' or 'repo'?",
+        "options": [
+          "A single file of code",
+          "A folder that contains your entire project and its history of changes",
+          "A command to undo a change",
+          "A list of bugs in the code"
+        ],
+        "correctAnswer": "A folder that contains your entire project and its history of changes",
+        "explanation": "The repository is the top-level directory of a project that is being tracked by Git."
+      },
+      {
+        "question": "What is a 'commit' in Git?",
+        "options": [
+          "A plan for a new feature",
+          "A snapshot of your files at a specific point in time, saved to the repository's history",
+          "A bug in the code",
+          "A connection to the internet"
+        ],
+        "correctAnswer": "A snapshot of your files at a specific point in time, saved to the repository's history",
+        "explanation": "A commit is like an official save point. You take the changes you've made, add a descriptive message, and commit them to create a new point in the project's timeline."
+      },
+      {
+        "question": "What is the main purpose of creating a 'branch' in Git?",
+        "options": [
+          "To delete old code permanently",
+          "To create a copy of the project that cannot be changed",
+          "To work on a new feature or bug fix in an isolated environment without affecting the main code",
+          "To publish your code to a website"
+        ],
+        "correctAnswer": "To work on a new feature or bug fix in an isolated environment without affecting the main code",
+        "explanation": "Branching is a core feature of Git that allows for parallel development. It lets you work on something new without destabilizing the main, working version of your project."
+      },
+      {
+        "question": "What does it mean that Git is a 'Distributed' VCS?",
+        "options": [
+          "The code is distributed across many servers on the internet",
+          "Each developer has a full copy of the project's history on their own machine",
+          "Only one person can have a copy of the project at a time",
+          "The project is broken into many small pieces"
+        ],
+        "correctAnswer": "Each developer has a full copy of the project's history on their own machine",
+        "explanation": "Unlike centralized systems, where the history is on one server, a DVCS like Git gives every collaborator the entire history, which improves speed and allows for offline work."
+      },
+      {
+        "question": "The process of integrating changes from one branch into another is called:",
+        "options": [
+          "Committing",
+          "Branching",
+          "Cloning",
+          "Merging"
+        ],
+        "correctAnswer": "Merging",
+        "explanation": "Merging is the action of taking the independent lines of development created by branching and bringing them back together."
+      },
+      {
+        "question": "Which of these is a major benefit of using Git for collaboration?",
+        "options": [
+          "It prevents you from ever writing bugs",
+          "It makes it easier for many people to work on the same code without overwriting changes",
+          "It automatically fixes your typos",
+          "It only works if you have a fast internet connection"
+        ],
+        "correctAnswer": "It makes it easier for many people to work on the same code without overwriting changes",
+        "explanation": "Git is designed to manage contributions from multiple sources, providing tools to merge changes and resolve conflicts when they occur."
+      }
+    ]
+  }
+}

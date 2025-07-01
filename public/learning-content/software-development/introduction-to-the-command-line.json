@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Navigating Your Computer with Text: The Command Line</h3><p>Before graphical user interfaces (GUIs) with windows, icons, and pointers, users interacted with computers using text-based commands. This interface is known as the <strong>Command Line Interface (CLI)</strong>, or terminal, or shell. For developers, it remains an essential and powerful tool.</p><h4>Why Use the Command Line?</h4><p>While GUIs are user-friendly, the CLI is often faster, more powerful, and more scriptable for development tasks. Many development tools, like Git, Node.js package manager (npm), and Docker, are designed to be run from the command line.</p><h4>Your Position: The Working Directory</h4><p>The command line always operates from a specific location in your computer's file system, known as the <strong>current working directory</strong>. Think of it as the folder you currently have 'open'.</p><h4>Essential Commands</h4><p>Commands can vary slightly between operating systems (macOS/Linux vs. Windows), but the concepts are universal. Here are some of the most fundamental commands (using macOS/Linux syntax):</p><ul><li><strong>`pwd` (Print Working Directory):</strong> Shows you the full path of the directory you are currently in.</li><li><strong>`ls` (List):</strong> Lists all the files and folders in the current working directory. You can use `ls -a` to show hidden files (like `.git`).</li><li><strong>`cd` (Change Directory):</strong> Used to move to a different directory.<ul><li>`cd my_folder` - moves into a sub-folder named `my_folder`.</li><li>`cd ..` - moves up one level to the parent directory.</li><li>`cd ~` or just `cd` - moves to your home directory.</li></ul></li><li><strong>`mkdir` (Make Directory):</strong> Creates a new, empty directory. `mkdir new_project` will create a folder named `new_project`.</li><li><strong>`touch` (Touch):</strong> Creates a new, empty file. `touch index.html` will create a file named `index.html`.</li><li><strong>`cp` (Copy):</strong> Copies a file. `cp source.txt destination.txt`.</li><li><strong>`mv` (Move):</strong> Moves or renames a file. `mv old_name.txt new_name.txt`.</li><li><strong>`rm` (Remove):</strong> Deletes a file. <strong>Be very careful with this command, as it does not move the file to a trash can!</strong> `rm file_to_delete.txt`. To delete an empty directory, use `rmdir`. To delete a directory with contents, use `rm -r`.</li></ul><p>Mastering these basic commands is the first step to becoming comfortable and efficient in a development environment.</p>",
+  "quiz": {
+    "title": "Introduction to the Command Line",
+    "questions": [
+      {
+        "question": "What does CLI stand for?",
+        "options": [
+          "Computer Logic Interface",
+          "Command Line Interface",
+          "Complex Language Input",
+          "Code Launching Initiative"
+        ],
+        "correctAnswer": "Command Line Interface",
+        "explanation": "CLI is the acronym for Command Line Interface, a text-based way to interact with a computer system."
+      },
+      {
+        "question": "Which command is used to show the current directory you are in?",
+        "options": [
+          "ls",
+          "cd",
+          "pwd",
+          "mkdir"
+        ],
+        "correctAnswer": "pwd",
+        "explanation": "`pwd` stands for 'Print Working Directory' and it displays the full path of your current location."
+      },
+      {
+        "question": "How do you list the files and folders in your current working directory?",
+        "options": [
+          "list all",
+          "show files",
+          "dir",
+          "ls"
+        ],
+        "correctAnswer": "ls",
+        "explanation": "`ls` (short for list) is the standard command on Linux and macOS to list directory contents. On Windows, the equivalent is often `dir`."
+      },
+      {
+        "question": "What does the `cd ..` command do?",
+        "options": [
+          "Moves you to your home directory",
+          "Creates a new directory named '..'",
+          "Moves you up one level to the parent directory",
+          "Deletes the current directory"
+        ],
+        "correctAnswer": "Moves you up one level to the parent directory",
+        "explanation": "In file system paths, `..` is a special reference that always points to the directory immediately above the current one."
+      },
+      {
+        "question": "Which command is used to create a new, empty file?",
+        "options": [
+          "mkdir",
+          "newfile",
+          "touch",
+          "create"
+        ],
+        "correctAnswer": "touch",
+        "explanation": "The `touch` command is used to create an empty file with the specified name."
+      },
+      {
+        "question": "Which command is used to create a new directory?",
+        "options": [
+          "newdir",
+          "mkdir",
+          "touch",
+          "cd"
+        ],
+        "correctAnswer": "mkdir",
+        "explanation": "`mkdir` stands for 'Make Directory' and is used to create new folders."
+      },
+      {
+        "question": "Why should you be extra careful with the `rm` command?",
+        "options": [
+          "It can rename all your files",
+          "It permanently deletes files without moving them to a trash can",
+          "It uses a lot of internet data",
+          "It can crash your monitor"
+        ],
+        "correctAnswer": "It permanently deletes files without moving them to a trash can",
+        "explanation": "Unlike deleting a file in a graphical interface, `rm` is a direct and permanent removal. There is no 'undo' or 'restore from trash'."
+      },
+      {
+        "question": "Many essential developer tools like Git and npm are primarily used through what interface?",
+        "options": [
+          "A web browser",
+          "A graphical user interface (GUI)",
+          "A word processor",
+          "The command line interface (CLI)"
+        ],
+        "correctAnswer": "The command line interface (CLI)",
+        "explanation": "The CLI provides a powerful, scriptable, and universal way to interact with development tools, which is why it's a standard for developers."
+      }
+    ]
+  }
+}

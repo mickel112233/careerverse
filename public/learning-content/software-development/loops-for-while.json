@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Automating Repetitive Tasks with Loops</h3><p>In programming, you often need to perform the same action multiple times. Instead of writing the same code over and over, you use loops. The two most common types of loops are the <strong>for</strong> loop and the <strong>while</strong> loop.</p><h4>The 'for' Loop</h4><p>A <strong>for</strong> loop is used when you know exactly how many times you want to repeat an action. It has three parts: initialization, condition, and increment/decrement.</p><ul><li><strong>Initialization:</strong> A counter variable is created (e.g., `let i = 0`). This runs once at the very beginning.</li><li><strong>Condition:</strong> The loop continues as long as this condition is true (e.g., `i < 5`).</li><li><strong>Increment/Decrement:</strong> What happens to the counter after each iteration (e.g., `i++`).</li></ul><pre><code>// Example in JavaScript: Prints numbers 0 to 4\nfor (let i = 0; i < 5; i++) {\n  console.log('The number is ' + i);\n}</code></pre><h4>The 'while' Loop</h4><p>A <strong>while</strong> loop is used when you want to repeat an action as long as a certain condition is true, but you don't necessarily know how many times it will run. The condition is checked <em>before</em> each iteration.</p><pre><code>let count = 0;\n\nwhile (count < 5) {\n  console.log('Count is ' + count);\n  count++;\n}</code></pre><p><strong>Warning:</strong> Be careful with while loops! If the condition never becomes false, you will create an 'infinite loop', which can crash your program.</p><h4>For vs. While</h4><ul><li>Use a <strong>for</strong> loop when you have a definite starting and ending point (e.g., loop through an array, run code 10 times).</li><li>Use a <strong>while</strong> loop when the number of iterations is unknown and depends on a condition that changes within the loop (e.g., keep asking for user input until it's valid).</li></ul>",
+  "quiz": {
+    "title": "Loops: For and While",
+    "questions": [
+      {
+        "question": "When is a 'for' loop most suitable?",
+        "options": [
+          "When you want to run code indefinitely",
+          "When you know the exact number of iterations beforehand",
+          "When you need to check a condition only once",
+          "When you want to run code only if a condition is false"
+        ],
+        "correctAnswer": "When you know the exact number of iterations beforehand",
+        "explanation": "A 'for' loop is designed for situations where you have a clear start, end, and increment, making it perfect for a known number of repetitions."
+      },
+      {
+        "question": "What are the three parts of a 'for' loop's setup?",
+        "options": [
+          "Variable, Function, Return",
+          "Start, Middle, End",
+          "Initialization, Condition, Increment/Decrement",
+          "If, Else, Then"
+        ],
+        "correctAnswer": "Initialization, Condition, Increment/Decrement",
+        "explanation": "These three components define how the for loop starts (`initialization`), how it knows when to stop (`condition`), and how it progresses after each cycle (`increment/decrement`)."
+      },
+      {
+        "question": "What is a potential danger of a 'while' loop?",
+        "options": [
+          "It can run too slowly",
+          "It can create an infinite loop if the condition never becomes false",
+          "It cannot use numbers",
+          "It can only run once"
+        ],
+        "correctAnswer": "It can create an infinite loop if the condition never becomes false",
+        "explanation": "If the condition in a while loop never evaluates to false (e.g., the variable being checked is never updated), the loop will run forever, which can crash the program or browser."
+      },
+      {
+        "question": "In a `while (condition)` loop, when is the condition checked?",
+        "options": [
+          "Only once at the beginning",
+          "After each iteration of the loop",
+          "Before each iteration of the loop",
+          "Never, it's just a placeholder"
+        ],
+        "correctAnswer": "Before each iteration of the loop",
+        "explanation": "A standard 'while' loop checks its condition before executing the code block. If the condition is false initially, the loop's body will never run."
+      },
+      {
+        "question": "Which loop would be best for iterating through all the items in an array of a known size?",
+        "options": [
+          "An if-else statement",
+          "A while loop",
+          "A for loop",
+          "A switch statement"
+        ],
+        "correctAnswer": "A for loop",
+        "explanation": "Since an array has a specific length (a known number of items), a 'for' loop is the conventional and most appropriate choice for iterating over it."
+      },
+      {
+        "question": "What will `for (let i = 1; i <= 3; i++) { console.log(i); }` output?",
+        "options": [
+          "1, 2",
+          "1, 2, 3",
+          "0, 1, 2",
+          "0, 1, 2, 3"
+        ],
+        "correctAnswer": "1, 2, 3",
+        "explanation": "The loop initializes `i` to 1. It continues as long as `i` is less than or equal to 3. It will print 1, then 2, then 3, and stop when `i` becomes 4."
+      },
+      {
+        "question": "What is the role of `i++` in a typical 'for' loop?",
+        "options": [
+          "It initializes the counter variable",
+          "It's the condition that the loop checks",
+          "It executes after each iteration to update the counter",
+          "It ends the loop immediately"
+        ],
+        "correctAnswer": "It executes after each iteration to update the counter",
+        "explanation": "This is the increment part of the loop. It updates the value of the counter `i` (in this case, adds 1 to it) after the code block inside the loop has finished running for that cycle."
+      },
+      {
+        "question": "If you want a loop to continue as long as a user has not typed 'quit', which loop is generally more suitable?",
+        "options": [
+          "A for loop, because you can set the limit to a very high number",
+          "A while loop, because the number of iterations is unknown",
+          "An if statement, because you are checking a condition",
+          "Neither, you cannot loop based on user input"
+        ],
+        "correctAnswer": "A while loop, because the number of iterations is unknown",
+        "explanation": "This is a classic use case for a 'while' loop. The loop should continue as long as a condition is met (user input is not 'quit'), and we have no way of knowing how many times the user will enter other text before typing 'quit'."
+      }
+    ]
+  }
+}

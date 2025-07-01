@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Making Your First Commit</h3><p>Using Git involves a basic workflow to track your changes. This process involves three 'areas' or 'stages' on your local machine: the <strong>Working Directory</strong>, the <strong>Staging Area</strong>, and the <strong>Local Repository</strong>.</p><ol><li><strong>Working Directory:</strong> This is your project folder with all the files you are currently editing. Any changes you make to files happen here.</li><li><strong>Staging Area (or Index):</strong> This is an intermediate area where you prepare the changes you want to include in your next commit. It allows you to select only specific changes to save, rather than saving everything you've done.</li><li><strong>Local Repository (.git folder):</strong> This is where Git permanently stores the history of your project as a series of commits.</li></ol><h4>The Basic Git Workflow</h4><p>Let's walk through the steps to make your first commit.</p><h5>Step 1: `git init`</h5><p>To start tracking a project with Git, you navigate to your project folder in the command line and run:</p><pre><code>git init</code></pre><p>This command creates a new, hidden `.git` sub-folder in your project directory, which sets up all the necessary files for the repository. You only need to do this once per project.</p><h5>Step 2: Make Changes</h5><p>Create or edit files in your project folder (the Working Directory). For example, you might create a `README.md` file.</p><h5>Step 3: `git add`</h5><p>Once you've made a change you want to save, you need to move it to the Staging Area. This is done with the `git add` command. You are telling Git, 'I want to include this change in my next commit.'</p><pre><code># To add a specific file\ngit add README.md\n\n# To add all changed files in the current directory\ngit add .</code></pre><h5>Step 4: `git commit`</h5><p>Now that your changes are staged, you can commit them to your local repository's history. This creates a permanent snapshot. It's crucial to include a descriptive message with your commit using the `-m` flag.</p><pre><code>git commit -m \"Initial commit: Add README file\"</code></pre><p>A good commit message explains *why* a change was made, not just *what* was changed.</p><h5>Step 5: `git status`</h5><p>At any point in this process, you can run `git status`. This command is your best friend. It tells you which files are new, which are modified, which are staged, and if you have any pending commits.</p>",
+  "quiz": {
+    "title": "Your First Git Commit",
+    "questions": [
+      {
+        "question": "What are the three main areas in your local Git environment?",
+        "options": [
+          "Inbox, Outbox, Sent",
+          "Cloud, Server, Desktop",
+          "Working Directory, Staging Area, Local Repository",
+          "Branch, Merge, Commit"
+        ],
+        "correctAnswer": "Working Directory, Staging Area, Local Repository",
+        "explanation": "These three areas represent the flow of changes: from your active files (Working Directory), to what you've selected to save (Staging Area), to the permanent history (Repository)."
+      },
+      {
+        "question": "What is the purpose of the 'Staging Area' (or Index)?",
+        "options": [
+          "To permanently store the project history",
+          "To hold files you are about to delete",
+          "To act as a draft space where you prepare and select which changes will be in the next commit",
+          "It's another name for the Working Directory"
+        ],
+        "correctAnswer": "To act as a draft space where you prepare and select which changes will be in the next commit",
+        "explanation": "The staging area gives you fine-grained control, allowing you to craft a commit with only the specific changes you want, even if you have other modified files."
+      },
+      {
+        "question": "Which command initializes a new Git repository in your project folder?",
+        "options": [
+          "git start",
+          "git new",
+          "git init",
+          "git create"
+        ],
+        "correctAnswer": "git init",
+        "explanation": "`git init` is the first command you run in a new project to tell Git to start tracking it. It creates the hidden `.git` directory."
+      },
+      {
+        "question": "What does the `git add .` command do?",
+        "options": [
+          "Adds a new file named '.'",
+          "Adds all new and modified files in the current directory to the Staging Area",
+          "Commits all your changes",
+          "Deletes all your files"
+        ],
+        "correctAnswer": "Adds all new and modified files in the current directory to the Staging Area",
+        "explanation": "The `.` is a shortcut that means 'the current directory'. `git add .` is a common way to stage all your work for a commit."
+      },
+      {
+        "question": "Which command is used to save your staged changes to the local repository's history?",
+        "options": [
+          "git save",
+          "git commit",
+          "git push",
+          "git stage"
+        ],
+        "correctAnswer": "git commit",
+        "explanation": "`git commit` takes the files from the Staging Area and creates a new, permanent snapshot (a commit) in the project's history."
+      },
+      {
+        "question": "Why is the `-m` flag important when using `git commit`?",
+        "options": [
+          "It makes the commit smaller",
+          "It allows you to provide a descriptive message explaining the commit's purpose",
+          "It merges the commit with the main branch",
+          "It stands for 'manual' and is always required"
+        ],
+        "correctAnswer": "It allows you to provide a descriptive message explaining the commit's purpose",
+        "explanation": "Commit messages are crucial for understanding the project's history. The `-m` flag lets you provide this message directly in the command."
+      },
+      {
+        "question": "Which command is extremely useful for checking the current state of your repository, including which files are modified or staged?",
+        "options": [
+          "git help",
+          "git log",
+          "git status",
+          "git check"
+        ],
+        "correctAnswer": "git status",
+        "explanation": "`git status` is one of the most frequently used Git commands. It gives you a clear overview of what's happening in your working directory and staging area."
+      },
+      {
+        "question": "After you modify a file in a tracked Git repository, what is its initial state according to `git status`?",
+        "options": [
+          "Staged",
+          "Committed",
+          "Modified (but not staged)",
+          "Untracked"
+        ],
+        "correctAnswer": "Modified (but not staged)",
+        "explanation": "When you change a file that Git already knows about, it's considered 'modified'. You must then use `git add` to stage it before you can commit it."
+      }
+    ]
+  }
+}
