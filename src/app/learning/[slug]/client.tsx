@@ -13,7 +13,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import type { GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -63,9 +63,32 @@ const LearningContentSkeleton = () => (
     </Card>
 );
 
+const MissingContentCard = ({ topic, onBack }: { topic: string, onBack: () => void }) => (
+    <Card className="mt-8 border-primary/20 bg-primary/5">
+        <CardHeader className="text-center">
+            <Info className="mx-auto h-12 w-12 text-primary" />
+            <CardTitle className="font-headline text-2xl">Content Not Yet Generated</CardTitle>
+            <CardDescription>The learning material for "{topic}" is ready to be created.</CardDescription>
+        </CardHeader>
+        <CardContent className="text-center">
+            <p className="max-w-prose mx-auto">
+                This is part of the app's scalable design. To add the lesson and quiz for this topic, you can simply ask the AI in a new prompt. Once created and saved to the project, it will appear here instantly for all users, with no loading time.
+            </p>
+        </CardContent>
+        <CardFooter className="justify-center">
+            <Button onClick={onBack}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Roadmap
+            </Button>
+        </CardFooter>
+    </Card>
+);
+
+
 export default function LearningFlowClient({ topic, slug }: { topic: string, slug: string }) {
     const [state, setState] = useState<LearningState>('loading');
     const [learningData, setLearningData] = useState<GenerateLearningContentOutput | null>(null);
+    const [contentExists, setContentExists] = useState<boolean | null>(null);
     const router = useRouter();
     const { toast } = useToast();
     const [levelXp, setLevelXp] = useState(0);
@@ -83,12 +106,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
                 if (!response.ok) {
                     if (response.status === 404) {
-                        toast({
-                            variant: "destructive",
-                            title: "Content Not Generated",
-                            description: "The learning content for this level has not been generated yet. Please ask the AI to create it.",
-                        });
-                        router.push('/dashboard');
+                        setContentExists(false);
+                        setState('studying'); // Set to a stable state to show the missing content card
                         return;
                     }
                     throw new Error(`Failed to load content. Status: ${response.status}`);
@@ -96,6 +115,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
                 const data: GenerateLearningContentOutput = await response.json();
                 setLearningData(data);
+                setContentExists(true);
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
                 if (storedRoadmap) {
@@ -201,23 +221,32 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             });
         }
     }
-
-    if (state === 'loading' || !learningData) {
-        return (
-            <>
-                <Button variant="ghost" onClick={() => router.back()} className="mb-4">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Roadmap
-                </Button>
-                <div className="mb-8">
-                    <Skeleton className="h-10 w-3/4 capitalize" />
-                    <Skeleton className="h-6 w-full max-w-lg mt-3" />
-                </div>
-                <LearningContentSkeleton />
-            </>
-        );
-    }
     
+    const pageContent = () => {
+        if (state === 'loading' || contentExists === null) {
+            return <LearningContentSkeleton />;
+        }
+    
+        if (contentExists === false) {
+            return <MissingContentCard topic={topic} onBack={() => router.push('/dashboard')} />;
+        }
+        
+        if (learningData) {
+            switch (state) {
+                case 'studying':
+                    return <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />;
+                case 'quizzing':
+                    return <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
+                case 'results':
+                    return <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} />;
+                default:
+                    return <LearningContentSkeleton />;
+            }
+        }
+
+        return null;
+    }
+
     return (
         <>
             <Button variant="ghost" onClick={() => router.back()} className="mb-4">
@@ -232,15 +261,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             </motion.div>
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={state}
+                    key={state + (contentExists ? 'loaded' : 'missing')}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
                 >
-                    {state === 'studying' && <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />}
-                    {state === 'quizzing' && <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />}
-                    {state === 'results' && <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} />}
+                    {pageContent()}
                 </motion.div>
             </AnimatePresence>
         </>
