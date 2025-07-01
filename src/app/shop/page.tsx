@@ -1,12 +1,10 @@
 
+'use client';
+
 import ShopClient from './client';
 import { Suspense } from 'react';
 
-export default function ShopPage({
-  searchParams,
-}: {
-  searchParams?: { tab?: string };
-}) {
+export default function ShopPage() {
   return (
     <div className="container mx-auto p-4 sm:p-6 md:p-8">
       <div className="mb-8">
@@ -16,7 +14,7 @@ export default function ShopPage({
         </p>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-        <ShopClient searchParams={searchParams} />
+        <ShopClient />
       </Suspense>
     </div>
   );

@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -90,9 +90,10 @@ const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: Gu
 };
 
 
-export default function ShopClient({ searchParams }: { searchParams?: { tab?: string } }) {
+export default function ShopClient() {
   const router = useRouter();
-  const defaultTab = searchParams?.tab || 'memberships';
+  const searchParams = useSearchParams();
+  const defaultTab = searchParams.get('tab') || 'memberships';
   const { toast } = useToast();
 
   const [billingCycle, setBillingCycle] = useState('monthly');
