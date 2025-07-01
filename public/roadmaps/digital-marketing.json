@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Marketing Fundamentals", "description": "Understand the 4 Ps, SWOT analysis, and customer funnels.", "xp": 100 },
+        { "title": "Content Marketing Basics", "description": "Learn to create valuable content that attracts an audience.", "xp": 150 },
+        { "title": "Intro to SEO", "description": "Learn how search engines work and how to rank higher.", "xp": 180 },
+        { "title": "Social Media Marketing 101", "description": "Build a presence on major social media platforms.", "xp": 160 },
+        { "title": "Email Marketing Foundations", "description": "Learn to build an email list and run effective campaigns.", "xp": 170 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Google Analytics", "description": "Track, analyze, and report on your website traffic.", "xp": 250 },
+        { "title": "PPC Advertising (Google & Social)", "description": "Run paid ad campaigns to drive targeted traffic.", "xp": 300 },
+        { "title": "Advanced SEO Techniques", "description": "Dive into technical SEO, link building, and local SEO.", "xp": 280 },
+        { "title": "Marketing Automation", "description": "Use tools to automate repetitive marketing tasks.", "xp": 320 },
+        { "title": "Conversion Rate Optimization (CRO)", "description": "Turn more website visitors into customers.", "xp": 350 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Data-Driven Marketing Strategy", "description": "Use analytics to make informed marketing decisions.", "xp": 450 },
+        { "title": "Programmatic Advertising", "description": "Understand the automated buying and selling of digital advertising.", "xp": 480 },
+        { "title": "Advanced Content Strategy", "description": "Develop a comprehensive content plan across multiple channels.", "xp": 460 },
+        { "title": "E-commerce Marketing", "description": "Drive sales and growth for online stores.", "xp": 470 },
+        { "title": "Growth Hacking", "description": "Use creative, low-cost strategies to acquire and retain customers.", "xp": 500 }
+      ]
+    }
+  ]
+}

@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dialog';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { generateLearningRoadmap } from '@/ai/flows/learning-roadmap-generator';
+import type { GenerateLearningRoadmapOutput } from '@/ai/flows/learning-roadmap-generator';
 import { Loader2, BookOpenCheck, Code, BrainCircuit, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Lock, Star, Swords, PenTool, Trophy, Zap, Coins, CheckCircle, CircleDot, Shield, Cloud, ClipboardList, Handshake } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -151,10 +151,17 @@ export default function DashboardClient() {
     setRoadmap([]);
 
     try {
-        const result = await generateLearningRoadmap({ streamName });
+        const streamSlug = streamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
+        const response = await fetch(`/roadmaps/${streamSlug}.json`);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to load roadmap for ${streamName}.`);
+        }
+        
+        const result: GenerateLearningRoadmapOutput = await response.json();
 
         if (!result || !result.roadmap || !Array.isArray(result.roadmap)) {
-            throw new Error("Invalid roadmap data received from AI.");
+            throw new Error("Invalid roadmap data received.");
         }
 
         const newRoadmap: Stage[] = result.roadmap.map((stage, stageIndex) => ({
@@ -180,11 +187,11 @@ export default function DashboardClient() {
         localStorage.setItem('careerClashPrestige', '0');
         window.dispatchEvent(new Event('currencyChange'));
     } catch (error) {
-        console.error("Failed to generate roadmap:", error);
+        console.error("Failed to load roadmap:", error);
         toast({
             variant: "destructive",
             title: "Error",
-            description: "Failed to generate your learning path. Please try again.",
+            description: "Failed to load your learning path. Please try again.",
         });
         setSelectedStream(null);
     } finally {
@@ -226,18 +233,18 @@ export default function DashboardClient() {
                     Select a learning path to begin your journey. This will reset your current progress.
                 </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-4">
                 {streams.map((stream) => {
                     const Icon = stream.icon;
                     return (
                         <Button
                         key={stream.name}
                         variant="outline"
-                        className="h-28 flex flex-col items-center justify-center gap-2 text-center p-2"
+                        className="h-24 flex flex-col items-center justify-center gap-2 text-center p-2"
                         onClick={() => openConfirmation(stream.name)}
                         >
                         <Icon className="h-8 w-8 text-primary" />
-                        <span className="text-sm font-semibold">{stream.name}</span>
+                        <span className="text-xs font-semibold">{stream.name}</span>
                         </Button>
                     );
                 })}
@@ -323,7 +330,7 @@ export default function DashboardClient() {
                                 <Badge variant={isStageLocked ? 'secondary' : 'default'}>{completedLevels} / {totalLevels}</Badge>
                            </div>
                         </AccordionTrigger>
-                        <AccordionContent className="pt-4 space-y-4">
+                        <AccordionContent className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {stage.levels && stage.levels.length > 0 ? stage.levels.map((level, levelIndex) => (
                                 <Card key={levelIndex} className={cn('w-full transition-all', 
                                     !(!isStageLocked && level.status !== 'locked') && 'bg-muted/50 opacity-70',
@@ -354,7 +361,7 @@ export default function DashboardClient() {
                                         </Button>
                                     </CardFooter>
                                 </Card>
-                            )) : <p className="text-muted-foreground text-center py-4">Levels for this stage are being prepared.</p>}
+                            )) : <p className="text-muted-foreground text-center py-4 md:col-span-2 lg:col-span-3">Levels for this stage are being prepared.</p>}
                         </AccordionContent>
                     </AccordionItem>
                 )

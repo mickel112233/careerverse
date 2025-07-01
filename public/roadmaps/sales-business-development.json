@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Sales Fundamentals", "description": "Understand the sales process, from prospecting to closing.", "xp": 120 },
+        { "title": "Identifying Your Ideal Customer Profile (ICP)", "description": "Define the perfect customer for your product or service.", "xp": 150 },
+        { "title": "Prospecting & Lead Generation", "description": "Find potential customers and add them to your pipeline.", "xp": 180 },
+        { "title": "CRM Basics (Salesforce/HubSpot)", "description": "Learn to manage customer relationships and track deals.", "xp": 160 },
+        { "title": "Crafting Your Elevator Pitch", "description": "Clearly and concisely explain what you offer.", "xp": 130 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Consultative Selling", "description": "Act as an advisor to understand and solve customer problems.", "xp": 280 },
+        { "title": "Handling Objections", "description": "Learn to effectively address customer concerns and pushback.", "xp": 260 },
+        { "title": "Negotiation Skills", "description": "Master the art of reaching mutually beneficial agreements.", "xp": 300 },
+        { "title": "Sales Funnel & Pipeline Management", "description": "Track leads as they move through the sales process.", "xp": 320 },
+        { "title": "Social Selling", "description": "Use social media to find, connect with, and nurture sales prospects.", "xp": 250 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Strategic Partnerships", "description": "Identify and build relationships with other businesses for mutual benefit.", "xp": 450 },
+        { "title": "Channel Sales", "description": "Develop a strategy to sell through third-party partners.", "xp": 420 },
+        { "title": "Market Analysis & Expansion", "description": "Identify new markets and create a plan to enter them.", "xp": 480 },
+        { "title": "Sales Forecasting & Analytics", "description": "Use data to predict future sales and analyze performance.", "xp": 460 },
+        { "title": "Building & Leading a Sales Team", "description": "Recruit, train, and manage a high-performing sales team.", "xp": 500 }
+      ]
+    }
+  ]
+}

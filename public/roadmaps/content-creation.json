@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Finding Your Niche", "description": "Identify your passion and target audience.", "xp": 100 },
+        { "title": "Content Planning & Strategy", "description": "Create a content calendar and define your goals.", "xp": 120 },
+        { "title": "Writing for the Web", "description": "Learn to write engaging and scannable blog posts and scripts.", "xp": 150 },
+        { "title": "Video Production Basics", "description": "Understand lighting, audio, and basic camera work.", "xp": 180 },
+        { "title": "Graphic Design for Social Media", "description": "Use tools like Canva to create eye-catching visuals.", "xp": 160 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Audience Growth & Community Building", "description": "Engage with your audience and foster a community.", "xp": 250 },
+        { "title": "Video Editing with DaVinci Resolve or Premiere Pro", "description": "Learn to edit videos professionally.", "xp": 350 },
+        { "title": "Content Repurposing", "description": "Turn one piece of content into multiple formats for different platforms.", "xp": 280 },
+        { "title": "Understanding Analytics", "description": "Use data to understand what content performs best.", "xp": 300 },
+        { "title": "Monetization Strategies", "description": "Explore ads, sponsorships, affiliate marketing, and products.", "xp": 400 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Building a Personal Brand", "description": "Establish yourself as an authority in your niche.", "xp": 450 },
+        { "title": "Advanced Storytelling", "description": "Craft compelling narratives that captivate your audience.", "xp": 480 },
+        { "title": "Live Streaming", "description": "Engage with your audience in real-time on platforms like YouTube or Twitch.", "xp": 460 },
+        { "title": "Creating and Selling Digital Products", "description": "Develop and launch your own courses, e-books, or templates.", "xp": 500 },
+        { "title": "Outsourcing & Scaling Your Content Business", "description": "Learn to hire help and grow your brand beyond yourself.", "xp": 500 }
+      ]
+    }
+  ]
+}

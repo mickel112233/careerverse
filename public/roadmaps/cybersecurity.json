@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Cybersecurity Fundamentals", "description": "Learn the CIA triad, threats, vulnerabilities, and risk.", "xp": 120 },
+        { "title": "Networking Basics", "description": "Understand TCP/IP, OSI model, DNS, and common ports.", "xp": 150 },
+        { "title": "Operating Systems (Linux & Windows)", "description": "Master the command line and user permissions.", "xp": 180 },
+        { "title": "Intro to Cryptography", "description": "Grasp symmetric vs. asymmetric encryption, hashing, and certificates.", "xp": 170 },
+        { "title": "Security Policies & Compliance", "description": "Understand the basics of GDPR, HIPAA, and other regulations.", "xp": 160 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Ethical Hacking & Penetration Testing", "description": "Learn to think like an attacker to find and fix vulnerabilities.", "xp": 350 },
+        { "title": "Web Application Security", "description": "Understand OWASP Top 10 vulnerabilities like XSS and SQL Injection.", "xp": 320 },
+        { "title": "Network Security & Firewalls", "description": "Configure firewalls, IDS/IPS, and VPNs.", "xp": 300 },
+        { "title": "Digital Forensics & Incident Response", "description": "Learn to investigate breaches and recover from attacks.", "xp": 380 },
+        { "title": "Security Information & Event Management (SIEM)", "description": "Use tools like Splunk or ELK to analyze security logs.", "xp": 400 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Malware Analysis & Reverse Engineering", "description": "Dissect malicious software to understand its behavior.", "xp": 480 },
+        { "title": "Cloud Security (AWS, Azure, GCP)", "description": "Secure cloud infrastructure and services.", "xp": 460 },
+        { "title": "Threat Intelligence", "description": "Gather and analyze information about emerging threats.", "xp": 450 },
+        { "title": "Red Teaming & Blue Teaming", "description": "Participate in adversarial attack and defense simulations.", "xp": 500 },
+        { "title": "Advanced Penetration Testing", "description": "Explore advanced techniques for bypassing modern defenses.", "xp": 500 }
+      ]
+    }
+  ]
+}

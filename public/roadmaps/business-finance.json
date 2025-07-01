@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Accounting Principles", "description": "Understand debits, credits, and the accounting equation.", "xp": 120 },
+        { "title": "Financial Statements 101", "description": "Learn to read and interpret balance sheets and income statements.", "xp": 150 },
+        { "title": "Introduction to Corporate Finance", "description": "Grasp the basics of capital budgeting and valuation.", "xp": 180 },
+        { "title": "Time Value of Money", "description": "Understand the core concept that a dollar today is worth more than a dollar tomorrow.", "xp": 160 },
+        { "title": "Excel for Finance", "description": "Master essential Excel functions for financial analysis.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Financial Modeling", "description": "Build models to forecast a company's financial performance.", "xp": 300 },
+        { "title": "Valuation Methods", "description": "Learn DCF, precedent transactions, and comparable company analysis.", "xp": 350 },
+        { "title": "Investment Analysis", "description": "Analyze stocks, bonds, and other investment opportunities.", "xp": 320 },
+        { "title": "Risk Management", "description": "Identify, assess, and mitigate financial risks.", "xp": 330 },
+        { "title": "Capital Markets", "description": "Understand how companies raise capital through equity and debt.", "xp": 380 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Mergers & Acquisitions (M&A)", "description": "Analyze the process of buying, selling, and combining companies.", "xp": 450 },
+        { "title": "Portfolio Management", "description": "Construct and manage a diversified investment portfolio.", "xp": 480 },
+        { "title": "Derivatives & Options", "description": "Understand futures, forwards, swaps, and options.", "xp": 500 },
+        { "title": "Private Equity & Venture Capital", "description": "Explore the world of investing in private companies.", "xp": 470 },
+        { "title": "Behavioral Finance", "description": "Study the impact of psychology on financial decision-making.", "xp": 460 }
+      ]
+    }
+  ]
+}

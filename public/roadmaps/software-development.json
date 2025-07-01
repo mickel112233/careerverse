@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "HTML & CSS Fundamentals", "description": "Learn the building blocks of the web.", "xp": 100 },
+        { "title": "Introduction to JavaScript", "description": "Make your web pages interactive.", "xp": 150 },
+        { "title": "Version Control with Git", "description": "Learn how to track and manage code changes.", "xp": 120 },
+        { "title": "DOM Manipulation", "description": "Control HTML and CSS with JavaScript.", "xp": 180 },
+        { "title": "Basic Data Structures", "description": "Understand arrays, objects, and more.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Introduction to React", "description": "Build user interfaces with a component-based library.", "xp": 250 },
+        { "title": "State Management in React", "description": "Manage complex application state effectively.", "xp": 300 },
+        { "title": "Working with APIs", "description": "Fetch and display data from external sources.", "xp": 280 },
+        { "title": "Introduction to Node.js & Express", "description": "Build your first server-side application.", "xp": 350 },
+        { "title": "Database Fundamentals (SQL & NoSQL)", "description": "Learn how to store and retrieve data.", "xp": 400 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Advanced React Patterns", "description": "Explore hooks, context, and performance optimization.", "xp": 450 },
+        { "title": "TypeScript for Large-Scale Apps", "description": "Add static typing to your JavaScript projects.", "xp": 480 },
+        { "title": "Authentication & Security", "description": "Learn how to secure your applications.", "xp": 500 },
+        { "title": "Introduction to CI/CD", "description": "Automate your build, test, and deployment pipelines.", "xp": 500 },
+        { "title": "System Design Principles", "description": "Learn to design scalable and reliable systems.", "xp": 500 }
+      ]
+    }
+  ]
+}

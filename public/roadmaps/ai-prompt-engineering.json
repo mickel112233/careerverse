@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Introduction to LLMs", "description": "Understand what Large Language Models are and how they work.", "xp": 120 },
+        { "title": "Basic Prompting Techniques", "description": "Learn zero-shot, one-shot, and few-shot prompting.", "xp": 150 },
+        { "title": "Instructional Prompts", "description": "Master clear and concise instructions for better outputs.", "xp": 180 },
+        { "title": "Role-Playing Prompts", "description": "Guide the AI to adopt a specific persona or expertise.", "xp": 160 },
+        { "title": "Understanding Context Windows", "description": "Learn about the limitations and capabilities of model memory.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Chain-of-Thought (CoT) Prompting", "description": "Encourage the model to 'think' step-by-step for complex tasks.", "xp": 280 },
+        { "title": "Structured Output (JSON/XML)", "description": "Force the model to provide responses in a specific format.", "xp": 320 },
+        { "title": "Prompt Chaining & Pipelines", "description": "Break down complex tasks into a series of smaller prompts.", "xp": 350 },
+        { "title": "Negative Prompting", "description": "Specify what you don't want to see in the output.", "xp": 290 },
+        { "title": "Controlling Temperature & Top-p", "description": "Learn to adjust model creativity and randomness.", "xp": 330 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Self-Consistency Prompting", "description": "Generate multiple reasoning paths and select the best one.", "xp": 450 },
+        { "title": "Tree-of-Thoughts (ToT) Prompting", "description": "Explore multiple reasoning paths at each step.", "xp": 480 },
+        { "title": "Function Calling & Tool Use", "description": "Enable the AI to use external tools and APIs.", "xp": 500 },
+        { "title": "Fine-Tuning vs. Prompt Engineering", "description": "Understand when to engineer prompts vs. fine-tune a model.", "xp": 460 },
+        { "title": "Evaluating Prompt Performance", "description": "Develop metrics and frameworks for testing prompt effectiveness.", "xp": 470 }
+      ]
+    }
+  ]
+}

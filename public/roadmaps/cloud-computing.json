@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Cloud Concepts", "description": "Understand IaaS, PaaS, SaaS, and public vs. private vs. hybrid clouds.", "xp": 120 },
+        { "title": "Introduction to AWS, Azure, or GCP", "description": "Get an overview of the core services of a major cloud provider.", "xp": 150 },
+        { "title": "Virtual Machines & Compute", "description": "Launch and manage your first virtual server in the cloud.", "xp": 180 },
+        { "title": "Cloud Storage Solutions", "description": "Learn about object storage, block storage, and file storage.", "xp": 170 },
+        { "title": "Identity and Access Management (IAM)", "description": "Control who can access your cloud resources.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Virtual Networking (VPCs)", "description": "Design and configure your own private network in the cloud.", "xp": 300 },
+        { "title": "Databases in the Cloud", "description": "Use managed SQL and NoSQL database services.", "xp": 320 },
+        { "title": "Containers & Orchestration (Docker & Kubernetes)", "description": "Package and deploy applications using containers.", "xp": 400 },
+        { "title": "Serverless Computing (Lambda/Functions)", "description": "Run code without provisioning or managing servers.", "xp": 350 },
+        { "title": "Monitoring & Logging", "description": "Use tools like CloudWatch or Azure Monitor to track performance.", "xp": 330 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Infrastructure as Code (IaC)", "description": "Manage cloud resources using Terraform or CloudFormation.", "xp": 450 },
+        { "title": "CI/CD Pipelines in the Cloud", "description": "Automate your application deployment process.", "xp": 460 },
+        { "title": "Cloud Security & Best Practices", "description": "Learn to secure your cloud environment against threats.", "xp": 480 },
+        { "title": "Cloud Cost Management & Optimization", "description": "Analyze and reduce your monthly cloud bill.", "xp": 420 },
+        { "title": "Multi-Cloud & Hybrid Strategies", "description": "Design solutions that span multiple cloud providers or on-premise data centers.", "xp": 500 }
+      ]
+    }
+  ]
+}

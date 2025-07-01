@@ -480,7 +480,7 @@ export default function ProfileClient() {
 
         <div className="w-full lg:w-2/3">
              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid grid-cols-5">
+                <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="collection">Collection</TabsTrigger>
                     <TabsTrigger value="statistics">Statistics</TabsTrigger>

@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Python for Data Science", "description": "Learn the core Python libraries: NumPy, Pandas, Matplotlib.", "xp": 150 },
+        { "title": "Statistics & Probability", "description": "Understand the mathematical foundations of data science.", "xp": 180 },
+        { "title": "Data Wrangling & Cleaning", "description": "Learn to preprocess and clean messy real-world data.", "xp": 200 },
+        { "title": "SQL for Data Analysis", "description": "Master querying databases to extract insights.", "xp": 170 },
+        { "title": "Intro to Machine Learning", "description": "Grasp the fundamental concepts of ML.", "xp": 220 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Supervised Learning Algorithms", "description": "Explore regression and classification models.", "xp": 300 },
+        { "title": "Unsupervised Learning Algorithms", "description": "Dive into clustering and dimensionality reduction.", "xp": 320 },
+        { "title": "Feature Engineering", "description": "Learn to create and select features that improve model performance.", "xp": 350 },
+        { "title": "Model Evaluation & Metrics", "description": "Understand how to measure the performance of your models.", "xp": 330 },
+        { "title": "Intro to Deep Learning", "description": "Get started with neural networks using TensorFlow or PyTorch.", "xp": 400 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Natural Language Processing (NLP)", "description": "Build models that understand and generate human language.", "xp": 450 },
+        { "title": "Computer Vision", "description": "Train models to analyze and understand images and videos.", "xp": 480 },
+        { "title": "Time Series Analysis", "description": "Forecast future values based on historical time-stamped data.", "xp": 460 },
+        { "title": "MLOps", "description": "Learn to deploy, monitor, and maintain ML models in production.", "xp": 500 },
+        { "title": "Advanced Deep Learning Architectures", "description": "Explore Transformers, GANs, and other modern architectures.", "xp": 500 }
+      ]
+    }
+  ]
+}

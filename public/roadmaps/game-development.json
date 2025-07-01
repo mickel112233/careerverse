@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Game Design Fundamentals", "description": "Learn about game loops, mechanics, and player experience.", "xp": 120 },
+        { "title": "Choose Your Engine: Unity or Unreal", "description": "Get an overview of the two major game engines.", "xp": 100 },
+        { "title": "Programming Basics (C# or C++)", "description": "Learn the core programming language for your chosen engine.", "xp": 200 },
+        { "title": "Creating Your First 2D Game", "description": "Build a simple game from scratch to learn the basics.", "xp": 220 },
+        { "title": "Intro to 3D Game Development", "description": "Understand 3D spaces, models, and materials.", "xp": 250 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Physics for Game Developers", "description": "Implement realistic movement, collisions, and gravity.", "xp": 300 },
+        { "title": "Character Control & Animation", "description": "Create responsive player controllers and animation state machines.", "xp": 350 },
+        { "title": "UI/UX for Games", "description": "Design intuitive menus, HUDs, and player feedback systems.", "xp": 320 },
+        { "title": "AI for Game Characters", "description": "Implement basic enemy AI and pathfinding.", "xp": 380 },
+        { "title": "Shaders & Effects", "description": "Learn to create custom visual effects and materials.", "xp": 400 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Multiplayer Networking", "description": "Build games that can be played by multiple people online.", "xp": 500 },
+        { "title": "Performance Optimization", "description": "Profile and optimize your game to run smoothly on target hardware.", "xp": 480 },
+        { "title": "Procedural Content Generation (PCG)", "description": "Create game content algorithmically.", "xp": 460 },
+        { "title": "Audio Design & Implementation", "description": "Integrate sound effects and music to enhance immersion.", "xp": 420 },
+        { "title": "Publishing Your Game", "description": "Learn the process of shipping your game on platforms like Steam or Itch.io.", "xp": 500 }
+      ]
+    }
+  ]
+}

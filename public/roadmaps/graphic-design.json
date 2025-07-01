@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Design Principles", "description": "Learn about contrast, hierarchy, balance, and repetition.", "xp": 100 },
+        { "title": "Color Theory", "description": "Understand the emotional and psychological impact of color.", "xp": 120 },
+        { "title": "Typography Basics", "description": "Learn to choose and pair fonts effectively.", "xp": 150 },
+        { "title": "Intro to Adobe Illustrator", "description": "Master the pen tool and create vector graphics.", "xp": 200 },
+        { "title": "Intro to Adobe Photoshop", "description": "Learn layers, masking, and photo manipulation.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Layout & Composition", "description": "Arrange elements to create visually appealing designs.", "xp": 280 },
+        { "title": "Logo Design & Branding", "description": "Create a complete visual identity for a brand.", "xp": 350 },
+        { "title": "Intro to UI/UX Design", "description": "Design user-friendly interfaces for websites and apps.", "xp": 320 },
+        { "title": "Iconography", "description": "Design a cohesive set of icons.", "xp": 290 },
+        { "title": "Print Design Basics", "description": "Understand color modes, resolution, and print-ready files.", "xp": 300 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Advanced Typography", "description": "Explore complex typographic systems and custom lettering.", "xp": 420 },
+        { "title": "Motion Graphics with After Effects", "description": "Bring your static designs to life with animation.", "xp": 480 },
+        { "title": "Building a Design System", "description": "Create a scalable and consistent system for a product.", "xp": 450 },
+        { "title": "Portfolio Development", "description": "Showcase your best work to attract clients or employers.", "xp": 400 },
+        { "title": "Freelancing & Client Management", "description": "Learn the business side of being a designer.", "xp": 500 }
+      ]
+    }
+  ]
+}

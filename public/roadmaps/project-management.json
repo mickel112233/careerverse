@@ -1,0 +1,35 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Project Management Fundamentals", "description": "Learn about the project lifecycle, stakeholders, and constraints.", "xp": 120 },
+        { "title": "Agile & Scrum Basics", "description": "Understand sprints, stand-ups, backlogs, and retrospectives.", "xp": 180 },
+        { "title": "Waterfall Methodology", "description": "Learn the traditional, sequential approach to project management.", "xp": 130 },
+        { "title": "Scope & Requirements Gathering", "description": "Define what the project will deliver.", "xp": 160 },
+        { "title": "Task Management Tools (Jira/Trello)", "description": "Learn to use popular tools to track project progress.", "xp": 150 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": [
+        { "title": "Risk Management", "description": "Identify, analyze, and create response plans for project risks.", "xp": 280 },
+        { "title": "Project Scheduling & Gantt Charts", "description": "Create a timeline and track dependencies.", "xp": 260 },
+        { "title": "Budgeting & Cost Management", "description": "Estimate costs and track spending against the project budget.", "xp": 300 },
+        { "title": "Stakeholder Communication", "description": "Develop a communication plan to keep everyone informed.", "xp": 250 },
+        { "title": "Team Leadership & Motivation", "description": "Learn to lead and motivate a project team effectively.", "xp": 320 }
+      ]
+    },
+    {
+      "stageName": "Advance",
+      "levels": [
+        { "title": "Program & Portfolio Management", "description": "Manage multiple related projects to achieve strategic objectives.", "xp": 450 },
+        { "title": "Change Management", "description": "Guide organizations through transitions and changes.", "xp": 420 },
+        { "title": "Quality Management", "description": "Ensure the project deliverables meet the required quality standards.", "xp": 400 },
+        { "title": "Procurement & Vendor Management", "description": "Manage contracts and relationships with external vendors.", "xp": 430 },
+        { "title": "PMP/Agile Certification Prep", "description": "Prepare for professional project management certifications.", "xp": 500 }
+      ]
+    }
+  ]
+}
