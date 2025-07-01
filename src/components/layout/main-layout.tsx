@@ -8,7 +8,7 @@ import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart, Trophy, Skull, Sta
 import Logo from "@/components/icons/logo";
 import { cn } from "@/lib/utils";
 import CurrencyHeader from "@/components/ui/currency-header";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
 
 const menuItems = [
@@ -75,6 +75,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="p-0 w-64">
+                            <SheetHeader className="sr-only">
+                                <SheetTitle>Menu</SheetTitle>
+                                <SheetDescription>Main navigation menu for the application.</SheetDescription>
+                            </SheetHeader>
                              <SidebarContent pathname={pathname} onLinkClick={() => setIsMobileSheetOpen(false)} />
                         </SheetContent>
                     </Sheet>
