@@ -19,8 +19,9 @@ export default {
     },
     extend: {
       boxShadow: {
-        'primary': '0 0 20px hsl(var(--primary))',
-        'primary-hover': '0 0 40px hsl(var(--primary))',
+        'primary': '0 0 15px hsl(var(--primary) / 0.5)',
+        'primary-hover': '0 0 25px hsl(var(--primary) / 0.8)',
+        'accent': '0 0 15px hsl(var(--accent) / 0.5)',
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],

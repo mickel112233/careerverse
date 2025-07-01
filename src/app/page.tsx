@@ -22,31 +22,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-
-const GridBackground = () => (
-  <div className="absolute inset-0 -z-10 h-full w-full bg-background">
-    <div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(139,92,246,0.15),rgba(255,255,255,0))]"></div>
-    <div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(59,130,246,0.15),rgba(255,255,255,0))]"></div>
-    <svg
-      className="absolute inset-0 -z-10 h-full w-full stroke-border/50 [mask-image:radial-gradient(100%_100%_at_top_center,white,transparent)]"
-      aria-hidden="true"
-    >
-      <defs>
-        <pattern
-          id="grid-pattern"
-          width="80"
-          height="80"
-          x="50%"
-          y="-1"
-          patternUnits="userSpaceOnUse"
-        >
-          <path d="M.5 80V.5H80" fill="none" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" strokeWidth="0" fill="url(#grid-pattern)" />
-    </svg>
-  </div>
-);
+import GeometricBackground from '@/components/ui/geometric-background';
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -57,7 +33,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if the user has any progress to determine if they are "new"
     const userProfile = localStorage.getItem('careerClashUserProfile');
     if (userProfile) {
       setIsNewUser(false);
@@ -110,7 +85,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white">
-      <GridBackground />
+      <GeometricBackground />
       <AlertDialog open={isGuestDialogOpen} onOpenChange={setIsGuestDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -156,11 +131,11 @@ export default function Home() {
           animate="visible"
         >
           <motion.header variants={itemVariants} className="mb-8">
-            <Logo className="h-20 w-20 md:h-24 md:w-24" />
+            <Logo className="h-20 w-20 md:h-24 md:w-24 text-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
           </motion.header>
 
           <main className="flex flex-col items-center">
-            <motion.h1 variants={itemVariants} className="font-headline text-5xl font-black tracking-tighter sm:text-7xl md:text-8xl bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">
+            <motion.h1 variants={itemVariants} className="font-headline text-5xl font-black tracking-tighter sm:text-7xl md:text-8xl bg-gradient-to-b from-slate-50 via-slate-300 to-slate-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
               CAREER CLASH
             </motion.h1>
             <motion.p variants={itemVariants} className="mt-4 max-w-2xl text-lg text-slate-300 md:text-xl">
@@ -169,7 +144,7 @@ export default function Home() {
             {isNewUser ? (
                  <motion.div variants={itemVariants} className="flex flex-col items-center gap-4 mt-8">
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button asChild size="lg" className="font-bold text-lg px-8 py-6 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300" disabled={!termsAccepted}>
+                        <Button asChild size="lg" className="font-bold text-lg px-8 py-6 rounded-full shadow-primary hover:shadow-primary-hover transition-all duration-300" disabled={!termsAccepted}>
                             <Link href="/login">
                                 <LogIn className="mr-2 h-5 w-5" />
                                 Sign In / Sign Up
@@ -193,7 +168,7 @@ export default function Home() {
                 </motion.div>
             ) : (
                 <motion.div variants={itemVariants}>
-                <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full bg-primary/10 border-2 border-primary text-primary shadow-primary hover:bg-primary hover:text-primary-foreground hover:shadow-primary-hover transition-all duration-300">
+                <Button asChild size="lg" className="mt-8 font-bold text-lg px-10 py-7 rounded-full shadow-primary hover:shadow-primary-hover transition-all duration-300">
                     <Link href="/dashboard">
                     BEGIN ADVENTURE
                     <MoveRight className="ml-2 h-5 w-5" />

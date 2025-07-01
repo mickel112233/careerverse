@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const CurrencyDisplay = ({ amount, type }: { amount: number, type: 'coins' | 'gems' }) => (
     <div className="flex items-center gap-1 font-semibold bg-background/50 backdrop-blur-sm px-3 py-1.5 rounded-md border border-border/50">
-        {type === 'coins' ? <span className="text-yellow-400 text-lg">🟡</span> : <Gem className="h-4 w-4 text-primary"/>}
+        {type === 'coins' ? <span className="text-yellow-400 text-lg">C</span> : <Gem className="h-4 w-4 text-primary"/>}
         <span className="text-foreground">{amount.toLocaleString()}</span>
     </div>
 );
@@ -44,10 +44,10 @@ export default function CurrencyHeader() {
     }
 
     return (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <div className="flex items-center gap-2">
             <CurrencyDisplay amount={coins} type="coins" />
             <CurrencyDisplay amount={gems} type="gems" />
-            <Button size="icon" variant="outline" onClick={handleGoToShop} className="h-10 w-10">
+            <Button size="icon" variant="outline" onClick={handleGoToShop} className="h-9 w-9">
                 <ShoppingCart className="h-5 w-5" />
                  <span className="sr-only">Go to Shop</span>
             </Button>

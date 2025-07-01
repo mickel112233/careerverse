@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
-import { Award, Linkedin, ShieldCheck, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart, Package, ToyBrick, Trash2 } from "lucide-react";
+import { Linkedin, Star, Swords, Trophy, Zap, Repeat, Flame, Percent, Users, ArrowLeft, Pencil, Loader2, Github, Youtube, Instagram, MessageSquare, Shield, Skull, LineChart, Package, Trash2, CheckSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AiImage } from '@/components/ui/ai-image';
@@ -26,26 +26,10 @@ import { motion } from 'framer-motion';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
+import { Achievement, allAchievements } from '@/lib/achievement-data';
 
 const PRESTIGE_LEVEL_REQUIREMENT = 100;
 const PRESTIGE_GEM_REWARD = 100;
-
-type Achievement = {
-    name: string;
-    description: string;
-    icon: React.ElementType;
-    color: string;
-    type: 'Achievement'
-};
-
-const baseAchievements: Achievement[] = [
-    { name: 'Master Coder', description: 'Achieved mastery in advanced coding challenges.', icon: Award, color: 'text-purple-400', type: 'Achievement' },
-    { name: 'AI Guru', description: 'Demonstrated deep knowledge in AI and Machine Learning.', icon: Zap, color: 'text-sky-400', type: 'Achievement' },
-    { name: 'TS Wizard', description: 'Mastered the art of TypeScript.', icon: ShieldCheck, color: 'text-green-400', type: 'Achievement' },
-    { name: '5 Wins Streak', description: 'Achieved a winning streak of 5 consecutive battles.', icon: Flame, color: 'text-red-500', type: 'Achievement' },
-    { name: 'Top 10 Player', description: 'Ranked among the top 10 players on the leaderboard.', icon: Trophy, color: 'text-orange-400', type: 'Achievement' },
-    { name: 'React Pro', description: 'Showcased expert-level skills in React development.', icon: Star, color: 'text-yellow-400', type: 'Achievement' },
-];
 
 const mockSkillData = [
   { subject: 'Frontend', score: 95, fullMark: 100 },
@@ -81,8 +65,6 @@ type UserProfileData = {
     guild: { name: string; role: string; } | null;
     battleHistory: { id: number; challenge: string; opponent: { name: string; prompt: string; }; result: string; xp: string; }[];
 };
-
-type UnlockableItem = (Achievement);
 
 const StatItem = ({ label, value, icon: Icon }: { label: string, value: string | number, icon: React.ElementType }) => (
     <motion.div 
@@ -126,7 +108,7 @@ const SkillRadarChart = ({ data }: { data: typeof mockSkillData }) => (
     </ResponsiveContainer>
 );
 
-const EditShowcaseDialog = ({ isOpen, onOpenChange, allItems, currentPinned, onSave }: { isOpen: boolean, onOpenChange: (open: boolean) => void, allItems: UnlockableItem[], currentPinned: string[], onSave: (newPinned: string[]) => void }) => {
+const EditShowcaseDialog = ({ isOpen, onOpenChange, allItems, currentPinned, onSave }: { isOpen: boolean, onOpenChange: (open: boolean) => void, allItems: Achievement[], currentPinned: string[], onSave: (newPinned: string[]) => void }) => {
     const [selected, setSelected] = useState(new Set(currentPinned));
     const MAX_PINNED = 4;
 
@@ -149,7 +131,7 @@ const EditShowcaseDialog = ({ isOpen, onOpenChange, allItems, currentPinned, onS
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Customize Your Showcase</DialogTitle>
-                    <DialogDescription>Select up to {MAX_PINNED} achievements and items to display on your profile.</DialogDescription>
+                    <DialogDescription>Select up to {MAX_PINNED} achievements to display on your profile.</DialogDescription>
                 </DialogHeader>
                 <div className="py-4 space-y-4 max-h-[50vh] overflow-y-auto pr-2">
                     {allItems.map((item) => {
@@ -160,7 +142,7 @@ const EditShowcaseDialog = ({ isOpen, onOpenChange, allItems, currentPinned, onS
                             <div key={item.name} className={cn("flex items-center space-x-3 p-3 rounded-md border", isSelected && "border-primary bg-primary/10", isDisabled && "opacity-50")}>
                                 <Checkbox id={item.name} checked={isSelected} onCheckedChange={() => handleSelect(item.name)} disabled={isDisabled} />
                                 <label htmlFor={item.name} className={cn("flex items-center gap-3 w-full", isDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
-                                    <Icon className={cn("h-8 w-8 p-1 rounded-md", ('color' in item) ? item.color : 'text-primary', isSelected ? "bg-primary/20" : "bg-muted")} />
+                                    <Icon className={cn("h-8 w-8 p-1 rounded-md", item.color, isSelected ? "bg-primary/20" : "bg-muted")} />
                                     <div>
                                         <p className="font-semibold">{item.name}</p>
                                         <p className="text-xs text-muted-foreground">{item.description}</p>
@@ -189,8 +171,7 @@ export default function ProfileClient() {
     const [xpForCurrentLevel, setXpForCurrentLevel] = useState(0);
     const [xpToNextLevel, setXpToNextLevel] = useState(1000);
     const [membership, setMembership] = useState('Free');
-    const [unlockableItems, setUnlockableItems] = useState<UnlockableItem[]>([]);
-    const [ownedItems, setOwnedItems] = useState<any[]>([]);
+    const [ownedAchievements, setOwnedAchievements] = useState<Achievement[]>([]);
     const [pinnedItems, setPinnedItems] = useState<string[]>([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isShowcaseModalOpen, setIsShowcaseModalOpen] = useState(false);
@@ -275,18 +256,15 @@ export default function ProfileClient() {
         const storedMembership = localStorage.getItem('careerClashMembership') || 'Free';
         setMembership(storedMembership);
 
-        const inventory = JSON.parse(localStorage.getItem('careerClashInventory') || '[]');
-        // Since cosmetic items are removed, this will be empty
-        const currentOwnedItems: any[] = []; 
-        setOwnedItems(currentOwnedItems);
-
-        setUnlockableItems([...baseAchievements, ...currentOwnedItems]);
+        // For now, mock some owned achievements. In a real app, this would be based on stats.
+        setOwnedAchievements(allAchievements.slice(0, 8));
 
         const storedPinned = localStorage.getItem('pinnedItems');
         if (storedPinned) {
             setPinnedItems(JSON.parse(storedPinned));
         } else {
-            setPinnedItems(baseAchievements.slice(0, 4).map(a => a.name));
+            // Default pinned items
+            setPinnedItems(allAchievements.slice(0, 4).map(a => a.name));
         }
     };
 
@@ -356,7 +334,7 @@ export default function ProfileClient() {
         return <div className="flex justify-center items-center h-96"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
-    const displayedItems = unlockableItems.filter(item => pinnedItems.includes(item.name));
+    const displayedItems = ownedAchievements.filter(item => pinnedItems.includes(item.name));
 
   return (
     <>
@@ -386,7 +364,7 @@ export default function ProfileClient() {
         <EditShowcaseDialog 
             isOpen={isShowcaseModalOpen} 
             onOpenChange={setIsShowcaseModalOpen} 
-            allItems={unlockableItems} 
+            allItems={ownedAchievements} 
             currentPinned={pinnedItems} 
             onSave={(newPinned) => {
                 setPinnedItems(newPinned);
@@ -404,7 +382,7 @@ export default function ProfileClient() {
        
        <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-1/3 space-y-8 -mt-20 sm:-mt-24 z-10">
-            <Card className="text-center p-6 pt-0 border-2 border-transparent relative">
+            <Card className="text-center p-6 pt-0 border-2 border-transparent relative bg-card/80 backdrop-blur-sm">
                 <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => setIsEditModalOpen(true)}><Pencil className="h-4 w-4" /></Button>
                 <TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn("w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 rounded-full border-4 border-background ring-4 transition-all", avatarRingClass)}><AiAvatar prompt={userData.avatarPrompt} alt={userData.name} fallback={userData.name.substring(0, 2)} className="w-full h-full" /></div></TooltipTrigger><TooltipContent><p>{levelTooltip}</p></TooltipContent></Tooltip></TooltipProvider>
                 <div className="flex items-center justify-center gap-2 flex-wrap">
@@ -492,7 +470,7 @@ export default function ProfileClient() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle className="font-headline">Showcase</CardTitle>
-                                <CardDescription>Your collection of titles and achievements.</CardDescription>
+                                <CardDescription>Your pinned achievements.</CardDescription>
                             </div>
                             <Button variant="outline" size="sm" onClick={() => setIsShowcaseModalOpen(true)}><Pencil className="mr-2 h-4 w-4"/>Edit</Button>
                         </CardHeader>
@@ -507,7 +485,7 @@ export default function ProfileClient() {
                                                     initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3, delay: i * 0.05 }}
                                                     whileHover={{ scale: 1.05, y: -5, backgroundColor: 'hsl(var(--muted))' }}
                                                 >
-                                                    <Icon className={cn("h-10 w-10 mb-2", ('color' in item) ? item.color : 'text-primary' )} />
+                                                    <Icon className={cn("h-10 w-10 mb-2", item.color )} />
                                                     <p className="text-sm font-semibold">{item.name}</p>
                                                 </motion.div>
                                             </TooltipTrigger><TooltipContent><p className="font-bold">{item.name}</p>{item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}</TooltipContent></Tooltip></TooltipProvider>
@@ -515,7 +493,7 @@ export default function ProfileClient() {
                                     })}
                                 </div>
                             ) : (
-                                <p className="text-center text-muted-foreground py-4">Your showcase is empty. Pin some items to show them off!</p>
+                                <p className="text-center text-muted-foreground py-4">Your showcase is empty. Pin some items from your Collection to show them off!</p>
                             )}
                         </CardContent>
                     </Card>
@@ -523,17 +501,17 @@ export default function ProfileClient() {
                 <TabsContent value="collection" className="mt-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="font-headline flex items-center gap-2"><Package /> Your Collection</CardTitle>
-                            <CardDescription>All the cosmetic items you've purchased from the shop.</CardDescription>
+                            <CardTitle className="font-headline flex items-center gap-2"><Package /> Your Achievements</CardTitle>
+                            <CardDescription>All the achievements you've unlocked.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                             {ownedItems.length > 0 ? (
+                             {ownedAchievements.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {ownedItems.map((item, i) => {
+                                    {ownedAchievements.map((item, i) => {
                                         const Icon = item.icon;
                                         return (
                                             <div key={i} className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-                                                <Icon className={cn("h-10 w-10 p-2 rounded-md", 'text-primary', 'bg-background/50')} />
+                                                <Icon className={cn("h-10 w-10 p-2 rounded-md", item.color, 'bg-background/50')} />
                                                 <div>
                                                     <p className="font-bold">{item.name}</p>
                                                     <p className="text-xs text-muted-foreground">{item.description}</p>
@@ -544,9 +522,9 @@ export default function ProfileClient() {
                                 </div>
                              ) : (
                                 <div className="text-center py-10">
-                                    <Package className="h-12 w-12 mx-auto text-muted-foreground" />
-                                    <p className="mt-4 text-muted-foreground">Your collection is empty.</p>
-                                    <Button variant="link" asChild><Link href="/shop">Visit the Shop</Link></Button>
+                                    <Trophy className="h-12 w-12 mx-auto text-muted-foreground" />
+                                    <p className="mt-4 text-muted-foreground">Your collection is empty. Start playing to unlock achievements!</p>
+                                    <Button variant="link" asChild><Link href="/achievements">View All Achievements</Link></Button>
                                 </div>
                              )}
                         </CardContent>

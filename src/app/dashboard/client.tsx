@@ -98,10 +98,8 @@ export default function DashboardClient() {
       try {
         const parsedRoadmap: Stage[] = JSON.parse(storedRoadmap);
         
-        // Robustly correct statuses on every load to handle old data or inconsistencies.
-        let previousStageCompleted = true; // The "stage" before the first one is considered complete.
+        let previousStageCompleted = true;
         const correctedRoadmap = parsedRoadmap.map(stage => {
-          // Ensure levels exist to prevent crashes from corrupted data.
           if (!stage.levels || !Array.isArray(stage.levels)) {
             stage.levels = [];
           }
@@ -117,26 +115,23 @@ export default function DashboardClient() {
             newStatus = 'locked';
           }
           
-          // The completion of the *current* stage determines if the *next* one can be unlocked.
           previousStageCompleted = isCurrentStageComplete;
 
           return { ...stage, status: newStatus };
         });
 
         setRoadmap(correctedRoadmap);
-        // Persist the corrected data if it has changed
         if (JSON.stringify(correctedRoadmap) !== storedRoadmap) {
           localStorage.setItem('careerClashRoadmap', JSON.stringify(correctedRoadmap));
         }
 
       } catch (e) {
         console.error("Failed to parse or correct roadmap from localStorage", e);
-        // Handle corrupted data by clearing it and forcing a new selection.
         localStorage.removeItem('careerClashRoadmap');
         setIsDialogOpen(true);
       }
     } else {
-      setIsDialogOpen(true); // Force selection on first visit
+      setIsDialogOpen(true);
     }
     setIsLoadingRoadmap(false);
 
@@ -213,7 +208,7 @@ export default function DashboardClient() {
     <>
       <div className="flex flex-wrap gap-4 justify-between items-start mb-8">
         <div className="max-w-2xl">
-          <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Your Learning Roadmap</h1>
+          <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary text-glow">Your Learning Roadmap</h1>
           <p className="mt-2 text-muted-foreground">
             {selectedStream ? `Your path to mastering ${selectedStream}.` : 'Choose a subject to begin.'}
           </p>
@@ -233,14 +228,14 @@ export default function DashboardClient() {
                     Select a learning path to begin your journey. This will reset your current progress.
                 </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {streams.map((stream) => {
                     const Icon = stream.icon;
                     return (
                         <Button
                         key={stream.name}
                         variant="outline"
-                        className="h-24 flex flex-col items-center justify-center gap-2 text-center p-2"
+                        className="h-28 flex flex-col items-center justify-center gap-2 text-center p-2"
                         onClick={() => openConfirmation(stream.name)}
                         >
                         <Icon className="h-8 w-8 text-primary" />
@@ -310,7 +305,7 @@ export default function DashboardClient() {
                 const isStageComplete = totalLevels > 0 && completedLevels === totalLevels;
 
                 return (
-                    <AccordionItem value={`stage-${index}`} key={index} className="border bg-card rounded-lg px-4" >
+                    <AccordionItem value={`stage-${index}`} key={index} className="border bg-card/80 backdrop-blur-sm rounded-lg px-4" >
                         <AccordionTrigger
                             onClick={(e) => {
                                 if (isStageLocked) {
@@ -334,7 +329,7 @@ export default function DashboardClient() {
                             {stage.levels && stage.levels.length > 0 ? stage.levels.map((level, levelIndex) => (
                                 <Card key={levelIndex} className={cn('w-full transition-all', 
                                     !(!isStageLocked && level.status !== 'locked') && 'bg-muted/50 opacity-70',
-                                    level.status === 'unlocked' && !isStageLocked && 'border-primary shadow-md shadow-primary/20', 
+                                    level.status === 'unlocked' && !isStageLocked && 'border-primary shadow-primary', 
                                     level.status === 'completed' && 'border-green-500/30'
                                 )}>
                                     <CardHeader className="flex-row items-center gap-4 space-y-0 p-4">
