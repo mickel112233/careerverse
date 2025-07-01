@@ -1,5 +1,6 @@
 
 import ShopClient from './client';
+import { Suspense } from 'react';
 
 export default function ShopPage({
   searchParams,
@@ -14,7 +15,9 @@ export default function ShopPage({
           Purchase perks, memberships, and currencies to enhance your experience.
         </p>
       </div>
-      <ShopClient searchParams={searchParams} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <ShopClient searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }
