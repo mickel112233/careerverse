@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Directing Your Program: Control Flow</h3><p>So far, our code would run in a straight line, from top to bottom, one instruction after another. But most programs need to make decisions and repeat actions. **Control flow** refers to the order in which the computer executes statements in a script.</p><p>Control flow statements allow you to make your program's execution path conditional and dynamic, instead of just a straight line. It's how you make programs 'smart'.</p><h4>Two Main Types of Control Flow</h4><p>There are two primary ways we control the flow of a program:</p><ol><li><strong>Conditional Statements (Selection):</strong> These statements allow you to choose which block of code to execute based on a condition. If a certain condition is true, one thing happens. If it's false, something else happens (or nothing at all). The most common conditional statements are <code>if</code>, <code>else if</code>, and <code>else</code>.</li><li><strong>Loops (Repetition/Iteration):</strong> These statements allow you to execute a block of code multiple times. This is incredibly useful for working with collections of data or for performing a task until a certain condition is met. The most common loops are <code>for</code> loops and <code>while</code> loops.</li></ol><h4>Why is Control Flow Important?</h4><p>Imagine a game where you have to check a player's health. You wouldn't want the 'Game Over' code to run every single time. You only want it to run **if** the player's health is less than or equal to zero. That's a conditional statement.</p><p>Imagine you have a list of 100 enemies and you want to draw each one on the screen. Instead of writing the drawing code 100 times, you would use a **loop** to repeat the drawing code for each enemy in the list.</p><h4>Visualizing Control Flow</h4><p>Programmers often use flowcharts to visualize the control flow of their programs before writing code. A flowchart uses different shapes to represent actions, decisions, and the flow of logic between them.</p><ul><li>Rectangles represent processes or actions.</li><li>Diamonds represent decisions (conditions).</li><li>Arrows show the direction of flow.</li></ul><p>In the next lessons, we will dive deep into how to write <code>if</code> statements and loops to take full control of your program's logic.</p>",
+  "quiz": {
+    "title": "Introduction to Control Flow",
+    "questions": [
+      {
+        "question": "What is 'control flow' in programming?",
+        "options": [
+          "The speed at which code runs.",
+          "The order in which the computer executes statements.",
+          "The way data is stored in memory.",
+          "The number of bugs in a program."
+        ],
+        "correctAnswer": "The order in which the computer executes statements.",
+        "explanation": "Control flow dictates the path the program takes, allowing it to be dynamic rather than just running from top to bottom."
+      },
+      {
+        "question": "What are the two main types of control flow statements?",
+        "options": [
+          "Variables and Functions",
+          "Data Types and Operators",
+          "Conditional Statements and Loops",
+          "Source Code and Machine Code"
+        ],
+        "correctAnswer": "Conditional Statements and Loops",
+        "explanation": "Conditionals (like 'if') allow for decisions, and loops (like 'for' and 'while') allow for repetition."
+      },
+      {
+        "question": "Which type of control flow statement would you use to run a block of code only if a certain condition is true?",
+        "options": [
+          "A loop",
+          "A variable",
+          "A conditional statement",
+          "A function"
+        ],
+        "correctAnswer": "A conditional statement",
+        "explanation": "Conditional statements, such as 'if', are specifically for executing code based on whether a condition is true or false."
+      },
+      {
+        "question": "If you needed to perform the same action on every item in a list of 100 items, what would be the most efficient approach?",
+        "options": [
+          "Write the code 100 times.",
+          "Use a loop.",
+          "Use a conditional statement.",
+          "Create 100 different variables."
+        ],
+        "correctAnswer": "Use a loop.",
+        "explanation": "Loops are designed for repetition, allowing you to write the code once and have it execute for each item in the list."
+      },
+      {
+        "question": "In a flowchart, what shape is typically used to represent a decision or condition?",
+        "options": [
+          "Rectangle",
+          "Oval",
+          "Diamond",
+          "Arrow"
+        ],
+        "correctAnswer": "Diamond",
+        "explanation": "Diamond shapes in flowcharts represent points where the program's path splits based on a true/false condition."
+      },
+      {
+        "question": "The keywords `if`, `for`, and `while` are all examples of what?",
+        "options": [
+          "Data types",
+          "Control flow statements",
+          "Variable names",
+          "Operators"
+        ],
+        "correctAnswer": "Control flow statements",
+        "explanation": "These keywords are used to create conditional logic and loops, thus controlling the flow of the program."
+      },
+      {
+        "question": "Without control flow, how would a program typically execute?",
+        "options": [
+          "From bottom to top.",
+          "In a random order.",
+          "It wouldn't execute at all.",
+          "In a straight line from the first statement to the last."
+        ],
+        "correctAnswer": "In a straight line from the first statement to the last.",
+        "explanation": "The default behavior is sequential execution. Control flow statements are needed to alter this linear path."
+      },
+      {
+        "question": "Control flow allows a program to be more:",
+        "options": [
+          "Static and predictable",
+          "Dynamic and responsive",
+          "Difficult to read",
+          "Prone to errors"
+        ],
+        "correctAnswer": "Dynamic and responsive",
+        "explanation": "By making decisions and repeating actions, programs can respond to different inputs and situations."
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Working with Data: Operators</h3><p>Operators are special symbols that perform operations on values and variables. They are the verbs of programming, allowing you to manipulate data. They can be broken down into two main categories for now: arithmetic and logical.</p><h4>Arithmetic Operators</h4><p>These are the operators you know from math class. They work on number data types.</p><ul><li><code>+</code> (Addition): Adds two numbers. <code>5 + 3</code> results in <code>8</code>.</li><li><code>-</code> (Subtraction): Subtracts the second number from the first. <code>5 - 3</code> results in <code>2</code>.</li><li><code>*</code> (Multiplication): Multiplies two numbers. <code>5 * 3</code> results in <code>15</code>.</li><li><code>/</code> (Division): Divides the first number by the second. <code>15 / 3</code> results in <code>5</code>.</li><li><code>%</code> (Modulus): Returns the remainder of a division. <code>10 % 3</code> results in <code>1</code>, because 10 divided by 3 is 3 with a remainder of 1.</li></ul><h4>Comparison and Logical Operators</h4><p>These operators are used to compare values and are essential for making decisions in code. They always result in a boolean value (<code>true</code> or <code>false</code>).</p><ul><li><code>==</code> (Equal to): Checks if two values are equal. <code>5 == 5</code> is <code>true</code>. (Note: Many languages have <code>===</code> for strict equality, which also checks the data type).</li><li><code>!=</code> (Not equal to): Checks if two values are not equal. <code>5 != 3</code> is <code>true</code>.</li><li><code>></code> (Greater than): Checks if the left value is greater than the right. <code>5 > 3</code> is <code>true</code>.</li><li><code><</code> (Less than): Checks if the left value is less than the right. <code>5 < 3</code> is <code>false</code>.</li><li><code>>=</code> (Greater than or equal to): <code>5 >= 5</code> is <code>true</code>.</li><li><code><=</code> (Less than or equal to): <code>5 <= 3</code> is <code>false</code>.</li></ul><p>We can combine boolean values using logical operators:</p><ul><li><code>&&</code> (AND): Returns <code>true</code> only if both conditions are true. <code>(5 > 3) && (1 < 2)</code> is <code>true</code>.</li><li><code>||</code> (OR): Returns <code>true</code> if at least one condition is true. <code>(5 < 3) || (1 < 2)</code> is <code>true</code>.</li><li><code>!</code> (NOT): Inverts a boolean value. <code>!(5 > 3)</code> is <code>false</code>.</li></ul><p>Understanding operators allows you to build expressions and start creating logic in your programs.</p>",
+  "quiz": {
+    "title": "Operators: Arithmetic and Logical",
+    "questions": [
+      {
+        "question": "What is the result of the expression `10 % 3`?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "3.33"
+        ],
+        "correctAnswer": "1",
+        "explanation": "The modulus operator (%) gives the remainder of a division. 10 divided by 3 is 3 with a remainder of 1."
+      },
+      {
+        "question": "Which operator checks if two values are equal?",
+        "options": [
+          "=",
+          "==",
+          ":=",
+          "!="
+        ],
+        "correctAnswer": "==",
+        "explanation": "The double equals (==) is a comparison operator, while a single equals (=) is for assignment."
+      },
+      {
+        "question": "What boolean value will the expression `(5 > 10) || (1 == 1)` result in?",
+        "options": [
+          "True",
+          "False",
+          "Error",
+          "Undefined"
+        ],
+        "correctAnswer": "True",
+        "explanation": "The OR operator (||) returns true if at least one of the conditions is true. Since `1 == 1` is true, the whole expression is true."
+      },
+      {
+        "question": "The `&&` operator is known as the:",
+        "options": [
+          "OR operator",
+          "NOT operator",
+          "AND operator",
+          "XOR operator"
+        ],
+        "correctAnswer": "AND operator",
+        "explanation": "The AND operator (`&&`) returns true only when the conditions on both sides of it are true."
+      },
+      {
+        "question": "Which operator would you use to find the product of two numbers?",
+        "options": [
+          "+",
+          "x",
+          "/",
+          "*"
+        ],
+        "correctAnswer": "*",
+        "explanation": "The asterisk (*) is the standard operator for multiplication in most programming languages."
+      },
+      {
+        "question": "What does the `!` operator do?",
+        "options": [
+          "Checks for inequality.",
+          "Inverts a boolean value.",
+          "Stops the program.",
+          "Performs addition."
+        ],
+        "correctAnswer": "Inverts a boolean value.",
+        "explanation": "The NOT operator (!) turns `true` into `false` and `false` into `true`."
+      },
+      {
+        "question": "What is the result of `!(true && true)`?",
+        "options": [
+          "True",
+          "False",
+          "Error",
+          "1"
+        ],
+        "correctAnswer": "False",
+        "explanation": "`true && true` evaluates to `true`. The `!` operator then inverts this to `false`."
+      },
+      {
+        "question": "Comparison operators like `>` and `<=` always result in what data type?",
+        "options": [
+          "Number",
+          "String",
+          "Boolean",
+          "Integer"
+        ],
+        "correctAnswer": "Boolean",
+        "explanation": "The purpose of a comparison is to determine if a statement is true or false, which is represented by the boolean data type."
+      }
+    ]
+  }
+}

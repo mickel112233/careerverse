@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Organizing Code: Functions</h3><p>As programs grow larger, it becomes essential to organize your code. A **function** is a reusable block of code that performs a specific task. Instead of writing the same piece of logic over and over again, you can wrap it in a function and then call that function whenever you need it.</p><h4>Why Use Functions?</h4><ul><li><strong>Reusability:</strong> Write once, use many times. This is the DRY principle: Don't Repeat Yourself.</li><li><strong>Organization:</strong> Functions break down a large program into smaller, manageable, and understandable pieces.</li><li><strong>Abstraction:</strong> You don't need to know *how* a function works internally to use it. You just need to know its name, what inputs it needs, and what it does. Think about using a microwave: you press a button to heat food, you don't need to understand the physics of microwaves to use it.</li></ul><h4>Defining and Calling a Function</h4><p>First, you **define** the function. This is where you write the code that the function will execute. The syntax varies, but it usually involves a keyword like <code>function</code>, a name for your function, parentheses for inputs, and curly braces for the code block.</p><pre><code>// Defining the function\nfunction greet() {\n  console.log(\"Hello, welcome to the program!\");\n}</code></pre><p>The code inside the function does not run until you **call** it. To call a function, you simply write its name followed by parentheses.</p><pre><code>// Calling the function\ngreet(); // This will print the message to the console.</code></pre><h4>Parameters and Arguments</h4><p>Functions can be made more powerful by accepting inputs. An input variable for a function is called a **parameter**.</p><pre><code>// 'name' is a parameter\nfunction greetUser(name) {\n  console.log(\"Hello, \" + name + \"!\");\n}</code></pre><p>When you call the function, the actual value you pass to it is called an **argument**.</p><pre><code>// \"Alice\" is the argument\ngreetUser(\"Alice\"); // Outputs: \"Hello, Alice!\"\ngreetUser(\"Bob\");   // Outputs: \"Hello, Bob!\"</code></pre><h4>Returning Values</h4><p>Functions can also perform a calculation and send a result back. This is done with the <code>return</code> keyword. When a <code>return</code> statement is executed, the function stops running and sends the value back to where it was called.</p><pre><code>function add(num1, num2) {\n  return num1 + num2;\n}\n\nlet sum = add(5, 3); // The value 8 is returned and stored in the 'sum' variable.\nconsole.log(sum);      // Outputs: 8</code></pre><p>Functions are the most important organizational tool in all of programming.</p>",
+  "quiz": {
+    "title": "Introduction to Functions",
+    "questions": [
+      {
+        "question": "What is the primary purpose of a function in programming?",
+        "options": [
+          "To store a single piece of data.",
+          "To create a reusable block of code that performs a specific task.",
+          "To repeat code a specific number of times.",
+          "To stop the program from running."
+        ],
+        "correctAnswer": "To create a reusable block of code that performs a specific task.",
+        "explanation": "Functions are used to organize code, make it reusable (DRY principle), and abstract away complexity."
+      },
+      {
+        "question": "What is the term for the input variable defined in a function's declaration (e.g., `function greet(name)`)?",
+        "options": [
+          "Argument",
+          "Return value",
+          "Parameter",
+          "Variable"
+        ],
+        "correctAnswer": "Parameter",
+        "explanation": "A parameter is the variable placeholder in the function definition. The actual value passed in during a call is the argument."
+      },
+      {
+        "question": "What is the term for the actual value you pass to a function when you call it (e.g., `greet('Alice')`)?",
+        "options": [
+          "Parameter",
+          "Argument",
+          "Type",
+          "Keyword"
+        ],
+        "correctAnswer": "Argument",
+        "explanation": "An argument is the concrete value supplied for a function's parameter when it is called."
+      },
+      {
+        "question": "How do you execute the code inside a function?",
+        "options": [
+          "By defining it.",
+          "By calling it.",
+          "By returning it.",
+          "It runs automatically."
+        ],
+        "correctAnswer": "By calling it.",
+        "explanation": "Defining a function just creates it. The code inside only runs when the function is explicitly called by its name followed by parentheses."
+      },
+      {
+        "question": "What does the `return` keyword do in a function?",
+        "options": [
+          "It prints a value to the console.",
+          "It stops the function and sends a value back to where it was called.",
+          "It restarts the function from the beginning.",
+          "It deletes the function."
+        ],
+        "correctAnswer": "It stops the function and sends a value back to where it was called.",
+        "explanation": "The `return` statement is used to output a value from the function, which can then be assigned to a variable or used in another expression."
+      },
+      {
+        "question": "The concept of using a function without needing to know its internal workings is called:",
+        "options": [
+          "Abstraction",
+          "Declaration",
+          "Reusability",
+          "Organization"
+        ],
+        "correctAnswer": "Abstraction",
+        "explanation": "Abstraction hides complexity. You can use a function by knowing what it does, not necessarily how it does it."
+      },
+      {
+        "question": "What is the DRY principle mentioned in the context of functions?",
+        "options": [
+          "Do Run Yourself",
+          "Don't Repeat Yourself",
+          "Data Rules You",
+          "Define, Run, Yield"
+        ],
+        "correctAnswer": "Don't Repeat Yourself",
+        "explanation": "The DRY principle is a core concept in software development that promotes reusability by avoiding redundant code."
+      },
+      {
+        "question": "Given `function multiply(a, b) { return a * b; }`, what is the value of `let result = multiply(4, 5);`?",
+        "options": [
+          "4",
+          "5",
+          "9",
+          "20"
+        ],
+        "correctAnswer": "20",
+        "explanation": "The function multiplies the two arguments (4 and 5) and returns the result (20), which is then stored in the `result` variable."
+      }
+    ]
+  }
+}

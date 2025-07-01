@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Making Decisions: If-Else Statements</h3><p>The most fundamental control flow statement is the <strong><code>if</code> statement</strong>. It allows a program to execute a certain block of code only when a particular condition is true.</p><h4>The Basic <code>if</code> Statement</h4><p>The structure is simple: you have the <code>if</code> keyword, followed by a condition in parentheses, and then a block of code in curly braces that runs if the condition is true.</p><pre><code>let playerHealth = 10;\nif (playerHealth <= 0) {\n  console.log(\"Game Over\");\n}</code></pre><p>In this example, the message \"Game Over\" will NOT be printed, because the condition <code>playerHealth <= 0</code> is false (10 is not less than or equal to 0).</p><h4>Adding an Alternative: The <code>else</code> Statement</h4><p>What if you want to do something else when the condition is false? You can add an <strong><code>else</code> block</strong>. The code in the <code>else</code> block will only run if the <code>if</code> condition is false.</p><pre><code>let score = 500;\nif (score >= 1000) {\n  console.log(\"You unlocked the bonus level!\");\n} else {\n  console.log(\"You need more points to unlock the bonus.\");\n}</code></pre><p>Here, since 500 is not greater than or equal to 1000, the message in the <code>else</code> block will be printed.</p><h4>Chaining Conditions: <code>else if</code></h4><p>Sometimes you have more than two possibilities. You can check multiple conditions in a row using <strong><code>else if</code></strong>.</p><pre><code>let grade = 85;\nif (grade >= 90) {\n  console.log(\"You get an A!\");\n} else if (grade >= 80) {\n  console.log(\"You get a B!\");\n} else if (grade >= 70) {\n  console.log(\"You get a C.\");\n} else {\n  console.log(\"You need to study more.\");\n}</code></pre><p>The computer checks the conditions from top to bottom. As soon as it finds one that is true, it runs that block of code and then skips the rest of the entire <code>if-else if-else</code> chain. In this case, it would print \"You get a B!\" and stop.</p><p>Using <code>if</code>, <code>else if</code>, and <code>else</code>, you can create complex decision-making trees that allow your program to respond intelligently to different situations.</p>",
+  "quiz": {
+    "title": "If-Else Statements",
+    "questions": [
+      {
+        "question": "What is the purpose of an `if` statement?",
+        "options": [
+          "To repeat a block of code multiple times.",
+          "To execute a block of code only if a specific condition is true.",
+          "To store a value in a variable.",
+          "To define a new function."
+        ],
+        "correctAnswer": "To execute a block of code only if a specific condition is true.",
+        "explanation": "The `if` statement is the primary tool for conditional logic, allowing code to run based on a true/false evaluation."
+      },
+      {
+        "question": "When does the code inside an `else` block get executed?",
+        "options": [
+          "Always.",
+          "When the `if` condition is true.",
+          "When the `if` condition is false.",
+          "Never."
+        ],
+        "correctAnswer": "When the `if` condition is false.",
+        "explanation": "The `else` block provides an alternative path for the program to take when the initial `if` condition is not met."
+      },
+      {
+        "question": "Consider `let x = 10;`. What will be the output of `if (x > 10) { console.log(\"A\"); } else { console.log(\"B\"); }`?",
+        "options": [
+          "A",
+          "B",
+          "Nothing will be printed.",
+          "An error will occur."
+        ],
+        "correctAnswer": "B",
+        "explanation": "The condition `x > 10` is false (10 is not greater than 10). Therefore, the code in the `else` block is executed."
+      },
+      {
+        "question": "What is the role of `else if`?",
+        "options": [
+          "To end the program.",
+          "To check a second condition if the first `if` condition was false.",
+          "To run code if both the `if` and `else` conditions are false.",
+          "It is another name for the `else` statement."
+        ],
+        "correctAnswer": "To check a second condition if the first `if` condition was false.",
+        "explanation": "`else if` allows you to chain multiple conditions together, creating a decision tree with several possible outcomes."
+      },
+      {
+        "question": "In a long `if-else if-else` chain, what happens after one of the conditions is found to be true?",
+        "options": [
+          "The computer checks all the other `else if` conditions as well.",
+          "The computer executes the code for that true condition and then skips the rest of the chain.",
+          "The computer runs the code for all true conditions.",
+          "The program stops."
+        ],
+        "correctAnswer": "The computer executes the code for that true condition and then skips the rest of the chain.",
+        "explanation": "The chain is designed to find and execute only the first true condition it encounters."
+      },
+      {
+        "question": "What kind of value must the condition inside an `if()` statement evaluate to?",
+        "options": [
+          "A number",
+          "A string",
+          "A boolean (true or false)",
+          "An object"
+        ],
+        "correctAnswer": "A boolean (true or false)",
+        "explanation": "The condition must resolve to either `true` or `false` for the `if` statement to make its decision."
+      },
+      {
+        "question": "Is an `else` block required to have an `if` statement?",
+        "options": [
+          "Yes, you must always have an `else`.",
+          "No, an `if` statement can exist on its own.",
+          "Only if you also have an `else if`.",
+          "Yes, but only in JavaScript."
+        ],
+        "correctAnswer": "No, an `if` statement can exist on its own.",
+        "explanation": "An `if` block can be used alone if you only want to perform an action when a condition is true and do nothing otherwise."
+      },
+      {
+        "question": "What is the best control flow structure to check a student's letter grade (A, B, C, D, F)?",
+        "options": [
+          "A single `if` statement.",
+          "A simple `if-else` statement.",
+          "An `if-else if-else` chain.",
+          "A variable declaration."
+        ],
+        "correctAnswer": "An `if-else if-else` chain.",
+        "explanation": "Since there are multiple distinct conditions (score for A, score for B, etc.), an `if-else if-else` chain is the perfect tool."
+      }
+    ]
+  }
+}

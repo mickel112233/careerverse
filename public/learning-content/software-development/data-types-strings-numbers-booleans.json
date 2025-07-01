@@ -1,0 +1,97 @@
+
+{
+  "learningContent": "<h3>Understanding Data Types</h3><p>In programming, data comes in various types. A **data type** is a classification that tells the computer how to interpret a value. It determines what kind of operations you can perform on the data. Let's look at the most common and fundamental data types.</p><h4>Numbers</h4><p>Numbers are used for mathematical calculations. Most programming languages have at least two types of numbers:</p><ul><li><strong>Integers:</strong> Whole numbers, without any decimal part (e.g., -5, 0, 10, 250).</li><li><strong>Floating-Point Numbers (Floats):</strong> Numbers that have a decimal part (e.g., -3.14, 0.5, 99.99).</li></ul><p>You can perform all standard arithmetic operations on numbers, like addition, subtraction, multiplication, and division.</p><h4>Strings</h4><p>A **string** is a sequence of characters used to represent text. You create a string by enclosing text in quotes (either single quotes <code>' '</code> or double quotes <code>\" \"</code>). </p><p><code>let greeting = \"Hello, World!\";</code></p><p>You can do things like join strings together (concatenation) or find the length of a string.</p><h4>Booleans</h4><p>A **boolean** is a data type that can only have one of two values: <code>true</code> or <code>false</code>. Booleans are the foundation of logic and decision-making in programs. They are used in conditions to determine which path a program should take.</p><p>For example, you might have a variable <code>isGameOver</code>. If it's <code>true</code>, you show the 'Game Over' screen. If it's <code>false</code>, the game continues.</p><h4>Why Do Data Types Matter?</h4><p>Data types are crucial because they prevent errors. For example, it doesn't make sense to divide the string \"apple\" by the number 3. The programming language uses data types to catch these kinds of illogical operations. When you declare a variable, the language often assigns it a data type based on the value you give it. This is called **dynamic typing** (common in Python, JavaScript). In other languages, you must explicitly declare the type, which is called **static typing** (common in Java, C++).</p>",
+  "quiz": {
+    "title": "Data Types: Strings, Numbers, Booleans",
+    "questions": [
+      {
+        "question": "Which data type would you use to store a user's name?",
+        "options": [
+          "Number",
+          "Boolean",
+          "String",
+          "Integer"
+        ],
+        "correctAnswer": "String",
+        "explanation": "A string is a sequence of characters used to represent text, making it perfect for storing names."
+      },
+      {
+        "question": "What are the only two possible values for a boolean data type?",
+        "options": [
+          "0 and 1",
+          "Yes and No",
+          "True and False",
+          "On and Off"
+        ],
+        "correctAnswer": "True and False",
+        "explanation": "Booleans represent logical states and are fundamental for decision-making in code."
+      },
+      {
+        "question": "The number 42.5 is an example of what?",
+        "options": [
+          "An integer",
+          "A float (floating-point number)",
+          "A string",
+          "A boolean"
+        ],
+        "correctAnswer": "A float (floating-point number)",
+        "explanation": "Floats are numbers that contain a decimal point."
+      },
+      {
+        "question": "What is the primary purpose of data types in programming?",
+        "options": [
+          "To make the code look more organized.",
+          "To tell the computer how to interpret a value and what operations are allowed.",
+          "To slow down the program for better security.",
+          "To use more memory."
+        ],
+        "correctAnswer": "To tell the computer how to interpret a value and what operations are allowed.",
+        "explanation": "Data types define the nature of the data and prevent illogical operations, like multiplying two pieces of text."
+      },
+      {
+        "question": "Which of the following is a whole number without a decimal part?",
+        "options": [
+          "String",
+          "Float",
+          "Boolean",
+          "Integer"
+        ],
+        "correctAnswer": "Integer",
+        "explanation": "Integers are whole numbers, such as -1, 0, and 123."
+      },
+      {
+        "question": "How do you typically create a string value in code?",
+        "options": [
+          "By writing text without anything around it.",
+          "By enclosing text in quotes (single or double).",
+          "By using square brackets [ ].",
+          "By using curly braces { }."
+        ],
+        "correctAnswer": "By enclosing text in quotes (single or double).",
+        "explanation": "Quotes signify to the programming language that the enclosed characters are to be treated as a single text entity."
+      },
+      {
+        "question": "What kind of data type would be best for a variable called `isPlayerAlive`?",
+        "options": [
+          "Number",
+          "String",
+          "Boolean",
+          "Float"
+        ],
+        "correctAnswer": "Boolean",
+        "explanation": "This variable represents a true/false state (the player is either alive or not), which is exactly what booleans are for."
+      },
+      {
+        "question": "What is it called when a language automatically determines a variable's data type, like in JavaScript or Python?",
+        "options": [
+          "Static Typing",
+          "Strong Typing",
+          "Dynamic Typing",
+          "Manual Typing"
+        ],
+        "correctAnswer": "Dynamic Typing",
+        "explanation": "In dynamically-typed languages, you don't have to explicitly declare the data type of a variable; the interpreter figures it out at runtime."
+      }
+    ]
+  }
+}
