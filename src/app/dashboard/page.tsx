@@ -1,4 +1,8 @@
+
 import DashboardClient from './client';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { BookOpen } from 'lucide-react';
 
 export default function DashboardPage() {
   return (
