@@ -10,8 +10,21 @@ export interface Quest {
     coins: number;
     category: 'Daily' | 'Weekly' | 'Milestone';
     goal: number;
-    // In a real app, a 'progress' field would be calculated based on user stats
 }
+
+export function updateQuestProgress(questId: string, amount: number) {
+    if (typeof window === 'undefined') return;
+    try {
+        const progress = JSON.parse(localStorage.getItem('careerClashQuestProgress') || '{}');
+        progress[questId] = (progress[questId] || 0) + amount;
+        localStorage.setItem('careerClashQuestProgress', JSON.stringify(progress));
+        // Dispatch a storage event to notify other components (like the quest page) of the change.
+        window.dispatchEvent(new Event('storage'));
+    } catch (e) {
+        console.error("Failed to update quest progress in localStorage", e);
+    }
+}
+
 
 export const allQuests: Quest[] = [
     // Daily Quests
@@ -55,3 +68,5 @@ export const allQuests: Quest[] = [
     { id: 'milestone24', title: 'Battle Legend', description: 'Play 1000 battles.', icon: Swords, xp: 5000, coins: 2500, category: 'Milestone', goal: 1000 },
     { id: 'milestone25', title: 'The Grandmaster', description: 'Complete an entire learning roadmap.', icon: Crown, xp: 10000, coins: 5000, category: 'Milestone', goal: 1 },
 ];
+
+    

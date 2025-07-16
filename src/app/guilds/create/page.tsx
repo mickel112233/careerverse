@@ -95,8 +95,8 @@ export default function CreateGuildPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'crest' | 'banner') => {
       const file = e.target.files?.[0];
       if (file) {
-          if (file.size > 100 * 1024) { // 100KB limit
-              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 100KB to save it.'});
+          if (file.size > 200 * 1024) { // 200KB limit
+              toast({ variant: 'destructive', title: 'File too large', description: 'Please upload an image smaller than 200KB.'});
               return;
           }
           const reader = new FileReader();
@@ -122,9 +122,9 @@ export default function CreateGuildPage() {
         id: guildId,
         slug: slug,
         capacity: memberCapacity,
-        crestImage: crestImage || `https://placehold.co/256x256.png`,
-        bannerImage: bannerImage || `https://placehold.co/1200x300.png`,
-        image: crestImage || `https://placehold.co/600x400.png`,
+        crestImage: crestImage,
+        bannerImage: bannerImage,
+        image: crestImage,
         owner: 'QuantumLeap',
         members: [
             { 
@@ -256,7 +256,7 @@ export default function CreateGuildPage() {
                             <FormControl>
                                 <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'crest')} />
                             </FormControl>
-                             <FormDescription>Square image (e.g., 256x256). Max 100KB.</FormDescription>
+                             <FormDescription>Square image (e.g., 256x256). Max 200KB.</FormDescription>
                              {crestImage && <Image src={crestImage} alt="Crest preview" width={128} height={128} className="rounded-lg mt-2 border" />}
                         </FormItem>
                         <FormItem>
@@ -264,7 +264,7 @@ export default function CreateGuildPage() {
                             <FormControl>
                                  <Input type="file" accept="image/png, image/jpeg, image/webp" onChange={(e) => handleFileChange(e, 'banner')} />
                             </FormControl>
-                            <FormDescription>Wide image (e.g., 1200x300). Max 100KB.</FormDescription>
+                            <FormDescription>Wide image (e.g., 1200x300). Max 200KB.</FormDescription>
                              {bannerImage && <Image src={bannerImage} alt="Banner preview" width={250} height={62.5} className="rounded-lg mt-2 border aspect-[4/1] object-cover" />}
                         </FormItem>
                     </div>
@@ -338,3 +338,5 @@ export default function CreateGuildPage() {
     </div>
   );
 }
+
+    

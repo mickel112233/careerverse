@@ -4,8 +4,10 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AiAvatar } from '@/components/ui/ai-avatar';
 import { Swords, Shield as ShieldIcon, Skull, BarChart3, User, Package, Trophy, Zap } from "lucide-react";
-import { PlayerData, mockLeaderboardData } from '@/lib/leaderboard-data';
+import { PlayerData } from '@/lib/leaderboard-data';
+import { Achievement, allAchievements } from '@/lib/achievement-data';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 const StatCard = ({ icon: Icon, label, value }: { icon: React.ElementType, label: string, value: string | number }) => (
     <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
@@ -22,9 +24,6 @@ interface PlayerProfileDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-// Since cosmetic items are removed, we have an empty list for now.
-const allShopItems: any[] = [];
 
 export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProfileDialogProps) {
   if (!player) return null;
@@ -60,7 +59,7 @@ export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProf
             <h3 className="font-headline font-semibold mb-2 flex items-center gap-2"><Package /> Player Showcase</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {player.showcase.map(itemName => {
-                const item = allShopItems.find(i => i.name === itemName);
+                const item = allAchievements.find(i => i.name === itemName);
                 if (!item) return null;
                 const Icon = item.icon;
                 return (
@@ -68,7 +67,7 @@ export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProf
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div className="flex flex-col items-center text-center p-2 bg-muted/50 rounded-lg h-full">
-                          <Icon className="h-8 w-8 mb-1 text-primary" />
+                          <Icon className={cn("h-8 w-8 mb-1", item.color)} />
                           <p className="text-xs font-semibold truncate">{item.name}</p>
                         </div>
                       </TooltipTrigger>
@@ -87,3 +86,5 @@ export function PlayerProfileDialog({ player, isOpen, onOpenChange }: PlayerProf
     </Dialog>
   );
 }
+
+    

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,12 +17,21 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, BookOpen, BrainCircuit, Code, Crown, Megaphone, Palette, PenSquare, Lock, Star, Swords, Users, Zap, CheckSquare, Trophy, Skull } from 'lucide-react';
+import { Loader2, BookOpen, BrainCircuit, Code, Crown, Megaphone, Palette, PenSquare, Lock, Star, Swords, Users, Zap, CheckSquare, Trophy, Skull, Handshake, LineChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
+import { allAchievements } from '@/lib/achievement-data';
+
+type PowerLevels = {
+    logic: number;
+    creativity: number;
+    leadership: number;
+    technical: number;
+    social: number;
+};
 
 const PowerLevelMeter = ({ label, value }: { label: string, value: number }) => (
     <div className="flex flex-col items-center">
@@ -33,11 +42,14 @@ const PowerLevelMeter = ({ label, value }: { label: string, value: number }) => 
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none" strokeWidth="2"
                 />
-                <path
+                <motion.path
                     className="stroke-primary"
                     strokeDasharray={`${value}, 100`}
                     d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     fill="none" strokeWidth="2" strokeLinecap="round"
+                    initial={{ strokeDasharray: `0, 100` }}
+                    animate={{ strokeDasharray: `${value}, 100` }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
                 />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center text-lg font-bold">{value}</div>
@@ -57,6 +69,20 @@ const FeatureCard = ({ title, icon: Icon, href }: { title: string, icon: React.E
     </Link>
 );
 
+const categoryToSkillMapping: { [key: string]: keyof PowerLevels } = {
+    'Software Development': 'technical',
+    'Data Science & AI': 'technical',
+    'Cybersecurity': 'technical',
+    'Cloud Computing': 'technical',
+    'AI Prompt Engineering': 'technical',
+    'Game Development': 'technical',
+    'Graphic Design': 'creativity',
+    'Content Creation': 'creativity',
+    'Digital Marketing': 'social',
+    'Sales & Business Development': 'social',
+    'Project Management': 'leadership',
+    'Business & Finance': 'logic',
+};
 
 export default function DashboardClient() {
   const [userName, setUserName] = useState('Hero');
@@ -66,6 +92,7 @@ export default function DashboardClient() {
   const [streak, setStreak] = useState(0);
   const [achievementsUnlocked, setAchievementsUnlocked] = useState(0);
   const [careersMastered, setCareersMastered] = useState(0);
+  const [powerLevels, setPowerLevels] = useState<PowerLevels>({ logic: 0, creativity: 0, leadership: 0, technical: 0, social: 0 });
 
   useEffect(() => {
     const updateUserStats = () => {
@@ -90,21 +117,35 @@ export default function DashboardClient() {
         setAchievementsUnlocked(storedCompletedAchievements.length);
 
         const storedRoadmap = JSON.parse(localStorage.getItem('careerClashRoadmap') || 'null');
+        let completedLevels = 0;
+        const newPowerLevels: PowerLevels = { logic: 0, creativity: 0, leadership: 0, technical: 0, social: 0 };
+
         if(storedRoadmap) {
-            const completedLevels = storedRoadmap.flatMap((stage: any) => stage.levels).filter((level: any) => level.status === 'completed').length;
-            setCareersMastered(completedLevels);
+            const roadmapData = JSON.parse(storedRoadmap);
+            const streamName = localStorage.getItem('careerClashStream') || '';
+            const skillCategory = categoryToSkillMapping[streamName];
+            
+            completedLevels = roadmapData.flatMap((stage: any) => stage.levels).filter((level: any) => level.status === 'completed').length;
+            
+            if (skillCategory) {
+                newPowerLevels[skillCategory] = Math.min(Math.floor(completedLevels / 2.5), 100); // 250 levels total, so 2.5 levels = 1 power point
+            }
         }
+        setCareersMastered(completedLevels);
+        setPowerLevels(newPowerLevels);
     };
     
     updateUserStats();
     window.addEventListener('currencyChange', updateUserStats);
     window.addEventListener('profileChange', updateUserStats);
     window.addEventListener('guildChange', updateUserStats);
+    window.addEventListener('storage', updateUserStats); // For cross-tab updates
     
     return () => {
         window.removeEventListener('currencyChange', updateUserStats);
         window.removeEventListener('profileChange', updateUserStats);
         window.removeEventListener('guildChange', updateUserStats);
+        window.removeEventListener('storage', updateUserStats);
     };
   }, []);
   
@@ -140,9 +181,9 @@ export default function DashboardClient() {
             <h2 className="text-2xl font-bold font-headline mb-4">Power Up Your Journey</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <FeatureCard title="Master Skills" icon={Crown} href="/dashboard/learning-path" />
-                <FeatureCard title="Unlock Careers" icon={BookOpen} href="/dashboard/learning-path" />
                 <FeatureCard title="Epic Quests" icon={CheckSquare} href="/quests" />
                 <FeatureCard title="Battle Arena" icon={Swords} href="/competition" />
+                <FeatureCard title="Boss Raids" icon={Skull} href="/boss-raid" />
             </div>
         </section>
 
@@ -159,7 +200,7 @@ export default function DashboardClient() {
                     </div>
                      <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Skill Master</p>
-                        <Badge variant="outline">{achievementsUnlocked} / 100 Achievements</Badge>
+                        <Badge variant="outline">{achievementsUnlocked} / {allAchievements.length} Achievements</Badge>
                     </div>
                      <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Streak Warrior</p>
@@ -178,14 +219,16 @@ export default function DashboardClient() {
                     <CardDescription>Your core attributes, honed by your choices.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-3 gap-4">
-                    <PowerLevelMeter label="Logic" value={75} />
-                    <PowerLevelMeter label="Creativity" value={60} />
-                    <PowerLevelMeter label="Leadership" value={45} />
-                    <PowerLevelMeter label="Technical" value={85} />
-                    <PowerLevelMeter label="Social" value={55} />
+                    <PowerLevelMeter label="Logic" value={powerLevels.logic} />
+                    <PowerLevelMeter label="Creativity" value={powerLevels.creativity} />
+                    <PowerLevelMeter label="Leadership" value={powerLevels.leadership} />
+                    <PowerLevelMeter label="Technical" value={powerLevels.technical} />
+                    <PowerLevelMeter label="Social" value={powerLevels.social} />
                 </CardContent>
             </Card>
         </section>
     </div>
   );
 }
+
+    

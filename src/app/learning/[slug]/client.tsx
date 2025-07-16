@@ -17,6 +17,7 @@ import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuesti
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { updateQuestProgress } from '@/lib/quest-data';
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
@@ -152,6 +153,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         setState('results');
 
         if (percentage >= 60) {
+            updateQuestProgress('daily2', 1);
+            updateQuestProgress('weekly2', 1);
+            updateQuestProgress('milestone3', 1);
+            updateQuestProgress('milestone6', 1);
+            updateQuestProgress('milestone9', 1);
+            updateQuestProgress('milestone14', 1);
+            
             const storedRoadmap = localStorage.getItem('careerClashRoadmap');
             if (storedRoadmap) {
                 let roadmap: Stage[] = JSON.parse(storedRoadmap);
@@ -491,7 +499,7 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
             </CardContent>
             <CardFooter className="justify-center gap-4 pt-6">
                 <Button asChild>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard/learning-path">
                         Back to Roadmap
                     </Link>
                 </Button>
@@ -503,3 +511,5 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
         </Card>
     )
 }
+
+    
