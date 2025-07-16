@@ -140,7 +140,7 @@ export default function DashboardClient() {
             <h2 className="text-2xl font-bold font-headline mb-4">Power Up Your Journey</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <FeatureCard title="Master Skills" icon={Crown} href="/dashboard/learning-path" />
-                <FeatureCard title="Unlock Careers" icon={BookOpen} href="/dashboard" />
+                <FeatureCard title="Unlock Careers" icon={BookOpen} href="/dashboard/learning-path" />
                 <FeatureCard title="Epic Quests" icon={CheckSquare} href="/quests" />
                 <FeatureCard title="Battle Arena" icon={Swords} href="/competition" />
             </div>
