@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview Generates learning content and a quiz for a specific topic.
@@ -25,6 +26,8 @@ const GenerateLearningContentOutputSchema = z.object({
     title: z.string().describe('A title for the quiz related to the topic.'),
     questions: z.array(QuizQuestionSchema).min(8).max(10).describe('An array of 8-10 quiz questions based on the learning content.'),
   }),
+  skillsGained: z.array(z.string()).describe('A list of 3-5 specific, marketable skills the user will gain from this lesson.'),
+  jobOpportunities: z.array(z.string()).describe('A list of 3-5 job titles or roles that utilize the skills from this lesson.'),
 });
 export type GenerateLearningContentOutput = z.infer<typeof GenerateLearningContentOutputSchema>;
 
@@ -36,7 +39,7 @@ const prompt = ai.definePrompt({
   name: 'generateLearningContentPrompt',
   input: {schema: GenerateLearningContentInputSchema},
   output: {schema: GenerateLearningContentOutputSchema},
-  prompt: `You are an expert educator and content creator for a gamified learning platform. Your task is to generate a comprehensive, single-page lesson and an accompanying quiz for a specific topic within a learning stream.
+  prompt: `You are an expert educator and curriculum designer for a gamified learning platform. Your task is to generate a comprehensive, single-page lesson, an accompanying quiz, and related career metadata for a specific topic.
 
 Subject Stream: '{{{streamName}}}'
 Topic to Cover: '{{{topicTitle}}}'
@@ -54,7 +57,11 @@ INSTRUCTIONS:
     *   The quiz must contain between 8 and 10 multiple-choice questions.
     *   Each question must have exactly 4 options.
     *   For each question, specify the correct answer and a brief explanation for why it's correct.
-    *   **Crucially, ensure the position of the correct answer within the 'options' array is randomized for each question.** Do not consistently place the correct answer in the first position.
+    *   **Crucially, ensure the position of the correct answer within the 'options' array is randomized for each question.**
+
+3.  **Generate Career Metadata**:
+    *   Based on the lesson content, create a list of 3-5 specific, marketable 'skillsGained' from this topic.
+    *   Create a list of 3-5 potential 'jobOpportunities' (job titles) that rely on these skills.
 
 Return the entire output as a single JSON object matching the defined schema.
 `,

@@ -13,13 +13,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
 import type { GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
-import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft, Info } from 'lucide-react';
+import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft, Info, Sparkles, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { updateQuestProgress } from '@/lib/quest-data';
 import { categoryToSkillMapping } from '@/lib/skill-mapping';
-import { factions } from '../welcome/page';
+import { factions } from '../../welcome/page';
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
@@ -37,6 +37,8 @@ type Stage = {
   status: 'completed' | 'unlocked' | 'locked';
   levels: Level[];
 };
+
+type Roadmap = Stage[];
 
 type QuizResult = {
     question: string;
@@ -98,6 +100,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [levelCoins, setLevelCoins] = useState(0);
     const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
     const [streamName, setStreamName] = useState('');
+    const [progress, setProgress] = useState({ current: 0, total: 0 });
+
 
     useEffect(() => {
         const fetchContent = async () => {
@@ -126,15 +130,26 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 if (storedRoadmap) {
                     const roadmap: Stage[] = JSON.parse(storedRoadmap);
                     let currentNode: Level | undefined;
+                    let completedCount = 0;
+                    let totalCount = 0;
+                    
                     roadmap.forEach(stage => {
-                        const foundLevel = stage.levels.find(level => level.slug === slug);
-                        if(foundLevel) currentNode = foundLevel;
+                        stage.levels.forEach(level => {
+                            totalCount++;
+                            if (level.status === 'completed') {
+                                completedCount++;
+                            }
+                            if (level.slug === slug) {
+                                currentNode = level;
+                            }
+                        })
                     });
                     
                     if (currentNode) {
                         setLevelXp(currentNode.xp || 0);
                         setLevelCoins(currentNode.coins || 0);
                     }
+                    setProgress({ current: completedCount, total: totalCount });
                 }
                 
                 setState('studying');
@@ -260,7 +275,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         if (learningData) {
             switch (state) {
                 case 'studying':
-                    return <StudyView content={learningData.learningContent} onStartQuiz={() => setState('quizzing')} />;
+                    return <StudyView contentData={learningData} onStartQuiz={() => setState('quizzing')} />;
                 case 'quizzing':
                     return <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
                 case 'results':
@@ -273,6 +288,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         return null;
     }
 
+    const progressPercentage = progress.total > 0 ? (progress.current / progress.total) * 100 : 0;
+
     return (
         <>
             <Button variant="ghost" onClick={() => router.push('/dashboard/learning-path')} className="mb-4">
@@ -284,6 +301,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 <p className="mt-2 text-muted-foreground">
                     Study the material below, then prepare for the challenge.
                 </p>
+                <div className="mt-4 space-y-2">
+                    <div className="flex justify-between text-sm font-medium text-muted-foreground">
+                        <span>Overall Roadmap Progress</span>
+                        <span>{progress.current} / {progress.total} Levels</span>
+                    </div>
+                    <Progress value={progressPercentage} />
+                </div>
             </motion.div>
             <AnimatePresence mode="wait">
                 <motion.div
@@ -300,24 +324,64 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     );
 }
 
-const StudyView = ({ content, onStartQuiz }: { content: string, onStartQuiz: () => void }) => (
-    <Card>
-        <CardHeader>
-            <CardTitle className="font-headline text-2xl flex items-center gap-2">
-                <BookOpen />
-                Learning Material
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
-        </CardContent>
-        <CardFooter>
-            <Button size="lg" onClick={onStartQuiz}>
-                I'm Ready, Start the Challenge
-                <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-        </CardFooter>
-    </Card>
+const StudyView = ({ contentData, onStartQuiz }: { contentData: GenerateLearningContentOutput, onStartQuiz: () => void }) => (
+    <div className="grid lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+            <CardHeader>
+                <CardTitle className="font-headline text-2xl flex items-center gap-2">
+                    <BookOpen />
+                    Learning Material
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: contentData.learningContent }} />
+            </CardContent>
+            <CardFooter>
+                <Button size="lg" onClick={onStartQuiz}>
+                    I'm Ready, Start the Challenge
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+            </CardFooter>
+        </Card>
+        <div className="space-y-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
+                        <Sparkles className="h-5 w-5" />
+                        Skills You'll Gain
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ul className="space-y-2">
+                        {contentData.skillsGained?.map(skill => (
+                            <li key={skill} className="flex items-center gap-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-400" />
+                                <span>{skill}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
+                        <Briefcase className="h-5 w-5" />
+                        Job Opportunities
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                     <ul className="space-y-2">
+                        {contentData.jobOpportunities?.map(job => (
+                            <li key={job} className="flex items-center gap-2 text-sm">
+                                <CheckCircle className="h-4 w-4 text-green-400" />
+                                <span>{job}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </CardContent>
+            </Card>
+        </div>
+    </div>
 );
 
 const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number, results: QuizResult[]) => void }) => {

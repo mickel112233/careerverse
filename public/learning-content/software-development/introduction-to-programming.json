@@ -1,97 +1,111 @@
 
 {
-  "learningContent": "<h3>What is Programming?</h3><p>Programming, at its core, is the process of giving instructions to a computer to perform a specific task. Think of it like writing a recipe for a computer to follow. These instructions are written in a special language that the computer understands, called a programming language.</p><h4>Why Do We Need Programming Languages?</h4><p>Computers don't understand human languages like English or Spanish. They operate on a very basic level, using binary code (1s and 0s). A programming language acts as a bridge. It allows us to write instructions in a way that's more readable for humans, which is then translated into binary code for the computer to execute.</p><h4>Common Programming Concepts</h4><ul><li><strong>Algorithm:</strong> An algorithm is a step-by-step set of instructions or rules for solving a problem. Before you write any code, you should think about the algorithm for your solution.</li><li><strong>Syntax:</strong> Just like human languages have grammar rules, programming languages have syntax rules. You must follow these rules exactly, or the computer won't understand your instructions.</li><li><strong>Execution:</strong> This is the process of the computer running your code and performing the instructions you've written.</li></ul><h4>What Can You Do With Programming?</h4><p>Programming is the foundation of almost all modern technology. It's used to create:</p><ul><li>Websites and web applications (like the one you're using now!)</li><li>Mobile apps for iOS and Android</li><li>Video games</li><li>Artificial Intelligence and Machine Learning models</li><li>Software for cars, robots, and smart homes</li></ul><p>By learning to program, you are learning the language of the future and gaining the power to create amazing things with technology.</p>",
+  "learningContent": "<h3>What is Programming?</h3><p>Programming is the process of creating a set of instructions that tell a computer how to perform a task. These instructions are written in a specific language that the computer can understand, known as a programming language.</p><h4>Core Concepts</h4><ul><li><strong>Variables:</strong> Containers for storing data values. In programming, you might have a variable named `score` to hold a player's score.</li><li><strong>Data Types:</strong> The type of data a variable can hold, like numbers (integers, floats), text (strings), or true/false values (booleans).</li><li><strong>Control Structures:</strong> These direct the flow of a program. This includes `if` statements (to make decisions) and `loops` (to repeat actions).</li><li><strong>Functions:</strong> A block of code designed to perform a particular task. Functions help organize code and make it reusable.</li></ul><h3>Why Learn Programming?</h3><p>Programming is a fundamental skill in the digital age. It powers websites, mobile apps, video games, and even complex AI systems. Learning to program develops problem-solving skills, logical thinking, and creativity.</p>",
   "quiz": {
-    "title": "Introduction to Programming",
+    "title": "Programming Fundamentals Quiz",
     "questions": [
+      {
+        "question": "What is the primary purpose of a variable in programming?",
+        "options": [
+          "To store data values that can be used and changed",
+          "To end the program",
+          "To display text on the screen",
+          "To create a loop"
+        ],
+        "correctAnswer": "To store data values that can be used and changed",
+        "explanation": "Variables act as named containers for storing information that your program needs to work with."
+      },
+      {
+        "question": "Which of these is NOT a common data type?",
+        "options": [
+          "String",
+          "Integer",
+          "Boolean",
+          "Function"
+        ],
+        "correctAnswer": "Function",
+        "explanation": "While functions are a core part of programming, they are a block of code, not a fundamental data type like String, Integer, or Boolean."
+      },
+      {
+        "question": "What control structure is used to make decisions in code?",
+        "options": [
+          "For Loop",
+          "If Statement",
+          "Variable Declaration",
+          "Function Call"
+        ],
+        "correctAnswer": "If Statement",
+        "explanation": "If statements allow a program to execute different code blocks based on whether a certain condition is true or false."
+      },
+      {
+        "question": "What is the main benefit of using functions?",
+        "options": [
+          "They make the code run faster",
+          "They allow you to reuse code without rewriting it",
+          "They are the only way to store data",
+          "They make the code longer"
+        ],
+        "correctAnswer": "They allow you to reuse code without rewriting it",
+        "explanation": "Functions encapsulate logic into reusable blocks, making code more organized, efficient, and easier to maintain."
+      },
       {
         "question": "What is programming?",
         "options": [
-          "Giving instructions to a computer to perform a task.",
-          "Fixing computer hardware.",
-          "Designing the look of a website.",
-          "Talking to a computer in English."
+          "The process of designing a computer",
+          "The process of creating instructions for a computer",
+          "The process of selling software",
+          "The process of using a computer"
         ],
-        "correctAnswer": "Giving instructions to a computer to perform a task.",
-        "explanation": "Programming is the fundamental process of writing instructions (code) for a computer to execute."
+        "correctAnswer": "The process of creating instructions for a computer",
+        "explanation": "Programming is fundamentally about writing instructions in a language a computer can understand to perform specific tasks."
       },
       {
-        "question": "Why are programming languages necessary?",
+        "question": "Which data type would be best for storing a user's name?",
         "options": [
-          "They are faster than binary code.",
-          "They act as a bridge between human language and machine code.",
-          "They are the only way to turn a computer on.",
-          "They are used to create computer viruses."
+          "Integer",
+          "Boolean",
+          "String",
+          "Float"
         ],
-        "correctAnswer": "They act as a bridge between human language and machine code.",
-        "explanation": "Programming languages provide a more human-readable way to write instructions, which are then translated into the binary code that computers understand."
+        "correctAnswer": "String",
+        "explanation": "Strings are used to represent text, which is perfect for storing names."
       },
       {
-        "question": "What is an algorithm?",
+        "question": "If you want to repeat an action 10 times, what programming concept would you use?",
         "options": [
-          "A type of programming language.",
-          "A computer bug.",
-          "A step-by-step set of instructions for solving a problem.",
-          "The hardware inside a computer."
+          "An If Statement",
+          "A Variable",
+          "A Loop",
+          "A Comment"
         ],
-        "correctAnswer": "A step-by-step set of instructions for solving a problem.",
-        "explanation": "An algorithm is the plan or logic you create to solve a problem before you start writing the actual code."
+        "correctAnswer": "A Loop",
+        "explanation": "Loops are designed specifically for repeating a block of code multiple times, either a set number of times or until a condition is met."
       },
       {
-        "question": "The rules of a programming language are called its:",
+        "question": "A value that can be either true or false is called a...?",
         "options": [
-          "Syntax",
-          "Grammar",
-          "Algorithm",
-          "Execution"
+          "String",
+          "Boolean",
+          "Number",
+          "Array"
         ],
-        "correctAnswer": "Syntax",
-        "explanation": "Syntax refers to the specific set of rules that define how to write valid code in a particular programming language."
-      },
-      {
-        "question": "What is the name for the 1s and 0s that a computer fundamentally understands?",
-        "options": [
-          "Source Code",
-          "Assembly Language",
-          "Binary Code",
-          "Syntax Code"
-        ],
-        "correctAnswer": "Binary Code",
-        "explanation": "Binary code is the most basic language of computers, consisting of only two digits: 0 and 1."
-      },
-      {
-        "question": "Which of the following is NOT an application of programming?",
-        "options": [
-          "Creating a mobile app",
-          "Building a video game",
-          "Manufacturing a computer chip's physical silicon",
-          "Developing a website"
-        ],
-        "correctAnswer": "Manufacturing a computer chip's physical silicon",
-        "explanation": "Programming is used to design and control the software that runs on chips, but the physical manufacturing of the silicon is a hardware engineering process."
-      },
-      {
-        "question": "What is the process of a computer running your code called?",
-        "options": [
-          "Compilation",
-          "Execution",
-          "Interpretation",
-          "Translation"
-        ],
-        "correctAnswer": "Execution",
-        "explanation": "Execution is the general term for when the computer carries out the instructions written in a program."
-      },
-      {
-        "question": "If you write code with incorrect grammar, what kind of error will you get?",
-        "options": [
-          "A logic error",
-          "A runtime error",
-          "A syntax error",
-          "A hardware error"
-        ],
-        "correctAnswer": "A syntax error",
-        "explanation": "A syntax error occurs when the code violates the rules of the programming language, similar to a grammatical mistake in a sentence."
+        "correctAnswer": "Boolean",
+        "explanation": "The Boolean data type represents two values: true and false, and is fundamental for decision making in programming."
       }
     ]
-  }
+  },
+  "skillsGained": [
+    "Understanding of Core Programming Concepts",
+    "Variable and Data Type Usage",
+    "Logical Thinking",
+    "Problem Decomposition",
+    "Algorithmic Thinking"
+  ],
+  "jobOpportunities": [
+    "Junior Software Developer",
+    "Apprentice Programmer",
+    "QA Tester",
+    "IT Support Specialist",
+    "Web Development Intern"
+  ]
 }
