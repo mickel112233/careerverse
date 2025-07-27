@@ -8,18 +8,21 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
-import { BookOpen, Bot, Briefcase, Code, PenTool, ArrowRight, Lightbulb, Users, BarChart } from 'lucide-react';
+import { BookOpen, Bot, Briefcase, Code, PenTool, ArrowRight, Lightbulb, Users, BarChart, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { PowerLevels } from '@/lib/skill-mapping';
 
-const factions = [
+export const factions = [
     {
         name: 'Tech Forgers',
         icon: Code,
         tagline: 'Masters of code and digital innovation.',
         skills: ['Backend Dev', 'AI/ML', 'Cybersecurity'],
         careers: ['Software Engineer', 'AI Specialist', 'Security Analyst'],
-        color: 'hover:border-blue-400'
+        color: 'hover:border-blue-400',
+        perk: '+10% XP from Technical subjects.',
+        perkCategory: 'technical' as keyof PowerLevels,
     },
     {
         name: 'Creative Artisans',
@@ -27,7 +30,9 @@ const factions = [
         tagline: 'Imaginative and artistic visionaries.',
         skills: ['UI/UX Design', 'Content Creation', 'Branding'],
         careers: ['Product Designer', 'YouTuber', 'Marketing Artist'],
-        color: 'hover:border-pink-400'
+        color: 'hover:border-pink-400',
+        perk: '+10% XP from Creative subjects.',
+        perkCategory: 'creativity' as keyof PowerLevels,
     },
     {
         name: 'Social Champions',
@@ -35,7 +40,9 @@ const factions = [
         tagline: 'Community leaders and communicators.',
         skills: ['Marketing', 'Sales', 'Project Management'],
         careers: ['Community Manager', 'Sales Director', 'Producer'],
-        color: 'hover:border-green-400'
+        color: 'hover:border-green-400',
+        perk: '+10% XP from Social subjects.',
+        perkCategory: 'social' as keyof PowerLevels,
     },
     {
         name: 'Knowledge Seekers',
@@ -43,7 +50,9 @@ const factions = [
         tagline: 'Research and analysis-focused scholars.',
         skills: ['Data Science', 'Business Analysis', 'R&D'],
         careers: ['Data Scientist', 'Business Analyst', 'Research Scientist'],
-        color: 'hover:border-yellow-400'
+        color: 'hover:border-yellow-400',
+        perk: '+10% XP from Logic subjects.',
+        perkCategory: 'logic' as keyof PowerLevels,
     },
     {
         name: 'Innovation Pioneers',
@@ -51,7 +60,9 @@ const factions = [
         tagline: 'Entrepreneurs and startup founders.',
         skills: ['Leadership', 'Finance', 'Strategy'],
         careers: ['Startup CEO', 'Venture Capitalist', 'Product Manager'],
-        color: 'hover:border-purple-400'
+        color: 'hover:border-purple-400',
+        perk: '+10% XP from Leadership subjects.',
+        perkCategory: 'leadership' as keyof PowerLevels,
     },
 ];
 
@@ -131,7 +142,7 @@ export default function WelcomePage() {
                 <Card className="bg-card/50">
                     <CardHeader>
                         <CardTitle className="text-xl font-bold font-headline">Choose Your Faction</CardTitle>
-                        <CardDescription>Your faction determines your starting focus and available quests.</CardDescription>
+                        <CardDescription>Your faction determines your starting focus and grants a unique perk.</CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {factions.map((faction) => {
@@ -142,7 +153,7 @@ export default function WelcomePage() {
                                     key={faction.name}
                                     onClick={() => setSelectedFaction(faction.name)}
                                     className={cn(
-                                        "p-4 border-2 rounded-lg text-left transition-all duration-300 relative overflow-hidden",
+                                        "p-4 border-2 rounded-lg text-left transition-all duration-300 relative overflow-hidden flex flex-col h-full",
                                         isSelected ? 'border-primary shadow-lg shadow-primary/20' : 'border-border bg-background/50',
                                         faction.color
                                     )}
@@ -153,10 +164,12 @@ export default function WelcomePage() {
                                         <Icon className="h-8 w-8 text-primary shrink-0" />
                                         <h3 className="text-lg font-bold font-headline">{faction.name}</h3>
                                     </div>
-                                    <p className="text-sm text-muted-foreground mb-3">{faction.tagline}</p>
-                                    <div className="text-xs space-y-1">
-                                        <p><strong>Key Skills:</strong> {faction.skills.join(', ')}</p>
-                                        <p><strong>Sample Careers:</strong> {faction.careers.join(', ')}</p>
+                                    <p className="text-sm text-muted-foreground mb-3 flex-grow">{faction.tagline}</p>
+                                    <div className="text-xs space-y-1 mt-auto">
+                                        <div className="flex items-center gap-2 font-semibold text-primary p-2 bg-primary/10 rounded-md">
+                                            <Zap className="h-4 w-4" />
+                                            <span>{faction.perk}</span>
+                                        </div>
                                     </div>
                                 </motion.button>
                             );

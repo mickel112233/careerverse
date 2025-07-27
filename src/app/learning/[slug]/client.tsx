@@ -18,6 +18,8 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { updateQuestProgress } from '@/lib/quest-data';
+import { categoryToSkillMapping } from '@/lib/skill-mapping';
+import { factions } from '../welcome/page';
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
@@ -95,13 +97,15 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [levelXp, setLevelXp] = useState(0);
     const [levelCoins, setLevelCoins] = useState(0);
     const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
+    const [streamName, setStreamName] = useState('');
 
     useEffect(() => {
         const fetchContent = async () => {
             setState('loading');
             try {
-                const streamName = localStorage.getItem('careerClashStream') || 'Software Development';
-                const streamSlug = streamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
+                const storedStreamName = localStorage.getItem('careerClashStream') || 'Software Development';
+                setStreamName(storedStreamName);
+                const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
                 const response = await fetch(`/learning-content/${streamSlug}/${slug}.json`);
 
@@ -141,7 +145,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     title: "Error",
                     description: "Could not load the lesson. Please try again later.",
                 });
-                router.push('/dashboard');
+                router.push('/dashboard/learning-path');
             }
         };
         fetchContent();
@@ -179,8 +183,22 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     if (roadmap[currentStageIndex].levels[currentLevelIndex].status !== 'completed') {
                          roadmap[currentStageIndex].levels[currentLevelIndex].status = 'completed';
 
+                         const storedProfile = JSON.parse(localStorage.getItem('careerClashUserProfile') || '{}');
+                         const userFactionName = storedProfile.faction;
+                         const userFaction = factions.find(f => f.name === userFactionName);
+                         const streamSkillCategory = categoryToSkillMapping[streamName];
+                         
+                         let xpGained = levelXp;
+                         let toastMessage = `You earned ${levelXp} XP and ${levelCoins} Coins!`;
+
+                         if (userFaction && userFaction.perkCategory === streamSkillCategory) {
+                            const bonusXp = Math.floor(levelXp * 0.1);
+                            xpGained += bonusXp;
+                            toastMessage = `You earned ${levelXp} XP + ${bonusXp} (Faction Bonus!) and ${levelCoins} Coins!`;
+                         }
+
                          const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
-                         const newTotalXp = currentTotalXp + levelXp;
+                         const newTotalXp = currentTotalXp + xpGained;
                          localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
                          
                          const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
@@ -191,7 +209,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                          
                          toast({
                             title: "Level Complete!",
-                            description: `You earned ${levelXp} XP and ${levelCoins} Coins!`,
+                            description: toastMessage,
                             className: "bg-green-500 text-white border-green-600",
                         });
                     }
@@ -236,7 +254,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         }
     
         if (contentExists === false) {
-            return <MissingContentCard topic={topic} onBack={() => router.push('/dashboard')} />;
+            return <MissingContentCard topic={topic} onBack={() => router.push('/dashboard/learning-path')} />;
         }
         
         if (learningData) {
@@ -257,7 +275,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
     return (
         <>
-            <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+            <Button variant="ghost" onClick={() => router.push('/dashboard/learning-path')} className="mb-4">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Roadmap
             </Button>
@@ -511,5 +529,3 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
         </Card>
     )
 }
-
-    
