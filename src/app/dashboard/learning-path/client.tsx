@@ -70,9 +70,28 @@ export default function LearningPathClient() {
                 toast({
                     variant: 'destructive',
                     title: 'Roadmap Not Found',
-                    description: `The learning roadmap for ${streamName} is not available yet.`,
+                    description: `The learning roadmap for ${streamName} is not available yet. Generating one now...`,
                 });
-                throw new Error('Roadmap not found');
+                
+                // Fallback to AI generation if JSON is not found
+                const aiResponse = await generateLearningRoadmap({ streamName });
+                if(!aiResponse || !aiResponse.roadmap) throw new Error('AI Roadmap generation failed');
+                
+                const processedRoadmap: Roadmap = aiResponse.roadmap.map((stage: any, stageIndex: number) => ({
+                    ...stage,
+                    status: stageIndex === 0 ? 'unlocked' : 'locked',
+                    levels: stage.levels.map((level: any, levelIndex: number) => ({
+                        ...level,
+                        slug: level.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
+                        status: (stageIndex === 0 && levelIndex === 0) ? 'unlocked' : 'locked',
+                        coins: Math.floor(level.xp / 10),
+                    }))
+                }));
+
+                setRoadmap(processedRoadmap);
+                localStorage.setItem('careerClashStream', streamName);
+                localStorage.setItem('careerClashRoadmap', JSON.stringify(processedRoadmap));
+                return;
             }
             const data = await response.json();
             
@@ -92,8 +111,14 @@ export default function LearningPathClient() {
             localStorage.setItem('careerClashRoadmap', JSON.stringify(processedRoadmap));
 
         } catch (error) {
-            console.error("Failed to fetch roadmap:", error);
+            console.error("Failed to fetch or generate roadmap:", error);
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: `Could not retrieve roadmap for ${streamName}. Please try again.`
+            });
             setRoadmap(null);
+            setSelectedStream(null);
         } finally {
             setIsLoading(false);
         }
@@ -116,6 +141,10 @@ export default function LearningPathClient() {
         router.push(`/learning/${level.slug}`);
     };
 
+    if (isLoading) {
+         return <div className="flex justify-center items-center h-64"><Loader2 className="w-12 h-12 animate-spin text-primary" /></div>;
+    }
+    
     if (!selectedStream || !roadmap) {
         return (
             <div className="space-y-8">
@@ -144,10 +173,6 @@ export default function LearningPathClient() {
                 </div>
             </div>
         );
-    }
-    
-    if (isLoading) {
-         return <div className="flex justify-center items-center h-64"><Loader2 className="w-12 h-12 animate-spin text-primary" /></div>;
     }
 
     return (
