@@ -12,7 +12,6 @@ import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { useToast } from '@/hooks/use-toast';
-import type { GenerateLearningContentOutput } from '@/ai/flows/learning-content-generator';
 import { Loader2, ArrowRight, BookOpen, CheckCircle, XCircle, Repeat, FileQuestion, HelpCircle, Zap, Coins, ArrowLeft, Info, Sparkles, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -20,6 +19,40 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { updateQuestProgress } from '@/lib/quest-data';
 import { categoryToSkillMapping } from '@/lib/skill-mapping';
 import { factions } from '../../welcome/page';
+
+// --- NEW DATA STRUCTURES ---
+
+type QuizQuestion = {
+    question: string;
+    options: string[];
+    correctAnswer: string;
+    explanation: string;
+};
+
+type Lesson = {
+    title: string;
+    content: string; // HTML content
+    task: string;
+};
+
+type Module = {
+    title: string;
+    lessons: Lesson[];
+    quiz: {
+        title: string;
+        questions: QuizQuestion[];
+    };
+};
+
+type CourseContent = {
+    courseTitle: string;
+    summary: string;
+    estimatedTime: string;
+    modules: Module[];
+};
+
+// --- END NEW DATA STRUCTURES ---
+
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
@@ -92,7 +125,7 @@ const MissingContentCard = ({ topic, onBack }: { topic: string, onBack: () => vo
 
 export default function LearningFlowClient({ topic, slug }: { topic: string, slug: string }) {
     const [state, setState] = useState<LearningState>('loading');
-    const [learningData, setLearningData] = useState<GenerateLearningContentOutput | null>(null);
+    const [courseData, setCourseData] = useState<CourseContent | null>(null);
     const [contentExists, setContentExists] = useState<boolean | null>(null);
     const router = useRouter();
     const { toast } = useToast();
@@ -101,6 +134,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
     const [streamName, setStreamName] = useState('');
     const [progress, setProgress] = useState({ current: 0, total: 0 });
+    const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
 
 
     useEffect(() => {
@@ -111,7 +145,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 setStreamName(storedStreamName);
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
-                const response = await fetch(`/learning-content/${streamSlug}/${slug}.json`);
+                // Adjusted to a new content structure path
+                const response = await fetch(`/learning-content/${slug}.json`);
 
                 if (!response.ok) {
                     if (response.status === 404) {
@@ -122,8 +157,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     throw new Error(`Failed to load content. Status: ${response.status}`);
                 }
 
-                const data: GenerateLearningContentOutput = await response.json();
-                setLearningData(data);
+                const data: CourseContent = await response.json();
+                setCourseData(data);
                 setContentExists(true);
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
@@ -272,12 +307,13 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             return <MissingContentCard topic={topic} onBack={() => router.push('/dashboard/learning-path')} />;
         }
         
-        if (learningData) {
+        if (courseData) {
             switch (state) {
                 case 'studying':
-                    return <StudyView contentData={learningData} onStartQuiz={() => setState('quizzing')} />;
+                    return <StudyView courseData={courseData} onStartQuiz={(moduleIndex) => { setCurrentModuleIndex(moduleIndex); setState('quizzing');}} />;
                 case 'quizzing':
-                    return <QuizView quizData={learningData.quiz} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
+                    const quizData = courseData.modules[currentModuleIndex].quiz;
+                    return <QuizView quizData={quizData} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
                 case 'results':
                     return <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} />;
                 default:
@@ -297,7 +333,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 Back to Roadmap
             </Button>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{topic}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{courseData?.courseTitle || topic}</h1>
                 <p className="mt-2 text-muted-foreground">
                     Study the material below, then prepare for the challenge.
                 </p>
@@ -324,67 +360,46 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     );
 }
 
-const StudyView = ({ contentData, onStartQuiz }: { contentData: GenerateLearningContentOutput, onStartQuiz: () => void }) => (
-    <div className="grid lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+const StudyView = ({ courseData, onStartQuiz }: { courseData: CourseContent, onStartQuiz: (moduleIndex: number) => void }) => (
+    <div className="grid lg:grid-cols-1 gap-6">
+        <Card className="lg:col-span-1">
             <CardHeader>
                 <CardTitle className="font-headline text-2xl flex items-center gap-2">
                     <BookOpen />
-                    Learning Material
+                    Course Modules
                 </CardTitle>
+                 <CardDescription>{courseData.summary}</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: contentData.learningContent }} />
+                <Accordion type="single" collapsible className="w-full">
+                    {courseData.modules.map((module, moduleIndex) => (
+                        <AccordionItem key={moduleIndex} value={`module-${moduleIndex}`}>
+                            <AccordionTrigger className="text-xl font-semibold">{module.title}</AccordionTrigger>
+                            <AccordionContent className="p-4 space-y-6">
+                                {module.lessons.map((lesson, lessonIndex) => (
+                                    <div key={lessonIndex} className="prose dark:prose-invert max-w-none">
+                                        <h3>{lesson.title}</h3>
+                                        <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
+                                        <div className="mt-4 p-4 border-l-4 border-accent bg-accent/10">
+                                            <p className="font-bold">Mini-Task:</p>
+                                            <p>{lesson.task}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                                <Button size="lg" onClick={() => onStartQuiz(moduleIndex)} className="mt-6">
+                                    Start {module.quiz.title}
+                                    <ArrowRight className="ml-2 h-5 w-5" />
+                                </Button>
+                            </AccordionContent>
+                        </AccordionItem>
+                    ))}
+                </Accordion>
             </CardContent>
-            <CardFooter>
-                <Button size="lg" onClick={onStartQuiz}>
-                    I'm Ready, Start the Challenge
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-            </CardFooter>
         </Card>
-        <div className="space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
-                        <Sparkles className="h-5 w-5" />
-                        Skills You'll Gain
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ul className="space-y-2">
-                        {contentData.skillsGained?.map(skill => (
-                            <li key={skill} className="flex items-center gap-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-400" />
-                                <span>{skill}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline text-xl flex items-center gap-2 text-primary">
-                        <Briefcase className="h-5 w-5" />
-                        Job Opportunities
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                     <ul className="space-y-2">
-                        {contentData.jobOpportunities?.map(job => (
-                            <li key={job} className="flex items-center gap-2 text-sm">
-                                <CheckCircle className="h-4 w-4 text-green-400" />
-                                <span>{job}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-        </div>
     </div>
 );
 
-const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: GenerateLearningContentOutput['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number, results: QuizResult[]) => void }) => {
+const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: Module['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number, results: QuizResult[]) => void }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<UserAnswers>({});
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
