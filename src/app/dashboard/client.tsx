@@ -101,7 +101,7 @@ export default function DashboardClient() {
         const newPowerLevels: PowerLevels = { logic: 0, creativity: 0, leadership: 0, technical: 0, social: 0 };
 
         if(storedRoadmap) {
-            const roadmapData = JSON.parse(storedRoadmap);
+            const roadmapData = storedRoadmap;
             const streamName = localStorage.getItem('careerClashStream') || '';
             const skillCategory = categoryToSkillMapping[streamName];
             
