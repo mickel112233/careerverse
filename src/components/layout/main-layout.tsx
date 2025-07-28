@@ -4,7 +4,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart, Trophy, Skull, Star, CheckSquare } from "lucide-react";
+import { LayoutGrid, Users, Swords, UserCircle, ShoppingCart, Trophy, Skull, Star, CheckSquare, BookOpen } from "lucide-react";
 import Logo from "@/components/icons/logo";
 import { cn } from "@/lib/utils";
 import CurrencyHeader from "@/components/ui/currency-header";
@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 
 const menuItems = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
+  { href: "/study", label: "Study", icon: BookOpen },
   { href: "/competition", label: "Battle", icon: Swords },
   { href: "/boss-raid", label: "Bosses", icon: Skull },
   { href: "/quests", label: "Quests", icon: CheckSquare },

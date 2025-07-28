@@ -96,12 +96,12 @@ export default function DashboardClient() {
         const storedCompletedAchievements = JSON.parse(localStorage.getItem('careerClashCompletedAchievements') || '[]');
         setAchievementsUnlocked(storedCompletedAchievements.length);
 
-        const storedRoadmap = JSON.parse(localStorage.getItem('careerClashRoadmap') || 'null');
+        const storedRoadmap = localStorage.getItem('careerClashRoadmap');
         let completedLevels = 0;
         const newPowerLevels: PowerLevels = { logic: 0, creativity: 0, leadership: 0, technical: 0, social: 0 };
 
         if(storedRoadmap) {
-            const roadmapData = storedRoadmap;
+            const roadmapData = JSON.parse(storedRoadmap);
             const streamName = localStorage.getItem('careerClashStream') || '';
             const skillCategory = categoryToSkillMapping[streamName];
             
@@ -160,8 +160,7 @@ export default function DashboardClient() {
 
         <section>
             <h2 className="text-2xl font-bold font-headline mb-4">Power Up Your Journey</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <FeatureCard title="Master Skills" icon={Crown} href="/dashboard/learning-path" />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <FeatureCard title="Epic Quests" icon={CheckSquare} href="/quests" />
                 <FeatureCard title="Battle Arena" icon={Swords} href="/competition" />
                 <FeatureCard title="Boss Raids" icon={Skull} href="/boss-raid" />
