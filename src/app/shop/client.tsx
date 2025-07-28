@@ -231,7 +231,12 @@ export default function ShopClient() {
             const roadmap = JSON.parse(storedRoadmap);
             const unlockedRoadmap = roadmap.map((stage: any) => ({
                 ...stage,
-                status: 'unlocked'
+                status: 'unlocked',
+                levels: stage.levels.map((level: any) => ({
+                    ...level,
+                    // Unlock all levels except those already completed
+                    status: level.status === 'completed' ? 'completed' : 'unlocked'
+                }))
             }));
             localStorage.setItem('careerClashRoadmap', JSON.stringify(unlockedRoadmap));
         }

@@ -75,13 +75,16 @@ export default function LearningPathClient() {
                 const aiResponse = await generateLearningRoadmap({ streamName });
                 if(!aiResponse || !aiResponse.roadmap) throw new Error('AI Roadmap generation failed');
                 
+                const membership = localStorage.getItem('careerClashMembership');
+                const isPremium = membership && membership !== 'Free' && membership !== 'Basic';
+                
                 const processedRoadmap: Roadmap = aiResponse.roadmap.map((stage: any, stageIndex: number) => ({
                     ...stage,
-                    status: stageIndex === 0 ? 'unlocked' : 'locked',
+                    status: isPremium || stageIndex === 0 ? 'unlocked' : 'locked',
                     levels: stage.levels.map((level: any, levelIndex: number) => ({
                         ...level,
                         slug: level.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
-                        status: (stageIndex === 0 && levelIndex === 0) ? 'unlocked' : 'locked',
+                        status: isPremium ? 'unlocked' : (stageIndex === 0 && levelIndex === 0) ? 'unlocked' : 'locked',
                         coins: Math.floor(level.xp / 10),
                     }))
                 }));
