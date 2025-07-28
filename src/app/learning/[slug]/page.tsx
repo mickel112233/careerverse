@@ -1,7 +1,10 @@
 
+
 import LearningFlowClient from './client';
 
 export default function LearningPage({ params }: { params: { slug: string } }) {
+  // The topic title is now derived from the slug for display purposes.
+  // The actual content is fetched from a single file based on the career stream.
   const topicTitle = decodeURIComponent(params.slug).replace(/-/g, ' ');
 
   return (

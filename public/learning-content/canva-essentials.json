@@ -1,72 +1,92 @@
 
 {
-    "courseTitle": "Canva Essentials",
-    "summary": "Master the fundamentals of Canva for both web and mobile. This course covers everything from navigating the interface to creating your first designs.",
-    "estimatedTime": "2-3 Hours",
-    "modules": [
+  "courseTitle": "Canva Essentials",
+  "summary": "Master the fundamentals of Canva for web and mobile. Learn to navigate the interface, use core tools, and create your first designs.",
+  "estimatedTime": "1-2 Hours",
+  "modules": [
+    {
+      "title": "Module 1: Getting Started with Canva",
+      "lessons": [
         {
-            "title": "Module 1: Introduction to Canva",
-            "lessons": [
-                {
-                    "title": "What is Canva and Why Use It?",
-                    "content": "<h3>Welcome to the World of Canva!</h3><p>Canva is a powerful and user-friendly online design tool that allows anyone to create professional-looking graphics. You don't need to be a designer to use it! From social media posts to presentations, Canva simplifies the design process with its drag-and-drop interface and vast library of templates, fonts, and images.</p><h4>Key Features:</h4><ul><li>Intuitive drag-and-drop editor.</li><li>Thousands of customizable templates for any occasion.</li><li>A rich library of photos, illustrations, icons, and fonts.</li><li>Collaboration features to work with a team.</li><li>One-click resizing for different platforms.</li></ul>",
-                    "task": "Explore the Canva homepage and identify three types of designs you'd like to create."
-                },
-                {
-                    "title": "Navigating the Canva Dashboard",
-                    "content": "<h3>Your Creative Command Center</h3><p>When you log in, you'll see the Canva dashboard. It's designed to get you creating quickly.</p><h4>Main Sections:</h4><ul><li><strong>Top Bar:</strong> Search for templates or start a design with custom dimensions.</li><li><strong>Side Panel:</strong> Access your projects, templates, brand kit, and other tools.</li><li><strong>Main Area:</strong> See design suggestions, your recent projects, and different template categories like 'Presentations', 'Social Media', and 'Video'.</li></ul><p>Spend a few minutes clicking around. The best way to learn is by exploring!</p>",
-                    "task": "Find the 'Presentations' template category and open a template that catches your eye."
-                }
-            ],
-            "quiz": {
-                "title": "Module 1 Checkpoint",
-                "questions": [
-                    {
-                        "question": "What is the primary function of Canva?",
-                        "options": ["Video editing software", "A simplified graphic design tool", "A spreadsheet program", "A word processor"],
-                        "correctAnswer": "A simplified graphic design tool",
-                        "explanation": "Canva's main purpose is to make graphic design accessible to everyone, regardless of skill level."
-                    },
-                    {
-                        "question": "Which feature is NOT a core part of Canva?",
-                        "options": ["Template library", "Drag-and-drop editor", "Advanced 3D modeling", "Collaboration tools"],
-                        "correctAnswer": "Advanced 3D modeling",
-                        "explanation": "While Canva is very versatile, it does not currently offer advanced 3D modeling capabilities."
-                    }
-                ]
-            }
+          "title": "Welcome to Canva",
+          "content": "<h3>What is Canva?</h3><p>Canva is a powerful and user-friendly online design platform that makes it easy to create professional-looking graphics, presentations, social media posts, and more, without needing extensive design experience. It uses a drag-and-drop interface and provides a vast library of templates, fonts, and images.</p><h4>Key Features:</h4><ul><li>Thousands of templates for various formats.</li><li>Huge library of stock photos, icons, and fonts.</li><li>Easy-to-use drag-and-drop editor.</li><li>Collaboration tools to work with a team.</li></ul>",
+          "task": "Create a free Canva account and explore the main dashboard. Notice the different template categories available."
         },
         {
-            "title": "Module 2: The Canva Editor",
-            "lessons": [
-                {
-                    "title": "Understanding the Editor Workspace",
-                    "content": "<h3>The Anatomy of the Editor</h3><p>The editor is where the magic happens. It's composed of a few key areas:</p><ul><li><strong>Side Panel (Objects Panel):</strong> On the left, you'll find everything you can add to your design: Templates, Elements (lines, shapes, graphics, photos), Uploads, Text, and more.</li><li><strong>Top Toolbar (Contextual Menu):</strong> This bar changes depending on what element you have selected. If you select text, you'll see options for font, size, color, and spacing. If you select an image, you'll see options for editing the image, cropping, and effects.</li><li><strong>The Canvas:</strong> This is your main design area where you will place and arrange all your elements.</li></ul>",
-                    "task": "Add a shape from the 'Elements' tab to your canvas and then select it to see how the top toolbar changes."
-                },
-                {
-                    "title": "Working with Text and Fonts",
-                    "content": "<h3>Making Your Message Stand Out</h3><p>Text is a crucial part of most designs. Canva makes it easy to add and style text.</p><h4>How to Add Text:</h4><ol><li>Go to the 'Text' tab in the side panel.</li><li>Click on 'Add a heading', 'Add a subheading', or 'Add a little bit of body text'.</li><li>Alternatively, browse the font combinations for pre-designed text styles.</li></ol><p>Once you have a text box, select it and use the top toolbar to change the font, size, color, alignment, spacing, and add effects like shadows or outlines.</p>",
-                    "task": "Add a heading to your design. Change its font to 'Poppins' and set the color to a vibrant purple."
-                }
-            ],
-            "quiz": {
-                "title": "Module 2 Checkpoint",
-                "questions": [
-                    {
-                        "question": "Where would you find the option to add a photo to your design?",
-                        "options": ["The top toolbar", "The canvas", "The side panel under 'Elements' or 'Uploads'", "The bottom right corner"],
-                        "correctAnswer": "The side panel under 'Elements' or 'Uploads'",
-                        "explanation": "The side panel contains all the objects and assets you can add to your canvas, including photos from Canva's library or your own uploads."
-                    },
-                    {
-                        "question": "The top toolbar in the Canva editor is 'contextual'. What does this mean?",
-                        "options": ["It's always the same", "It can be moved around the screen", "It shows different options depending on the selected element", "It contains context about your design"],
-                        "correctAnswer": "It shows different options depending on the selected element",
-                        "explanation": "A contextual menu adapts its options based on the context, which in Canva's case is the specific element (text, image, shape) you have selected."
-                    }
-                ]
-            }
+          "title": "Navigating the Interface",
+          "content": "<h3>The Canva Dashboard</h3><p>When you log in, you'll see the main dashboard. The top bar has the search function, where you can look for templates. The left-side panel gives you access to your projects, brand kits, and other tools. The main area showcases template suggestions.</p><h3>The Editor Workspace</h3><p>Once you select a template, you enter the editor. The left panel changes to show elements, text, uploads, and more. The top toolbar provides options for the selected element, like color, font size, and effects. The canvas in the middle is where you create your design.</p>",
+          "task": "Open any template (like an 'Instagram Post') and identify the main parts of the editor: the side panel, the top toolbar, and the canvas."
         }
-    ]
+      ],
+      "quiz": {
+        "title": "Interface Basics Quiz",
+        "questions": [
+          {
+            "question": "What is the primary function of Canva?",
+            "options": [
+              "Video editing software",
+              "A drag-and-drop design platform",
+              "A code editor",
+              "A spreadsheet application"
+            ],
+            "correctAnswer": "A drag-and-drop design platform",
+            "explanation": "Canva is primarily known for its user-friendly, drag-and-drop interface that simplifies the design process."
+          },
+          {
+            "question": "Where can you find templates for new designs on the Canva dashboard?",
+            "options": [
+              "In the settings menu",
+              "In the main search bar and suggestion area",
+              "Only in the mobile app",
+              "In the footer of the page"
+            ],
+            "correctAnswer": "In the main search bar and suggestion area",
+            "explanation": "The dashboard is designed to help you quickly find templates using the search bar or by browsing categories."
+          }
+        ]
+      }
+    },
+    {
+      "title": "Module 2: Core Design Tools",
+      "lessons": [
+        {
+          "title": "Working with Text and Fonts",
+          "content": "<h3>Adding and Editing Text</h3><p>You can add text boxes from the 'Text' tab on the left panel. Canva offers heading, subheading, and body text presets, as well as creative font combinations. Once a text box is on your canvas, you can click to edit the content. The top toolbar allows you to change the font, size, color, alignment, spacing, and apply effects like shadows or curves.</p>",
+          "task": "Add a heading and a paragraph to a blank design. Experiment with changing the font and color of the heading."
+        },
+        {
+          "title": "Using Elements and Photos",
+          "content": "<h3>Shapes, Lines, and Graphics</h3><p>The 'Elements' tab is your treasure chest for design assets. You can find everything from simple shapes and lines to complex illustrations and icons. Use the search bar within the Elements tab to find what you need.</p><h3>Adding Photos</h3><p>Canva has a massive library of free and Pro stock photos. You can find them under the 'Photos' tab or by searching in 'Elements'. You can also upload your own images via the 'Uploads' tab.</p>",
+          "task": "Search for a 'computer' icon in the Elements tab and add it to your design. Then, find a background photo and add it to the canvas."
+        }
+      ],
+      "quiz": {
+        "title": "Core Tools Quiz",
+        "questions": [
+          {
+            "question": "Which tab would you use to add a circle or a square to your design?",
+            "options": [
+              "Text",
+              "Uploads",
+              "Elements",
+              "Styles"
+            ],
+            "correctAnswer": "Elements",
+            "explanation": "The 'Elements' tab contains shapes, lines, graphics, photos, and more."
+          },
+          {
+            "question": "What does the top toolbar in the Canva editor allow you to do?",
+            "options": [
+              "Change the template",
+              "Modify the selected element (e.g., change color or font)",
+              "Add new pages",
+              "Share the design"
+            ],
+            "correctAnswer": "Modify the selected element (e.g., change color or font)",
+            "explanation": "The top toolbar is contextual and shows editing options for the element you have currently selected on the canvas."
+          }
+        ]
+      }
+    }
+  ]
 }

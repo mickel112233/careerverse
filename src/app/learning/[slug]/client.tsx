@@ -145,20 +145,33 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 setStreamName(storedStreamName);
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
-                // Adjusted to a new content structure path
-                const response = await fetch(`/learning-content/${slug}.json`);
+                // Fetch the entire course file based on the stream slug
+                const response = await fetch(`/learning-content/${streamSlug}.json`);
 
                 if (!response.ok) {
                     if (response.status === 404) {
                         setContentExists(false);
-                        setState('studying'); // Set to a stable state to show the missing content card
+                        setState('studying'); 
                         return;
                     }
                     throw new Error(`Failed to load content. Status: ${response.status}`);
                 }
 
                 const data: CourseContent = await response.json();
-                setCourseData(data);
+                
+                // Find the specific module/level content within the course file
+                const currentLevelData = data.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === slug);
+
+                if (!currentLevelData) {
+                    setContentExists(false);
+                    setState('studying');
+                    return;
+                }
+
+                // Create a temporary CourseContent object with just the current module
+                const singleModuleCourse = { ...data, modules: [currentLevelData] };
+                
+                setCourseData(singleModuleCourse);
                 setContentExists(true);
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
@@ -333,7 +346,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 Back to Roadmap
             </Button>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{courseData?.courseTitle || topic}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary capitalize">{topic}</h1>
                 <p className="mt-2 text-muted-foreground">
                     Study the material below, then prepare for the challenge.
                 </p>
@@ -362,42 +375,35 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
 const StudyView = ({ courseData, onStartQuiz }: { courseData: CourseContent, onStartQuiz: (moduleIndex: number) => void }) => (
     <div className="grid lg:grid-cols-1 gap-6">
-        <Card className="lg:col-span-1">
-            <CardHeader>
-                <CardTitle className="font-headline text-2xl flex items-center gap-2">
-                    <BookOpen />
-                    Course Modules
-                </CardTitle>
-                 <CardDescription>{courseData.summary}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Accordion type="single" collapsible className="w-full">
-                    {courseData.modules.map((module, moduleIndex) => (
-                        <AccordionItem key={moduleIndex} value={`module-${moduleIndex}`}>
-                            <AccordionTrigger className="text-xl font-semibold">{module.title}</AccordionTrigger>
-                            <AccordionContent className="p-4 space-y-6">
-                                {module.lessons.map((lesson, lessonIndex) => (
-                                    <div key={lessonIndex} className="prose dark:prose-invert max-w-none">
-                                        <h3>{lesson.title}</h3>
-                                        <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
-                                        <div className="mt-4 p-4 border-l-4 border-accent bg-accent/10">
-                                            <p className="font-bold">Mini-Task:</p>
-                                            <p>{lesson.task}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                                <Button size="lg" onClick={() => onStartQuiz(moduleIndex)} className="mt-6">
-                                    Start {module.quiz.title}
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                            </AccordionContent>
-                        </AccordionItem>
+        {courseData.modules.map((module, moduleIndex) => (
+            <Card key={moduleIndex} className="lg:col-span-1">
+                <CardHeader>
+                    <CardTitle className="font-headline text-2xl flex items-center gap-2">
+                        <BookOpen />
+                        {module.title}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 space-y-6">
+                    {module.lessons.map((lesson, lessonIndex) => (
+                        <div key={lessonIndex} className="prose dark:prose-invert max-w-none">
+                            <h3>{lesson.title}</h3>
+                            <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
+                            <div className="mt-4 p-4 border-l-4 border-accent bg-accent/10">
+                                <p className="font-bold">Mini-Task:</p>
+                                <p>{lesson.task}</p>
+                            </div>
+                        </div>
                     ))}
-                </Accordion>
-            </CardContent>
-        </Card>
+                    <Button size="lg" onClick={() => onStartQuiz(moduleIndex)} className="mt-6">
+                        Start {module.quiz.title}
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                </CardContent>
+            </Card>
+        ))}
     </div>
 );
+
 
 const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData: Module['quiz'], levelXp: number, levelCoins: number, onQuizComplete: (score: number, total: number, results: QuizResult[]) => void }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
