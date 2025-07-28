@@ -1,0 +1,108 @@
+
+{
+  "learningContent": "<h3>Guiding AI with Examples</h3><p>In prompt engineering, 'shot' refers to the number of examples you provide to the AI within your prompt to guide its response. Understanding the difference between Zero-Shot, One-Shot, and Few-Shot prompting is key to controlling the output style and structure.</p><h4>Zero-Shot Prompting</h4><p>This is the most common type of prompt. You ask the AI to perform a task without giving it any prior examples of how to do it. You are relying on the AI's existing training to understand the request.</p><p><strong>Example:</strong> 'Classify the following movie review as positive or negative: \"This movie was a masterpiece, I loved every minute of it!\"'</p><p>Zero-shot works well for general tasks, but for specific or nuanced outputs, you need to provide examples.</p><h4>One-Shot Prompting</h4><p>In one-shot prompting, you provide a single example of the input and the desired output. This gives the AI a clear template to follow.</p><p><strong>Example:</strong><br><code>Review: \"This was the worst coffee I've ever had.\"<br>Sentiment: Negative<br><br>Review: \"The service was amazing and the food was delicious!\"<br>Sentiment:</code><br>The AI will see the example and know to output 'Positive'.</p><h4>Few-Shot Prompting</h4><p>Few-shot prompting takes this a step further by providing multiple examples (usually 2 to 5). This is extremely powerful for teaching the AI a very specific format or style that might not be common in its training data.</p><p><strong>Example:</strong><br><code>Input: 'Apple'<br>Output: 'Fruit'<br><br>Input: 'Carrot'<br>Output: 'Vegetable'<br><br>Input: 'Spinach'<br>Output:</code><br>By providing two examples, you strongly guide the AI to classify 'Spinach' as 'Vegetable'.</p><h4>When to Use Each?</h4><ul><li><strong>Zero-Shot:</strong> Use for simple, common tasks like summarization, general questions, or simple classification.</li><li><strong>One-Shot:</strong> Use when you need a specific format that needs a single, clear example (e.g., Question -> Answer).</li><li><strong>Few-Shot:</strong> Use for complex or custom tasks where the AI needs to learn a specific pattern, style, or data structure. This is the most reliable way to get consistent, structured output.</li></ul>",
+  "quiz": {
+    "title": "Zero, One, and Few-Shot Prompting",
+    "questions": [
+      {
+        "question": "What does 'Zero-Shot Prompting' mean?",
+        "options": [
+          "The prompt has zero words.",
+          "You provide zero examples in the prompt.",
+          "The AI provides zero answers.",
+          "You provide one example."
+        ],
+        "correctAnswer": "You provide zero examples in the prompt.",
+        "explanation": "Zero-shot prompting relies on the AI's pre-existing knowledge to perform a task without any examples."
+      },
+      {
+        "question": "You want the AI to translate English phrases to French in the format 'English -> French'. Which method is this an example of: 'Hello -> Bonjour. How are you ->'?",
+        "options": [
+          "Zero-Shot",
+          "One-Shot",
+          "Few-Shot",
+          "Multi-Shot"
+        ],
+        "correctAnswer": "One-Shot",
+        "explanation": "Providing a single, complete example ('Hello -> Bonjour') to guide the AI's next response is one-shot prompting."
+      },
+      {
+        "question": "When is Few-Shot prompting most useful?",
+        "options": [
+          "For very simple and common questions.",
+          "When you want the AI to be as creative as possible.",
+          "For complex tasks that require the AI to learn a specific, custom pattern or format.",
+          "When you want to save the most tokens."
+        ],
+        "correctAnswer": "For complex tasks that require the AI to learn a specific, custom pattern or format.",
+        "explanation": "Few-shot prompting is the best way to teach the AI a specific output structure by giving it multiple examples to follow."
+      },
+      {
+        "question": "Asking ChatGPT 'What is the capital of France?' is an example of what?",
+        "options": [
+          "Zero-Shot Prompting",
+          "One-Shot Prompting",
+          "Few-Shot Prompting",
+          "Incorrect Prompting"
+        ],
+        "correctAnswer": "Zero-Shot Prompting",
+        "explanation": "This is a direct question that relies on the AI's general knowledge without any examples provided in the prompt."
+      },
+      {
+        "question": "How many examples are typically used in 'Few-Shot' prompting?",
+        "options": [
+          "Zero",
+          "Exactly one",
+          "Two to five",
+          "More than twenty"
+        ],
+        "correctAnswer": "Two to five",
+        "explanation": "Few-shot usually involves a small number of examples, enough to establish a clear pattern for the AI."
+      },
+      {
+        "question": "What is the main purpose of providing examples (shots) in a prompt?",
+        "options": [
+          "To confuse the AI.",
+          "To test the AI's knowledge.",
+          "To guide the AI's output style, format, and reasoning.",
+          "To make the prompt longer."
+        ],
+        "correctAnswer": "To guide the AI's output style, format, and reasoning.",
+        "explanation": "Examples act as a template, showing the AI exactly what kind of response you are looking for."
+      },
+      {
+        "question": "You need to extract company names from news headlines into a clean list. Which approach would likely be most reliable?",
+        "options": [
+          "Zero-Shot: 'Extract the company names from these headlines...'",
+          "Few-Shot: Providing 3 examples of headlines and the correctly extracted company names.",
+          "One-Shot: Providing just one example.",
+          "Just pasting the headlines and hoping for the best."
+        ],
+        "correctAnswer": "Few-Shot: Providing 3 examples of headlines and the correctly extracted company names.",
+        "explanation": "For a nuanced task like extraction, providing a few examples will help the AI understand the pattern better than one or zero shots."
+      },
+      {
+        "question": "The term 'shot' in this context is borrowed from what field of AI research?",
+        "options": [
+          "Robotics",
+          "Computer Vision",
+          "Machine Learning",
+          "Cybersecurity"
+        ],
+        "correctAnswer": "Machine Learning",
+        "explanation": "The concepts of zero-shot, one-shot, and few-shot learning are fundamental concepts in machine learning for model training and evaluation."
+      }
+    ]
+  },
+  "skillsGained": [
+    "Few-Shot Prompting",
+    "Pattern Recognition for AI",
+    "In-Context Learning",
+    "Structured Data Extraction"
+  ],
+  "jobOpportunities": [
+    "AI Trainer",
+    "Data Annotation Specialist",
+    "Machine Learning Engineer (Entry-Level)"
+  ]
+}
