@@ -197,7 +197,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     title: "Error",
                     description: "Could not load the lesson. Please try again later.",
                 });
-                router.push('/dashboard/learning-path');
+                router.push('/study');
             }
         };
         fetchContent();
@@ -306,7 +306,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         }
     
         if (contentExists === false) {
-            return <MissingContentCard topic={topic} onBack={() => router.push('/dashboard/learning-path')} />;
+            return <MissingContentCard topic={topic} onBack={() => router.push('/study')} />;
         }
         
         if (courseData) {
@@ -330,7 +330,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
     return (
         <>
-            <Button variant="ghost" onClick={() => router.push('/dashboard/learning-path')} className="mb-4">
+            <Button variant="ghost" onClick={() => router.push('/study')} className="mb-4">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Roadmap
             </Button>
@@ -591,7 +591,7 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
             </CardContent>
             <CardFooter className="justify-center gap-4 pt-6">
                 <Button asChild>
-                    <Link href="/dashboard/learning-path">
+                    <Link href="/study">
                         Back to Roadmap
                     </Link>
                 </Button>
