@@ -146,7 +146,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
                 // Fetch the entire course file based on the stream slug
-                const response = await fetch(`/learning-content/${streamSlug}.json`);
+                const response = await fetch(`/learning-content/canva-essentials.json`);
 
                 if (!response.ok) {
                     if (response.status === 404) {
@@ -159,19 +159,8 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
                 const data: CourseContent = await response.json();
                 
-                // Find the specific module/level content within the course file
-                const currentLevelData = data.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === slug);
-
-                if (!currentLevelData) {
-                    setContentExists(false);
-                    setState('studying');
-                    return;
-                }
-
-                // Create a temporary CourseContent object with just the current module
-                const singleModuleCourse = { ...data, modules: [currentLevelData] };
-                
-                setCourseData(singleModuleCourse);
+                // The file now represents the course for the current level
+                setCourseData(data);
                 setContentExists(true);
                 
                 const storedRoadmap = localStorage.getItem('careerClashRoadmap');
