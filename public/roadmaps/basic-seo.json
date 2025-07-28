@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is SEO?", "description": "Understanding Search Engine Optimization.", "xp": 100 },
+        { "title": "How Search Engines Work", "description": "The basics of crawling, indexing, and ranking.", "xp": 120 },
+        { "title": "Keyword Research Fundamentals", "description": "Finding the terms your audience searches for.", "xp": 130 },
+        { "title": "On-Page SEO: Title Tags", "description": "Crafting the most important element of on-page SEO.", "xp": 140 },
+        { "title": "On-Page SEO: Meta Descriptions", "description": "Writing compelling descriptions to increase clicks.", "xp": 150 },
+        { "title": "Content for SEO", "description": "Creating content that ranks and satisfies users.", "xp": 160 },
+        { "title": "Understanding Backlinks", "description": "What are backlinks and why do they matter?", "xp": 170 },
+        { "title": "Technical SEO: Site Speed", "description": "The importance of a fast-loading website.", "xp": 180 },
+        { "title": "Local SEO Basics", "description": "Getting found by customers in your area.", "xp": 190 },
+        { "title": "Using Google Search Console", "description": "Setting up and understanding the basics.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

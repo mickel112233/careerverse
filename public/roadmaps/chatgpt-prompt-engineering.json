@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is Prompt Engineering?", "description": "Understanding the art of talking to AIs.", "xp": 100 },
+        { "title": "The Anatomy of a Good Prompt", "description": "Key components: Role, Task, Context, Format.", "xp": 120 },
+        { "title": "Zero-Shot vs. Few-Shot Prompting", "description": "Giving the AI examples to improve results.", "xp": 130 },
+        { "title": "Assigning a Persona", "description": "Telling the AI who to be (e.g., 'Act as a professional copywriter').", "xp": 140 },
+        { "title": "Providing Clear Instructions", "description": "The importance of specific and unambiguous commands.", "xp": 150 },
+        { "title": "Setting Constraints and Tone", "description": "Guiding the AI's output style and length.", "xp": 160 },
+        { "title": "Iterative Prompting", "description": "Refining your prompts based on AI responses.", "xp": 170 },
+        { "title": "Asking for Different Formats", "description": "How to get tables, JSON, lists, and more.", "xp": 180 },
+        { "title": "Common Prompting Pitfalls", "description": "Avoiding mistakes that lead to poor outputs.", "xp": 190 },
+        { "title": "Your First Advanced Prompt", "description": "Combining multiple techniques for a complex task.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

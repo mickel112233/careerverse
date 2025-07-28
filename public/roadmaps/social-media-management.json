@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is Social Media Management?", "description": "Understanding the role and responsibilities.", "xp": 100 },
+        { "title": "Choosing the Right Platforms", "description": "An overview of Instagram, X, Facebook, and LinkedIn.", "xp": 120 },
+        { "title": "Setting Up and Optimizing Profiles", "description": "Creating a professional presence for a brand.", "xp": 130 },
+        { "title": "Creating a Simple Content Calendar", "description": "Planning your posts in advance.", "xp": 140 },
+        { "title": "Writing Your First Social Media Post", "description": "Crafting engaging copy and selecting visuals.", "xp": 150 },
+        { "title": "Understanding Hashtags", "description": "How to find and use relevant hashtags.", "xp": 160 },
+        { "title": "Community Engagement Basics", "description": "Replying to comments and messages.", "xp": 170 },
+        { "title": "Introduction to Social Media Analytics", "description": "Understanding reach, engagement, and followers.", "xp": 180 },
+        { "title": "Using a Scheduling Tool", "description": "A brief look at tools like Buffer or Later.", "xp": 190 },
+        { "title": "Your First Content Creation Session", "description": "Brainstorming and creating a week of content.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

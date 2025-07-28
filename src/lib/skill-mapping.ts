@@ -8,16 +8,14 @@ export type PowerLevels = {
 };
 
 export const categoryToSkillMapping: { [key: string]: keyof PowerLevels } = {
-    'Software Development': 'technical',
-    'Data Science & AI': 'technical',
-    'Cybersecurity': 'technical',
-    'Cloud Computing': 'technical',
-    'AI Prompt Engineering': 'technical',
-    'Game Development': 'technical',
-    'Graphic Design': 'creativity',
-    'Content Creation': 'creativity',
-    'Digital Marketing': 'social',
-    'Sales & Business Development': 'social',
-    'Project Management': 'leadership',
-    'Business & Finance': 'logic',
+    'Canva Design': 'creativity',
+    'ChatGPT Prompt Engineering': 'technical',
+    'Social Media Management': 'social',
+    'Reels & Shorts Video Editing': 'creativity',
+    'Basic SEO': 'technical',
+    'Affiliate Marketing': 'social',
+    'Copywriting': 'creativity',
+    'Resume & LinkedIn Optimization': 'social',
+    'Digital Product Creation': 'leadership',
+    'AI Literacy': 'logic'
 };

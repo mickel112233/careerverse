@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is AI?", "description": "Understanding the basics of Artificial Intelligence.", "xp": 100 },
+        { "title": "Types of AI", "description": "Exploring narrow, general, and superintelligence.", "xp": 120 },
+        { "title": "Machine Learning Explained", "description": "Introduction to the core concepts of ML.", "xp": 130 },
+        { "title": "Neural Networks 101", "description": "The building blocks of modern AI.", "xp": 140 },
+        { "title": "Generative vs. Discriminative AI", "description": "Understanding the two main model types.", "xp": 150 },
+        { "title": "Introduction to LLMs", "description": "What are Large Language Models?", "xp": 160 },
+        { "title": "Common AI Terminology", "description": "Decoding the jargon: tokens, parameters, etc.", "xp": 170 },
+        { "title": "Ethical Considerations in AI", "description": "An overview of AI ethics and bias.", "xp": 180 },
+        { "title": "AI in Everyday Life", "description": "Recognizing AI applications around you.", "xp": 190 },
+        { "title": "The Future of AI", "description": "A look at what's next in the world of AI.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

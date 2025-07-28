@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is Copywriting?", "description": "Understanding the difference between copywriting and content writing.", "xp": 100 },
+        { "title": "The AIDA Formula", "description": "Attention, Interest, Desire, Action - a classic framework.", "xp": 120 },
+        { "title": "Writing Compelling Headlines", "description": "The most important part of your copy.", "xp": 130 },
+        { "title": "Understanding Your Audience", "description": "The first step to persuasive writing.", "xp": 140 },
+        { "title": "Features vs. Benefits", "description": "Selling the outcome, not just the product.", "xp": 150 },
+        { "title": "The Power of a Strong Call-to-Action", "description": "Telling the reader exactly what to do next.", "xp": 160 },
+        { "title": "Writing for Social Media", "description": "Crafting short, punchy copy for platforms like X and Instagram.", "xp": 170 },
+        { "title": "Basic Proofreading and Editing", "description": "Ensuring your copy is error-free.", "xp": 180 },
+        { "title": "Finding Your Brand Voice", "description": "The basics of tone and style.", "xp": 190 },
+        { "title": "Analyzing Great Copy", "description": "Deconstructing successful ads and sales pages.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

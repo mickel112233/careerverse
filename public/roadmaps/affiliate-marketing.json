@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is Affiliate Marketing?", "description": "Understanding the core concept and players.", "xp": 100 },
+        { "title": "Finding Your Niche", "description": "How to choose a profitable area to focus on.", "xp": 120 },
+        { "title": "Joining Affiliate Programs", "description": "How to find and apply to programs like Amazon Associates.", "xp": 130 },
+        { "title": "Understanding Affiliate Links", "description": "How tracking works and best practices for links.", "xp": 140 },
+        { "title": "Content Creation for Affiliates", "description": "Introduction to blog posts and product reviews.", "xp": 150 },
+        { "title": "Disclosure and Transparency", "description": "The importance of being honest with your audience.", "xp": 160 },
+        { "title": "Introduction to Traffic Sources", "description": "Understanding SEO, social media, and paid ads.", "xp": 170 },
+        { "title": "Tracking Your First Clicks", "description": "Using affiliate dashboards to monitor performance.", "xp": 180 },
+        { "title": "Common Affiliate Mistakes to Avoid", "description": "Learning from the failures of others.", "xp": 190 },
+        { "title": "Setting Up a Simple Affiliate Website", "description": "Using platforms like WordPress or Medium.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

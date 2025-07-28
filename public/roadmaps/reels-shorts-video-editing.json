@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Introduction to Short-Form Video", "description": "Understanding Reels, Shorts, and TikTok.", "xp": 100 },
+        { "title": "Choosing Your Editing App", "description": "Overview of CapCut, InShot, and others.", "xp": 120 },
+        { "title": "Basic Editing: Trimming and Splitting", "description": "The fundamentals of cutting clips.", "xp": 130 },
+        { "title": "Adding Text and Captions", "description": "Making your videos accessible and engaging.", "xp": 140 },
+        { "title": "Finding and Using Trending Audio", "description": "The key to discoverability on these platforms.", "xp": 150 },
+        { "title": "Simple Transitions", "description": "Creating smooth cuts between clips.", "xp": 160 },
+        { "title": "The Anatomy of a Viral Hook", "description": "Grabbing attention in the first 3 seconds.", "xp": 170 },
+        { "title": "Creating Your First Simple Reel", "description": "A step-by-step project from start to finish.", "xp": 180 },
+        { "title": "Exporting with the Right Settings", "description": "Ensuring high quality for your uploads.", "xp": 190 },
+        { "title": "Understanding Video Formats", "description": "The basics of aspect ratios and resolutions.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

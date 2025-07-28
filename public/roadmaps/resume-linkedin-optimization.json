@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "The Purpose of a Modern Resume", "description": "Understanding what recruiters look for.", "xp": 100 },
+        { "title": "Choosing the Right Resume Format", "description": "Chronological, Functional, or Combination.", "xp": 120 },
+        { "title": "Writing a Powerful Headline", "description": "Creating a strong first impression on LinkedIn.", "xp": 130 },
+        { "title": "Crafting a Compelling Summary", "description": "Your elevator pitch for your resume and LinkedIn.", "xp": 140 },
+        { "title": "The STAR Method for Bullet Points", "description": "Situation, Task, Action, Result - for impactful descriptions.", "xp": 150 },
+        { "title": "Optimizing Your LinkedIn Profile Photo", "description": "Best practices for a professional headshot.", "xp": 160 },
+        { "title": "Keywords and ATS", "description": "Understanding Applicant Tracking Systems.", "xp": 170 },
+        { "title": "Building Your LinkedIn Network", "description": "The basics of connecting with purpose.", "xp": 180 },
+        { "title": "Getting Recommendations and Endorsements", "description": "How to ask for social proof on LinkedIn.", "xp": 190 },
+        { "title": "Reviewing and Proofreading", "description": "Final checks before you send your resume.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

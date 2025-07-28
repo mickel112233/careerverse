@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "What is a Digital Product?", "description": "Exploring ebooks, templates, courses, and more.", "xp": 100 },
+        { "title": "Idea Generation", "description": "How to find a profitable digital product idea.", "xp": 120 },
+        { "title": "Validating Your Idea", "description": "Ensuring people will actually buy your product.", "xp": 130 },
+        { "title": "Creating a Simple Template", "description": "Using Canva or Google Docs to create a sellable template.", "xp": 140 },
+        { "title": "Writing a Mini-Ebook", "description": "Outlining and writing your first short ebook.", "xp": 150 },
+        { "title": "Choosing a Platform to Sell", "description": "Introduction to Gumroad, Etsy, and others.", "xp": 160 },
+        { "title": "Pricing Your Digital Product", "description": "Basic strategies for setting a price.", "xp": 170 },
+        { "title": "Creating a Simple Sales Page", "description": "The key elements of a product landing page.", "xp": 180 },
+        { "title": "Marketing Your First Product", "description": "Using social media to get your first sales.", "xp": 190 },
+        { "title": "Handling Your First Customer", "description": "Basic customer service for digital products.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

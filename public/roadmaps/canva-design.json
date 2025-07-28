@@ -1,0 +1,28 @@
+
+{
+  "roadmap": [
+    {
+      "stageName": "Beginning",
+      "levels": [
+        { "title": "Introduction to Canva", "description": "Navigating the Canva dashboard and editor.", "xp": 100 },
+        { "title": "Working with Templates", "description": "How to find and customize pre-made templates.", "xp": 120 },
+        { "title": "Basic Text and Typography", "description": "Adding and styling text effectively.", "xp": 130 },
+        { "title": "Using Canva Elements", "description": "Finding and using graphics, shapes, and photos.", "xp": 140 },
+        { "title": "Uploading Your Own Images", "description": "How to incorporate your own assets.", "xp": 150 },
+        { "title": "Understanding Colors and Palettes", "description": "Using the color tool and creating palettes.", "xp": 160 },
+        { "title": "Alignment and Positioning", "description": "Using guides and tools to align elements.", "xp": 170 },
+        { "title": "Creating a Simple Social Media Post", "description": "Your first project: an Instagram post.", "xp": 180 },
+        { "title": "Downloading and Sharing Your Designs", "description": "Exporting your work in different formats.", "xp": 190 },
+        { "title": "Introduction to Canva's Brand Kit", "description": "Setting up basic brand assets.", "xp": 200 }
+      ]
+    },
+    {
+      "stageName": "Intermediate",
+      "levels": []
+    },
+    {
+      "stageName": "Advance",
+      "levels": []
+    }
+  ]
+}

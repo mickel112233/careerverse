@@ -7,7 +7,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut, Info, Cloud, ClipboardList, Handshake } from "lucide-react";
+import { Loader2, Zap, RotateCw, ArrowLeft, BrainCircuit, Code, Megaphone, Briefcase, Palette, Bot, Gamepad2, PenSquare, Swords, Timer, Target, Coins, Shield, X, LogOut, Info, Cloud, ClipboardList, Handshake, Tv, Rocket, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -20,18 +20,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Data ---
 const streams = [
-    { name: 'Software Development', icon: Code },
-    { name: 'Data Science & AI', icon: BrainCircuit },
-    { name: 'Digital Marketing', icon: Megaphone },
-    { name: 'Business & Finance', icon: Briefcase },
-    { name: 'Graphic Design', icon: Palette },
-    { name: 'AI Prompt Engineering', icon: Bot },
-    { name: 'Game Development', icon: Gamepad2 },
-    { name: 'Content Creation', icon: PenSquare },
-    { name: 'Cybersecurity', icon: Shield },
-    { name: 'Cloud Computing', icon: Cloud },
-    { name: 'Project Management', icon: ClipboardList },
-    { name: 'Sales & Business Development', icon: Handshake },
+    { name: 'Canva Design', icon: Palette, category: 'creativity' },
+    { name: 'ChatGPT Prompt Engineering', icon: Bot, category: 'technical' },
+    { name: 'Social Media Management', icon: Megaphone, category: 'social' },
+    { name: 'Reels & Shorts Video Editing', icon: Tv, category: 'creativity' },
+    { name: 'Basic SEO', icon: BrainCircuit, category: 'technical' },
+    { name: 'Affiliate Marketing', icon: Handshake, category: 'social' },
+    { name: 'Copywriting', icon: PenSquare, category: 'creativity' },
+    { name: 'Resume & LinkedIn Optimization', icon: Briefcase, category: 'social' },
+    { name: 'Digital Product Creation', icon: Sparkles, category: 'leadership' },
+    { name: 'AI Literacy', icon: Rocket, category: 'logic' }
 ];
 const questionCounts = [5, 10, 15, 20];
 const timeLimits = [ { value: 60, label: '1 min' }, { value: 120, label: '2 min' }, { value: 300, label: '5 min' }, { value: 600, label: '10 min' }, { value: 1200, label: '20 min' }];
@@ -282,7 +280,7 @@ export default function CompetitionClient() {
       <Card>
         <CardHeader>
           <CardTitle className="font-headline">Step 1: Choose Your Arena</CardTitle>
-          <CardDescription>Select a subject to prove your expertise.</CardDescription>
+          <CardDescription>Select a skill to prove your expertise.</CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {streams.map((stream) => {

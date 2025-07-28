@@ -1,5 +1,5 @@
 
-import { Award, BarChart, Book, Bot, Briefcase, Calendar, CheckSquare, Code, Crown, Database, Flame, Gamepad2, GitBranch, Globe, Handshake, Megaphone, Palette, PenSquare, Shield, Skull, Star, Swords, Trophy, UserPlus, Users, Zap } from "lucide-react";
+import { Award, BarChart, Book, Bot, BrainCircuit, Briefcase, Calendar, CheckSquare, Code, Crown, Database, Flame, Gamepad2, GitBranch, Globe, Handshake, Megaphone, Palette, PenSquare, Shield, Skull, Star, Swords, Trophy, UserPlus, Users, Zap, Rocket, Tv, Sparkles } from "lucide-react";
 
 export type Achievement = {
     name: string;
@@ -25,10 +25,9 @@ export const allAchievements: Achievement[] = [
 
     // Learning & Roadmap Achievements
     { name: 'First Step', description: 'Complete your first learning level.', icon: Book, color: 'text-green-400', type: 'Achievement' },
-    { name: 'Beginner Graduate', description: 'Complete the "Beginning" stage of any roadmap.', icon: Book, color: 'text-blue-400', type: 'Achievement' },
-    { name: 'Intermediate Scholar', description: 'Complete the "Intermediate" stage of any roadmap.', icon: Book, color: 'text-yellow-400', type: 'Achievement' },
-    { name: 'Expert Virtuoso', description: 'Complete the "Advance" stage of any roadmap.', icon: Crown, color: 'text-purple-400', type: 'Achievement' },
-    { name: 'Jack of All Trades', description: 'Complete one level in 5 different subjects.', icon: Globe, color: 'text-teal-400', type: 'Achievement' },
+    { name: 'Skill Dabbler', description: 'Complete the first stage of any skill roadmap.', icon: Book, color: 'text-blue-400', type: 'Achievement' },
+    { name: 'Skill Specialist', description: 'Complete an entire skill roadmap.', icon: Crown, color: 'text-purple-400', type: 'Achievement' },
+    { name: 'Jack of All Trades', description: 'Complete one level in 5 different skills.', icon: Globe, color: 'text-teal-400', type: 'Achievement' },
 
     // Guild Achievements
     { name: 'Welcome to the Fold', description: 'Join or create a guild.', icon: UserPlus, color: 'text-green-400', type: 'Achievement' },
@@ -44,11 +43,14 @@ export const allAchievements: Achievement[] = [
     { name: 'Top 10 Player', description: 'Rank in the top 10 on the leaderboard.', icon: Trophy, color: 'text-orange-400', type: 'Achievement' },
 
     // Subject Specific Achievements
-    { name: 'Code Initiate', description: 'Complete the "Beginning" stage for Software Development.', icon: Code, color: 'text-blue-400', type: 'Achievement' },
-    { name: 'AI Initiate', description: 'Complete the "Beginning" stage for Data Science & AI.', icon: Bot, color: 'text-sky-400', type: 'Achievement' },
-    { name: 'Marketing Initiate', description: 'Complete the "Beginning" stage for Digital Marketing.', icon: Megaphone, color: 'text-pink-400', type: 'Achievement' },
-    { name: 'Business Initiate', description: 'Complete the "Beginning" stage for Business & Finance.', icon: Briefcase, color: 'text-green-400', type: 'Achievement' },
-    { name: 'Design Initiate', description: 'Complete the "Beginning" stage for Graphic Design.', icon: Palette, color: 'text-purple-400', type: 'Achievement' },
-    { name: 'Prompt Initiate', description: 'Complete the "Beginning" stage for AI Prompt Engineering.', icon: PenSquare, color: 'text-teal-400', type: 'Achievement' },
-    { name: 'GameDev Initiate', description: 'Complete the "Beginning" stage for Game Development.', icon: Gamepad2, color: 'text-red-400', type: 'Achievement' },
+    { name: 'Canva Pro', description: 'Complete the Canva Design skill roadmap.', icon: Palette, color: 'text-purple-400', type: 'Achievement' },
+    { name: 'Prompt Whisperer', description: 'Complete the ChatGPT Prompt Engineering skill roadmap.', icon: Bot, color: 'text-sky-400', type: 'Achievement' },
+    { name: 'Social Guru', description: 'Complete the Social Media Management skill roadmap.', icon: Megaphone, color: 'text-pink-400', type: 'Achievement' },
+    { name: 'Reel Master', description: 'Complete the Reels & Shorts skill roadmap.', icon: Tv, color: 'text-red-400', type: 'Achievement' },
+    { name: 'SEO Shark', description: 'Complete the Basic SEO skill roadmap.', icon: BrainCircuit, color: 'text-green-400', type: 'Achievement' },
+    { name: 'Affiliate Ace', description: 'Complete the Affiliate Marketing skill roadmap.', icon: Handshake, color: 'text-blue-400', type: 'Achievement' },
+    { name: 'Copywriting King', description: 'Complete the Copywriting skill roadmap.', icon: PenSquare, color: 'text-teal-400', type: 'Achievement' },
+    { name: 'Career Optimizer', description: 'Complete the Resume & LinkedIn skill roadmap.', icon: Briefcase, color: 'text-orange-400', type: 'Achievement' },
+    { name: 'Product Pioneer', description: 'Complete the Digital Product Creation skill roadmap.', icon: Sparkles, color: 'text-yellow-400', type: 'Achievement' },
+    { name: 'AI Visionary', description: 'Complete the AI Literacy skill roadmap.', icon: Rocket, color: 'text-indigo-400', type: 'Achievement' },
 ];

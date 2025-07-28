@@ -24,14 +24,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import { allAchievements } from '@/lib/achievement-data';
+import { PowerLevels, categoryToSkillMapping } from '@/lib/skill-mapping';
 
-type PowerLevels = {
-    logic: number;
-    creativity: number;
-    leadership: number;
-    technical: number;
-    social: number;
-};
 
 const PowerLevelMeter = ({ label, value }: { label: string, value: number }) => (
     <div className="flex flex-col items-center">
@@ -69,20 +63,6 @@ const FeatureCard = ({ title, icon: Icon, href }: { title: string, icon: React.E
     </Link>
 );
 
-const categoryToSkillMapping: { [key: string]: keyof PowerLevels } = {
-    'Software Development': 'technical',
-    'Data Science & AI': 'technical',
-    'Cybersecurity': 'technical',
-    'Cloud Computing': 'technical',
-    'AI Prompt Engineering': 'technical',
-    'Game Development': 'technical',
-    'Graphic Design': 'creativity',
-    'Content Creation': 'creativity',
-    'Digital Marketing': 'social',
-    'Sales & Business Development': 'social',
-    'Project Management': 'leadership',
-    'Business & Finance': 'logic',
-};
 
 export default function DashboardClient() {
   const [userName, setUserName] = useState('Hero');
@@ -128,7 +108,8 @@ export default function DashboardClient() {
             completedLevels = roadmapData.flatMap((stage: any) => stage.levels).filter((level: any) => level.status === 'completed').length;
             
             if (skillCategory) {
-                newPowerLevels[skillCategory] = Math.min(Math.floor(completedLevels / 2.5), 100); // 250 levels total, so 2.5 levels = 1 power point
+                // Each skill has 10 levels, so 1 level is 10 power points
+                newPowerLevels[skillCategory] = Math.min(Math.floor(completedLevels * 10), 100);
             }
         }
         setCareersMastered(completedLevels);
@@ -196,7 +177,7 @@ export default function DashboardClient() {
                 <CardContent className="space-y-3">
                     <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Career Pioneer</p>
-                        <Badge variant="outline">{careersMastered} / 250 Levels</Badge>
+                        <Badge variant="outline">{careersMastered} / 10 Levels</Badge>
                     </div>
                      <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Skill Master</p>
@@ -230,5 +211,3 @@ export default function DashboardClient() {
     </div>
   );
 }
-
-    

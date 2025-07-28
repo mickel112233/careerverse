@@ -53,14 +53,14 @@ export const allQuests: Quest[] = [
     { id: 'milestone9', title: 'Knowledge Seeker', description: 'Complete 25 learning levels.', icon: Book, xp: 600, coins: 200, category: 'Milestone', goal: 25 },
     { id: 'milestone10', title: 'Level 25 Reached', description: 'Reach player level 25.', icon: Zap, xp: 1000, coins: 500, category: 'Milestone', goal: 25 },
     { id: 'milestone11', title: 'Boss Vanquisher', description: 'Defeat 5 unique bosses.', icon: Skull, xp: 1200, coins: 600, category: 'Milestone', goal: 5 },
-    { id: 'milestone12', title: 'Roadmap Master', description: 'Complete the "Beginning" stage of any roadmap.', icon: Crown, xp: 1500, coins: 750, category: 'Milestone', goal: 1 },
+    { id: 'milestone12', title: 'Roadmap Master', description: 'Complete a skill roadmap.', icon: Crown, xp: 1500, coins: 750, category: 'Milestone', goal: 1 },
     { id: 'milestone13', title: 'Battle Veteran', description: 'Play 200 battles.', icon: Swords, xp: 1000, coins: 500, category: 'Milestone', goal: 200 },
     { id: 'milestone14', title: 'Lifelong Learner', description: 'Complete 100 learning levels.', icon: Book, xp: 2000, coins: 1000, category: 'Milestone', goal: 100 },
     { id: 'milestone15', title: 'The Collector', description: 'Unlock 10 achievements.', icon: Star, xp: 500, coins: 200, category: 'Milestone', goal: 10 },
     { id: 'milestone16', title: 'Level 50 Reached', description: 'Reach player level 50.', icon: Zap, xp: 2500, coins: 1250, category: 'Milestone', goal: 50 },
-    { id: 'milestone17', title: 'Subject Specialist: Code', description: 'Complete 20 levels in the Software Development path.', icon: Code, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
-    { id: 'milestone18', title: 'Subject Specialist: AI', description: 'Complete 20 levels in the Data Science & AI path.', icon: Bot, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
-    { id: 'milestone19', title: 'Subject Specialist: Design', description: 'Complete 20 levels in the Graphic Design path.', icon: Palette, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
+    { id: 'milestone17', title: 'Subject Specialist: Tech', description: 'Complete 20 levels in any Technical skill path.', icon: Code, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
+    { id: 'milestone18', title: 'Subject Specialist: Creative', description: 'Complete 20 levels in any Creative skill path.', icon: Palette, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
+    { id: 'milestone19', title: 'Subject Specialist: Social', description: 'Complete 20 levels in any Social skill path.', icon: Users, xp: 750, coins: 300, category: 'Milestone', goal: 20 },
     { id: 'milestone20', title: 'PVP Champion', description: 'Win 50 PvP battles.', icon: Trophy, xp: 1500, coins: 750, category: 'Milestone', goal: 50 },
     { id: 'milestone21', title: 'Guild Officer', description: 'Get promoted to Officer in a guild.', icon: Shield, xp: 500, coins: 250, category: 'Milestone', goal: 1 },
     { id: 'milestone22', title: 'Hard Boss Slayer', description: 'Defeat a level 25+ boss.', icon: Skull, xp: 2000, coins: 1000, category: 'Milestone', goal: 1 },
@@ -68,5 +68,3 @@ export const allQuests: Quest[] = [
     { id: 'milestone24', title: 'Battle Legend', description: 'Play 1000 battles.', icon: Swords, xp: 5000, coins: 2500, category: 'Milestone', goal: 1000 },
     { id: 'milestone25', title: 'The Grandmaster', description: 'Complete an entire learning roadmap.', icon: Crown, xp: 10000, coins: 5000, category: 'Milestone', goal: 1 },
 ];
-
-    
