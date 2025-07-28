@@ -1,0 +1,70 @@
+{
+  "learningContent": "<h3>Applying Color in Canva</h3><p>Color is one of the most impactful parts of a design. Canva provides excellent tools for managing colors and creating beautiful palettes.</p><h4>The Color Picker</h4><p>When you select an element, a color swatch appears in the top bar. Clicking it opens the color panel. Here you can:</p><ul><li><strong>Document Colors:</strong> See all colors currently used in your design.</li><li><strong>Photo Colors:</strong> Canva intelligently extracts a palette from the photos on your page.</li><li><strong>Default Palettes:</strong> A selection of pre-made palettes.</li><li><strong>Add a new color:</strong> Use the rainbow tile to open a detailed color picker with a hex code input and an eyedropper tool to sample colors directly from your design.</li></ul><h4>Using the Styles Tab</h4><p>The 'Styles' tab in the side panel is perfect for experimentation. You can browse through combinations of color palettes and font pairings. Clicking a color palette will apply it to your entire page. You can click it again to shuffle the colors among the elements, giving you different variations.</p><h4>Understanding Hex Codes</h4><p>A hex code is a six-character code (e.g., #FFFFFF for white) that represents a specific color. This is the most common way to ensure you are using the exact same color across different designs or platforms, which is crucial for branding.</p><h4>Brand Kit (Pro Feature)</h4><p>For consistent branding, Canva Pro's 'Brand Kit' allows you to save your brand's colors, fonts, and logos. This makes them easily accessible in any new design, ensuring brand consistency with one click.</p>",
+  "quiz": {
+    "title": "Color Theory and Palettes",
+    "questions": [
+      {
+        "question": "What is a hex code?",
+        "options": ["A file format for images", "A code that represents a specific color", "A type of Canva template", "A text effect"],
+        "correctAnswer": "A code that represents a specific color",
+        "explanation": "A hex code (e.g., #000000 for black) is a universal way to identify and replicate an exact color digitally."
+      },
+      {
+        "question": "Which tool lets you select a color directly from an image on your canvas?",
+        "options": ["The Style Tool", "The Filter Tool", "The Eyedropper Tool", "The Magic Wand Tool"],
+        "correctAnswer": "The Eyedropper Tool",
+        "explanation": "The eyedropper, found in the color picker panel, allows you to sample and apply any color visible in your design."
+      },
+      {
+        "question": "What does the 'Photo Colors' section in the color panel do?",
+        "options": ["It lets you filter photos by color", "It changes the colors within your photo", "It intelligently extracts a color palette from the photos in your design", "It shows you the most popular colors for photos"],
+        "correctAnswer": "It intelligently extracts a color palette from the photos in your design",
+        "explanation": "Canva automatically analyzes your photos and suggests a coordinating color palette, which is great for creating a cohesive design."
+      },
+      {
+        "question": "If you want to apply a new color scheme to your entire page instantly, you should use the...",
+        "options": ["'Elements' tab", "'Colors' panel", "'Effects' menu", "'Styles' tab"],
+        "correctAnswer": "'Styles' tab",
+        "explanation": "The 'Styles' tab is designed for applying comprehensive style changes, including full color palettes, to your page at once."
+      },
+      {
+        "question": "What happens when you click the same color palette multiple times in the 'Styles' tab?",
+        "options": ["It undoes the change", "It makes the colors brighter", "It shuffles how the colors are applied to the elements", "It opens the color editor"],
+        "correctAnswer": "It shuffles how the colors are applied to the elements",
+        "explanation": "This shuffling feature allows you to quickly preview different variations of the same color palette on your design."
+      },
+      {
+        "question": "The 'Document Colors' section shows you...",
+        "options": ["Every color available in Canva", "Only the colors from your Brand Kit", "All the colors currently being used in your design", "A history of colors you've recently used"],
+        "correctAnswer": "All the colors currently being used in your design",
+        "explanation": "This is very useful for maintaining consistency and quickly reusing a color you've already applied elsewhere in the document."
+      },
+      {
+        "question": "The Brand Kit is a feature primarily available to...",
+        "options": ["All users", "Canva Pro users", "Mobile users only", "New users only"],
+        "correctAnswer": "Canva Pro users",
+        "explanation": "The Brand Kit is a key feature of the paid Canva Pro subscription, designed for professional and consistent branding."
+      },
+      {
+        "question": "The color picker panel is opened by clicking what?",
+        "options": ["The 'Effects' button", "A color swatch in the top bar", "The background of the canvas", "The 'Styles' tab"],
+        "correctAnswer": "A color swatch in the top bar",
+        "explanation": "When you select an element that has a color property, its color swatch appears in the top bar. Clicking it opens the full color panel."
+      },
+      {
+        "question": "Hex code #000000 represents which color?",
+        "options": ["White", "Red", "Blue", "Black"],
+        "correctAnswer": "Black",
+        "explanation": "In the RGB color model used by hex codes, 00 for Red, 00 for Green, and 00 for Blue results in black. #FFFFFF is white."
+      },
+      {
+        "question": "Which of these is NOT a good reason to use a consistent color palette?",
+        "options": ["To build brand recognition", "To create a professional and cohesive look", "To use every color possible in a single design", "To evoke a specific mood or feeling"],
+        "correctAnswer": "To use every color possible in a single design",
+        "explanation": "Effective design uses a limited, cohesive palette to communicate clearly. Using too many colors creates chaos and looks unprofessional."
+      }
+    ]
+  },
+  "skillsGained": ["Color Palette Creation", "Brand Consistency", "Using Hex Codes", "Design Psychology"],
+  "jobOpportunities": ["Brand Designer", "UI Designer", "Marketing Specialist"]
+}

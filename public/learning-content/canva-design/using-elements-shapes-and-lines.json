@@ -1,0 +1,70 @@
+{
+  "learningContent": "<h3>Harnessing Canva Elements</h3><p>The 'Elements' tab is a treasure trove of graphics, shapes, lines, photos, videos, and more. Mastering this section is fundamental to creating custom designs.</p><h4>Shapes and Lines</h4><p>Under 'Elements', you'll find a category for 'Lines & Shapes'. You can add basic shapes like squares, circles, and triangles. Once on the canvas, you can resize them, change their color, and add a border (with adjustable weight and style). Lines are versatile; you can change their thickness (line weight), style (dashed, dotted), and add arrowheads or other endpoints from the top bar.</p><h4>Graphics and Stickers</h4><p>This is where Canva truly shines. You can search for millions of icons, illustrations, and animated stickers. Use the search bar within the 'Elements' tab to find what you need (e.g., 'computer' or 'waving hand'). Many graphics allow you to change their colors for better brand alignment.</p><h4>Frames and Grids</h4><p>Frames are shape-based placeholders for your photos. Drag a photo onto a frame, and it will automatically be cropped to that shape (e.g., a circle, a letter, or a torn paper effect). Grids are layout placeholders that help you quickly create photo collages by dividing your page into sections.</p><h4>Searching and Filtering</h4><p>When searching for elements, use the filter icon to narrow your results. You can filter by color, orientation (vertical, horizontal), and animation type (static or animated). You can also filter to see only free elements or those available with Canva Pro.</p>",
+  "quiz": {
+    "title": "Using Canva Elements",
+    "questions": [
+      {
+        "question": "What is the purpose of a 'Frame' in Canva?",
+        "options": ["To add a decorative border to your entire design", "To act as a shape-based placeholder for photos", "To create a photo collage layout", "To animate a static shape"],
+        "correctAnswer": "To act as a shape-based placeholder for photos",
+        "explanation": "Frames let you easily crop your photos into specific shapes like circles, letters, or abstract forms."
+      },
+      {
+        "question": "If you want to create a photo collage that fills the whole page, what should you use?",
+        "options": ["Multiple Frames", "A Grid", "A Sticker Pack", "A custom shape"],
+        "correctAnswer": "A Grid",
+        "explanation": "Grids are specifically designed to create structured, full-page photo collage layouts quickly."
+      },
+      {
+        "question": "Where can you change the thickness and style of a line?",
+        "options": ["In the 'Effects' panel", "In the side panel", "By right-clicking the line", "In the top bar after selecting the line"],
+        "correctAnswer": "In the top bar after selecting the line",
+        "explanation": "When a line is selected, the top bar shows contextual options for line weight, style (dashed, dotted), and endpoints."
+      },
+      {
+        "question": "How can you find only free, static (non-animated) graphics of a blue car?",
+        "options": ["Search 'free static blue car'", "Search 'car' and manually look for blue ones", "Search 'car', then use the filter options to select color and animation type", "You cannot filter with that much detail"],
+        "correctAnswer": "Search 'car', then use the filter options to select color and animation type",
+        "explanation": "The filter button next to the search bar in 'Elements' is a powerful tool for narrowing down results by color, animation, and price."
+      },
+      {
+        "question": "What is the main difference between 'Graphics' and 'Photos' in the Elements tab?",
+        "options": ["There is no difference", "Graphics are illustrations and icons, while Photos are photographic images", "Graphics are always free, Photos are always Pro", "Photos can be edited, but Graphics cannot"],
+        "correctAnswer": "Graphics are illustrations and icons, while Photos are photographic images",
+        "explanation": "Canva separates these two types of media. Graphics are vector-based illustrations, while Photos are raster-based, real-world images."
+      },
+      {
+        "question": "Animated elements in Canva are often called:",
+        "options": ["GIFs", "Stickers", "Videos", "Movies"],
+        "correctAnswer": "Stickers",
+        "explanation": "While they behave like GIFs, Canva categorizes its animated graphics as 'Stickers'."
+      },
+      {
+        "question": "True or False: You can change the colors of any graphic you find in Canva.",
+        "options": ["True", "False"],
+        "correctAnswer": "False",
+        "explanation": "Many graphics are color-changeable, but not all. If the color swatches don't appear in the top bar when you select a graphic, its colors cannot be edited."
+      },
+      {
+        "question": "Which of these is NOT a category within the 'Elements' tab?",
+        "options": ["Lines & Shapes", "Graphics", "Charts", "Fonts"],
+        "correctAnswer": "Fonts",
+        "explanation": "Fonts are managed in the 'Text' tab and the top bar, not within 'Elements'."
+      },
+      {
+        "question": "To add a border to a shape, you select the shape and then look for the border options in the...",
+        "options": ["Side Panel", "Top Bar", "Effects menu", "Right-click menu"],
+        "correctAnswer": "Top Bar",
+        "explanation": "The border style (color, weight, corner rounding) controls appear in the top bar when a shape is selected."
+      },
+      {
+        "question": "If you search for 'arrow' in Elements, what kind of results might you get?",
+        "options": ["Only static graphics", "Only photos of arrows", "A mix of static graphics, animated stickers, and photos", "Only lines with arrowheads"],
+        "correctAnswer": "A mix of static graphics, animated stickers, and photos",
+        "explanation": "The Elements search is comprehensive and will return all matching media types unless you filter it."
+      }
+    ]
+  },
+  "skillsGained": ["Using Graphics Libraries", "Photo Collages", "Custom Shape Design", "Advanced Search & Filtering"],
+  "jobOpportunities": ["Social Media Content Creator", "Presentation Designer", "Freelance Graphic Artist"]
+}

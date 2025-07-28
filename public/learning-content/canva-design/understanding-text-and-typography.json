@@ -1,0 +1,70 @@
+{
+  "learningContent": "<h3>Mastering Text in Canva</h3><p>Typography is crucial for effective design. It's not just what you say, but how you say it. This lesson explores Canva's text tools.</p><h4>Adding and Editing Text</h4><p>You can add text by selecting the 'Text' tab in the side panel and clicking 'Add a heading', 'Add a subheading', or 'Add a little bit of body text'. Alternatively, just press the 'T' key on your keyboard to add a text box. Once added, you can edit its content, font, size, color, alignment, and spacing (letter and line) from the top bar.</p><h4>Font Pairing</h4><p>Choosing fonts that work well together is key. A common rule is to pair a serif font (with small lines attached to characters, e.g., Times New Roman) with a sans-serif font (without lines, e.g., Arial). Canva's 'Styles' tab and 'Text' tab often suggest proven font combinations.</p><h4>Text Effects</h4><p>Canva offers powerful text effects. Select a text box and click 'Effects' in the top bar. Here you can find options like:</p><ul><li><strong>Shadow:</strong> Adds a drop shadow with customizable offset, direction, and color.</li><li><strong>Lift:</strong> Adds a subtle, blurry shadow to make text pop.</li><li><strong>Hollow/Splice:</strong> Creates an outline effect.</li><li><strong>Curve:</strong> Bends your text into an arc, which you can adjust.</li></ul><h4>Creating a Text Hierarchy</h4><p>Good design uses a clear hierarchy to guide the reader's eye. Use different sizes, weights (bold, regular), and styles for headings, subheadings, and body text to create a structure that is easy to read and understand.</p>",
+  "quiz": {
+    "title": "Text and Typography",
+    "questions": [
+      {
+        "question": "What is the keyboard shortcut to add a text box in Canva?",
+        "options": ["Ctrl + T", "T", "Alt + T", "Shift + T"],
+        "correctAnswer": "T",
+        "explanation": "Pressing the 'T' key is a quick shortcut to instantly add a new body text box to your canvas."
+      },
+      {
+        "question": "Which text effect would you use to bend text into a circular shape?",
+        "options": ["Shadow", "Lift", "Hollow", "Curve"],
+        "correctAnswer": "Curve",
+        "explanation": "The 'Curve' effect allows you to wrap your text along an adjustable circular path."
+      },
+      {
+        "question": "What is a common best practice for font pairing?",
+        "options": ["Using two different decorative fonts", "Using the same font for everything", "Pairing a serif font with a sans-serif font", "Using only sans-serif fonts"],
+        "correctAnswer": "Pairing a serif font with a sans-serif font",
+        "explanation": "The contrast between a serif (for body text) and a sans-serif (for headlines), or vice-versa, is a classic and effective typography technique."
+      },
+      {
+        "question": "Where do you find controls to change letter and line spacing?",
+        "options": ["In the 'Effects' panel", "In the 'Text' tab on the side panel", "In the top bar after selecting a text box", "By right-clicking the text box"],
+        "correctAnswer": "In the top bar after selecting a text box",
+        "explanation": "The spacing controls (an icon with lines and arrows) are located in the top bar alongside font, size, and color options."
+      },
+      {
+        "question": "What is the purpose of creating a text hierarchy?",
+        "options": ["To make the text look more uniform", "To guide the reader's eye and improve readability", "To use as many fonts as possible", "To fit more text on the page"],
+        "correctAnswer": "To guide the reader's eye and improve readability",
+        "explanation": "A clear hierarchy (headings, subheadings, body) tells the reader what is most important and how to navigate the information."
+      },
+      {
+        "question": "The 'Lift' effect in Canva adds a...",
+        "options": ["Sharp, solid shadow", "Colorful outline", "Subtle, blurry shadow", "3D effect"],
+        "correctAnswer": "Subtle, blurry shadow",
+        "explanation": "'Lift' creates a soft shadow behind the text, making it appear slightly raised from the background."
+      },
+      {
+        "question": "A font like Arial or Helvetica, which lacks small decorative lines, is called a:",
+        "options": ["Serif font", "Script font", "Sans-serif font", "Slab-serif font"],
+        "correctAnswer": "Sans-serif font",
+        "explanation": "'Sans' is French for 'without', so 'sans-serif' means 'without serifs' (the small lines)."
+      },
+      {
+        "question": "Which of these is NOT a standard text alignment option in Canva?",
+        "options": ["Left", "Center", "Right", "Vertical"],
+        "correctAnswer": "Vertical",
+        "explanation": "Standard text alignment options are horizontal (left, center, right, justify). Vertical alignment is controlled by the text box's position."
+      },
+      {
+        "question": "Canva's 'Styles' tab can help with typography by...",
+        "options": ["Automatically correcting spelling", "Suggesting proven font combinations", "Creating text effects", "Adding new fonts to your library"],
+        "correctAnswer": "Suggesting proven font combinations",
+        "explanation": "The 'Styles' tab offers pre-made pairings of fonts and colors that are designed to work well together."
+      },
+      {
+        "question": "To add a simple text box, you can navigate to the side panel and click the ___ tab.",
+        "options": ["Elements", "Uploads", "Text", "Styles"],
+        "correctAnswer": "Text",
+        "explanation": "The 'Text' tab is the primary place to find options for adding headings, subheadings, and body text."
+      }
+    ]
+  },
+  "skillsGained": ["Typography Basics", "Font Pairing", "Visual Hierarchy", "Text Styling"],
+  "jobOpportunities": ["Content Creator", "Marketing Designer", "Junior UI/UX Designer"]
+}

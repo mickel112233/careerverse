@@ -1,0 +1,70 @@
+{
+  "learningContent": "<h3>Leveraging Templates in Canva</h3><p>Canva's templates are one of its most powerful features, providing a professional starting point for any design. This lesson covers how to find, use, and customize them.</p><h4>Finding the Right Template</h4><p>You can find templates in two main ways: by using the search bar on the homepage (e.g., 'birthday card') or by browsing the 'Templates' tab in the editor's side panel. The editor's template tab will show suggestions relevant to the dimensions of your current design.</p><h4>Applying and Customizing a Template</h4><p>Simply clicking on a template will apply it to your current page on the canvas. Once applied, every element is customizable:</p><ul><li><strong>Text:</strong> Click on any text box to edit the content, font, size, color, and spacing using the top bar tools.</li><li><strong>Images:</strong> You can replace template images by dragging your own photo from the 'Uploads' or 'Photos' tab directly on top of the existing image. Canva will automatically crop and fit it into the frame.</li><li><strong>Colors:</strong> Many templates have a pre-defined color palette. You can change any element's color individually, or use the 'Styles' tab to apply a new color palette to the entire design at once.</li><li><strong>Elements:</strong> You can delete, move, resize, or replace any graphic element just like you would on a blank canvas.</li></ul><h4>Combining Templates</h4><p>You are not limited to a single template. You can apply a template to one page, then navigate to a new page and apply a different template. This is useful for creating multi-page documents like presentations or e-books.</p>",
+  "quiz": {
+    "title": "Working with Canva Templates",
+    "questions": [
+      {
+        "question": "What is the quickest way to replace an image in a Canva template?",
+        "options": ["Delete the old image and add a new one", "Drag a new image on top of the existing one", "Use the 'Replace Image' button in the top bar", "Copy and paste the new image"],
+        "correctAnswer": "Drag a new image on top of the existing one",
+        "explanation": "Dragging and dropping is the most efficient way, as Canva automatically fits the new image into the existing frame and position."
+      },
+      {
+        "question": "If you want to change the entire color scheme of a template with one click, which tab should you use?",
+        "options": ["Elements", "Colors", "Styles", "Background"],
+        "correctAnswer": "Styles",
+        "explanation": "The 'Styles' tab allows you to apply curated color palettes and font combinations to your entire design instantly."
+      },
+      {
+        "question": "Where can you find templates relevant to your current design's dimensions while in the editor?",
+        "options": ["The homepage search bar", "The 'Templates' tab in the side panel", "The 'File' menu", "The 'Resize' menu"],
+        "correctAnswer": "The 'Templates' tab in the side panel",
+        "explanation": "The editor's 'Templates' tab is context-aware and suggests templates that match your project's size and type."
+      },
+      {
+        "question": "True or False: Once you apply a template, you are locked into its layout.",
+        "options": ["True", "False"],
+        "correctAnswer": "False",
+        "explanation": "Every element in a Canva template is fully customizable. You can move, resize, delete, or replace anything."
+      },
+      {
+        "question": "How can you create a multi-page document with different layouts on each page?",
+        "options": ["You can't; all pages must use the same template", "By creating separate designs for each page", "By applying different templates to different pages within the same design", "By using the 'Layouts' tab"],
+        "correctAnswer": "By applying different templates to different pages within the same design",
+        "explanation": "Canva allows you to apply templates on a per-page basis, which is ideal for creating presentations, e-books, and more."
+      },
+      {
+        "question": "After applying a template, how do you edit the text?",
+        "options": ["Double-click the text box", "Use the 'Text' tab to find the text editor", "Click on the text box and use the tools in the top bar", "Right-click and select 'Edit Text'"],
+        "correctAnswer": "Click on the text box and use the tools in the top bar",
+        "explanation": "Clicking a text box activates the text editing tools in the top bar, where you can change font, size, color, etc."
+      },
+      {
+        "question": "What happens when you search for 'resume' on the Canva homepage?",
+        "options": ["It shows you a help article about resumes", "It opens a blank document with 'resume' as the title", "It displays thousands of pre-designed resume templates", "It takes you to the 'Elements' tab"],
+        "correctAnswer": "It displays thousands of pre-designed resume templates",
+        "explanation": "The homepage search is the primary way to discover Canva's vast library of templates for specific use cases."
+      },
+      {
+        "question": "Which of the following is NOT a typical element you can customize in a template?",
+        "options": ["Font style", "Image placement", "The Canva logo watermark (on free templates)", "Background color"],
+        "correctAnswer": "The Canva logo watermark (on free templates)",
+        "explanation": "While you can customize almost everything, watermarks on premium elements (in the free version) cannot be removed without upgrading or paying."
+      },
+      {
+        "question": "The 'Templates' tab in the editor is located in the...",
+        "options": ["Top Bar", "Side Panel", "Bottom Bar", "Pop-up menu"],
+        "correctAnswer": "Side Panel",
+        "explanation": "'Templates' is one of the main tabs in the left-hand side panel."
+      },
+      {
+        "question": "Can you use elements from one template in another?",
+        "options": ["No, templates are self-contained", "Yes, by copying and pasting elements between pages or designs", "Only if they are from the same template category", "Only with a Pro account"],
+        "correctAnswer": "Yes, by copying and pasting elements between pages or designs",
+        "explanation": "You can freely copy elements (like text boxes, graphics) from one page or design and paste them into another."
+      }
+    ]
+  },
+  "skillsGained": ["Template Customization", "Design Efficiency", "Brand Consistency"],
+  "jobOpportunities": ["Junior Graphic Designer", "Marketing Assistant", "Freelance Designer"]
+}

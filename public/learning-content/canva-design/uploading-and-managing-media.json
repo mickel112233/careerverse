@@ -1,0 +1,70 @@
+{
+  "learningContent": "<h3>Managing Your Media in Canva</h3><p>While Canva offers millions of stock assets, the ability to upload and use your own media is essential for personalization and branding. This lesson focuses on the 'Uploads' tab.</p><h4>Uploading Files</h4><p>Navigate to the 'Uploads' tab in the side panel. You can click the 'Upload files' button to select files from your computer. Alternatively, you can simply drag and drop files directly from your desktop onto the Canva editor. Canva supports various file types, including:</p><ul><li><strong>Images:</strong> JPG, PNG, SVG, HEIC</li><li><strong>Videos:</strong> MP4, MOV, GIF</li><li><strong>Audio:</strong> MP3, M4A, WAV</li></ul><h4>Organizing Uploads with Folders (Pro Feature)</h4><p>As you upload more files, your 'Uploads' tab can become cluttered. Canva Pro users can create folders to organize their media. You can create folders for different projects, clients, or types of assets (e.g., 'Logos', 'Headshots'). This is a crucial feature for professional designers and teams.</p><h4>Editing Uploaded Images and Videos</h4><p>Once an image is on your canvas, you can select it and click 'Edit photo' in the top bar. This opens a panel with tools like:</p><ul><li><strong>Filters:</strong> Apply Instagram-style color filters.</li><li><strong>Adjust:</strong> Manually control brightness, contrast, saturation, and other properties.</li><li><strong>Effects:</strong> Access powerful AI tools like the 'Background Remover' (a popular Pro feature).</li></ul><p>For videos, you can trim their length, crop their dimensions, adjust their playback speed, and control their volume directly from the top bar.</p>",
+  "quiz": {
+    "title": "Uploading and Managing Media",
+    "questions": [
+      {
+        "question": "What is the most popular Canva Pro feature for editing uploaded photos?",
+        "options": ["Filters", "Adjust tools", "Background Remover", "Magic Eraser"],
+        "correctAnswer": "Background Remover",
+        "explanation": "The one-click Background Remover is one of the most used and valued features in Canva Pro for creating clean, professional graphics."
+      },
+      {
+        "question": "Which of these file types is for audio?",
+        "options": ["JPG", "MP4", "MP3", "SVG"],
+        "correctAnswer": "MP3",
+        "explanation": "MP3 is a standard format for audio files, which you can upload for video soundtracks or audio-only designs."
+      },
+      {
+        "question": "What is the easiest way to upload a file from your computer to Canva?",
+        "options": ["Email the file to Canva support", "Use the 'Import from URL' feature", "Drag and drop the file onto the editor", "Upload it to a cloud drive first"],
+        "correctAnswer": "Drag and drop the file onto the editor",
+        "explanation": "Dragging and dropping is the most intuitive and direct method for uploading your media files."
+      },
+      {
+        "question": "The ability to organize uploads into folders is primarily a feature of:",
+        "options": ["Canva Free", "Canva Pro", "The Canva mobile app only", "A browser extension"],
+        "correctAnswer": "Canva Pro",
+        "explanation": "Folder organization is a key workflow improvement offered in the paid Canva Pro subscription to help manage assets."
+      },
+      {
+        "question": "After uploading a video, what is something you can do to it in the editor?",
+        "options": ["Add special effects like explosions", "Change the colors of objects in the video", "Trim its length and adjust playback speed", "Add subtitles automatically"],
+        "correctAnswer": "Trim its length and adjust playback speed",
+        "explanation": "Canva provides basic video editing tools in the top bar, including trimming, playback speed, volume, and cropping."
+      },
+      {
+        "question": "Where do you find all the media you have personally uploaded?",
+        "options": ["In the 'Elements' tab", "In the 'Uploads' tab", "In your computer's 'Downloads' folder", "In the 'Templates' tab"],
+        "correctAnswer": "In the 'Uploads' tab",
+        "explanation": "The 'Uploads' tab in the side panel is the dedicated library for all your personal media assets."
+      },
+      {
+        "question": "Which of the following is an image file format that Canva supports?",
+        "options": ["DOCX", "PPTX", "PNG", "XLSX"],
+        "correctAnswer": "PNG",
+        "explanation": "PNG is a popular image format, especially for graphics with transparent backgrounds, and is fully supported by Canva."
+      },
+      {
+        "question": "When you click 'Edit photo' on an uploaded image, what can you do?",
+        "options": ["Change the text within the image", "Apply filters and adjust brightness/contrast", "Convert it into a video", "Add it to a folder"],
+        "correctAnswer": "Apply filters and adjust brightness/contrast",
+        "explanation": "The 'Edit photo' panel provides a suite of tools for enhancing and adjusting the visual properties of your image."
+      },
+      {
+        "question": "True or False: You can upload your own custom fonts to Canva using the free version.",
+        "options": ["True", "False"],
+        "correctAnswer": "False",
+        "explanation": "Uploading custom fonts is a feature of the Brand Kit, which is part of the Canva Pro subscription."
+      },
+      {
+        "question": "What is the benefit of organizing uploads into folders?",
+        "options": ["It makes your designs load faster", "It saves storage space", "It makes it easier to find and reuse specific assets for different projects", "It automatically adds watermarks"],
+        "correctAnswer": "It makes it easier to find and reuse specific assets for different projects",
+        "explanation": "Folders are essential for an efficient workflow, helping you keep your brand assets, client work, or project files organized and accessible."
+      }
+    ]
+  },
+  "skillsGained": ["Asset Management", "Basic Photo Editing", "Basic Video Editing", "Branding"],
+  "jobOpportunities": ["Marketing Coordinator", "Social Media Manager", "Virtual Assistant", "Content Creator"]
+}
