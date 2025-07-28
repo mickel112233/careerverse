@@ -1,109 +1,108 @@
-
 {
-  "learningContent": "<h3>Welcome to Canva!</h3><p>Canva is a powerful and user-friendly graphic design platform that allows you to create a wide variety of visual content. In this first lesson, we'll get familiar with the main interface so you can navigate it with confidence.</p><h4>The Home Page</h4><p>When you first log in, you'll see the Canva home page. It's your central hub for everything. Here’s a quick breakdown:</p><ul><li><strong>Top Navigation Bar:</strong> This bar contains links to templates, features, and your account settings.</li><li><strong>'Create a design' Button:</strong> Located in the top-right corner, this is where you'll start most of your projects. You can choose from suggested dimensions (like 'Instagram Post') or set custom dimensions.</li><li><strong>Search Bar:</strong> Right in the middle of the page, this is the quickest way to find templates for anything you want to create, from presentations to logos.</li><li><strong>Your Projects:</strong> Below the search bar, you'll find a section displaying your recent designs for easy access.</li></ul><h4>The Canva Editor</h4><p>When you start a new design, you'll enter the Canva Editor. This is where the magic happens. The editor is divided into three main sections:</p><ol><li><strong>The Left-Side Panel:</strong> This is your toolkit. It contains tabs for 'Templates', 'Elements' (like icons, shapes, and photos), 'Uploads' (your own images), 'Text', and more.</li><li><strong>The Main Canvas:</strong> This is the large area in the center where you build your design. It's your creative playground.</li><li><strong>The Top Bar:</strong> This bar appears above the canvas and is context-sensitive. When you select an element (like text or an image), this bar will show you all the tools to customize it, such as font options, colors, effects, and positioning tools.</li></ol><p>Spend some time clicking around these three areas. Get a feel for where the tools are located. In the next lesson, we'll start using them to create a simple design.</p>",
+  "learningContent": "<h3>Welcome to Canva!</h3><p>Canva is a powerful and user-friendly graphic design platform that allows you to create a wide variety of visual content. This first lesson will familiarize you with the main interface so you can navigate it with confidence.</p><h4>The Home Page</h4><p>When you first log in, you'll see the Canva home page. It's your central hub for starting new designs and accessing your previous work. Key areas include:</p><ul><li><strong>Top Navigation Bar:</strong> Access design types, templates, and learning resources.</li><li><strong>'Create a design' Button:</strong> Your starting point for any new project. It opens a dropdown of popular document types like Instagram posts, presentations, and logos.</li><li><strong>Your Projects:</strong> A gallery of all the designs you've created, saved automatically.</li></ul><h4>The Editor Interface</h4><p>Once you select a design type, you enter the Canva editor. This is where the magic happens. The editor is split into three main sections:</p><ul><li><strong>The Side Panel (Left):</strong> This is your toolkit. It contains tabs for Templates, Elements (like shapes, icons, and photos), Uploads, Text, and more.</li><li><strong>The Canvas (Center):</strong> This is your main design area. You'll add and arrange all your content here.</li><li><strong>The Top Bar (Top):</strong> This bar is contextual. It changes based on what you have selected on your canvas. For example, if you select text, it will show options for font, size, color, and formatting.</li></ul><p>Spend some time clicking around these areas to see what's available. The best way to learn is by exploring!</p>",
   "quiz": {
     "title": "Canva Interface Basics",
     "questions": [
       {
-        "question": "Where is the 'Create a design' button located on the Canva home page?",
+        "question": "What is the main purpose of the Canva home page?",
         "options": [
-          "In the bottom-left corner",
-          "In the top-right corner",
-          "In the center of the page",
-          "It's in the side panel"
+          "To edit photos exclusively",
+          "To serve as a central hub for starting designs and accessing past work",
+          "To browse social media feeds",
+          "To purchase premium fonts"
         ],
-        "correctAnswer": "In the top-right corner",
-        "explanation": "The 'Create a design' button is one of the primary actions and is prominently placed in the top-right corner of the home page."
+        "correctAnswer": "To serve as a central hub for starting designs and accessing past work",
+        "explanation": "The home page is your dashboard for managing all your design projects in Canva."
       },
       {
-        "question": "Which panel in the Canva Editor contains your toolkit for finding templates, elements, and text styles?",
+        "question": "Where would you find pre-made layouts for a presentation?",
         "options": [
-          "The Top Bar",
-          "The Bottom Panel",
-          "The Right-Side Panel",
-          "The Left-Side Panel"
+          "In the 'Elements' tab",
+          "In the 'Uploads' tab",
+          "In the 'Templates' tab",
+          "In the Top Bar"
         ],
-        "correctAnswer": "The Left-Side Panel",
-        "explanation": "The Left-Side Panel is the main toolbox where you find all the assets and tools you need to build your design."
+        "correctAnswer": "In the 'Templates' tab",
+        "explanation": "The 'Templates' tab in the side panel provides thousands of professionally designed layouts to start your project."
       },
       {
-        "question": "What happens to the Top Bar in the editor when you select an element on your canvas?",
+        "question": "If you want to add your own logo to a design, which tab in the side panel should you use?",
         "options": [
-          "It disappears to give you more space.",
-          "It shows context-sensitive tools to edit that specific element.",
-          "It opens the template library.",
-          "It shows your project's save status."
-        ],
-        "correctAnswer": "It shows context-sensitive tools to edit that specific element.",
-        "explanation": "The Top Bar is dynamic and provides you with the relevant editing options for whatever element you have currently selected."
-      },
-      {
-        "question": "What is the main purpose of the central canvas area in the editor?",
-        "options": [
-          "To browse for templates",
-          "To adjust account settings",
-          "To build and see your actual design",
-          "To upload your own photos"
-        ],
-        "correctAnswer": "To build and see your actual design",
-        "explanation": "The canvas is the main workspace where you arrange and edit elements to create your final design."
-      },
-      {
-        "question": "Which of these is NOT a standard tab in the editor's Left-Side Panel?",
-        "options": [
-          "Elements",
           "Text",
           "Uploads",
-          "Account Settings"
+          "Elements",
+          "Styles"
         ],
-        "correctAnswer": "Account Settings",
-        "explanation": "Account Settings are typically accessed from the main home page, not from within the editor's main toolkit panel."
+        "correctAnswer": "Uploads",
+        "explanation": "The 'Uploads' tab allows you to add your own images, videos, and audio files to your Canva projects."
       },
       {
-        "question": "If you want to find your most recent designs, where is the best place to look on the home page?",
+        "question": "What happens to the Top Bar when you select a text box on your canvas?",
+        "options": [
+          "It disappears",
+          "It shows options for changing the background color",
+          "It shows text formatting options like font, size, and color",
+          "It opens the help menu"
+        ],
+        "correctAnswer": "It shows text formatting options like font, size, and color",
+        "explanation": "The Top Bar is contextual, meaning its options change to be relevant to the element you've selected."
+      },
+      {
+        "question": "What is the central area where you build your design called?",
+        "options": [
+          "The Toolkit",
+          "The Dashboard",
+          "The Canvas",
+          "The Frame"
+        ],
+        "correctAnswer": "The Canvas",
+        "explanation": "The Canvas is the main workspace for your design, located in the center of the editor."
+      },
+      {
+        "question": "Which of these is NOT a primary section of the Canva Editor interface?",
+        "options": [
+          "The Side Panel",
+          "The Canvas",
+          "The Top Bar",
+          "The Chat Window"
+        ],
+        "correctAnswer": "The Chat Window",
+        "explanation": "While Canva has collaboration features, a persistent chat window is not one of the three main sections of the editor interface."
+      },
+      {
+        "question": "Where can you find your previously created designs?",
         "options": [
           "In the 'Templates' tab",
-          "Under the 'Your Projects' section",
-          "In the top navigation bar",
-          "You must search for them by name"
+          "In the 'Your Projects' section on the home page",
+          "You must download them immediately as they are not saved",
+          "In the 'Elements' tab"
         ],
-        "correctAnswer": "Under the 'Your Projects' section",
-        "explanation": "Canva's home page conveniently displays your recent work in the 'Your Projects' section for quick access."
+        "correctAnswer": "In the 'Your Projects' section on the home page",
+        "explanation": "Canva automatically saves your work, which you can easily access from the 'Your Projects' area on the home page."
       },
       {
-        "question": "The quickest way to find a template for a 'YouTube Thumbnail' on the home page is to use the:",
+        "question": "What is the function of the 'Elements' tab?",
         "options": [
-          "Help menu",
-          "Search Bar",
-          "'Create a design' button's dropdown",
-          "Footer links"
+          "To add text to your design",
+          "To upload your own images",
+          "To provide access to shapes, icons, photos, and other graphics",
+          "To change the overall color palette"
         ],
-        "correctAnswer": "Search Bar",
-        "explanation": "The large search bar on the home page is the most direct way to find specific templates for any type of content."
-      },
-      {
-        "question": "The three main sections of the Canva Editor are:",
-        "options": [
-          "Header, Footer, and Body",
-          "Left-Side Panel, Canvas, and Top Bar",
-          "Templates, Elements, and Text",
-          "Home, Projects, and Settings"
-        ],
-        "correctAnswer": "Left-Side Panel, Canvas, and Top Bar",
-        "explanation": "These three sections form the core layout of the Canva editor, providing tools, workspace, and contextual editing options."
+        "correctAnswer": "To provide access to shapes, icons, photos, and other graphics",
+        "explanation": "The 'Elements' tab is your library for all of Canva's built-in graphical assets."
       }
     ]
   },
   "skillsGained": [
-    "Navigating the Canva home page",
-    "Understanding the editor layout",
-    "Locating primary tools and panels",
-    "Identifying context-sensitive menus"
+    "Navigating the Canva Dashboard",
+    "Understanding the Editor Layout",
+    "Locating Key Design Tools",
+    "Differentiating between Templates and Elements"
   ],
   "jobOpportunities": [
     "Junior Graphic Designer",
-    "Social Media Intern",
-    "Marketing Assistant",
+    "Social Media Assistant",
+    "Marketing Intern",
     "Virtual Assistant"
   ]
 }
