@@ -20,8 +20,6 @@ import { updateQuestProgress } from '@/lib/quest-data';
 import { categoryToSkillMapping } from '@/lib/skill-mapping';
 import { factions } from '../../welcome/page';
 
-// --- NEW DATA STRUCTURES ---
-
 type QuizQuestion = {
     question: string;
     options: string[];
@@ -31,7 +29,7 @@ type QuizQuestion = {
 
 type Lesson = {
     title: string;
-    content: string; // HTML content
+    content: string; 
     task: string;
 };
 
@@ -50,9 +48,6 @@ type CourseContent = {
     estimatedTime: string;
     modules: Module[];
 };
-
-// --- END NEW DATA STRUCTURES ---
-
 
 type LearningState = 'loading' | 'studying' | 'quizzing' | 'results';
 type UserAnswers = { [key: number]: string };
@@ -110,7 +105,7 @@ const MissingContentCard = ({ topic, onBack }: { topic: string, onBack: () => vo
         </CardHeader>
         <CardContent className="text-center">
             <p className="max-w-prose mx-auto">
-                This is part of the app's scalable design. To add the lesson and quiz for this topic, you can simply ask the AI in a new prompt. Once created and saved to the project, it will appear here instantly for all users, with no loading time.
+                This is part of the app's scalable design. To add the lesson and quiz for this topic, you can simply ask the AI in a new prompt. Once created and saved to the project, it will appear here instantly for all users.
             </p>
         </CardContent>
         <CardFooter className="justify-center">
@@ -145,8 +140,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 setStreamName(storedStreamName);
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
-                // Fetch the entire course file based on the stream slug
-                const response = await fetch(`/learning-content/canva-essentials.json`);
+                const response = await fetch(`/learning-content/${streamSlug}.json`);
 
                 if (!response.ok) {
                     if (response.status === 404) {
@@ -159,7 +153,6 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
 
                 const data: CourseContent = await response.json();
                 
-                // The file now represents the course for the current level
                 setCourseData(data);
                 setContentExists(true);
                 
@@ -231,7 +224,6 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 });
 
                 if (currentStageIndex !== -1 && currentLevelIndex !== -1) {
-                    // Update current level status if not already completed
                     if (roadmap[currentStageIndex].levels[currentLevelIndex].status !== 'completed') {
                          roadmap[currentStageIndex].levels[currentLevelIndex].status = 'completed';
 
@@ -266,17 +258,14 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                         });
                     }
 
-                    // Unlock next level in the same stage
                     if (currentLevelIndex + 1 < roadmap[currentStageIndex].levels.length) {
                         roadmap[currentStageIndex].levels[currentLevelIndex + 1].status = 'unlocked';
                     } else {
-                        // This was the last level, check if we can unlock next stage
                         const isStageComplete = roadmap[currentStageIndex].levels.every(l => l.status === 'completed');
                         if (isStageComplete) {
                             roadmap[currentStageIndex].status = 'completed';
                             if (currentStageIndex + 1 < roadmap.length) {
                                 roadmap[currentStageIndex + 1].status = 'unlocked';
-                                // Unlock first level of next stage
                                 if (roadmap[currentStageIndex + 1].levels?.[0]) {
                                     roadmap[currentStageIndex + 1].levels[0].status = 'unlocked';
                                 }
