@@ -130,6 +130,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [streamName, setStreamName] = useState('');
     const [progress, setProgress] = useState({ current: 0, total: 0 });
     const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
+    const [nextLevel, setNextLevel] = useState<Level | null>(null);
 
 
     useEffect(() => {
@@ -214,6 +215,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 let roadmap: Stage[] = JSON.parse(storedRoadmap);
                 let currentStageIndex = -1;
                 let currentLevelIndex = -1;
+                let nextLevelInfo: Level | null = null;
 
                 roadmap.forEach((stage, sIndex) => {
                     const lIndex = stage.levels.findIndex(level => level.slug === slug);
@@ -258,8 +260,10 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                         });
                     }
 
+                    // Unlock next level and find its info
                     if (currentLevelIndex + 1 < roadmap[currentStageIndex].levels.length) {
                         roadmap[currentStageIndex].levels[currentLevelIndex + 1].status = 'unlocked';
+                        nextLevelInfo = roadmap[currentStageIndex].levels[currentLevelIndex + 1];
                     } else {
                         const isStageComplete = roadmap[currentStageIndex].levels.every(l => l.status === 'completed');
                         if (isStageComplete) {
@@ -268,6 +272,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                                 roadmap[currentStageIndex + 1].status = 'unlocked';
                                 if (roadmap[currentStageIndex + 1].levels?.[0]) {
                                     roadmap[currentStageIndex + 1].levels[0].status = 'unlocked';
+                                    nextLevelInfo = roadmap[currentStageIndex + 1].levels[0];
                                 }
                                  toast({
                                     title: "Stage Complete!",
@@ -276,7 +281,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                             }
                         }
                     }
-
+                    setNextLevel(nextLevelInfo);
                     localStorage.setItem('careerClashRoadmap', JSON.stringify(roadmap));
                 }
             }
@@ -286,6 +291,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                 title: "Challenge Failed",
                 description: `You scored ${percentage.toFixed(0)}%. You need at least 60% to pass. Review the material and try again.`,
             });
+            setNextLevel(null); // No next level if failed
         }
     }
     
@@ -306,7 +312,7 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
                     const quizData = courseData.modules[currentModuleIndex].quiz;
                     return <QuizView quizData={quizData} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
                 case 'results':
-                    return <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} />;
+                    return <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} nextLevel={nextLevel} />;
                 default:
                     return <LearningContentSkeleton />;
             }
@@ -491,7 +497,7 @@ const QuizView = ({ quizData, levelXp, levelCoins, onQuizComplete }: { quizData:
     );
 };
 
-const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizResult[], levelXp: number, levelCoins: number, onRetry: () => void }) => {
+const ResultsView = ({ results, levelXp, levelCoins, onRetry, nextLevel }: { results: QuizResult[], levelXp: number, levelCoins: number, onRetry: () => void, nextLevel: Level | null }) => {
     const score = results.filter(r => r.isCorrect).length;
     const totalQuestions = results.length;
     const percentage = (score / totalQuestions) * 100;
@@ -579,15 +585,23 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry }: { results: QuizR
                 )}
             </CardContent>
             <CardFooter className="justify-center gap-4 pt-6">
-                <Button asChild>
-                    <Link href="/study">
-                        Back to Roadmap
-                    </Link>
-                </Button>
-                    <Button variant="outline" onClick={onRetry}>
-                        <Repeat className="mr-2 h-4 w-4" />
-                    {passed ? 'Practice Again' : 'Try Again'}
+                 {passed && nextLevel ? (
+                    <Button asChild>
+                        <Link href={`/learning/${nextLevel.slug}`}>
+                            Next Level <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
                     </Button>
+                ) : (
+                    <Button asChild>
+                        <Link href="/study">
+                            Back to Roadmap
+                        </Link>
+                    </Button>
+                )}
+                <Button variant="outline" onClick={onRetry}>
+                    <Repeat className="mr-2 h-4 w-4" />
+                    {passed ? 'Practice Again' : 'Try Again'}
+                </Button>
             </CardFooter>
         </Card>
     )
