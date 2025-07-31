@@ -129,7 +129,6 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
     const [streamName, setStreamName] = useState('');
     const [progress, setProgress] = useState({ current: 0, total: 0 });
-    const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
     const [nextLevel, setNextLevel] = useState<Level | null>(null);
 
 
@@ -139,8 +138,10 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             try {
                 const storedStreamName = localStorage.getItem('careerClashStream') || 'Software Development';
                 setStreamName(storedStreamName);
+                // Create a URL-friendly slug from the stream name
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
+                // Use the dynamic slug to fetch the correct content file
                 const response = await fetch(`/learning-content/${streamSlug}.json`);
 
                 if (!response.ok) {
@@ -305,11 +306,18 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         }
         
         if (courseData) {
+            const currentLevelData = courseData.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === slug)
+            ?? courseData.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === topic.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'));
+    
+            if (!currentLevelData) {
+                return <MissingContentCard topic={topic} onBack={() => router.push('/study')} />;
+            }
+
             switch (state) {
                 case 'studying':
-                    return <StudyView courseData={courseData} onStartQuiz={(moduleIndex) => { setCurrentModuleIndex(moduleIndex); setState('quizzing');}} />;
+                    return <StudyView module={currentLevelData} onStartQuiz={() => setState('quizzing')} />;
                 case 'quizzing':
-                    const quizData = courseData.modules[currentModuleIndex].quiz;
+                    const quizData = currentLevelData.quiz;
                     return <QuizView quizData={quizData} levelXp={levelXp} levelCoins={levelCoins} onQuizComplete={handleQuizComplete} />;
                 case 'results':
                     return <ResultsView results={quizResults} levelXp={levelXp} levelCoins={levelCoins} onRetry={() => setState('quizzing')} nextLevel={nextLevel} />;
@@ -357,34 +365,34 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
     );
 }
 
-const StudyView = ({ courseData, onStartQuiz }: { courseData: CourseContent, onStartQuiz: (moduleIndex: number) => void }) => (
+const StudyView = ({ module, onStartQuiz }: { module: Module, onStartQuiz: () => void }) => (
     <div className="grid lg:grid-cols-1 gap-6">
-        {courseData.modules.map((module, moduleIndex) => (
-            <Card key={moduleIndex} className="lg:col-span-1">
-                <CardHeader>
-                    <CardTitle className="font-headline text-2xl flex items-center gap-2">
-                        <BookOpen />
-                        {module.title}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 space-y-6">
-                    {module.lessons.map((lesson, lessonIndex) => (
-                        <div key={lessonIndex} className="prose dark:prose-invert max-w-none">
-                            <h3>{lesson.title}</h3>
-                            <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
-                            <div className="mt-4 p-4 border-l-4 border-accent bg-accent/10">
-                                <p className="font-bold">Mini-Task:</p>
-                                <p>{lesson.task}</p>
-                            </div>
+        <Card className="lg:col-span-1">
+            <CardHeader>
+                <CardTitle className="font-headline text-2xl flex items-center gap-2">
+                    <BookOpen />
+                    {module.title}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 space-y-6">
+                {module.lessons.map((lesson, lessonIndex) => (
+                    <div key={lessonIndex} className="prose dark:prose-invert max-w-none">
+                        <h3>{lesson.title}</h3>
+                        <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
+                        <div className="mt-4 p-4 border-l-4 border-accent bg-accent/10">
+                            <p className="font-bold">Mini-Task:</p>
+                            <p>{lesson.task}</p>
                         </div>
-                    ))}
-                    <Button size="lg" onClick={() => onStartQuiz(moduleIndex)} className="mt-6">
-                        Start {module.quiz.title}
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                </CardContent>
-            </Card>
-        ))}
+                    </div>
+                ))}
+            </CardContent>
+             <CardFooter>
+                <Button size="lg" onClick={onStartQuiz} className="mt-6 w-full">
+                    Start {module.quiz.title}
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+            </CardFooter>
+        </Card>
     </div>
 );
 
