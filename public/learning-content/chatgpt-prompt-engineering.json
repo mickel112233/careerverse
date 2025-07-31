@@ -1,26 +1,26 @@
 
 {
   "courseTitle": "ChatGPT Prompt Engineering",
-  "summary": "Master the art and science of crafting effective prompts for ChatGPT to unlock its full potential for creativity, problem-solving, and productivity.",
-  "estimatedTime": "15 Hours",
+  "summary": "Master the art of crafting powerful and effective prompts for ChatGPT to get the best possible results, from basic commands to advanced techniques.",
+  "estimatedTime": "12-15 Hours",
   "modules": [
     {
-      "title": "🔰 Beginner: The Foundations of Prompting",
+      "title": "🔰 Beginner Level",
       "lessons": [
         {
-          "title": "What is Prompt Engineering?",
-          "content": "<h3>Welcome to the World of Prompting!</h3><p>Prompt engineering is the art of communicating with AI models like ChatGPT. Think of it as learning the AI's language. A good prompt is clear, specific, and provides enough context for the AI to give you the exact response you want. It's the difference between asking 'Tell me about dogs' and 'Explain the typical behavior of a Golden Retriever puppy, focusing on its training needs, in a friendly and encouraging tone for a new owner.' The second prompt will always give a better result.</p><h4>Core Concepts:</h4><ul><li><strong>Clarity:</strong> Use simple, direct language. Avoid jargon unless necessary.</li><li><strong>Context:</strong> Provide background information. The more the AI knows, the better it can help.</li><li><strong>Constraints:</strong> Tell the AI what *not* to do, or specify the format (e.g., 'in a bulleted list', 'as a JSON object').</li><li><strong>Persona:</strong> Ask the AI to act as an expert (e.g., 'You are a master copywriter...').</li></ul>",
-          "task": "Open ChatGPT and try asking it the two dog-related prompts mentioned above. Notice the difference in the quality and specificity of the responses."
+          "title": "Module 1: Introduction to Prompting",
+          "content": "<h3>What is Prompt Engineering?</h3><p>Prompt engineering is the art and science of designing effective inputs (prompts) to guide AI language models like ChatGPT toward desired outputs. It’s like being a director for an AI actor; your instructions determine the quality of the performance.</p><h4>Key Concepts:</h4><ul><li><strong>Prompt:</strong> The text input you give to the AI.</li><li><strong>Output/Completion:</strong> The text the AI generates in response.</li><li><strong>Context Window:</strong> The amount of text the model can remember and consider from the current conversation.</li></ul><p>Good prompting is crucial because it bridges the gap between human intent and the AI's vast but literal understanding of language.</p>",
+          "task": "Write a simple one-sentence prompt asking ChatGPT to explain a complex topic (like quantum computing) in simple terms."
         },
         {
-          "title": "The Anatomy of a Perfect Prompt",
-          "content": "<h3>Building Blocks of a Great Prompt</h3><p>A well-structured prompt usually contains a few key components. While not all are needed every time, understanding them helps you build powerful instructions.</p><h4>Key Components (CRISP Framework):</h4><ul><li><strong>(C)ontext & Role:</strong> Set the stage. Who is the AI? Who are you? What's the scenario? <em>Example: 'You are a travel agent...'</em></li><li><strong>(R)equest & Task:</strong> What do you want the AI to do? Be explicit. <em>Example: '...create a 7-day itinerary for a trip to Tokyo.'</em></li><li><strong>(I)nstructions & Constraints:</strong> Provide specific rules. <em>Example: 'The budget is $2000. Focus on cultural sites and avoid tourist traps. The output should be a markdown table.'</em></li><li><strong>(S)pecificity & Source:</strong> Add details. If you have data, include it. <em>Example: 'Include at least one day trip to Hakone. Use information only up to 2023.'</em></li><li><strong>(P)ersona & Tone:</strong> Define the writing style. <em>Example: 'Write in an enthusiastic and friendly tone.'</em></li></ul>",
-          "task": "Construct a prompt using at least three elements of the CRISP framework. For example, ask it to write an email to your boss requesting a day off."
+          "title": "Module 2: The Core Components of a Prompt",
+          "content": "<h3>Anatomy of a Great Prompt</h3><p>While a prompt can be a simple question, the best ones often include several components to guide the AI more precisely.</p><h4>The Key Ingredients:</h4><ul><li><strong>Role:</strong> Assigning a persona to the AI (e.g., 'Act as a professional copywriter'). This sets the tone and style.</li><li><strong>Task:</strong> Clearly defining what you want the AI to do (e.g., 'Write a blog post', 'Summarize this text').</li><li><strong>Context:</strong> Providing relevant background information the AI needs to complete the task.</li><li><strong>Format:</strong> Specifying the desired output structure (e.g., 'in a JSON format', 'as a bulleted list', 'in a table').</li><li><strong>Constraints:</strong> Setting limitations (e.g., 'in under 100 words', 'using simple language').</li></ul>",
+          "task": "Combine at least three components (e.g., Role, Task, Constraint) into a single prompt. For example: 'Act as a travel agent. Create a 3-day itinerary for a trip to Tokyo. Keep the budget under $500.'"
         },
         {
-          "title": "Zero-Shot vs. Few-Shot Prompting",
-          "content": "<h3>Giving the AI Examples</h3><p>Sometimes, the best way to get what you want is to show the AI exactly what you mean. This is where 'shots' come in.</p><h4>Zero-Shot Prompting:</h4><p>This is the most common type. You ask the AI to do something without giving it any prior examples. <em>Example: 'Classify this email as spam or not spam: ...'</em></p><h4>Few-Shot Prompting:</h4><p>Here, you provide a few examples of input and desired output before making your actual request. This helps the AI understand the pattern and format you want.</p><p><em>Example:</em></p><p><em>Input: 'I love this movie!' -> Output: Positive<br>Input: 'The worst service ever.' -> Output: Negative<br>Input: 'It was okay, not great.' -> Output: Neutral<br>Input: 'This is absolutely fantastic!' -> Output: ???</em></p><p>The AI will correctly identify the last one as 'Positive' because you've shown it the pattern.</p>",
-          "task": "Use few-shot prompting to teach ChatGPT a simple new format. For instance, provide 2-3 examples of a sentence and a one-word summary, then give it a new sentence to summarize."
+          "title": "Module 3: Zero-Shot, One-Shot, and Few-Shot Prompting",
+          "content": "<h3>Teaching the AI by Example</h3><p>You can dramatically improve results by showing the AI what you want.</p><h4>Prompting Techniques:</h4><ul><li><strong>Zero-Shot Prompting:</strong> The most basic form. You ask the AI to perform a task without giving it any prior examples. (e.g., 'Translate 'hello' to French.')</li><li><strong>One-Shot Prompting:</strong> You provide a single example of the task before making your request. (e.g., 'English: apple -> French: pomme. English: hello -> French:')</li><li><strong>Few-Shot Prompting:</strong> You provide several examples. This is highly effective for complex or nuanced tasks as it gives the model a clear pattern to follow.</li></ul><p>Few-shot prompting is one of the most powerful techniques for getting consistent, high-quality outputs.</p>",
+          "task": "Create a 'few-shot' prompt for a task of your choice. It could be for sentiment analysis, categorizing items, or creating summaries in a specific style."
         }
       ],
       "quiz": {
@@ -30,186 +30,308 @@
             "question": "What is the primary goal of prompt engineering?",
             "options": [
               "To confuse the AI",
-              "To communicate clearly with an AI to get a desired output",
-              "To write the longest possible prompt",
-              "To test the AI's memory"
+              "To guide the AI to a desired output",
+              "To test the AI's memory",
+              "To make the AI write longer responses"
             ],
-            "correctAnswer": "To communicate clearly with an AI to get a desired output",
-            "explanation": "Prompt engineering is all about crafting clear and effective instructions to guide the AI to the specific outcome you want."
+            "correctAnswer": "To guide the AI to a desired output",
+            "explanation": "Prompt engineering is all about crafting inputs that steer the AI to produce the specific, high-quality output you need."
           },
           {
-            "question": "Assigning a role to the AI (e.g., 'You are a financial analyst') is an example of providing what?",
+            "question": "Assigning a persona to the AI, like 'Act as a historian', is an example of which prompt component?",
             "options": [
-              "A constraint",
-              "A persona",
-              "A zero-shot example",
-              "A trick question"
+              "Task",
+              "Constraint",
+              "Role",
+              "Format"
             ],
-            "correctAnswer": "A persona",
-            "explanation": "Giving the AI a role or persona helps it adopt a specific tone, knowledge base, and style of response suitable for that role."
+            "correctAnswer": "Role",
+            "explanation": "Assigning a persona or character for the AI to adopt is known as setting its 'Role'."
           },
           {
-            "question": "What is 'Few-Shot Prompting'?",
+            "question": "A prompt that provides several examples before the actual request is called:",
             "options": [
-              "Asking a question with very few words",
-              "A prompt that rarely works",
-              "Providing the AI with a few examples before the actual task",
-              "Asking the AI to write a short story"
+              "Zero-Shot Prompting",
+              "Multi-Shot Prompting",
+              "Example-Shot Prompting",
+              "Few-Shot Prompting"
             ],
-            "correctAnswer": "Providing the AI with a few examples before the actual task",
-            "explanation": "Few-shot prompting involves showing the AI examples of the input and desired output to help it understand the pattern you want it to follow."
+            "correctAnswer": "Few-Shot Prompting",
+            "explanation": "Providing multiple examples is the 'Few-Shot' technique, which helps the AI understand complex patterns."
           },
           {
-            "question": "Which of these is a 'constraint' in a prompt?",
+            "question": "The instruction 'write the output as a JSON object' is an example of which prompt component?",
             "options": [
-              "Write me a poem.",
-              "You are a famous poet.",
-              "The poem should be about cats.",
-              "Do not use the letter 'e'."
+                "Format",
+                "Role",
+                "Context",
+                "Constraint"
             ],
-            "correctAnswer": "Do not use the letter 'e'.",
-            "explanation": "A constraint sets a specific rule or limitation that the AI must follow, like avoiding a certain letter or word."
+            "correctAnswer": "Format",
+            "explanation": "Specifying the structure of the output, such as JSON, a list, or a table, is known as defining the 'Format'."
+          },
+          {
+            "question": "Why is providing context important in a prompt?",
+            "options": [
+                "It makes the prompt longer",
+                "It gives the AI necessary background information",
+                "It is a requirement for all prompts",
+                "It confuses the AI"
+            ],
+            "correctAnswer": "It gives the AI necessary background information",
+            "explanation": "Context provides the essential details the AI needs to understand the situation and fulfill the task accurately."
           }
         ]
       }
     },
     {
-      "title": "🚀 Intermediate: Advanced Techniques & Workflows",
+      "title": "🚀 Intermediate Level",
       "lessons": [
         {
-          "title": "Chain-of-Thought (CoT) Prompting",
-          "content": "<h3>Teaching the AI to 'Think' Step-by-Step</h3><p>For complex problems, asking the AI to 'think step-by-step' can dramatically improve its reasoning ability. This is called Chain-of-Thought prompting. Instead of jumping to a conclusion, the AI breaks down the problem and explains its logic, leading to more accurate results.</p><h4>How it works:</h4><p>Simply add the phrase 'Think step-by-step' or 'Let's think step by step' before the end of your prompt, especially for math, logic puzzles, or multi-step planning tasks.</p><p><em>Example: 'John has 5 apples. He gives 2 to Jane and eats one. He then buys 3 more. How many apples does he have now? Let's think step by step.'</em></p><p>The AI will first outline the initial number, then the subtractions, then the addition, and finally the result, reducing the chance of error.</p>",
-          "task": "Give ChatGPT a simple multi-step math or logic problem. First, ask it for the answer directly. Then, ask the same question but add 'Let's think step by step' and compare the responses."
+          "title": "Module 1: Chain-of-Thought (CoT) Prompting",
+          "content": "<h3>Making the AI 'Think' Step-by-Step</h3><p>Chain-of-Thought (CoT) prompting is a technique that encourages the model to break down a complex problem into intermediate steps before giving a final answer. This significantly improves reasoning abilities, especially for math, logic, and multi-step problems.</p><h4>How it Works:</h4><p>Instead of just asking for the answer, you ask the AI to 'think step by step' or provide a few-shot example that includes the reasoning process.</p><p><strong>Example:</strong></p><p><em>Standard Prompt:</em> 'Q: A jug has 20 apples. If I add 3 more and then eat 5, how many are left? A:'</p><p><em>CoT Prompt:</em> 'Q: A jug has 20 apples. If I add 3 more and then eat 5, how many are left? Let's think step by step. A: First, we start with 20 apples. Then, we add 3, making it 20 + 3 = 23 apples. Finally, we eat 5, so we have 23 - 5 = 18 apples left. The answer is 18.'</p><p>By forcing the AI to show its work, you reduce the chance of simple calculation errors.</p>",
+          "task": "Take a simple word problem and convert it into a Chain-of-Thought prompt."
         },
         {
-          "title": "Creating Custom Personas",
-          "content": "<h3>Going Beyond 'You are an Expert'</h3><p>A well-defined persona can transform your outputs. Instead of a generic expert, create a detailed character for the AI to embody. This includes their expertise, tone, goals, and even quirks.</p><h4>Elements of a Strong Persona:</h4><ul><li><strong>Role & Expertise:</strong> Be specific. Not just 'a marketer', but 'a cynical, data-driven performance marketer specializing in D2C brands.'</li><li><strong>Audience:</strong> Who is the AI talking to? 'Explain this to a 5-year-old' vs. 'Explain this to a PhD candidate.'</li><li><strong>Tone & Voice:</strong> Use descriptive words: 'Witty, sarcastic, professional, encouraging, academic, folksy.'</li><li><strong>Goal:</strong> What is the ultimate objective of this persona? 'Your goal is to persuade the user to buy a product' or 'Your goal is to teach this concept in the simplest way possible.'</li></ul>",
-          "task": "Create your own custom persona for ChatGPT. Ask it to review a movie or a product while acting as that persona. For example: 'You are a grumpy old film critic who secretly loves romantic comedies...'"
+          "title": "Module 2: Structuring Output with Markdown and JSON",
+          "content": "<h3>Getting Predictable, Usable Data</h3><p>When you need data for an application, you need it in a structured format. You can explicitly ask ChatGPT to format its output using Markdown for readability or JSON for machine readability.</p><h4>Techniques:</h4><ul><li><strong>Markdown Tables:</strong> Ask the AI to 'present the data in a Markdown table with columns for Product, Price, and Rating.' This is great for displaying information clearly.</li><li><strong>JSON Output:</strong> Instruct the AI to 'provide the output as a valid JSON object. The object should have a key named 'items', which is an array of objects, each with 'name' and 'id' properties.' This is essential for developers who need to parse the AI's output programmatically.</li><li><strong>Code Blocks:</strong> Ask for code snippets to be wrapped in Markdown code blocks (```) with the language specified for syntax highlighting.</li></ul>",
+          "task": "Write a prompt that asks for a list of three books and their authors, and explicitly request the output in a JSON array format."
         },
         {
-          "title": "Iterative Prompt Refinement",
-          "content": "<h3>The Art of Conversation</h3><p>Your first prompt is rarely your last. The key to mastery is treating your interaction with ChatGPT as a conversation. Refine your prompts based on the AI's output.</p><h4>A Typical Workflow:</h4><ol><li><strong>Initial Prompt:</strong> Start with your best attempt at a clear prompt.</li><li><strong>Analyze Output:</strong> Did it miss something? Was the tone wrong? Is the format incorrect?</li><li><strong>Refine & Instruct:</strong> Talk to it directly. 'That's a good start, but can you make it more concise?' or 'Please reformat that as a JSON object with the keys 'name' and 'summary'.' or 'Remove all the marketing jargon and explain it simply.'</li><li><strong>Repeat:</strong> Continue this conversational refinement until the output is perfect.</li></ol><p>This iterative process is faster and more effective than trying to craft one single 'perfect' prompt from the start.</p>",
-          "task": "Start a conversation with ChatGPT to plan a weekend trip. Begin with a simple prompt and use at least three follow-up messages to refine the itinerary, budget, and activities."
+          "title": "Module 3: Using Delimiters to Separate Content",
+          "content": "<h3>Avoiding Prompt Injection and Confusion</h3><p>Delimiters are characters or symbols used to clearly separate different parts of your prompt. This is especially important when you include user-provided text, as it prevents the AI from getting confused or being maliciously manipulated (a technique called prompt injection).</p><h4>Common Delimiters:</h4><ul><li>Triple quotes: <code>\"\"\"User text goes here\"\"\"</code></li><li>Triple backticks: <code>```User text goes here```</code></li><li>XML tags: <code><text>User text goes here</text></code></li><li>Hashes: <code>### User text goes here ###</code></li></ul><p><strong>Example:</strong> 'Summarize the text delimited by triple quotes in one sentence. \"\"\"[Insert a long article here]\"\"\"'</p><p>This makes it crystal clear to the model which part is the instruction and which part is the content to be processed.</p>",
+          "task": "Rewrite a prompt that includes a user-submitted book review, using a delimiter of your choice to safely separate the instruction from the review text."
         }
       ],
       "quiz": {
         "title": "Intermediate Prompting Quiz",
         "questions": [
           {
-            "question": "When is Chain-of-Thought (CoT) prompting most useful?",
+            "question": "What is the main benefit of Chain-of-Thought (CoT) prompting?",
             "options": [
-              "For writing short poems",
-              "For solving multi-step reasoning and logic problems",
-              "For generating creative images",
-              "For simple, one-word answers"
+              "It makes the output shorter",
+              "It improves the AI's ability to reason through complex problems",
+              "It only works for creative writing",
+              "It makes the AI respond faster"
             ],
-            "correctAnswer": "For solving multi-step reasoning and logic problems",
-            "explanation": "CoT prompting forces the AI to break down a problem into steps, which significantly improves its accuracy on tasks requiring logic and reasoning."
+            "correctAnswer": "It improves the AI's ability to reason through complex problems",
+            "explanation": "CoT guides the model to break down problems into steps, which enhances its logical reasoning capabilities."
           },
           {
-            "question": "What is the core principle of iterative prompt refinement?",
+            "question": "Which output format is best if you need to programmatically parse the AI's response in a web application?",
             "options": [
-              "Getting the prompt perfect on the first try",
-              "Treating the interaction as a conversation and refining your requests based on output",
-              "Using only one-word prompts",
-              "Deleting the chat and starting over every time"
+              "A bulleted list",
+              "A plain paragraph",
+              "JSON",
+              "A Markdown table"
             ],
-            "correctAnswer": "Treating the interaction as a conversation and refining your requests based on output",
-            "explanation": "Iterative refinement is about having a back-and-forth with the AI, guiding it towards the perfect response through follow-up instructions."
+            "correctAnswer": "JSON",
+            "explanation": "JSON (JavaScript Object Notation) is a standard, machine-readable format perfect for data exchange between applications."
           },
           {
-            "question": "Which of these is the most specific and effective persona?",
+            "question": "What is the primary purpose of using delimiters like ``` or ### in a prompt?",
             "options": [
-              "You are a writer.",
-              "You are a good writer.",
-              "You are a professional writer.",
-              "You are a skeptical, witty tech journalist who writes for Wired magazine."
+              "To highlight important words",
+              "To make the prompt look like code",
+              "To clearly separate instructions from content to be processed",
+              "To add extra length to the prompt"
             ],
-            "correctAnswer": "You are a skeptical, witty tech journalist who writes for Wired magazine.",
-            "explanation": "The best personas are detailed and specific, defining not just a role but also a tone, personality, and context."
+            "correctAnswer": "To clearly separate instructions from content to be processed",
+            "explanation": "Delimiters create a clear boundary, preventing the model from confusing instructions with user input, which is crucial for security and clarity."
           },
           {
-            "question": "If ChatGPT's output is too complex, what is a good follow-up prompt?",
+            "question": "Asking an AI to 'think step by step' is an example of what technique?",
             "options": [
-              "'Do it again.'",
-              "'That's wrong.'",
-              "'Explain this to me like I'm 10 years old.'",
-              "'Why did you do that?'"
+                "Role Prompting",
+                "Few-Shot Prompting",
+                "Chain-of-Thought Prompting",
+                "JSON Formatting"
             ],
-            "correctAnswer": "'Explain this to me like I'm 10 years old.'",
-            "explanation": "Specifying a simpler audience is a highly effective way to tell the AI to reduce complexity and jargon in its explanation."
+            "correctAnswer": "Chain-of-Thought Prompting",
+            "explanation": "This explicit instruction triggers the model's step-by-step reasoning process, which is the core of Chain-of-Thought prompting."
+          },
+           {
+            "question": "Prompt injection is a security risk where a user's input might...",
+            "options": [
+                "Overload the AI's memory",
+                "Be misinterpreted as a new instruction by the AI",
+                "Crash the AI model",
+                "Generate a very short response"
+            ],
+            "correctAnswer": "Be misinterpreted as a new instruction by the AI",
+            "explanation": "Prompt injection happens when user input tricks the model into ignoring the original instruction and following a new, malicious one. Delimiters help prevent this."
           }
         ]
       }
     },
     {
-      "title": "🔥 Advanced: Automation, Tooling, and APIs",
+      "title": "🔥 Advanced Level",
       "lessons": [
         {
-          "title": "Structuring Prompts for JSON and Data Output",
-          "content": "<h3>Getting Reliable, Structured Data</h3><p>One of the most powerful uses of ChatGPT is for data processing and extraction. To get reliable data, you must be extremely specific about your desired format. The best format for this is JSON (JavaScript Object Notation).</p><h4>Best Practices:</h4><ul><li><strong>Specify the Format:</strong> Explicitly state 'The output must be a valid JSON object.'</li><li><strong>Provide a Schema:</strong> Describe the keys and data types. <em>Example: 'Provide a JSON object with the following keys: 'bookTitle' (string), 'author' (string), and 'publishedYear' (integer).'</em></li><li><strong>Use Few-Shot Examples:</strong> Show the AI an example of the exact JSON structure you want.</li><li><strong>Handle Lists:</strong> For multiple items, ask for a 'JSON array of objects', and specify the schema for the objects within the array.</li></ul>",
-          "task": "Paste a paragraph of text (e.g., a short news article) into ChatGPT and ask it to extract key information (like names, locations, and dates) into a valid JSON object."
+          "title": "Module 1: The ReAct Framework (Reason + Act)",
+          "content": "<h3>Creating AI Agents That Use Tools</h3><p>ReAct is an advanced paradigm that combines reasoning and acting. It allows a language model to not only generate text but also to decide to use external tools (like a search engine, a calculator, or an API) to gather more information or perform actions.</p><h4>How it Works:</h4><p>The model operates in a loop:</p><ol><li><strong>Thought:</strong> The model thinks about the problem and decides what to do next.</li><li><strong>Act:</strong> It generates an action, such as <code>search('current weather in London')</code> or <code>calculate(25*8)</code>.</li><li><strong>Observation:</strong> The system executes the action (calls the tool) and returns the result (the observation) to the model.</li><li><strong>Repeat:</strong> The model uses the new observation to form its next thought, continuing until it has enough information to answer the user's original query.</li></ol><p>This framework is the basis for powerful AI agents and assistants.</p>",
+          "task": "Describe a hypothetical 'Thought' and 'Act' sequence for an AI agent tasked with planning a dinner reservation."
         },
         {
-          "title": "Building AI-Powered Tools (No-Code)",
-          "content": "<h3>Creating Your Own GPTs</h3><p>ChatGPT allows you to create your own custom 'GPTs' without writing any code. A GPT is a customized version of ChatGPT that combines your specific instructions, extra knowledge, and skill combinations into a single, shareable tool.</p><h4>Steps to Build a GPT:</h4><ol><li><strong>Go to the GPT Builder:</strong> In ChatGPT, navigate to 'Explore GPTs' and then 'Create a GPT'.</li><li><strong>Configure:</strong> Use the conversational interface to tell the builder what you want your GPT to do. Define its persona, instructions, and conversation starters.</li><li><strong>Add Knowledge:</strong> You can upload files (like PDFs or text documents) to give your GPT a specific knowledge base that goes beyond its general training.</li><li><strong>Add Actions (Advanced):</strong> You can even connect your GPT to external APIs to allow it to fetch live data or interact with other services.</li></ol>",
-          "task": "Create a simple GPT. For example, a 'Recipe Suggester' that takes a list of ingredients and suggests a recipe. Give it a friendly persona and some example conversation starters."
+          "title": "Module 2: Fine-Tuning vs. Prompt Engineering",
+          "content": "<h3>When to Prompt and When to Train</h3><p>While prompt engineering is powerful, sometimes you need to alter the model's core knowledge or style. This is where fine-tuning comes in.</p><h4>Comparing the two:</h4><ul><li><strong>Prompt Engineering:</strong> Fast, easy, and cheap. It's about guiding the *existing* model at inference time. It's the best choice for most tasks.</li><li><strong>Fine-Tuning:</strong> Requires a large dataset of examples, costs money, and takes time. It actually creates a *new, custom version* of the model by adjusting its internal weights. Fine-tuning is necessary when you need the model to learn a very specific, proprietary style, or new knowledge that it wasn't trained on.</li></ul><p><strong>Rule of thumb:</strong> Always start with prompt engineering. Only consider fine-tuning if you've exhausted all prompting techniques and still can't get the desired performance for a critical, high-volume task.</p>",
+          "task": "Imagine you run a legal firm. Would you use prompt engineering or fine-tuning to make an AI assistant draft legal documents in your firm's specific format? Explain why."
         },
         {
-          "title": "Introduction to the OpenAI API",
-          "content": "<h3>Integrating AI into Your Own Applications</h3><p>The true power of AI is unlocked when you can build it into your own websites, apps, and workflows. The OpenAI API (Application Programming Interface) allows you to do this by making calls to the same models that power ChatGPT.</p><h4>Core Concepts:</h4><ul><li><strong>API Keys:</strong> You need a secret API key to authenticate your requests. Keep this key safe!</li><li><strong>Endpoints:</strong> You send requests to specific URLs (endpoints) for different tasks (e.g., text completion, image generation).</li><li><strong>Requests & Responses:</strong> You send a prompt (and other parameters, like the model name) in your request, and the API sends back the AI's response, usually in JSON format.</li><li><strong>Tokens:</strong> You are billed based on 'tokens', which are pieces of words. Both your prompt and the AI's response consume tokens.</li></ul><p>While this requires programming knowledge (e.g., Python or JavaScript), understanding that it's possible is the first step towards building powerful, custom AI applications.</p>",
-          "task": "Explore the OpenAI API documentation (platform.openai.com/docs). Look at the 'API Reference' section to see what parameters can be sent in a request."
+          "title": "Module 3: Building a System of Prompts",
+          "content": "<h3>Creating AI-Powered Workflows</h3><p>For complex tasks, a single prompt is often not enough. An advanced approach is to build a system of prompts, where the output of one prompt becomes the input for the next.</p><h4>Example Workflow: Blog Post Generation</h4><ol><li><strong>Prompt 1 (Ideation):</strong> 'Generate 10 blog post titles about the benefits of remote work for tech companies.'</li><li><strong>Prompt 2 (Outline):</strong> 'Take the following title: \"[Chosen Title from Prompt 1]\". Generate a detailed, 5-point blog post outline for it.'</li><li><strong>Prompt 3 (Drafting):</strong> 'Using the following outline, write a full draft for the blog post. Adopt a professional yet engaging tone.'</li><li><strong>Prompt 4 (Editing):</strong> 'Review the following blog post draft for any grammatical errors or awkward phrasing and provide the corrected version.'</li></ol><p>This modular approach allows for more control, better results, and easier debugging of your AI-powered system.</p>",
+          "task": "Design a simple, two-prompt system for a task like creating a social media post (e.g., Prompt 1 for the caption, Prompt 2 for hashtag suggestions)."
         }
       ],
       "quiz": {
         "title": "Advanced Prompting Quiz",
         "questions": [
           {
-            "question": "What is the most reliable way to get structured data from ChatGPT?",
+            "question": "The ReAct framework allows an AI model to do what?",
             "options": [
-              "Asking it to 'make a list'",
-              "Telling it to 'be organized'",
-              "Requesting the output as a valid JSON object and specifying the schema",
-              "Copying and pasting into a spreadsheet manually"
+              "React emotionally to prompts",
+              "Act without thinking",
+              "Use external tools to gather information or perform actions",
+              "Only generate text responses"
             ],
-            "correctAnswer": "Requesting the output as a valid JSON object and specifying the schema",
-            "explanation": "Explicitly requesting a JSON format with a described schema gives the AI a clear, machine-readable structure to follow, ensuring the most reliable output."
+            "correctAnswer": "Use external tools to gather information or perform actions",
+            "explanation": "ReAct stands for Reason + Act, enabling the model to interact with tools, which is the basis for creating AI agents."
           },
           {
-            "question": "In the context of the OpenAI API, what are 'tokens'?",
+            "question": "When should you choose fine-tuning over prompt engineering?",
             "options": [
-              "Digital coins for buying prompts",
-              "A measure of how long the AI is thinking",
-              "Pieces of words used to calculate API usage and cost",
-              "A type of security password"
+              "For quick, one-off tasks",
+              "When you need to teach the model a highly specific, proprietary style across thousands of examples",
+              "As the very first step in any project",
+              "When you don't have any examples"
             ],
-            "correctAnswer": "Pieces of words used to calculate API usage and cost",
-            "explanation": "The API pricing model is based on the number of tokens in both your input prompt and the model's generated output."
+            "correctAnswer": "When you need to teach the model a highly specific, proprietary style across thousands of examples",
+            "explanation": "Fine-tuning is a deep, expensive process best reserved for when extensive prompting fails to teach a model a very specific, domain-expert style or knowledge."
           },
           {
-            "question": "What is a custom 'GPT' in the ChatGPT interface?",
+            "question": "What is the main advantage of a multi-prompt system?",
             "options": [
-              "A bug in the system",
-              "A different AI model",
-              "A user-created, customized version of ChatGPT with specific instructions and knowledge",
-              "The name of ChatGPT's main server"
+              "It's always faster than a single prompt",
+              "It uses less of the model's context window",
+              "It breaks a complex task into manageable, controllable steps",
+              "It requires no examples"
             ],
-            "correctAnswer": "A user-created, customized version of ChatGPT with specific instructions and knowledge",
-            "explanation": "Custom GPTs allow users to package a specific persona, instructions, and even external data into a shareable, specialized AI tool."
+            "correctAnswer": "It breaks a complex task into manageable, controllable steps",
+            "explanation": "Multi-prompt systems allow you to control each stage of a complex workflow, leading to higher quality and more reliable final outputs."
           },
           {
-            "question": "What is the purpose of an API Key?",
-            "options": [
-              "To unlock new features in ChatGPT",
-              "To authenticate your requests and link usage to your account for billing",
-              "To translate the AI's response",
-              "To make the AI respond faster"
-            ],
-            "correctAnswer": "To authenticate your requests and link usage to your account for billing",
-            "explanation": "The API key is a secret credential that proves you have permission to use the service and ensures your usage is correctly billed."
+              "question": "In the ReAct framework, what is an 'Observation'?",
+              "options": [
+                  "The AI's final answer",
+                  "The AI's internal thought process",
+                  "The result returned after a tool is used",
+                  "The user's initial prompt"
+              ],
+              "correctAnswer": "The result returned after a tool is used",
+              "explanation": "The Observation is the data or result that the external tool provides back to the AI model, which the model then uses for its next 'Thought'."
+          },
+          {
+              "question": "Which statement is TRUE about prompt engineering vs. fine-tuning?",
+              "options": [
+                  "Fine-tuning is always cheaper than prompt engineering",
+                  "Prompt engineering modifies the model's internal weights",
+                  "Prompt engineering is faster and should almost always be tried first",
+                  "Fine-tuning does not require a dataset"
+              ],
+              "correctAnswer": "Prompt engineering is faster and should almost always be tried first",
+              "explanation": "Prompt engineering is the first and most efficient tool for guiding an AI. Fine-tuning is a much more involved process for deep specialization."
           }
         ]
       }
     }
+  ],
+  "finalTest": {
+    "title": "Final Certification Exam",
+    "questions": [
+      {
+        "question": "A prompt that includes 'Act as a professional chef' is using which component?",
+        "options": ["Task", "Role", "Format", "Constraint"],
+        "correctAnswer": "Role"
+      },
+      {
+        "question": "What is Zero-Shot prompting?",
+        "options": ["Providing zero instructions", "Asking a question with no examples", "A prompt that gets zero results", "Providing one example"],
+        "correctAnswer": "Asking a question with no examples"
+      },
+      {
+        "question": "The phrase 'Let's think step by step' is used to trigger which prompting technique?",
+        "options": ["ReAct", "Few-Shot", "Chain-of-Thought", "Role Prompting"],
+        "correctAnswer": "Chain-of-Thought"
+      },
+      {
+        "question": "Why would a developer prefer a JSON output from an AI?",
+        "options": ["It's easier for humans to read", "It's a standard, machine-readable format", "It uses less text", "It's the only format AI can produce"],
+        "correctAnswer": "It's a standard, machine-readable format"
+      },
+      {
+        "question": "Using `\"\"\"` to surround user input in a prompt is a way to implement what?",
+        "options": ["Formatting", "A Role", "Delimiters", "A Constraint"],
+        "correctAnswer": "Delimiters"
+      },
+      {
+        "question": "The 'Act' part of the ReAct framework involves what?",
+        "options": ["The AI's final answer", "The AI deciding to use a tool", "The AI's internal reasoning", "The observation from a tool"],
+        "correctAnswer": "The AI deciding to use a tool"
+      },
+      {
+        "question": "When is fine-tuning the appropriate choice?",
+        "options": ["For all simple tasks", "When you have no data", "When extensive prompting fails for a critical, high-volume task", "Before you try prompt engineering"],
+        "correctAnswer": "When extensive prompting fails for a critical, high-volume task"
+      },
+      {
+        "question": "What is a key benefit of a multi-prompt system?",
+        "options": ["It's simpler than one big prompt", "It allows for more control and easier debugging", "It always uses fewer tokens", "It runs faster"],
+        "correctAnswer": "It allows for more control and easier debugging"
+      },
+      {
+        "question": "'In under 50 words' is an example of which prompt component?",
+        "options": ["Constraint", "Format", "Role", "Context"],
+        "correctAnswer": "Constraint"
+      },
+      {
+        "question": "Providing one example like 'cat -> meow, dog -> ?' is what kind of prompting?",
+        "options": ["Zero-Shot", "One-Shot", "Few-Shot", "Chain-of-Thought"],
+        "correctAnswer": "One-Shot"
+      },
+      {
+        "question": "What is the primary risk that using delimiters helps to prevent?",
+        "options": ["Grammar errors", "Long responses", "Prompt Injection", "Incorrect formatting"],
+        "correctAnswer": "Prompt Injection"
+      },
+      {
+        "question": "Which of these is NOT a core component of a well-structured prompt?",
+        "options": ["Role", "Task", "Context", "Ambiguity"],
+        "correctAnswer": "Ambiguity"
+      },
+      {
+        "question": "In a ReAct system, 'Observation' refers to...",
+        "options": ["The user's initial request", "The data returned from a tool call", "The AI's private thoughts", "The final generated response"],
+        "correctAnswer": "The data returned from a tool call"
+      },
+      {
+        "question": "You should always try prompt engineering before fine-tuning because...",
+        "options": ["It is faster, cheaper, and often sufficient", "It produces a custom model", "It requires a large dataset", "It is more complex"],
+        "correctAnswer": "It is faster, cheaper, and often sufficient"
+      },
+      {
+        "question": "Breaking down a blog post generation into 'Ideation -> Outline -> Drafting' is an example of what?",
+        "options": ["Chain-of-Thought", "A Multi-Prompt System", "Few-Shot Prompting", "Fine-Tuning"],
+        "correctAnswer": "A Multi-Prompt System"
+      }
+    ]
+  },
+  "certificate": {
+    "name": "Certified ChatGPT Prompt Engineer",
+    "outcome": "Demonstrates advanced proficiency in designing, refining, and implementing prompts for complex tasks with AI language models."
+  },
+  "careerPaths": [
+    "AI Prompt Engineer",
+    "AI Content Strategist",
+    "Chatbot Developer"
   ]
 }
