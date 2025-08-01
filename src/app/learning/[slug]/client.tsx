@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -138,10 +139,9 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
             try {
                 const storedStreamName = localStorage.getItem('careerClashStream') || 'Software Development';
                 setStreamName(storedStreamName);
-                // Create a URL-friendly slug from the stream name
+                
                 const streamSlug = storedStreamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
                 
-                // Use the dynamic slug to fetch the correct content file
                 const response = await fetch(`/learning-content/${streamSlug}.json`);
 
                 if (!response.ok) {
@@ -600,7 +600,7 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry, nextLevel }: { res
                         </Link>
                     </Button>
                 ) : (
-                    <Button asChild>
+                     <Button asChild>
                         <Link href="/study">
                             Back to Roadmap
                         </Link>
@@ -614,3 +614,4 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry, nextLevel }: { res
         </Card>
     )
 }
+

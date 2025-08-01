@@ -1,191 +1,444 @@
 
 {
-    "courseTitle": "Canva Design School",
-    "summary": "Master visual content creation with Canva. Go from beginner to a certified visual designer, learning everything from graphic design basics to advanced branding and marketing techniques.",
-    "estimatedTime": "25 Hours",
-    "modules": [
-        {
-            "title": "Module 1: Canva Essentials",
-            "stage": "Beginning",
-            "lessons": [
-                {
-                    "title": "Introduction to Canva's Interface",
-                    "content": "<h3>Welcome to Canva!</h3><p>Canva is a powerful and user-friendly online design tool that makes it easy to create professional-looking graphics without needing extensive design experience. In this first lesson, we'll get familiar with the Canva homepage and the editor interface.</p><h4>The Canva Homepage</h4><p>When you first log in, you'll see the homepage. It's your command center. Here you can:</p><ul><li><strong>Search for templates:</strong> Use the search bar to find templates for anything from Instagram posts to business presentations.</li><li><strong>Start a design:</strong> Click 'Create a design' to start with a blank canvas or choose a specific dimension.</li><li><strong>Access your projects:</strong> All your past designs are saved and accessible from the homepage.</li></ul><h4>The Canva Editor</h4><p>The editor is where the magic happens. It's composed of three main areas:</p><ol><li><strong>The Left Panel:</strong> This is your toolbox. It contains tabs for Templates, Elements (like shapes, icons, photos, and videos), Uploads, Text, and more.</li><li><strong>The Top Bar:</strong> This bar is contextual. It changes based on what element you have selected on your canvas. For example, if you select text, you'll see options for font, size, color, and spacing.</li><li><strong>The Canvas:</strong> This is your design area in the center of the screen. You can add, arrange, and edit all your design elements here.</li></ol>",
-                    "task": "Explore the Canva editor. Click on the 'Elements' tab and add three different shapes to your canvas. Select each shape and observe how the top bar changes."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Interface Basics",
-                "questions": [
-                    {
-                        "question": "Where can you find pre-made layouts for your designs?",
-                        "options": ["The Top Bar", "The Elements Tab", "The Templates Tab", "The Uploads Tab"],
-                        "correctAnswer": "The Templates Tab",
-                        "explanation": "The Templates tab on the left panel contains thousands of professionally designed layouts you can use as a starting point."
-                    },
-                    {
-                        "question": "If you want to change the color of a shape, where do the options appear?",
-                        "options": ["In the Left Panel", "In the Top Bar", "A pop-up window", "In the File menu"],
-                        "correctAnswer": "In the Top Bar",
-                        "explanation": "When you select an element like a shape, the contextual top bar shows its properties, including color, which you can then edit."
-                    },
-                    {
-                        "question": "What is the main design area in the editor called?",
-                        "options": ["The Artboard", "The Workspace", "The Canvas", "The Stage"],
-                        "correctAnswer": "The Canvas",
-                        "explanation": "The central area where you create your design is called the Canvas."
-                    }
-                ]
+  "courseTitle": "Canva Design School",
+  "summary": "Master visual content creation with Canva. Go from beginner to a certified visual designer, learning everything from graphic design basics to advanced branding and marketing techniques.",
+  "estimatedTime": "25 Hours",
+  "modules": [
+    {
+        "title": "Module 1: Canva Essentials",
+        "lessons": [{
+            "title": "Introduction to Canva's Interface",
+            "content": "<h3>Welcome to Canva!</h3><p>Canva is a powerful and user-friendly online design tool that makes it easy to create professional-looking graphics without needing extensive design experience. In this first lesson, we'll get familiar with the Canva homepage and the editor interface.</p><h4>The Canva Homepage</h4><p>When you first log in, you'll see the homepage. It's your command center. Here you can:</p><ul><li><strong>Search for templates:</strong> Use the search bar to find templates for anything from Instagram posts to business presentations.</li><li><strong>Start a design:</strong> Click 'Create a design' to start with a blank canvas or choose a specific dimension.</li><li><strong>Access your projects:</strong> All your past designs are saved and accessible from the homepage.</li></ul><h4>The Canva Editor</h4><p>The editor is where the magic happens. It's composed of three main areas:</p><ol><li><strong>The Left Panel:</strong> This is your toolbox. It contains tabs for Templates, Elements (like shapes, icons, photos, and videos), Uploads, Text, and more.</li><li><strong>The Top Bar:</strong> This bar is contextual. It changes based on what element you have selected on your canvas. For example, if you select text, you'll see options for font, size, color, and spacing.</li><li><strong>The Canvas:</strong> This is your design area in the center of the screen. You can add, arrange, and edit all your design elements here.</li></ol>",
+            "task": "Explore the Canva editor. Click on the 'Elements' tab and add three different shapes to your canvas. Select each shape and observe how the top bar changes."
+        }],
+        "quiz": {
+            "title": "Quiz: Interface Basics",
+            "questions": [{
+                "question": "Where can you find pre-made layouts for your designs?",
+                "options": ["The Top Bar", "The Elements Tab", "The Templates Tab", "The Uploads Tab"],
+                "correctAnswer": "The Templates Tab",
+                "explanation": "The Templates tab on the left panel contains thousands of professionally designed layouts you can use as a starting point."
+            }, {
+                "question": "If you want to change the color of a shape, where do the options appear?",
+                "options": ["In the Left Panel", "In the Top Bar", "A pop-up window", "In the File menu"],
+                "correctAnswer": "In the Top Bar",
+                "explanation": "When you select an element like a shape, the contextual top bar shows its properties, including color, which you can then edit."
+            }, {
+                "question": "What is the main design area in the editor called?",
+                "options": ["The Artboard", "The Workspace", "The Canvas", "The Stage"],
+                "correctAnswer": "The Canvas",
+                "explanation": "The central area where you create your design is called the Canvas."
+            }]
+        }
+    },
+    {
+        "title": "Module 2: Graphic Design Basics in Canva",
+        "lessons": [{
+            "title": "Working with Text and Fonts",
+            "content": "<h3>Mastering Typography</h3><p>Good typography can make or break a design. Canva gives you immense control over text.</p><h4>Adding and Formatting Text</h4><p>Go to the 'Text' tab to add headings, subheadings, or body text. You can also choose from hundreds of pre-designed font combinations.</p><h4>Key Properties in the Top Bar:</h4><ul><li><strong>Font Family:</strong> Choose from a vast library of fonts.</li><li><strong>Font Size:</strong> Adjust the size of your text.</li><li><strong>Color:</strong> Change the text color to match your brand.</li><li><strong>Alignment:</strong> Align text left, right, center, or justified.</li><li><strong>Spacing:</strong> Control the space between letters (letter-spacing) and lines (line-height). This is crucial for readability.</li></ul>",
+            "task": "Create a new design. Add a heading with your name and a subheading with your favorite quote. Experiment with at least three different font combinations from the 'Text' tab."
+        }, {
+            "title": "Using Colors and Shapes Effectively",
+            "content": "<h3>Colors and Shapes</h3><p>Colors evoke emotion, and shapes create structure. Mastering them is key.</p><h4>Color Theory Basics</h4><p>Canva makes color easy. The color picker in the top bar allows you to select any color. It even extracts colors from photos you've used in your design, helping you create a cohesive palette instantly.</p><h4>Working with Shapes</h4><p>Shapes are found in 'Elements'. You can find lines, circles, squares, and more complex illustrations. You can resize, rotate, and change the color of any shape. Use shapes to create backgrounds, highlight text, or build custom icons.</p>",
+            "task": "Create a simple logo for a fictional coffee shop using only shapes and text. Try to create a color palette from a photo of coffee beans using Canva's color picker."
+        }],
+        "quiz": {
+            "title": "Quiz: Design Fundamentals",
+            "questions": [{
+                "question": "What does 'line-height' control?",
+                "options": ["The space between words", "The thickness of a line shape", "The space between lines of text", "The height of the font"],
+                "correctAnswer": "The space between lines of text",
+                "explanation": "Line-height (or line spacing) is crucial for the readability of paragraphs. Too little or too much can make text hard to read."
+            }, {
+                "question": "How can Canva help you create a cohesive color scheme?",
+                "options": ["It provides random color palettes.", "It extracts colors from photos in your design.", "It only allows you to use two colors.", "It requires you to enter hex codes manually."],
+                "correctAnswer": "It extracts colors from photos in your design.",
+                "explanation": "Canva's photo color palette feature is a powerful tool for ensuring your design elements match your images perfectly."
+            }, {
+                "question": "Which tab would you use to find icons and illustrations?",
+                "options": ["Templates", "Uploads", "Text", "Elements"],
+                "correctAnswer": "Elements",
+                "explanation": "The Elements tab is a vast library of graphics, including shapes, lines, icons, photos, videos, and charts."
+            }]
+        }
+    },
+    {
+        "title": "Working with Templates",
+        "lessons": [
+            {
+                "title": "Finding and Customizing Templates",
+                "content": "<h3>Templates: Your Design Shortcut</h3><p>Canva's biggest strength is its massive library of templates. Instead of starting from scratch, you can use a professional design as your foundation.</p><h4>Searching for Templates</h4><p>Use the search bar on the homepage or in the editor's 'Templates' tab. Be specific! Instead of 'birthday card', try 'kids dinosaur birthday card'.</p><h4>Customizing a Template</h4><p>Once you select a template, every element is editable:</p><ul><li><strong>Text:</strong> Click to edit the wording, font, size, and color.</li><li><strong>Images:</strong> Drag and drop your own photos from the 'Uploads' tab to replace the template images.</li><li><strong>Colors:</strong> Select elements and use the color picker to change them. The 'Styles' tab can also apply a new color palette to the entire design in one click.</li></ul>",
+                "task": "Find a template for a 'Grand Opening' flyer for a new bookstore. Change the business name, date, address, and replace the main image with one of your own."
             }
-        },
-        {
-            "title": "Module 2: Graphic Design Basics",
-            "stage": "Beginning",
-            "lessons": [
+        ],
+        "quiz": {
+            "title": "Quiz: Using Templates",
+            "questions": [
                 {
-                    "title": "Working with Text and Fonts",
-                    "content": "<h3>Mastering Typography</h3><p>Good typography can make or break a design. Canva gives you immense control over text.</p><h4>Adding and Formatting Text</h4><p>Go to the 'Text' tab to add headings, subheadings, or body text. You can also choose from hundreds of pre-designed font combinations.</p><h4>Key Properties in the Top Bar:</h4><ul><li><strong>Font Family:</strong> Choose from a vast library of fonts.</li><li><strong>Font Size:</strong> Adjust the size of your text.</li><li><strong>Color:</strong> Change the text color to match your brand.</li><li><strong>Alignment:</strong> Align text left, right, center, or justified.</li><li><strong>Spacing:</strong> Control the space between letters (letter-spacing) and lines (line-height). This is crucial for readability.</li></ul>",
-                    "task": "Create a new design. Add a heading with your name and a subheading with your favorite quote. Experiment with at least three different font combinations from the 'Text' tab."
+                    "question": "What is the fastest way to change all the colors in a template at once?",
+                    "options": ["Select each element one by one", "Use the 'Styles' tab and apply a new color palette", "You cannot change all colors at once", "Upload a new template"],
+                    "correctAnswer": "Use the 'Styles' tab and apply a new color palette",
+                    "explanation": "The 'Styles' tab is designed to quickly apply consistent branding, including color palettes and font sets, across an entire design or page."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Creating a Brand Kit",
+        "lessons": [
+            {
+                "title": "Setting Up Your Brand Kit (Pro)",
+                "content": "<h3>Your Brand's Identity Hub</h3><p>The Brand Kit is a feature (primarily in Canva Pro) that saves your brand's logos, color palettes, and fonts in one place. This ensures consistency across all your designs.</p><h4>What to Include:</h4><ul><li><strong>Logos:</strong> Upload all variations of your logo (e.g., primary, secondary, black and white).</li><li><strong>Color Palettes:</strong> Add your primary, secondary, and accent colors using hex codes.</li><li><strong>Fonts:</strong> Set your brand's heading, subheading, and body fonts. You can even upload custom fonts if you have them.</li></ul><h4>Using the Brand Kit</h4><p>When you're in the editor, your Brand Kit colors and fonts will appear at the top of their respective selection panels, making them easy to access and apply.</p>",
+                "task": "If you have Canva Pro, set up a basic Brand Kit with a placeholder logo, a 3-color palette, and your favorite heading and body fonts."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Branding",
+            "questions": [
+                {
+                    "question": "What is the primary purpose of Canva's Brand Kit?",
+                    "options": ["To store your finished designs", "To provide new templates", "To ensure brand consistency across designs", "To share your work with team members"],
+                    "correctAnswer": "To ensure brand consistency across designs",
+                    "explanation": "The Brand Kit acts as a central hub for your brand's visual assets, making it easy for you or your team to create on-brand content quickly and consistently."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Typography and Layout Mastery",
+        "lessons": [
+            {
+                "title": "Advanced Typography",
+                "content": "<h3>Making Text Talk</h3><p>Let's go beyond basic text. Visual hierarchy is key. This means making the most important information stand out.</p><h4>Creating Hierarchy</h4><ul><li><strong>Size:</strong> Headings should be largest, subheadings smaller, and body text smallest.</li><li><strong>Weight:</strong> Use bold, regular, and light font weights to create contrast.</li><li><strong>Effects:</strong> Use text effects like 'Lift' or 'Shadow' sparingly to add emphasis.</li></ul><h4>Font Pairing</h4><p>Don't use more than 2-3 fonts in a single design. A common practice is to pair a serif font (like Times New Roman) with a sans-serif font (like Arial). Canva's 'Styles' tab offers professionally curated font pairings.</p>",
+                "task": "Create a design with three levels of text hierarchy. Use a quote as the main heading, the author as the subheading, and a short explanation as the body text. Experiment with different font pairings."
+            },
+            {
+                "title": "Principles of Layout",
+                "content": "<h3>Organizing Your Canvas</h3><p>A good layout guides the viewer's eye and makes information easy to digest.</p><h4>Key Principles:</h4><ul><li><strong>Proximity:</strong> Group related items together. For example, an image and its caption should be close to each other.</li><li><strong>Alignment:</strong> Align elements to a common line (left, right, center). This creates a clean, organized look. Use Canva's guides (the purple lines that appear) to help.</li><li><strong>White Space:</strong> Don't cram your design. White space (or negative space) is the empty area around elements. It gives your design room to breathe and improves readability.</li><li><strong>Repetition:</strong> Repeat visual elements like colors, shapes, or fonts throughout your design to create unity and consistency.</li></ul>",
+                "task": "Recreate a simple magazine cover layout. Pay close attention to the alignment of text, the proximity of headlines to images, and the use of white space."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Typography & Layout",
+            "questions": [
+                {
+                    "question": "What is 'visual hierarchy' in design?",
+                    "options": ["Using only one font", "Arranging elements to show their order of importance", "Making all text the same size", "Using a lot of bright colors"],
+                    "correctAnswer": "Arranging elements to show their order of importance",
+                    "explanation": "Visual hierarchy uses size, weight, color, and placement to guide the viewer's eye to the most important information first."
                 },
                 {
-                    "title": "Using Colors and Shapes Effectively",
-                    "content": "<h3>Colors and Shapes</h3><p>Colors evoke emotion, and shapes create structure. Mastering them is key.</p><h4>Color Theory Basics</h4><p>Canva makes color easy. The color picker in the top bar allows you to select any color. It even extracts colors from photos you've used in your design, helping you create a cohesive palette instantly.</p><h4>Working with Shapes</h4><p>Shapes are found in 'Elements'. You can find lines, circles, squares, and more complex illustrations. You can resize, rotate, and change the color of any shape. Use shapes to create backgrounds, highlight text, or build custom icons.</p>",
-                    "task": "Create a simple logo for a fictional coffee shop using only shapes and text. Try to create a color palette from a photo of coffee beans using Canva's color picker."
+                    "question": "The empty area around design elements is called:",
+                    "options": ["The void", "Negative space or white space", "The background", "The margin"],
+                    "correctAnswer": "Negative space or white space",
+                    "explanation": "Effective use of white space is crucial for creating a clean, professional, and uncluttered design. It helps elements stand out."
                 }
-            ],
-            "quiz": {
-                "title": "Quiz: Design Fundamentals",
-                "questions": [
-                    {
-                        "question": "What does 'line-height' control?",
-                        "options": ["The space between words", "The thickness of a line shape", "The space between lines of text", "The height of the font"],
-                        "correctAnswer": "The space between lines of text",
-                        "explanation": "Line-height (or line spacing) is crucial for the readability of paragraphs. Too little or too much can make text hard to read."
-                    },
-                    {
-                        "question": "How can Canva help you create a cohesive color scheme?",
-                        "options": ["It provides random color palettes.", "It extracts colors from photos in your design.", "It only allows you to use two colors.", "It requires you to enter hex codes manually."],
-                        "correctAnswer": "It extracts colors from photos in your design.",
-                        "explanation": "Canva's photo color palette feature is a powerful tool for ensuring your design elements match your images perfectly."
-                    },
-                    {
-                        "question": "Which tab would you use to find icons and illustrations?",
-                        "options": ["Templates", "Uploads", "Text", "Elements"],
-                        "correctAnswer": "Elements",
-                        "explanation": "The Elements tab is a vast library of graphics, including shapes, lines, icons, photos, videos, and charts."
-                    }
-                ]
-            }
-        },
-        {
-            "title": "Module 3: Layout and Composition",
-            "stage": "Beginning",
-            "lessons": [
-                {
-                    "title": "Understanding Layout",
-                    "content": "<h3>Arranging Your Elements</h3><p>A good layout guides the viewer's eye and communicates a message clearly. Key principles include proximity, white space, alignment, contrast, and repetition.</p><h4>Using Grids and Guides</h4><p>Canva provides tools to help you. Under File > View settings, you can show rulers, guides, and margins. Use these to align elements precisely and create balanced compositions. Drag guides from the rulers to create your own custom grid.</p>",
-                    "task": "Create a new design. Enable rulers and guides. Create a two-column layout using guides and place text in one column and an image in the other."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Layout Basics",
-                "questions": [
-                    {
-                        "question": "What is 'white space' in design?",
-                        "options": ["The area you must color white", "The empty space around elements", "A special type of font", "A Canva Pro feature"],
-                        "correctAnswer": "The empty space around elements",
-                        "explanation": "White space, or negative space, is the area between design elements. It's crucial for creating a clean, uncluttered look."
-                    }
-                ]
-            }
-        },
-        {
-            "title": "Module 4: Creating a Brand Kit",
-            "stage": "Intermediate",
-            "lessons": [
-                {
-                    "title": "What is a Brand Kit?",
-                    "content": "<h3>Your Brand's Identity</h3><p>A Brand Kit in Canva is a centralized place to store your brand's logos, colors, and fonts. This ensures consistency across all your designs and saves you a huge amount of time.</p><h4>Setting Up Your Kit</h4><p>From the Canva homepage, find the 'Brand' section. Here you can upload your logos, define your primary and secondary color palettes, and set your brand fonts for headings, subheadings, and body text. (Note: Multiple brand kits is a Canva Pro feature).</p>",
-                    "task": "Create a basic Brand Kit. Choose two primary colors, upload a simple logo (you can create one in Canva first), and select one font for headings and one for body text."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Branding",
-                "questions": [
-                    {
-                        "question": "What is the primary benefit of using a Brand Kit?",
-                        "options": ["It makes your designs colorful", "It gives you access to more templates", "It ensures brand consistency and saves time", "It automatically shares your designs"],
-                        "correctAnswer": "It ensures brand consistency and saves time",
-                        "explanation": "By having your brand assets in one place, you can apply them to any design with a single click, ensuring a consistent look and feel."
-                    }
-                ]
-            }
-        },
-        {
-            "title": "Module 5: Designing Presentations",
-            "stage": "Intermediate",
-            "lessons": [
-                {
-                    "title": "Crafting a Pitch Deck",
-                    "content": "<h3>Beyond Bullet Points</h3><p>Canva is fantastic for creating visually engaging presentations that stand out. Search for 'Presentation' templates to get started.</p><h4>Presentation Features</h4><ul><li><strong>Multi-page design:</strong> Add, duplicate, and reorder pages easily.</li><li><strong>Presenter View:</strong> A Canva Pro feature that lets you see your notes while presenting.</li><li><strong>Charts and Graphs:</strong> Find these in the 'Elements' tab to visualize data effectively.</li><li><strong>Magic Animate:</strong> Apply smooth transitions to all your slides with one click.</li></ul>",
-                    "task": "Create a 3-slide presentation about your favorite hobby. Include a title slide, a slide with an image and text, and a slide with a simple chart (e.g., a pie chart)."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Presentations",
-                "questions": [
-                    {
-                        "question": "What Canva feature helps you apply transitions to your presentation slides?",
-                        "options": ["Brand Kit", "Magic Animate", "Color Picker", "Elements Tab"],
-                        "correctAnswer": "Magic Animate",
-                        "explanation": "Magic Animate intelligently applies animations and transitions across your entire presentation to make it more dynamic."
-                    }
-                ]
-            }
-        },
-        {
-            "title": "Module 6: Canva for Video",
-            "stage": "Advanced",
-            "lessons": [
-                {
-                    "title": "Creating Social Media Videos",
-                    "content": "<h3>Engaging Motion Content</h3><p>Canva's video editor is simple yet powerful, perfect for social media clips like Reels and TikToks.</p><h4>Video Editor Basics</h4><p>The timeline appears at the bottom of the editor when you work on a video template. You can trim clips, split scenes, add text overlays, and choose from a library of royalty-free audio tracks. You can also animate individual elements to create eye-catching effects.</p>",
-                    "task": "Create a 15-second video ad for a product. Use a video template, add a text overlay with a call-to-action, and add a background audio track."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Video Editing",
-                "questions": [
-                    {
-                        "question": "Where do you manage your video clips and timing in the Canva editor?",
-                        "options": ["In the top bar", "In the left panel", "In the timeline at the bottom", "In the 'File' menu"],
-                        "correctAnswer": "In the timeline at the bottom",
-                        "explanation": "The timeline is the key feature for video editing, allowing you to arrange scenes, trim clips, and sync audio."
-                    }
-                ]
-            }
-        },
-        {
-            "title": "Module 7: Mastering Canva Pro",
-            "stage": "Advanced",
-            "lessons": [
-                {
-                    "title": "Unlocking Premium Features",
-                    "content": "<h3>Level Up Your Designs</h3><p>Canva Pro unlocks features that are essential for professional designers and businesses.</p><h4>Key Pro Features</h4><ul><li><strong>Magic Resize:</strong> Instantly resize any design for different platforms (e.g., turn an Instagram post into a Facebook banner).</li><li><strong>Background Remover:</strong> Remove the background from any photo with one click. Incredibly useful for product shots and portraits.</li><li><strong>Content Planner:</strong> Schedule your social media posts directly from Canva to various platforms.</li><li><strong>Vastly expanded library:</strong> Access millions of premium photos, videos, fonts, and elements.</li></ul>",
-                    "task": "Find a photo with a clear subject. Use the 'Background Remover' tool on it. Then, place the subject on a new, colorful background."
-                }
-            ],
-            "quiz": {
-                "title": "Quiz: Canva Pro",
-                "questions": [
-                    {
-                        "question": "Which Canva Pro feature helps you repurpose a design for multiple platforms quickly?",
-                        "options": ["Brand Kit", "Content Planner", "Magic Resize", "Background Remover"],
-                        "correctAnswer": "Magic Resize",
-                        "explanation": "Magic Resize is a huge time-saver, allowing you to adapt a single design to dozens of different sizes and formats in seconds."
-                    }
-                ]
-            }
+            ]
         }
-    ]
+    },
+    {
+        "title": "Designing for Social Media",
+        "lessons": [
+            {
+                "title": "Crafting the Perfect Instagram Post",
+                "content": "<h3>Instagram Gold</h3><p>Instagram is a visual platform. Your graphics need to be thumb-stopping.</p><h4>Best Practices:</h4><ul><li><strong>Correct Dimensions:</strong> Use Canva's templates for Instagram Posts (1080x1080 px) or Stories (1080x1920 px) to ensure quality.</li><li><strong>High-Contrast Text:</strong> Text should be easily readable on a small screen. Ensure it has high contrast with the background.</li><li><strong>Single Focal Point:</strong> Have one clear message or visual. Don't make it too busy.</li><li><strong>Brand Consistency:</strong> Use your Brand Kit to keep your feed looking cohesive.</li></ul>",
+                "task": "Design a three-post Instagram carousel. The first post should be a question, the second should provide three tips related to the question, and the third should be a call-to-action (e.g., 'Link in bio!')."
+            },
+            {
+                "title": "Creating Engaging Facebook and Twitter Graphics",
+                "content": "<h3>Beyond Instagram</h3><p>Different platforms have different best practices.</p><h4>Facebook:</h4><p>Facebook posts can be more informational. Link posts (1200x628 px) are common. Use graphics to summarize the content of the link or to pose a question to encourage clicks.</p><h4>Twitter (X):</h4><p>Twitter is fast-paced. Graphics need to be bold and simple to grab attention in a crowded feed. Infographics and quote graphics perform well. The ideal size is 1600x900 px.</p>",
+                "task": "Create a graphic for a Twitter post that shares a single, powerful statistic. Use a large, bold font and a simple icon to illustrate the data."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Social Media",
+            "questions": [
+                {
+                    "question": "What is the standard dimension for an Instagram Story?",
+                    "options": ["1080x1080 pixels", "1200x628 pixels", "1920x1080 pixels", "1080x1920 pixels"],
+                    "correctAnswer": "1080x1920 pixels",
+                    "explanation": "This is a vertical 9:16 aspect ratio, designed to fill the entire mobile screen."
+                },
+                {
+                    "question": "Which design principle is most important for a cohesive Instagram feed?",
+                    "options": ["Using a different style for every post", "Brand Consistency", "Using only black and white", "Putting as much text as possible"],
+                    "correctAnswer": "Brand Consistency",
+                    "explanation": "A consistent use of colors, fonts, and style helps create a recognizable and professional-looking brand presence on your profile."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Canva Video Basics",
+        "lessons": [
+            {
+                "title": "Creating Simple Video Clips",
+                "content": "<h3>Bringing Designs to Life</h3><p>Canva has a surprisingly powerful video editor, perfect for social media clips, ads, and presentations.</p><h4>The Video Timeline</h4><p>When you create a video design, a timeline appears at the bottom of the editor. Each scene or page is a clip in your timeline.</p><h4>Key Features:</h4><ul><li><strong>Video Library:</strong> Find stock videos in the 'Elements' tab.</li><li><strong>Trimming:</strong> Select a video clip on your timeline and drag the handles to trim its length.</li><li><strong>Transitions:</strong> Between clips on the timeline, an icon will appear. Click it to add transitions like 'Dissolve' or 'Slide'.</li><li><strong>Audio:</strong> Add music or sound effects from the 'Audio' tab.</li></ul>",
+                "task": "Create a 15-second video ad for a fictional product. Use at least three different stock video clips, add a text overlay, and apply a transition between each clip."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Canva Video",
+            "questions": [
+                {
+                    "question": "How do you shorten a video clip in the Canva editor?",
+                    "options": ["By cropping the video element on the canvas", "By dragging the handles on the clip in the timeline", "By using the 'Edit Video' button and entering a new duration", "You cannot trim videos in Canva"],
+                    "correctAnswer": "By dragging the handles on the clip in thetimeline",
+                    "explanation": "The timeline at the bottom of the editor provides intuitive handles on each clip for easy trimming."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Presentations That Impress",
+        "lessons": [
+            {
+                "title": "Building a Professional Presentation",
+                "content": "<h3>Beyond Bullet Points</h3><p>Canva makes it easy to create presentations that are both beautiful and effective.</p><h4>Structure and Templates</h4><p>Start with a presentation template. They often include a variety of slide layouts (e.g., title slide, section header, content slide, final slide) that you can use to structure your talk.</p><h4>Presentation Mode</h4><p>Canva has a built-in 'Present' mode that turns your design into a fullscreen slideshow. It even includes features like:</p><ul><li><strong>Presenter View:</strong> See your notes and a preview of the next slide while your audience sees only the main slide.</li><li><strong>Magic Shortcuts:</strong> Press 'C' for confetti, 'D' for a drumroll, or 'B' to blur the screen to focus attention on you.</li></ul>",
+                "task": "Create a 5-slide presentation about your favorite hobby. Include a title slide, an introduction slide with three key points, two content slides, and a final 'Thank You' slide."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Presentations",
+            "questions": [
+                {
+                    "question": "In Canva's 'Present' mode, what does pressing the 'B' key do?",
+                    "options": ["Go back one slide", "Turn the screen black", "Blur the slide", "Show bubbles"],
+                    "correctAnswer": "Blur the slide",
+                    "explanation": "Blurring the slide is a great trick to temporarily shift the audience's focus from the screen to you, the speaker."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Working with Photos",
+        "lessons": [
+            {
+                "title": "Photo Editing and Effects",
+                "content": "<h3>Enhancing Your Images</h3><p>Canva includes a suite of powerful photo editing tools that can dramatically improve your images directly within the editor.</p><h4>The 'Edit Photo' Panel</h4><p>When you select a photo, the 'Edit Photo' button appears on the top bar. This opens a panel with three main sections:</p><ul><li><strong>Effects:</strong> Here you'll find AI-powered tools like 'BG Remover' (Pro), 'Magic Eraser' to remove unwanted objects, and artistic filters.</li><li><strong>Adjust:</strong> This section contains traditional photo editing sliders for brightness, contrast, saturation, sharpness, and more. You can fine-tune the look and feel of your photo here.</li><li><strong>Filters:</strong> Apply pre-set color grades to your photos for a consistent look, similar to Instagram filters.</li></ul>",
+                "task": "Upload a personal photo. Use the 'Adjust' panel to increase the brightness and saturation. Then, use the 'Magic Eraser' tool to remove a small object from the background."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Photo Editing",
+            "questions": [
+                {
+                    "question": "Which tool would you use to remove an unwanted person from the background of a photo?",
+                    "options": ["The Crop tool", "The Adjust panel", "BG Remover", "Magic Eraser"],
+                    "correctAnswer": "Magic Eraser",
+                    "explanation": "Magic Eraser is designed to intelligently remove objects or blemishes from within a photo, while BG Remover removes the entire background."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Canva Print and Mockups",
+        "lessons": [
+            {
+                "title": "Designing for Print",
+                "content": "<h3>From Digital to Physical</h3><p>Designing for print has different requirements than designing for screens.</p><h4>Key Considerations:</h4><ul><li><strong>Color Mode:</strong> Screens use RGB color, while printers use CMYK. When you download a design as a 'PDF Print', Canva automatically converts the colors to CMYK for better accuracy.</li><li><strong>Resolution:</strong> Print designs need a high resolution (300 DPI) to look sharp. Canva's print templates are already set up for this.</li><li><strong>Bleed:</strong> Bleed is an extra margin of your design that extends beyond the trim edge. This ensures there are no white borders if the printer's cut is slightly off. Canva adds a bleed automatically when you download a PDF for print.</li></ul>",
+                "task": "Find a business card template in Canva. Customize it with your name and details. Download it as a 'PDF Print' and make sure to check the 'Crop marks and bleed' option."
+            },
+            {
+                "title": "Using Smartmockups",
+                "content": "<h3>Showcasing Your Designs</h3><p>Smartmockups is a feature that lets you place your design onto a realistic product image, like a phone screen, a t-shirt, or a book cover.</p><h4>How to Use It:</h4><ol><li>Select your finished design (e.g., an image you created).</li><li>Click 'Edit Photo' in the top bar.</li><li>Go to the 'Apps' section and find 'Mockups'.</li><li>Browse the categories (phones, computers, apparel, etc.) and select a mockup. Canva will automatically place your design onto it.</li></ol>",
+                "task": "Take the Instagram post you designed earlier. Use the Smartmockups feature to show what it would look like on a phone screen."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Print & Mockups",
+            "questions": [
+                {
+                    "question": "What is 'bleed' in print design?",
+                    "options": ["A feature that makes colors run together", "An extra margin to prevent white edges after cutting", "A low-resolution warning", "A type of font"],
+                    "correctAnswer": "An extra margin to prevent white edges after cutting",
+                    "explanation": "Bleed ensures that your design's color or image goes all the way to the edge of the paper, even with slight inaccuracies in the physical trimming process."
+                },
+                {
+                    "question": "What feature would you use to put your logo design onto a coffee mug?",
+                    "options": ["BG Remover", "Smartmockups", "Frames", "Styles"],
+                    "correctAnswer": "Smartmockups",
+                    "explanation": "Smartmockups specializes in placing your flat designs onto 3D product images to create realistic product previews."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Advanced Photo Editing",
+        "lessons": [
+            {
+                "title": "Mastering the Background Remover",
+                "content": "<h3>Isolating Your Subject</h3><p>The Background Remover (BG Remover) is one of Canva's most powerful Pro features. With one click, it intelligently identifies and removes the background from a photo, leaving you with a clean cutout of the subject.</p><h4>Best Practices:</h4><ul><li><strong>Clear Subject:</strong> It works best on photos where the subject is in focus and distinct from the background.</li><li><strong>Refining the Edges:</strong> After removing the background, you can use the 'Erase' and 'Restore' brushes to manually clean up any areas the AI might have missed.</li></ul>",
+                "task": "Find a photo of a person or a product. Use the BG Remover to isolate the subject. Place the resulting cutout on a new, solid-colored background."
+            },
+            {
+                "title": "Using Magic Edit and Magic Grab",
+                "content": "<h3>AI-Powered Photo Manipulation</h3><p>Canva's Magic Studio offers incredible AI tools for photo editing.</p><h4>Magic Edit:</h4><p>Brush over an area of your photo and type a prompt to replace it with something else. For example, brush over a flower in a vase and type 'a rose' to change it.</p><h4>Magic Grab:</h4><p>This tool makes any subject in your photo feel like a movable element. Click 'Magic Grab' on a photo, and Canva will identify the main subject, cut it out from the background, and allow you to resize, reposition, or replace it. The AI will then intelligently fill in the space where the subject used to be.</p>",
+                "task": "Find a photo of a person holding an object. Use Magic Grab to select the person and move them to the other side of the photo. Observe how Canva fills in the background."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Advanced Photo Tools",
+            "questions": [
+                {
+                    "question": "What is the difference between 'BG Remover' and 'Magic Grab'?",
+                    "options": ["They are the same tool", "BG Remover deletes the background, while Magic Grab makes the subject movable and fills the background", "Magic Grab deletes the background, while BG Remover makes the subject movable", "BG Remover is for free users, Magic Grab is for Pro users"],
+                    "correctAnswer": "BG Remover deletes the background, while Magic Grab makes the subject movable and fills the background",
+                    "explanation": "BG Remover gives you a transparent cutout. Magic Grab separates the subject from its original background, heals the background, and lets you move the subject independently within the same photo."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Advanced Video and Animation",
+        "lessons": [
+            {
+                "title": "Animating Elements",
+                "content": "<h3>Adding Motion to Your Designs</h3><p>You can animate any element on your canvas, including text, photos, and graphics. This is perfect for creating eye-catching social media content.</p><h4>How to Animate:</h4><ol><li>Select an element on your canvas.</li><li>Click the 'Animate' button in the top bar.</li><li>Choose an animation style from the left panel, such as 'Rise', 'Pan', or 'Stomp'.</li><li>You can adjust properties like speed, direction, and whether it animates on enter, on exit, or both.</li></ol>",
+                "task": "Create a simple Instagram post with a text headline and an icon. Animate the icon to 'Wipe' in from the left and the text to 'Rise' up from the bottom."
+            },
+            {
+                "title": "Mastering Video Transitions and Timing",
+                "content": "<h3>Polishing Your Video Flow</h3><p>Good transitions and timing separate amateur videos from professional ones.</p><h4>Advanced Transitions:</h4><p>Canva Pro offers advanced transitions like 'Color Wipe' and 'Match & Move'. 'Match & Move' is particularly powerful: it smoothly animates elements from their position in one scene to their position in the next, creating a seamless flow.</p><h4>Controlling Timing:</h4><p>Click on a clip in the timeline to open the timing editor. Here, you can precisely set the duration of each clip down to the millisecond. You can also drag the audio track to sync specific beats or sounds with visual changes on screen.</p>",
+                "task": "Create a 2-scene video. In scene 1, have a logo on the left. In scene 2, have the same logo on the right. Apply the 'Match & Move' transition between them to see the smooth animation."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Video & Animation",
+            "questions": [
+                {
+                    "question": "Which transition smoothly animates an object from its position in one slide to its position in the next?",
+                    "options": ["Dissolve", "Slide", "Match & Move", "Chop"],
+                    "correctAnswer": "Match & Move",
+                    "explanation": "'Match & Move' is Canva's version of the 'Magic Move' transition found in other presentation software, and it's excellent for creating dynamic and seamless animations."
+                },
+                {
+                    "question": "Where do you find the tools to animate a single text element?",
+                    "options": ["In the 'Effects' panel", "By clicking the 'Animate' button in the top bar when the element is selected", "In the 'Video' tab", "In the timeline"],
+                    "correctAnswer": "By clicking the 'Animate' button in the top bar when the element is selected",
+                    "explanation": "Animation controls for individual elements are context-aware and appear in the top bar when you have an element selected."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Canva Apps and Integrations",
+        "lessons": [
+            {
+                "title": "Exploring the Canva App Marketplace",
+                "content": "<h3>Extending Canva's Power</h3><p>Canva integrates with dozens of other apps, bringing their functionality directly into your editor.</p><h4>Finding Apps:</h4><p>On the bottom of the left panel, you'll find the 'Apps' tab. Here you can connect to services like Google Drive, Pexels, YouTube, and more.</p><h4>Popular Integrations:</h4><ul><li><strong>AI Image Generators:</strong> Apps like DALL-E and Imagen by Google let you generate custom AI images from a text prompt right inside Canva.</li><li><strong>QR Code Generator:</strong> Instantly create a QR code for any URL.</li><li><strong>Data Visualization:</strong> Apps like 'Flourish' let you create beautiful, animated charts and graphs.</li></ul>",
+                "task": "Go to the 'Apps' tab and find the QR Code generator. Create a QR code that links to your favorite website and add it to a design."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Canva Apps",
+            "questions": [
+                {
+                    "question": "If you wanted to generate a unique AI image for your design, where would you look?",
+                    "options": ["In the 'Elements' tab", "In the 'Uploads' tab", "In the 'Apps' tab, under AI image generators", "You have to generate it outside of Canva and upload it"],
+                    "correctAnswer": "In the 'Apps' tab, under AI image generators",
+                    "explanation": "Canva's app marketplace integrates directly with leading AI image models, allowing you to create and use AI art without leaving the editor."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Selling Canva Templates",
+        "lessons": [
+            {
+                "title": "Creating and Selling Your Templates",
+                "content": "<h3>Monetizing Your Design Skills</h3><p>One of the best ways to earn money with Canva is by creating and selling your own templates on platforms like Etsy, Gumroad, or your own website.</p><h4>What Makes a Good Template?</h4><ul><li><strong>High Demand:</strong> Research what people are looking for (e.g., wedding invitations, social media packs, ebooks).</li><li><strong>Easy to Edit:</strong> Use placeholder text and frames for images. Keep the design organized and layered logically.</li><li><strong>Clear Instructions:</strong> Include a PDF guide or a video showing customers how to edit the template.</li></ul><h4>Sharing Your Template</h4><p>When your design is complete, click 'Share'. Under 'Template link', click 'Create template link'. This special link will force users to make a copy of your design, so they can't overwrite your original file.</p>",
+                "task": "Create a pack of 5 cohesive Instagram story templates. Share it as a template link."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Selling Templates",
+            "questions": [
+                {
+                    "question": "What is the correct way to share a Canva design so that customers can edit it without altering your original file?",
+                    "options": ["Share a 'View only' link", "Share a 'Comment' link", "Share a 'Template link'", "Invite them to your team"],
+                    "correctAnswer": "Share a 'Template link'",
+                    "explanation": "The 'Template link' is specifically designed for this purpose. It forces the user to create their own editable copy, preserving your master file."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Productivity and Workflow Tips",
+        "lessons": [
+            {
+                "title": "Keyboard Shortcuts",
+                "content": "<h3>Designing at the Speed of Thought</h3><p>Learning keyboard shortcuts can dramatically speed up your workflow.</p><h4>Essential Shortcuts:</h4><ul><li><strong>T:</strong> Add a new text box.</li><li><strong>L:</strong> Add a new line.</li><li><strong>R:</strong> Add a new rectangle.</li><li><strong>C:</strong> Add a new circle.</li><li><strong>Ctrl/Cmd + D:</strong> Duplicate selected element.</li><li><strong>Ctrl/Cmd + G:</strong> Group selected elements.</li><li><strong>Ctrl/Cmd + [:</strong> Send backward.</li><li><strong>Ctrl/Cmd + ]:</strong> Bring forward.</li></ul>",
+                "task": "Create a design using ONLY keyboard shortcuts. Add a rectangle (R), a circle (C), and some text (T). Group them together (Ctrl/Cmd + G) and duplicate the group (Ctrl/Cmd + D)."
+            },
+            {
+                "title": "Organizing Your Projects",
+                "content": "<h3>A Tidy Workspace</h3><p>As you create more designs, keeping them organized is crucial.</p><h4>Using Folders:</h4><p>On the Canva homepage, you can create folders to organize your projects. Create folders for different clients, project types (e.g., 'Social Media', 'Presentations'), or by date.</p><h4>Naming Conventions:</h4><p>Give your designs descriptive names. Instead of 'Untitled Design', use something like '2024-Q4-Marketing-Campaign-Instagram-Post-v2'. This makes searching for old designs much easier.</p>",
+                "task": "Go to your projects on the Canva homepage. Create a new folder called 'My First Projects' and move at least three of the designs you've made during this course into it."
+            }
+        ],
+        "quiz": {
+            "title": "Quiz: Workflow",
+            "questions": [
+                {
+                    "question": "What is the keyboard shortcut to add a rectangle to your canvas?",
+                    "options": ["C", "T", "L", "R"],
+                    "correctAnswer": "R",
+                    "explanation": "Learning the shape shortcuts (R for Rectangle, C for Circle, L for Line) is a huge time-saver for basic design work."
+                },
+                {
+                    "question": "What is the best way to share a design for feedback without allowing the person to edit it?",
+                    "options": ["Template link", "View-only link", "Edit link", "Download as PDF"],
+                    "correctAnswer": "View-only link",
+                    "explanation": "A 'View-only' link allows others to see your design exactly as it is, without giving them any editing capabilities. They can also add comments if you enable that option."
+                }
+            ]
+        }
+    },
+    {
+        "title": "Final Project: Build Your Personal Brand",
+        "lessons": [
+            {
+                "title": "Your Capstone Project",
+                "content": "<h3>Putting It All Together</h3><p>For your final project, you will create a complete personal branding package for yourself or a fictional person. This project will test all the skills you've learned throughout this course.</p><h4>Project Requirements:</h4><ol><li><strong>A Personal Logo:</strong> Design a simple, clean logo using text and shapes.</li><li><strong>A Brand Color Palette & Fonts:</strong> Define a 3-4 color palette and choose a heading and body font.</li><li><strong>A Business Card:</strong> Design a standard business card including your logo and contact information.</li><li><strong>An Instagram Post:</strong> Create a branded Instagram post announcing your new personal brand.</li><li><strong>A LinkedIn Banner:</strong> Design a LinkedIn banner (1584x396 px) that reflects your professional identity.</li></ol><p>Combine all these elements into a single, multi-page Canva design to submit. This project is your chance to showcase your newfound skills and create a valuable asset for your career.</p>",
+                "task": "Complete the Personal Brand final project. Focus on consistency across all the assets. Ensure your colors, fonts, and logo are used cohesively."
+            }
+        ],
+        "quiz": {
+            "title": "Final Certification Exam",
+            "questions": [
+                {
+                    "question": "Which of these is NOT a core principle of layout design?",
+                    "options": ["Proximity", "Alignment", "Randomness", "White Space"],
+                    "correctAnswer": "Randomness",
+                    "explanation": "Good layout design is intentional. Proximity, alignment, contrast, repetition, and white space are core principles that create structure and clarity."
+                },
+                {
+                    "question": "If you want to animate an element smoothly between two slides, which transition should you use?",
+                    "options": ["Slide", "Dissolve", "Match & Move", "Pop"],
+                    "correctAnswer": "Match & Move",
+                    "explanation": "Match & Move is specifically designed to create seamless animations for elements that appear on consecutive slides."
+                },
+                {
+                    "question": "To ensure colors print accurately, you should download your design as a:",
+                    "options": ["JPG", "PNG", "PDF Standard", "PDF Print"],
+                    "correctAnswer": "PDF Print",
+                    "explanation": "The 'PDF Print' option in Canva automatically converts your design to the CMYK color profile, which is optimized for physical printing."
+                },
+                {
+                    "question": "What is the primary function of the 'Magic Grab' tool?",
+                    "options": ["To remove the background of a photo", "To grab colors from a photo for a palette", "To make an object in a photo selectable and movable", "To magically improve photo quality"],
+                    "correctAnswer": "To make an object in a photo selectable and movable",
+                    "explanation": "Magic Grab identifies the main subject, separates it from the background, and allows you to reposition or resize it while intelligently filling in the original space."
+                },
+                {
+                    "question": "What keyboard shortcut quickly adds a text box to your design?",
+                    "options": ["T", "C", "R", "L"],
+                    "correctAnswer": "T",
+                    "explanation": "Pressing 'T' on your keyboard is the fastest way to add a new body text element to your canvas."
+                }
+            ]
+        }
+    }
+  ]
 }
