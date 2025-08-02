@@ -64,7 +64,11 @@ export default function LearningPathClient() {
         try {
             const streamSlug = streamName.toLowerCase().replace(/ & /g, ' ').replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-');
             const response = await fetch(`/roadmaps/${streamSlug}.json`);
-            if (!response.ok) {
+            
+            let data;
+            if (response.ok) {
+                data = await response.json();
+            } else {
                  toast({
                     variant: 'destructive',
                     title: 'Roadmap Generation Required',
@@ -73,27 +77,8 @@ export default function LearningPathClient() {
                 
                 const aiResponse = await generateLearningRoadmap({ streamName });
                 if(!aiResponse || !aiResponse.roadmap) throw new Error('AI Roadmap generation failed');
-                
-                const membership = localStorage.getItem('careerClashMembership');
-                const isPremium = membership && membership !== 'Free' && membership !== 'Basic';
-                
-                const processedRoadmap: Roadmap = aiResponse.roadmap.map((stage: any, stageIndex: number) => ({
-                    ...stage,
-                    status: isPremium || stageIndex === 0 ? 'unlocked' : 'locked',
-                    levels: stage.levels.map((level: any, levelIndex: number) => ({
-                        ...level,
-                        slug: level.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'),
-                        status: isPremium ? 'unlocked' : (stageIndex === 0 && levelIndex === 0) ? 'unlocked' : 'locked',
-                        coins: Math.floor(level.xp / 10),
-                    }))
-                }));
-
-                setRoadmap(processedRoadmap);
-                localStorage.setItem('careerClashStream', streamName);
-                localStorage.setItem('careerClashRoadmap', JSON.stringify(processedRoadmap));
-                return;
+                data = aiResponse;
             }
-            const data = await response.json();
             
             const membership = localStorage.getItem('careerClashMembership');
             const isPremium = membership && membership !== 'Free' && membership !== 'Basic';
