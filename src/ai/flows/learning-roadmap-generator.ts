@@ -47,9 +47,9 @@ const prompt = ai.definePrompt({
 Your task is to generate a detailed, multi-stage learning roadmap for the subject '{{{streamName}}}'.
 
 The roadmap must be divided into exactly three stages, in this order: "Beginning", "Intermediate", and "Advance".
-- The "Beginning" stage should have 80 levels, starting with the most fundamental concepts.
-- The "Intermediate" stage should have 70 levels, building upon the basics.
-- The "Advance" stage should have 100 levels, covering expert-level topics.
+- The "Beginning" stage should have 25 levels, starting with the most fundamental concepts.
+- The "Intermediate" stage should have 50 levels, building upon the basics with more complex topics.
+- The "Advance" stage should have 25 levels, covering expert-level topics and specialization.
 
 For EACH level within EACH stage, you MUST provide:
 1.  A concise, engaging 'title' for the learning module.
