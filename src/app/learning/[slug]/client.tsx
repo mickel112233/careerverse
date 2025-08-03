@@ -306,8 +306,11 @@ export default function LearningFlowClient({ topic, slug }: { topic: string, slu
         }
         
         if (courseData) {
-            const currentLevelData = courseData.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === slug)
-            ?? courseData.modules.find(m => m.title.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-') === topic.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, '-'));
+            // Updated matching logic: be more lenient with matching slugs to titles.
+            const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const currentLevelData = courseData.modules.find(m => 
+                m.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedSlug)
+            );
     
             if (!currentLevelData) {
                 return <MissingContentCard topic={topic} onBack={() => router.push('/study')} />;
@@ -614,4 +617,5 @@ const ResultsView = ({ results, levelXp, levelCoins, onRetry, nextLevel }: { res
         </Card>
     )
 }
+
 
