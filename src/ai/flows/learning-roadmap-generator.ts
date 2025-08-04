@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -49,11 +50,11 @@ const prompt = ai.definePrompt({
       -   The "Intermediate" stage must contain the next 50 levels.
       -   The "Advanced" stage must contain the final 25 levels.
   4.  **Content per Level**: For each of the 100 levels, you must generate:
-      -   `id`: A unique identifier string in the format 'level-N' (e.g., 'level-1', 'level-26', 'level-100').
-      -   `title`: A clear, concise title for the topic covered in that level.
-      -   `description`: A simple, one-sentence summary of the level's content.
-      -   `xp`: Award XP starting from 100 for level 1 and increasing by 5-10 for each subsequent level.
-      -   `coins`: Award coins starting from 10 for level 1 and increasing by 1-2 for each subsequent level.
+      -   \`id\`: A unique identifier string in the format 'level-N' (e.g., 'level-1', 'level-26', 'level-100').
+      -   \`title\`: A clear, concise title for the topic covered in that level.
+      -   \`description\`: A simple, one-sentence summary of the level's content.
+      -   \`xp\`: Award XP starting from 100 for level 1 and increasing by 5-10 for each subsequent level.
+      -   \`coins\`: Award coins starting from 10 for level 1 and increasing by 1-2 for each subsequent level.
   5.  **Progression**: The curriculum must be logical and progressive. Start with absolute fundamentals and build up to complex, expert-level concepts and projects. The final level should be a capstone or mastery review.
   6.  **Output**: Return the entire roadmap as a single JSON object matching the defined output schema. Ensure the structure is an array of stages, with each stage containing its respective levels.
   `,
