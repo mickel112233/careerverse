@@ -223,7 +223,7 @@ export default function RoadmapClient() {
                                     if (isClickable) {
                                         return (
                                             <Link href={`/learning/${level.id}`} key={level.id}>
-                                                <a>{cardContent}</a>
+                                                {cardContent}
                                             </Link>
                                         );
                                     }
