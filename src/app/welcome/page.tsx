@@ -103,7 +103,7 @@ export default function WelcomePage() {
             className: 'bg-primary text-primary-foreground'
         });
 
-        router.push('/dashboard');
+        router.push('/');
     };
 
     return (

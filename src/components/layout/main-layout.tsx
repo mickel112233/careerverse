@@ -12,7 +12,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Button } from "../ui/button";
 
 const menuItems = [
-  { href: "/dashboard", label: "Home", icon: LayoutGrid },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
   { href: "/competition", label: "Battle", icon: Swords },
   { href: "/boss-raid", label: "Bosses", icon: Skull },
   { href: "/quests", label: "Quests", icon: CheckSquare },
@@ -38,7 +38,7 @@ const NavLink = ({ href, label, icon: Icon, pathname, onClick }: { href: string;
 
 const SidebarContent = ({ pathname, onLinkClick }: { pathname: string; onLinkClick?: () => void; }) => (
     <div className="flex flex-col h-full bg-card border-r border-border p-4">
-        <Link href="/dashboard" className="flex items-center gap-2 mb-8 px-4">
+        <Link href="/" className="flex items-center gap-2 mb-8 px-4">
             <Logo className="h-8 w-8 text-primary" />
             <h1 className="text-xl font-bold font-headline text-glow">Career Clash</h1>
         </Link>

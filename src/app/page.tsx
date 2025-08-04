@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Logo from '@/components/icons/logo';
 import { ArrowRight, BookOpen, Crown, Shield, Star, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const StatCard = ({ value, label }: { value: string, label: string }) => (
     <div className="text-center">
@@ -28,6 +29,15 @@ const FeatureTile = ({ icon: Icon, title, description }: { icon: React.ElementTy
 );
 
 export default function Home() {
+    const [isReturningPlayer, setIsReturningPlayer] = useState(false);
+
+    useEffect(() => {
+        const profile = localStorage.getItem('careerClashUserProfile');
+        if (profile) {
+            setIsReturningPlayer(true);
+        }
+    }, []);
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden text-white flex flex-col items-center justify-center p-4 sm:p-6 md:p-8">
       
@@ -50,8 +60,8 @@ export default function Home() {
         <main className="flex flex-col items-center w-full">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }}>
                  <Button asChild size="lg" className="font-bold text-lg px-10 py-7 rounded-full shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 hover:shadow-primary/50 transition-all duration-300 transform hover:scale-105">
-                    <Link href="/welcome">
-                        Begin Your Journey
+                    <Link href={isReturningPlayer ? "/dashboard" : "/welcome"}>
+                        {isReturningPlayer ? 'Enter the Arena' : 'Begin Your Journey'}
                         <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                 </Button>
