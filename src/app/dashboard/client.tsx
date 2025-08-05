@@ -105,8 +105,9 @@ export default function DashboardClient() {
             const streamName = localStorage.getItem('careerClashStream') || '';
             const skillCategory = categoryToSkillMapping[streamName];
             
-            completedLevels = roadmapData.flatMap((stage: any) => stage.levels).filter((level: any) => level.status === 'completed').length;
-            
+            const completedLevelsSet = new Set(JSON.parse(localStorage.getItem('careerClashCompletedLevels') || '[]'));
+            completedLevels = completedLevelsSet.size;
+
             if (skillCategory) {
                 // Each skill has 10 levels, so 1 level is 10 power points
                 newPowerLevels[skillCategory] = Math.min(Math.floor(completedLevels * 10), 100);
@@ -176,7 +177,7 @@ export default function DashboardClient() {
                 <CardContent className="space-y-3">
                     <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Career Pioneer</p>
-                        <Badge variant="outline">{careersMastered} / 10 Levels</Badge>
+                        <Badge variant="outline">{careersMastered} / 100 Levels</Badge>
                     </div>
                      <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
                         <p className="font-semibold">Skill Master</p>
