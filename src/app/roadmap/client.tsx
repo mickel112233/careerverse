@@ -4,18 +4,17 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { generateLearningRoadmap, GenerateLearningRoadmapOutput } from '@/ai/flows/learning-roadmap-generator';
-import { Check, Lock, Star, Code, Palette, Megaphone, BrainCircuit, Bot, Gamepad2, PenSquare, Briefcase, Handshake, Cloud, ClipboardList, Rocket, Tv, Sparkles, ArrowRight } from 'lucide-react';
+import { Check, Lock, Star, Code, Palette, Megaphone, BrainCircuit, Bot, Gamepad2, PenSquare, Briefcase, Handshake, Cloud, ClipboardList, Rocket, Tv, Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 type Roadmap = GenerateLearningRoadmapOutput;
-type RoadmapLevel = Roadmap[0]['levels'][0] & { status: 'completed' | 'unlocked' | 'locked' };
+type RoadmapLevel = Roadmap['levels'][0] & { status: 'completed' | 'unlocked' | 'locked' };
 
 const streams = [
     { name: 'Canva Design', icon: Palette, category: 'creativity' },
@@ -32,17 +31,8 @@ const streams = [
 
 const LoadingSkeleton = () => (
     <div className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-            <Card key={i}>
-                <CardHeader>
-                    <Skeleton className="h-8 w-1/3" />
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    {[...Array(3)].map((_, j) => (
-                        <Skeleton key={j} className="h-10 w-full" />
-                    ))}
-                </CardContent>
-            </Card>
+        {[...Array(5)].map((_, i) => (
+             <Skeleton key={i} className="h-16 w-full" />
         ))}
     </div>
 );
@@ -63,7 +53,18 @@ export default function RoadmapClient() {
         if (stream) {
             setSelectedStream(stream);
             if (storedRoadmap) {
-                setRoadmap(JSON.parse(storedRoadmap));
+                try {
+                    const parsedRoadmap = JSON.parse(storedRoadmap);
+                    // Check if the stored roadmap matches the selected stream
+                    if (parsedRoadmap.streamName === stream) {
+                        setRoadmap(parsedRoadmap);
+                    } else {
+                        // Mismatch, so fetch a new one
+                        fetchRoadmap(stream);
+                    }
+                } catch {
+                     fetchRoadmap(stream); //
+                }
             } else {
                 fetchRoadmap(stream);
             }
@@ -87,6 +88,8 @@ export default function RoadmapClient() {
                 title: "Failed to generate roadmap",
                 description: "The AI failed to create a learning path. Please try again.",
             });
+            setSelectedStream(null);
+            localStorage.removeItem('careerClashStream');
         } finally {
             setIsGenerating(false);
         }
@@ -95,36 +98,33 @@ export default function RoadmapClient() {
     const handleStreamSelect = (streamName: string) => {
         setSelectedStream(streamName);
         localStorage.setItem('careerClashStream', streamName);
-        const storedRoadmap = localStorage.getItem('careerClashRoadmap');
-        const roadmapStream = storedRoadmap ? JSON.parse(storedRoadmap).streamName : null;
-
-        if (roadmapStream !== streamName) {
-            setRoadmap(null);
-            localStorage.removeItem('careerClashRoadmap');
-            localStorage.removeItem('careerClashCompletedLevels');
-            setCompletedLevels(new Set());
-            fetchRoadmap(streamName);
-        }
+        
+        // Reset progress when changing streams
+        setRoadmap(null);
+        localStorage.removeItem('careerClashRoadmap');
+        localStorage.removeItem('careerClashCompletedLevels');
+        setCompletedLevels(new Set());
+        fetchRoadmap(streamName);
     };
 
-    const enhancedRoadmap = useMemo(() => {
-        if (!roadmap) return null;
+    const enhancedLevels = useMemo(() => {
+        if (!roadmap) return [];
         let previousLevelCompleted = true;
 
-        return roadmap.map(stage => ({
-            ...stage,
-            levels: stage.levels.map(level => {
-                const isCompleted = completedLevels.has(level.id);
-                let status: RoadmapLevel['status'] = 'locked';
-                if (isCompleted) {
-                    status = 'completed';
-                } else if (previousLevelCompleted) {
-                    status = 'unlocked';
-                    previousLevelCompleted = false; // Next one will be locked unless this one gets completed
-                }
-                return { ...level, status };
-            })
-        }));
+        return roadmap.levels.map(level => {
+            const isCompleted = completedLevels.has(level.id);
+            let status: RoadmapLevel['status'] = 'locked';
+            if (isCompleted) {
+                status = 'completed';
+            } else if (previousLevelCompleted) {
+                status = 'unlocked';
+            }
+            // After finding the first unlocked level, all subsequent non-completed levels are locked
+            if (status === 'unlocked' && !isCompleted) {
+                previousLevelCompleted = false;
+            }
+            return { ...level, status };
+        });
     }, [roadmap, completedLevels]);
 
     if (isLoading) {
@@ -158,7 +158,7 @@ export default function RoadmapClient() {
         );
     }
     
-    if (isGenerating || !enhancedRoadmap) {
+    if (isGenerating || !roadmap) {
          return (
             <div className="flex flex-col items-center justify-center text-center p-8 border rounded-lg bg-card/50">
                 <motion.div
@@ -174,66 +174,64 @@ export default function RoadmapClient() {
     }
 
     return (
-        <Accordion type="multiple" defaultValue={['Beginning']} className="w-full space-y-4">
-            {enhancedRoadmap.map((stage, stageIndex) => (
-                <AccordionItem key={stageIndex} value={stage.title} className="bg-card/50 border rounded-lg px-4 overflow-hidden">
-                    <AccordionTrigger className="hover:no-underline py-4">
-                        <div className="flex items-center gap-4">
-                            <Star className="h-8 w-8 text-yellow-400 bg-yellow-400/10 p-1.5 rounded-md"/>
-                            <div>
-                                <h3 className="text-xl font-bold font-headline text-left">{stage.title}</h3>
-                                <p className="text-sm text-muted-foreground text-left">{stage.levels.length} Levels</p>
-                            </div>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-2 pb-4">
-                        <div className="w-full space-y-4" data-orientation="vertical">
-                            <AnimatePresence>
-                                {stage.levels.map((level, levelIndex) => {
-                                    const Icon = level.status === 'completed' ? Check : level.status === 'unlocked' ? ArrowRight : Lock;
-                                    const isClickable = level.status !== 'locked';
-                                    const cardContent = (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.3, delay: levelIndex * 0.02 }}
-                                            className={cn("flex items-center gap-4 p-3 rounded-md transition-colors",
-                                                isClickable && "hover:bg-muted/50",
-                                                !isClickable && "cursor-not-allowed opacity-60"
-                                            )}
-                                        >
-                                            <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-                                                level.status === 'completed' ? 'bg-green-500 text-white' :
-                                                level.status === 'unlocked' ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                                            )}>
-                                                <Icon className="h-5 w-5" />
-                                            </div>
-                                            <div className="flex-grow">
-                                                <p className="font-semibold">{level.title}</p>
-                                                <p className="text-xs text-muted-foreground">{level.description}</p>
-                                            </div>
-                                            <div className="flex items-center gap-4 text-sm font-semibold">
-                                                <Badge variant="secondary">{level.xp} XP</Badge>
-                                                <Badge variant="secondary">{level.coins} Coins</Badge>
-                                            </div>
-                                        </motion.div>
-                                    );
+        <Card>
+            <CardHeader>
+                <div className="flex justify-between items-center">
+                    <div>
+                        <CardTitle className="font-headline text-2xl">{selectedStream} Roadmap</CardTitle>
+                        <CardDescription>Your 100-level path to mastering {selectedStream}.</CardDescription>
+                    </div>
+                    <Button variant="outline" onClick={() => setSelectedStream(null)}>
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Change Path
+                    </Button>
+                </div>
+            </CardHeader>
+            <CardContent>
+                 <div className="w-full space-y-2">
+                    <AnimatePresence>
+                        {enhancedLevels.map((level, levelIndex) => {
+                            const Icon = level.status === 'completed' ? Check : level.status === 'unlocked' ? ArrowRight : Lock;
+                            const isClickable = level.status !== 'locked';
+                            const cardContent = (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.3, delay: levelIndex * 0.02 }}
+                                    className={cn("flex items-center gap-4 p-3 rounded-md transition-colors",
+                                        isClickable && "hover:bg-muted/50",
+                                        !isClickable && "cursor-not-allowed opacity-60"
+                                    )}
+                                >
+                                    <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0",
+                                        level.status === 'completed' ? 'bg-green-500 text-white' :
+                                        level.status === 'unlocked' ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                                    )}>
+                                        <Icon className="h-5 w-5" />
+                                    </div>
+                                    <div className="flex-grow">
+                                        <p className="font-semibold">{level.title}</p>
+                                        <p className="text-xs text-muted-foreground">{level.description}</p>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-sm font-semibold shrink-0">
+                                        <Badge variant="secondary">{level.xp} XP</Badge>
+                                        <Badge variant="secondary">{level.coins} Coins</Badge>
+                                    </div>
+                                </motion.div>
+                            );
 
-                                    if (isClickable) {
-                                        return (
-                                            <Link href={`/learning/${level.id}`} key={level.id}>
-                                                {cardContent}
-                                            </Link>
-                                        );
-                                    }
-                                    return <div key={level.id}>{cardContent}</div>;
-                                })}
-                            </AnimatePresence>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-            ))}
-        </Accordion>
+                            if (isClickable) {
+                                return (
+                                    <Link href={`/learning/${level.id}`} key={level.id}>
+                                        {cardContent}
+                                    </Link>
+                                );
+                            }
+                            return <div key={level.id}>{cardContent}</div>;
+                        })}
+                    </AnimatePresence>
+                </div>
+            </CardContent>
+        </Card>
     );
 }
