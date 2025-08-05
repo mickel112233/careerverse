@@ -8,26 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { generateLearningRoadmap, GenerateLearningRoadmapOutput } from '@/ai/flows/learning-roadmap-generator';
-import { Check, Lock, Star, Code, Palette, Megaphone, BrainCircuit, Bot, Gamepad2, PenSquare, Briefcase, Handshake, Cloud, ClipboardList, Rocket, Tv, Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
+import { allStreams, getRoadmapByStream, Roadmap, RoadmapLevel as BaseRoadmapLevel } from '@/lib/roadmap-data';
+import { Check, Lock, ArrowRight, ArrowLeft, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-type Roadmap = GenerateLearningRoadmapOutput;
-type RoadmapLevel = Roadmap['levels'][0] & { status: 'completed' | 'unlocked' | 'locked' };
-
-const streams = [
-    { name: 'Canva Design', icon: Palette, category: 'creativity' },
-    { name: 'ChatGPT Prompt Engineering', icon: Bot, category: 'technical' },
-    { name: 'Social Media Management', icon: Megaphone, category: 'social' },
-    { name: 'Reels & Shorts Video Editing', icon: Tv, category: 'creativity' },
-    { name: 'Basic SEO', icon: BrainCircuit, category: 'technical' },
-    { name: 'Affiliate Marketing', icon: Handshake, category: 'social' },
-    { name: 'Copywriting', icon: PenSquare, category: 'creativity' },
-    { name: 'Resume & LinkedIn Optimization', icon: Briefcase, category: 'social' },
-    { name: 'Digital Product Creation', icon: Sparkles, category: 'leadership' },
-    { name: 'AI Literacy', icon: Rocket, category: 'logic' }
-];
+type RoadmapLevel = BaseRoadmapLevel & { status: 'completed' | 'unlocked' | 'locked' };
 
 const LoadingSkeleton = () => (
     <div className="space-y-4">
@@ -41,70 +27,47 @@ export default function RoadmapClient() {
     const [selectedStream, setSelectedStream] = useState<string | null>(null);
     const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isGenerating, setIsGenerating] = useState(false);
     const [completedLevels, setCompletedLevels] = useState<Set<string>>(new Set());
     const { toast } = useToast();
 
     useEffect(() => {
         const stream = localStorage.getItem('careerClashStream');
-        const storedRoadmap = localStorage.getItem('careerClashRoadmap');
-        const storedCompleted = localStorage.getItem('careerClashCompletedLevels');
-        
         if (stream) {
             setSelectedStream(stream);
-            if (storedRoadmap) {
-                try {
-                    const parsedRoadmap = JSON.parse(storedRoadmap);
-                    // Check if the stored roadmap matches the selected stream
-                    if (parsedRoadmap.streamName === stream) {
-                        setRoadmap(parsedRoadmap);
-                    } else {
-                        // Mismatch, so fetch a new one
-                        fetchRoadmap(stream);
-                    }
-                } catch {
-                     fetchRoadmap(stream); //
-                }
-            } else {
-                fetchRoadmap(stream);
-            }
+            const staticRoadmap = getRoadmapByStream(stream);
+            setRoadmap(staticRoadmap);
         }
+
+        const storedCompleted = localStorage.getItem('careerClashCompletedLevels');
         if (storedCompleted) {
             setCompletedLevels(new Set(JSON.parse(storedCompleted)));
         }
+
         setIsLoading(false);
     }, []);
 
-    const fetchRoadmap = async (stream: string) => {
-        setIsGenerating(true);
-        try {
-            const generatedRoadmap = await generateLearningRoadmap({ streamName: stream });
-            setRoadmap(generatedRoadmap);
-            localStorage.setItem('careerClashRoadmap', JSON.stringify(generatedRoadmap));
-        } catch (error) {
-            console.error("Failed to generate roadmap:", error);
-            toast({
-                variant: "destructive",
-                title: "Failed to generate roadmap",
-                description: "The AI failed to create a learning path. Please try again.",
-            });
-            setSelectedStream(null);
-            localStorage.removeItem('careerClashStream');
-        } finally {
-            setIsGenerating(false);
-        }
-    };
-    
     const handleStreamSelect = (streamName: string) => {
-        setSelectedStream(streamName);
-        localStorage.setItem('careerClashStream', streamName);
-        
-        // Reset progress when changing streams
-        setRoadmap(null);
-        localStorage.removeItem('careerClashRoadmap');
-        localStorage.removeItem('careerClashCompletedLevels');
-        setCompletedLevels(new Set());
-        fetchRoadmap(streamName);
+        const newRoadmap = getRoadmapByStream(streamName);
+        if (newRoadmap) {
+            setSelectedStream(streamName);
+            setRoadmap(newRoadmap);
+            localStorage.setItem('careerClashStream', streamName);
+
+            // Reset progress when changing streams
+            localStorage.removeItem('careerClashCompletedLevels');
+            setCompletedLevels(new Set());
+            
+            toast({
+                title: `Path Selected: ${streamName}`,
+                description: 'Your learning journey has begun!',
+            });
+        } else {
+            toast({
+                variant: 'destructive',
+                title: 'Roadmap Not Available',
+                description: `The learning path for "${streamName}" is not yet available.`,
+            });
+        }
     };
 
     const enhancedLevels = useMemo(() => {
@@ -131,7 +94,7 @@ export default function RoadmapClient() {
         return <LoadingSkeleton />;
     }
 
-    if (!selectedStream) {
+    if (!selectedStream || !roadmap) {
         return (
             <Card>
                 <CardHeader>
@@ -139,7 +102,7 @@ export default function RoadmapClient() {
                     <CardDescription>Select a skill to begin your learning journey. This will become your primary focus.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {streams.map((stream) => {
+                    {allStreams.map((stream) => {
                         const Icon = stream.icon;
                         return (
                             <motion.button
@@ -157,21 +120,6 @@ export default function RoadmapClient() {
             </Card>
         );
     }
-    
-    if (isGenerating || !roadmap) {
-         return (
-            <div className="flex flex-col items-center justify-center text-center p-8 border rounded-lg bg-card/50">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                >
-                    <Bot className="h-16 w-16 text-primary mb-4" />
-                </motion.div>
-                <h2 className="text-2xl font-bold font-headline">Generating Your Learning Path...</h2>
-                <p className="text-muted-foreground mt-2">Our AI is crafting a personalized 100-level roadmap for <span className="text-primary font-semibold">{selectedStream}</span>. This might take a moment.</p>
-            </div>
-        );
-    }
 
     return (
         <Card>
@@ -181,7 +129,11 @@ export default function RoadmapClient() {
                         <CardTitle className="font-headline text-2xl">{selectedStream} Roadmap</CardTitle>
                         <CardDescription>Your 100-level path to mastering {selectedStream}.</CardDescription>
                     </div>
-                    <Button variant="outline" onClick={() => setSelectedStream(null)}>
+                     <Button variant="outline" onClick={() => {
+                        setSelectedStream(null);
+                        setRoadmap(null);
+                        localStorage.removeItem('careerClashStream');
+                     }}>
                         <ArrowLeft className="mr-2 h-4 w-4" /> Change Path
                     </Button>
                 </div>
