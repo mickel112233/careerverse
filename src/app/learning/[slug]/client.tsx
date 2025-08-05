@@ -140,97 +140,95 @@ export default function LearningClient({ slug }: { slug: string }) {
                 Back to Roadmap
             </Button>
             
-            <AnimatePresence mode="wait">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
                 {view === 'lesson' && (
-                    <motion.div key="lesson" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="font-headline text-3xl">{levelData.title}</CardTitle>
-                                <CardDescription>{levelData.description}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: levelData.content || '<p>Lesson content coming soon!</p>' }} />
-                            </CardContent>
-                            <CardFooter>
-                                {isCompleted ? (
-                                    <Button disabled className="w-full"><Check className="mr-2 h-4 w-4" /> Already Completed</Button>
-                                ) : (
-                                    <Button onClick={() => setView('quiz')} className="w-full">Start Quiz</Button>
-                                )}
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="font-headline text-3xl">{levelData.title}</CardTitle>
+                            <CardDescription>{levelData.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: levelData.content || '<p>Lesson content coming soon!</p>' }} />
+                        </CardContent>
+                        <CardFooter>
+                            {isCompleted ? (
+                                <Button disabled className="w-full"><Check className="mr-2 h-4 w-4" /> Already Completed</Button>
+                            ) : (
+                                <Button onClick={() => setView('quiz')} className="w-full">Start Quiz</Button>
+                            )}
+                        </CardFooter>
+                    </Card>
                 )}
 
                 {view === 'quiz' && (
-                    <motion.div key="quiz" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}>
-                        <Card className="max-w-2xl mx-auto">
-                            <CardHeader>
-                                <CardTitle className="font-headline text-center">Quiz: {levelData.title}</CardTitle>
-                                <CardDescription className="text-center">Question {currentQuestionIndex + 1} of {mockQuiz.length}</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <p className="text-lg font-semibold text-center">{mockQuiz[currentQuestionIndex].question}</p>
-                                <div className="grid grid-cols-1 gap-3">
-                                    {mockQuiz[currentQuestionIndex].options.map((option, index) => {
-                                        const isSelected = selectedAnswer === option;
-                                        const isCorrect = mockQuiz[currentQuestionIndex].answer === option;
-                                        return (
-                                            <Button
-                                                key={index}
-                                                variant="outline"
-                                                size="lg"
-                                                className={cn("h-auto py-3 justify-center text-center",
-                                                    selectedAnswer && isCorrect && isSelected && "bg-green-500/20 border-green-500",
-                                                    selectedAnswer && !isCorrect && isSelected && "bg-destructive/20 border-destructive"
-                                                )}
-                                                onClick={() => handleAnswer(option)}
-                                                disabled={!!selectedAnswer}
-                                            >
-                                                {option}
-                                            </Button>
-                                        )
-                                    })}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
+                    <Card className="max-w-2xl mx-auto">
+                        <CardHeader>
+                            <CardTitle className="font-headline text-center">Quiz: {levelData.title}</CardTitle>
+                            <CardDescription className="text-center">Question {currentQuestionIndex + 1} of {mockQuiz.length}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <p className="text-lg font-semibold text-center">{mockQuiz[currentQuestionIndex].question}</p>
+                            <div className="grid grid-cols-1 gap-3">
+                                {mockQuiz[currentQuestionIndex].options.map((option, index) => {
+                                    const isSelected = selectedAnswer === option;
+                                    const isCorrect = mockQuiz[currentQuestionIndex].answer === option;
+                                    return (
+                                        <Button
+                                            key={index}
+                                            variant="outline"
+                                            size="lg"
+                                            className={cn("h-auto py-3 justify-center text-center",
+                                                selectedAnswer && isCorrect && isSelected && "bg-green-500/20 border-green-500",
+                                                selectedAnswer && !isCorrect && isSelected && "bg-destructive/20 border-destructive"
+                                            )}
+                                            onClick={() => handleAnswer(option)}
+                                            disabled={!!selectedAnswer}
+                                        >
+                                            {option}
+                                        </Button>
+                                    )
+                                })}
+                            </div>
+                        </CardContent>
+                    </Card>
                 )}
 
                 {view === 'results' && (
-                    <motion.div key="results" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                        <Card className="text-center max-w-xl mx-auto">
-                            <CardHeader>
-                                <Award className={cn("h-16 w-16 mx-auto", passed ? "text-yellow-400" : "text-muted-foreground")} />
-                                <CardTitle className="font-headline text-4xl">{passed ? "Level Complete!" : "Try Again"}</CardTitle>
-                                <CardDescription>You scored {score} out of {mockQuiz.length} ({scorePercentage.toFixed(0)}%)</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                {passed ? (
-                                    <div className="space-y-2">
-                                        <p>Congratulations! You have mastered the material for this level.</p>
-                                        <p className="font-bold">You earned {levelData.xp} XP and {levelData.coins} Coins!</p>
-                                    </div>
-                                ) : (
-                                    <p>You need to score at least 60% to pass. Review the lesson and give it another shot!</p>
-                                )}
-                            </CardContent>
-                            <CardFooter className="justify-center">
-                                {passed ? (
-                                    <Button onClick={handleCompleteLevel}>Claim Rewards & Continue</Button>
-                                ) : (
-                                    <Button onClick={() => {
-                                        setView('lesson');
-                                        setCurrentQuestionIndex(0);
-                                        setScore(0);
-                                        setSelectedAnswer(null);
-                                    }}>Review Lesson</Button>
-                                )}
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
+                    <Card className="text-center max-w-xl mx-auto">
+                        <CardHeader>
+                            <Award className={cn("h-16 w-16 mx-auto", passed ? "text-yellow-400" : "text-muted-foreground")} />
+                            <CardTitle className="font-headline text-4xl">{passed ? "Level Complete!" : "Try Again"}</CardTitle>
+                            <CardDescription>You scored {score} out of {mockQuiz.length} ({scorePercentage.toFixed(0)}%)</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            {passed ? (
+                                <div className="space-y-2">
+                                    <p>Congratulations! You have mastered the material for this level.</p>
+                                    <p className="font-bold">You earned {levelData.xp} XP and {levelData.coins} Coins!</p>
+                                </div>
+                            ) : (
+                                <p>You need to score at least 60% to pass. Review the lesson and give it another shot!</p>
+                            )}
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                            {passed ? (
+                                <Button onClick={handleCompleteLevel}>Claim Rewards & Continue</Button>
+                            ) : (
+                                <Button onClick={() => {
+                                    setView('lesson');
+                                    setCurrentQuestionIndex(0);
+                                    setScore(0);
+                                    setSelectedAnswer(null);
+                                }}>Review Lesson</Button>
+                            )}
+                        </CardFooter>
+                    </Card>
                 )}
-            </AnimatePresence>
+            </motion.div>
         </div>
     );
 }
