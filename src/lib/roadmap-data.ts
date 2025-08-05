@@ -125,11 +125,479 @@ const canvaDesignRoadmap: Roadmap = {
     ],
 };
 
+const reelsEditingRoadmap: Roadmap = {
+    streamName: 'Reels & Shorts Video Editing',
+    levels: [
+        // Level 1
+        {
+            id: 'reels-level-1',
+            title: 'What Are Reels, Anyway? (And Why Should You Care?)',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 100,
+            coins: 10,
+            content: `<h3>What Are Reels, Anyway? (And Why Should You Care?)</h3><p>This chapter focuses on the topic: What Are Reels, Anyway? (And Why Should You Care?). We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 2
+        {
+            id: 'reels-level-2',
+            title: 'The Psychology of Short-Form Video: Why Reels Work',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 107,
+            coins: 11,
+            content: `<h3>The Psychology of Short-Form Video: Why Reels Work</h3><p>This chapter focuses on the topic: The Psychology of Short-Form Video: Why Reels Work. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 3
+        {
+            id: 'reels-level-3',
+            title: 'Getting to Know the Reels Platforms',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 114,
+            coins: 12,
+            content: `<h3>Getting to Know the Reels Platforms</h3><p>This chapter focuses on the topic: Getting to Know the Reels Platforms. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 4
+        {
+            id: 'reels-level-4',
+            title: 'Shooting Great Footage with a Phone',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 121,
+            coins: 13,
+            content: `<h3>Shooting Great Footage with a Phone</h3><p>This chapter focuses on the topic: Shooting Great Footage with a Phone. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 5
+        {
+            id: 'reels-level-5',
+            title: 'Lighting 101: How Not to Look Like a Potato',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 128,
+            coins: 14,
+            content: `<h3>Lighting 101: How Not to Look Like a Potato</h3><p>This chapter focuses on the topic: Lighting 101: How Not to Look Like a Potato. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 6
+        {
+            id: 'reels-level-6',
+            title: 'Framing & Composition: Don’t Crop Your Forehead',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 135,
+            coins: 15,
+            content: `<h3>Framing & Composition: Don’t Crop Your Forehead</h3><p>This chapter focuses on the topic: Framing & Composition: Don’t Crop Your Forehead. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 7
+        {
+            id: 'reels-level-7',
+            title: 'Audio Basics: Mic Me, Baby One More Time',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 142,
+            coins: 16,
+            content: `<h3>Audio Basics: Mic Me, Baby One More Time</h3><p>This chapter focuses on the topic: Audio Basics: Mic Me, Baby One More Time. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 8
+        {
+            id: 'reels-level-8',
+            title: 'Editing Apps 101: CapCut, InShot, VN, and More',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 149,
+            coins: 17,
+            content: `<h3>Editing Apps 101: CapCut, InShot, VN, and More</h3><p>This chapter focuses on the topic: Editing Apps 101: CapCut, InShot, VN, and More. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 9
+        {
+            id: 'reels-level-9',
+            title: 'Intro to Timelines: Chopping It Up',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 156,
+            coins: 18,
+            content: `<h3>Intro to Timelines: Chopping It Up</h3><p>This chapter focuses on the topic: Intro to Timelines: Chopping It Up. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 10
+        {
+            id: 'reels-level-10',
+            title: 'Adding Music & Syncing to the Beat',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 163,
+            coins: 19,
+            content: `<h3>Adding Music & Syncing to the Beat</h3><p>This chapter focuses on the topic: Adding Music & Syncing to the Beat. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 11
+        {
+            id: 'reels-level-11',
+            title: 'Text, Captions & Subtitles That Don’t Suck',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 170,
+            coins: 20,
+            content: `<h3>Text, Captions & Subtitles That Don’t Suck</h3><p>This chapter focuses on the topic: Text, Captions & Subtitles That Don’t Suck. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 12
+        {
+            id: 'reels-level-12',
+            title: 'Stickers, Emojis & Graphics – Less Cringe, More Cool',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 177,
+            coins: 21,
+            content: `<h3>Stickers, Emojis & Graphics – Less Cringe, More Cool</h3><p>This chapter focuses on the topic: Stickers, Emojis & Graphics – Less Cringe, More Cool. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 13
+        {
+            id: 'reels-level-13',
+            title: 'Export Settings: What the Heck is 1080p?',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 184,
+            coins: 22,
+            content: `<h3>Export Settings: What the Heck is 1080p?</h3><p>This chapter focuses on the topic: Export Settings: What the Heck is 1080p?. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 14
+        {
+            id: 'reels-level-14',
+            title: 'Posting Your First Reel Without Panic',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 191,
+            coins: 23,
+            content: `<h3>Posting Your First Reel Without Panic</h3><p>This chapter focuses on the topic: Posting Your First Reel Without Panic. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 15
+        {
+            id: 'reels-level-15',
+            title: 'Beginner Mistakes (and How to Dodge Them)',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 198,
+            coins: 24,
+            content: `<h3>Beginner Mistakes (and How to Dodge Them)</h3><p>This chapter focuses on the topic: Beginner Mistakes (and How to Dodge Them). We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 16
+        {
+            id: 'reels-level-16',
+            title: 'Understanding the Algorithm',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 205,
+            coins: 25,
+            content: `<h3>Understanding the Algorithm</h3><p>This chapter focuses on the topic: Understanding the Algorithm. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 17
+        {
+            id: 'reels-level-17',
+            title: 'Hook, Line & Scroll: Keeping Viewers Watching',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 212,
+            coins: 26,
+            content: `<h3>Hook, Line & Scroll: Keeping Viewers Watching</h3><p>This chapter focuses on the topic: Hook, Line & Scroll: Keeping Viewers Watching. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 18
+        {
+            id: 'reels-level-18',
+            title: 'Transitions: Snap, Spin, Zoom Like a Pro',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 219,
+            coins: 27,
+            content: `<h3>Transitions: Snap, Spin, Zoom Like a Pro</h3><p>This chapter focuses on the topic: Transitions: Snap, Spin, Zoom Like a Pro. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 19
+        {
+            id: 'reels-level-19',
+            title: 'B-Roll Basics: Because Main Footage is Lonely',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 226,
+            coins: 28,
+            content: `<h3>B-Roll Basics: Because Main Footage is Lonely</h3><p>This chapter focuses on the topic: B-Roll Basics: Because Main Footage is Lonely. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 20
+        {
+            id: 'reels-level-20',
+            title: 'Editing for Pace & Flow',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 233,
+            coins: 29,
+            content: `<h3>Editing for Pace & Flow</h3><p>This chapter focuses on the topic: Editing for Pace & Flow. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 21
+        {
+            id: 'reels-level-21',
+            title: 'Color Correction 101: From Meh to Wow',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 240,
+            coins: 30,
+            content: `<h3>Color Correction 101: From Meh to Wow</h3><p>This chapter focuses on the topic: Color Correction 101: From Meh to Wow. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 22
+        {
+            id: 'reels-level-22',
+            title: 'Sound Effects & Background Audio',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 247,
+            coins: 31,
+            content: `<h3>Sound Effects & Background Audio</h3><p>This chapter focuses on the topic: Sound Effects & Background Audio. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 23
+        {
+            id: 'reels-level-23',
+            title: 'Working with CapCut Templates',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 254,
+            coins: 32,
+            content: `<h3>Working with CapCut Templates</h3><p>This chapter focuses on the topic: Working with CapCut Templates. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 24
+        {
+            id: 'reels-level-24',
+            title: 'Creating Branded Reels',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 261,
+            coins: 33,
+            content: `<h3>Creating Branded Reels</h3><p>This chapter focuses on the topic: Creating Branded Reels. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 25
+        {
+            id: 'reels-level-25',
+            title: 'Remixing & Duets for Trend Power',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 268,
+            coins: 34,
+            content: `<h3>Remixing & Duets for Trend Power</h3><p>This chapter focuses on the topic: Remixing & Duets for Trend Power. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 26
+        {
+            id: 'reels-level-26',
+            title: 'Scripting & Planning: Spontaneity is a Lie',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 275,
+            coins: 35,
+            content: `<h3>Scripting & Planning: Spontaneity is a Lie</h3><p>This chapter focuses on the topic: Scripting & Planning: Spontaneity is a Lie. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 27
+        {
+            id: 'reels-level-27',
+            title: 'Voiceovers Without the Robot Vibe',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 282,
+            coins: 36,
+            content: `<h3>Voiceovers Without the Robot Vibe</h3><p>This chapter focuses on the topic: Voiceovers Without the Robot Vibe. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 28
+        {
+            id: 'reels-level-28',
+            title: 'Call-to-Action (CTA) Magic',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 289,
+            coins: 37,
+            content: `<h3>Call-to-Action (CTA) Magic</h3><p>This chapter focuses on the topic: Call-to-Action (CTA) Magic. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 29
+        {
+            id: 'reels-level-29',
+            title: 'Thumbnails That Get Clicked',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 296,
+            coins: 38,
+            content: `<h3>Thumbnails That Get Clicked</h3><p>This chapter focuses on the topic: Thumbnails That Get Clicked. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 30
+        {
+            id: 'reels-level-30',
+            title: 'Reading Reels Analytics Without Crying',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 303,
+            coins: 39,
+            content: `<h3>Reading Reels Analytics Without Crying</h3><p>This chapter focuses on the topic: Reading Reels Analytics Without Crying. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 31
+        {
+            id: 'reels-level-31',
+            title: 'Editing for Emotion: Psychology of Music & Cuts',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 310,
+            coins: 40,
+            content: `<h3>Editing for Emotion: Psychology of Music & Cuts</h3><p>This chapter focuses on the topic: Editing for Emotion: Psychology of Music & Cuts. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 32
+        {
+            id: 'reels-level-32',
+            title: 'Mastering Complex Transitions',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 317,
+            coins: 41,
+            content: `<h3>Mastering Complex Transitions</h3><p>This chapter focuses on the topic: Mastering Complex Transitions. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 33
+        {
+            id: 'reels-level-33',
+            title: 'Advanced Text Animations & Graphics',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 324,
+            coins: 42,
+            content: `<h3>Advanced Text Animations & Graphics</h3><p>This chapter focuses on the topic: Advanced Text Animations & Graphics. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 34
+        {
+            id: 'reels-level-34',
+            title: 'Cinematic Reels with Just a Phone',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 331,
+            coins: 43,
+            content: `<h3>Cinematic Reels with Just a Phone</h3><p>This chapter focuses on the topic: Cinematic Reels with Just a Phone. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 35
+        {
+            id: 'reels-level-35',
+            title: 'Green Screen & Mobile Keying',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 338,
+            coins: 44,
+            content: `<h3>Green Screen & Mobile Keying</h3><p>This chapter focuses on the topic: Green Screen & Mobile Keying. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 36
+        {
+            id: 'reels-level-36',
+            title: 'Advanced Audio: Ducking, EQ & More',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 345,
+            coins: 45,
+            content: `<h3>Advanced Audio: Ducking, EQ & More</h3><p>This chapter focuses on the topic: Advanced Audio: Ducking, EQ & More. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 37
+        {
+            id: 'reels-level-37',
+            title: 'Trend Forecasting Like a Futurist',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 352,
+            coins: 46,
+            content: `<h3>Trend Forecasting Like a Futurist</h3><p>This chapter focuses on the topic: Trend Forecasting Like a Futurist. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 38
+        {
+            id: 'reels-level-38',
+            title: 'Perfecting Seamless Loops',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 359,
+            coins: 47,
+            content: `<h3>Perfecting Seamless Loops</h3><p>This chapter focuses on the topic: Perfecting Seamless Loops. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 39
+        {
+            id: 'reels-level-39',
+            title: 'Storytelling in 30 Seconds',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 366,
+            coins: 48,
+            content: `<h3>Storytelling in 30 Seconds</h3><p>This chapter focuses on the topic: Storytelling in 30 Seconds. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 40
+        {
+            id: 'reels-level-40',
+            title: 'Editing for Multiple Platforms',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 373,
+            coins: 49,
+            content: `<h3>Editing for Multiple Platforms</h3><p>This chapter focuses on the topic: Editing for Multiple Platforms. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 41
+        {
+            id: 'reels-level-41',
+            title: 'Fixing Bad Footage with Hacks',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 380,
+            coins: 50,
+            content: `<h3>Fixing Bad Footage with Hacks</h3><p>This chapter focuses on the topic: Fixing Bad Footage with Hacks. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 42
+        {
+            id: 'reels-level-42',
+            title: 'Collaborating with Other Creators',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 387,
+            coins: 51,
+            content: `<h3>Collaborating with Other Creators</h3><p>This chapter focuses on the topic: Collaborating with Other Creators. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 43
+        {
+            id: 'reels-level-43',
+            title: 'Using AI Tools in Your Workflow',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 394,
+            coins: 52,
+            content: `<h3>Using AI Tools in Your Workflow</h3><p>This chapter focuses on the topic: Using AI Tools in Your Workflow. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 44
+        {
+            id: 'reels-level-44',
+            title: 'Creating Your Signature Editing Style',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 401,
+            coins: 53,
+            content: `<h3>Creating Your Signature Editing Style</h3><p>This chapter focuses on the topic: Creating Your Signature Editing Style. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 45
+        {
+            id: 'reels-level-45',
+            title: 'Monetizing Your Reels Creatively',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 408,
+            coins: 54,
+            content: `<h3>Monetizing Your Reels Creatively</h3><p>This chapter focuses on the topic: Monetizing Your Reels Creatively. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 46
+        {
+            id: 'reels-level-46',
+            title: 'Building a Content Calendar',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 415,
+            coins: 55,
+            content: `<h3>Building a Content Calendar</h3><p>This chapter focuses on the topic: Building a Content Calendar. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 47
+        {
+            id: 'reels-level-47',
+            title: 'Outsourcing Editing Like a CEO',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 422,
+            coins: 56,
+            content: `<h3>Outsourcing Editing Like a CEO</h3><p>This chapter focuses on the topic: Outsourcing Editing Like a CEO. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 48
+        {
+            id: 'reels-level-48',
+            title: 'Copyright, Music & Fair Use',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 429,
+            coins: 57,
+            content: `<h3>Copyright, Music & Fair Use</h3><p>This chapter focuses on the topic: Copyright, Music & Fair Use. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 49
+        {
+            id: 'reels-level-49',
+            title: 'Creating Your Portfolio',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 436,
+            coins: 58,
+            content: `<h3>Creating Your Portfolio</h3><p>This chapter focuses on the topic: Creating Your Portfolio. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        // Level 50
+        {
+            id: 'reels-level-50',
+            title: 'Final Challenge: Build a 5-Reel Series',
+            description: 'We\'ll walk through the key principles, real-world use cases, and editing strategies you can implement immediately.',
+            xp: 443,
+            coins: 59,
+            content: `<h3>Final Challenge: Build a 5-Reel Series</h3><p>This chapter focuses on the topic: Final Challenge: Build a 5-Reel Series. We'll walk through the key principles, real-world use cases, and editing strategies you can implement immediately. Whether you're editing on mobile or desktop, this guide delivers actionable tips, tools, and checklists. We also include humor and storytelling to make the content enjoyable while still highly professional.</p><h4>Summary:</h4><ul><li>Core learning objectives</li><li>Practical tools & apps</li><li>Tips to apply today</li><li>Common pitfalls to avoid</li></ul>`
+        },
+        ...Array.from({ length: 50 }, (_, i) => {
+            const levelNum = i + 51;
+            return {
+                id: `reels-level-${levelNum}`,
+                title: `Level ${levelNum}: Placeholder Title`,
+                description: `This is a placeholder description for level ${levelNum} of the Reels & Shorts Video Editing roadmap.`,
+                xp: 100 + (levelNum * 7),
+                coins: 10 + levelNum,
+                content: `<p>Content for level ${levelNum} is coming soon!</p>`
+            };
+        }),
+    ],
+};
+
 // You can add other roadmaps here
 // const promptEngineeringRoadmap: Roadmap = { ... };
 
 const roadmaps: { [key: string]: Roadmap } = {
     'Canva Design': canvaDesignRoadmap,
+    'Reels & Shorts Video Editing': reelsEditingRoadmap,
     'ChatGPT Prompt Engineering': canvaDesignRoadmap, // Placeholder, points to canva for now
     'Social Media Management': canvaDesignRoadmap, // Placeholder
     'Reels & Shorts Video Editing': canvaDesignRoadmap, // Placeholder
