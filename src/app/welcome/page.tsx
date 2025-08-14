@@ -12,6 +12,7 @@ import { BookOpen, Bot, Briefcase, Code, PenTool, ArrowRight, Lightbulb, Users, 
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { PowerLevels } from '@/lib/skill-mapping';
+import { updateQuestProgress } from '@/lib/quest-data';
 
 export const factions = [
     {
@@ -95,7 +96,15 @@ export default function WelcomePage() {
         };
         
         localStorage.setItem('careerClashUserProfile', JSON.stringify(profile));
+        
+        // Give new players some starting currency and update daily login quest
+        localStorage.setItem('careerClashCoins', '100');
+        localStorage.setItem('careerClashGems', '5');
+        updateQuestProgress('daily1', 1);
+
         window.dispatchEvent(new Event('profileChange'));
+        window.dispatchEvent(new Event('currencyChange'));
+
 
         toast({
             title: `Welcome, ${heroName}!`,

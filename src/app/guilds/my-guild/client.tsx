@@ -29,6 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { usePlayerProfile } from '@/contexts/PlayerProfileProvider';
 import type { Guild, GuildMember } from '@/lib/guild-data';
+import { updateQuestProgress } from '@/lib/quest-data';
 
 
 type ChatMessage = {
@@ -91,6 +92,7 @@ const ChatInterface = ({ guildId, members }: { guildId: string, members: GuildMe
         setMessages(updatedMessages);
         localStorage.setItem(`chat_${guildId}`, JSON.stringify(updatedMessages));
         setInputValue('');
+        updateQuestProgress('daily4', 1);
     };
 
     return (
@@ -238,9 +240,13 @@ export default function MyGuildClient() {
         if (membership && membership !== 'Free' && membership !== 'Basic') setIsPremium(true);
     }, []);
     
-    const updateGuildInStorage = (updatedGuild: Guild) => {
+    const updateGuildInStorage = (updatedGuild: Guild | null) => {
         try {
-            localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+            if (updatedGuild) {
+                localStorage.setItem('userGuild', JSON.stringify(updatedGuild));
+            } else {
+                localStorage.removeItem('userGuild');
+            }
             window.dispatchEvent(new Event('guildChange'));
         } catch (error) {
             toast({
@@ -255,16 +261,20 @@ export default function MyGuildClient() {
     const fetchGuild = () => {
         const storedGuildString = localStorage.getItem('userGuild');
         if (storedGuildString) {
-            const guildData: Guild = JSON.parse(storedGuildString);
-            
-            const userIndex = guildData.members.findIndex(m => m.name === 'QuantumLeap');
-            if (userIndex !== -1) {
-                guildData.members[userIndex].xp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
-                guildData.members[userIndex].coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
-                guildData.members[userIndex].gems = parseInt(localStorage.getItem('careerClashGems') || '5', 10);
-            }
+            try {
+                const guildData: Guild = JSON.parse(storedGuildString);
+                
+                const userIndex = guildData.members.findIndex(m => m.name === 'QuantumLeap');
+                if (userIndex !== -1) {
+                    guildData.members[userIndex].xp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+                    guildData.members[userIndex].coins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
+                    guildData.members[userIndex].gems = parseInt(localStorage.getItem('careerClashGems') || '5', 10);
+                }
 
-            setGuild(guildData);
+                setGuild(guildData);
+            } catch (e) {
+                 setGuild(null);
+            }
         } else {
             setGuild(null);
         }
@@ -286,6 +296,9 @@ export default function MyGuildClient() {
         setIsManageMemberOpen(false);
         setManagingMember(null);
         toast({ title: "Role Updated", description: `${managingMember.name} is now a ${selectedRole}.` });
+        if (selectedRole === 'Officer') {
+            updateQuestProgress('milestone21', 1);
+        }
     };
 
     const handleKickMember = () => {
@@ -300,16 +313,14 @@ export default function MyGuildClient() {
     }
 
     const handleDisbandGuild = () => {
-        localStorage.removeItem('userGuild');
-        window.dispatchEvent(new Event('guildChange'));
+        updateGuildInStorage(null);
         toast({ title: "Guild Disbanded", description: "You have successfully disbanded your guild." });
         router.push('/guilds');
     };
 
     const handleLeaveGuild = () => {
         if (!guild) return;
-        localStorage.removeItem('userGuild');
-        window.dispatchEvent(new Event('guildChange'));
+        updateGuildInStorage(null);
         toast({ title: "You have left the guild." });
         router.push('/guilds');
     }
@@ -337,7 +348,7 @@ export default function MyGuildClient() {
             <Button variant="ghost" onClick={() => router.push('/guilds')} className="mb-4"><ArrowLeft className="mr-2 h-4 w-4" />Back to Guilds</Button>
             <Dialog open={isManageMemberOpen} onOpenChange={(isOpen) => { setIsManageMemberOpen(isOpen); if (!isOpen) setManagingMember(null); }}><DialogContent><DialogHeader><DialogTitle>Manage {managingMember?.name}</DialogTitle><DialogDescription>Assign a new role or remove this member from the guild.</DialogDescription></DialogHeader><div className="space-y-4 py-4"><div className="space-y-2"><Label htmlFor="role-select">Assign Role</Label><TooltipProvider><Tooltip><TooltipTrigger asChild><div className={cn(!isPremium && "cursor-not-allowed")}><Select onValueChange={setSelectedRole} defaultValue={managingMember?.role} disabled={!isPremium}><SelectTrigger id="role-select" className="w-full"><SelectValue placeholder="Select a role" /></SelectTrigger><SelectContent><SelectItem value="Member">Member</SelectItem><SelectItem value="Officer">Officer</SelectItem>{premiumRoles.map(role => (<SelectItem key={role} value={role}>{role}</SelectItem>))}</SelectContent></Select></div></TooltipTrigger>{!isPremium && <TooltipContent><p>Upgrade your membership to assign premium roles.</p></TooltipContent>}</Tooltip></TooltipProvider></div><Button onClick={handleRoleChange} disabled={!selectedRole || selectedRole === managingMember?.role}>Update Role</Button></div><div className="border-t pt-4"><AlertDialog><AlertDialogTrigger asChild><Button variant="destructive" className="w-full" disabled={!managingMember}><Trash2 className="mr-2 h-4 w-4" /> Kick {managingMember?.name}</Button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This will permanently remove {managingMember?.name} from the guild.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel><AlertDialogAction onClick={handleKickMember} className={cn(buttonVariants({ variant: "destructive" }))}>Kick Member</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog></div></DialogContent></Dialog>
             
-            {isOwner && guild && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={updateGuildInStorage} />}
+            {isOwner && guild && <EditGuildDialog guild={guild} isOpen={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} onUpdate={(newGuild) => updateGuildInStorage(newGuild)} />}
 
             <Card className="mb-8 overflow-hidden"><div className="relative h-32 sm:h-48 bg-muted"><Image src={guild.bannerImage || `https://placehold.co/1200x300.png`} alt="Guild Banner" layout="fill" objectFit="cover" /><div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" /></div><div className="relative flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-16 sm:-mt-20 px-4 sm:px-6 pb-6 bg-gradient-to-t from-card to-transparent"><div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6"><Image src={guild.crestImage || `https://placehold.co/256x256.png`} width={128} height={128} alt={guild.name || 'Guild Crest'} className="bg-muted rounded-lg border-4 border-card w-24 h-24 sm:w-32 sm:h-32 shrink-0" /><div className="text-center sm:text-left"><h1 className="text-3xl sm:text-4xl font-bold font-headline">{guild.name}</h1><p className="text-muted-foreground text-sm sm:text-base max-w-xl mt-1">{guild.description}</p></div></div>
             {isOwner && <Button variant="outline" size="icon" className="absolute top-4 right-4 bg-black/50 hover:bg-black/80" onClick={() => setIsEditDialogOpen(true)}><Pencil className="h-4 w-4" /></Button>}

@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { motion, AnimatePresence } from 'framer-motion';
+import { updateQuestProgress } from "@/lib/quest-data";
 
 // --- Data ---
 const streams = [
@@ -199,6 +200,21 @@ export default function CompetitionClient() {
             const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '100', 10);
             const newTotalCoins = currentCoins + coinReward;
             localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+        }
+        
+        // Quest Progress
+        updateQuestProgress('daily3', 1);
+        updateQuestProgress('milestone2', 1);
+        updateQuestProgress('milestone8', 1);
+        updateQuestProgress('milestone13', 1);
+        updateQuestProgress('milestone24', 1);
+        if (playerWon) {
+            updateQuestProgress('daily5', 1);
+            updateQuestProgress('weekly1', 1);
+            updateQuestProgress('milestone20', 1);
+            if (battleConfig.mode === 'rush' && battleConfig.betAmount >= 1000) {
+                updateQuestProgress('milestone7', 1);
+            }
         }
         
         window.dispatchEvent(new Event('currencyChange'));

@@ -17,6 +17,7 @@ import { AiImage } from '@/components/ui/ai-image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { updateQuestProgress } from '@/lib/quest-data';
 
 type RaidState = 'idle' | 'generating' | 'active' | 'finished';
 type Player = { name: string; prompt: string; type: 'human' | 'bot' };
@@ -69,6 +70,7 @@ export default function BossRaidClient() {
     const [eventLog, setEventLog] = useState<EventLogMessage[]>([]);
     const [isBossShaking, setIsBossShaking] = useState(false);
     const [isPartyHit, setIsPartyHit] = useState(false);
+    const [rewardsGiven, setRewardsGiven] = useState(false);
     
     const [selectedStream, setSelectedStream] = useState('Software Development');
     const [bossLevel, setBossLevel] = useState(10);
@@ -117,6 +119,7 @@ export default function BossRaidClient() {
         setRaidState('generating');
         setBossData(null);
         setEventLog([]);
+        setRewardsGiven(false);
 
         try {
             addEventLog(`A powerful threat (Lvl ${bossLevel}) emerges from the ${selectedStream} sector...`, 'system');
@@ -128,6 +131,8 @@ export default function BossRaidClient() {
             setCurrentQuestion(data.quizBank[0]);
             addEventLog(`${data.bossName} has appeared!`, 'boss');
             
+            updateQuestProgress('weekly3', 1);
+
             setRaidState('active');
 
         } catch (error) {
@@ -213,6 +218,30 @@ export default function BossRaidClient() {
             setTimeout(() => setRaidState('finished'), 500);
         }
     }, [bossCurrentHealth, partyHealth, raidState]);
+
+    useEffect(() => {
+        if (raidState === 'finished' && bossData && !rewardsGiven) {
+            const playerWon = bossCurrentHealth <= 0 && partyHealth > 0;
+            if (playerWon) {
+                const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
+                const newTotalXp = currentTotalXp + bossData.rewards.xp;
+                localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
+                
+                const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+                const newTotalCoins = currentCoins + bossData.rewards.coins;
+                localStorage.setItem('careerClashCoins', newTotalCoins.toString());
+
+                updateQuestProgress('milestone4', 1);
+                updateQuestProgress('milestone11', 1);
+                if (bossLevel >= 25) {
+                    updateQuestProgress('milestone22', 1);
+                }
+
+                window.dispatchEvent(new Event('currencyChange'));
+                setRewardsGiven(true);
+            }
+        }
+    }, [raidState, bossData, partyHealth, bossCurrentHealth, rewardsGiven, bossLevel]);
 
     const bossHealthPercentage = useMemo(() => {
         if (!bossData) return 0;

@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -90,10 +90,8 @@ const PerkCard = ({ item, onPurchase }: { item: GuildPerk, onPurchase: (perk: Gu
 };
 
 
-export default function ShopClient() {
+export default function ShopClient({ defaultTab = 'memberships' }: { defaultTab?: string }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const defaultTab = searchParams.get('tab') || 'memberships';
   const { toast } = useToast();
 
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -106,7 +104,14 @@ export default function ShopClient() {
     const subName = localStorage.getItem('careerClashMembership') || 'Basic';
     const subDate = localStorage.getItem('careerClashMembershipPurchaseDate');
     const subCycle = localStorage.getItem('careerClashMembershipCycle') || 'monthly';
-    const profile = JSON.parse(localStorage.getItem('careerClashUserProfile') || '{}');
+    const profileString = localStorage.getItem('careerClashUserProfile');
+    if (!profileString) {
+        setIsGuest(true);
+        return;
+    }
+    
+    const profile = JSON.parse(profileString);
+
     if (profile.name && profile.name.startsWith('Guest-')) {
         setIsGuest(true);
     } else {
@@ -188,15 +193,17 @@ export default function ShopClient() {
   };
 
   const handleCurrencyPurchase = (amount: number, currency: 'coins' | 'gems') => {
-     if (currency === 'coins') {
-        const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
-        localStorage.setItem('careerClashCoins', (currentCoins + amount).toString());
-    } else {
-        const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
-        localStorage.setItem('careerClashGems', (currentGems + amount).toString());
-    }
-    window.dispatchEvent(new Event('currencyChange'));
-    toast({ title: 'Purchase Successful!', description: `Added ${amount.toLocaleString()} ${currency} to your wallet.`, className: "bg-green-500 text-white" });
+    executePurchase(() => {
+        if (currency === 'coins') {
+            const currentCoins = parseInt(localStorage.getItem('careerClashCoins') || '0', 10);
+            localStorage.setItem('careerClashCoins', (currentCoins + amount).toString());
+        } else {
+            const currentGems = parseInt(localStorage.getItem('careerClashGems') || '0', 10);
+            localStorage.setItem('careerClashGems', (currentGems + amount).toString());
+        }
+        window.dispatchEvent(new Event('currencyChange'));
+        toast({ title: 'Purchase Successful!', description: `Added ${amount.toLocaleString()} ${currency} to your wallet.`, className: "bg-green-500 text-white" });
+    });
   }
 
   const handleMembershipPurchase = (planName: string, cycle: 'monthly' | 'yearly') => {
