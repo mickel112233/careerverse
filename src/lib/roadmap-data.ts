@@ -519,3 +519,12 @@ const reelsEditingRoadmap: Roadmap = {
         },
     ]
 };
+const roadmaps = {
+    'Canva Design': canvaDesignRoadmap,
+    'Reels & Shorts Video Editing': reelsEditingRoadmap,
+}
+
+export function getRoadmapByStream(streamName: string): Roadmap | undefined {
+    // @ts-ignore
+    return roadmaps[streamName];
+}
