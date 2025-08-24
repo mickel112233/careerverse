@@ -5,6 +5,7 @@ import { promptEngineeringRoadmap } from './roadmaps/prompt-engineering';
 import { reelsEditingRoadmap } from './roadmaps/reels-editing';
 import { basicSeoRoadmap } from './roadmaps/basic-seo';
 import { socialMediaRoadmap } from './roadmaps/social-media';
+import { affiliateMarketingRoadmap } from './roadmaps/affiliate-marketing';
 
 export interface RoadmapLevel {
     id: string;
@@ -39,9 +40,9 @@ const roadmaps: { [key: string]: Roadmap } = {
     "Reels & Shorts Video Editing": reelsEditingRoadmap,
     "Basic SEO": basicSeoRoadmap,
     "Social Media Management": socialMediaRoadmap,
+    "Affiliate Marketing": affiliateMarketingRoadmap,
 };
 
 export function getRoadmapByStream(streamName: string): Roadmap | null {
     return roadmaps[streamName] || null;
 }
-
