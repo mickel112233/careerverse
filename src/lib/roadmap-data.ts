@@ -6,6 +6,10 @@ import { reelsEditingRoadmap } from './roadmaps/reels-editing';
 import { basicSeoRoadmap } from './roadmaps/basic-seo';
 import { socialMediaRoadmap } from './roadmaps/social-media';
 import { affiliateMarketingRoadmap } from './roadmaps/affiliate-marketing';
+import { copywritingRoadmap } from './roadmaps/copywriting';
+import { resumeLinkedinRoadmap } from './roadmaps/resume-linkedin';
+import { digitalProductCreationRoadmap } from './roadmaps/digital-product-creation';
+import { aiLiteracyRoadmap } from './roadmaps/ai-literacy';
 
 export interface RoadmapLevel {
     id: string;
@@ -42,6 +46,10 @@ const roadmaps: { [key: string]: Roadmap } = {
     "Basic SEO": basicSeoRoadmap,
     "Social Media Management": socialMediaRoadmap,
     "Affiliate Marketing": affiliateMarketingRoadmap,
+    "Copywriting": copywritingRoadmap,
+    "Resume & LinkedIn Optimization": resumeLinkedinRoadmap,
+    "Digital Product Creation": digitalProductCreationRoadmap,
+    "AI Literacy": aiLiteracyRoadmap,
 };
 
 export function getRoadmapByStream(streamName: string): Roadmap | null {
