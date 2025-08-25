@@ -139,7 +139,7 @@ export const copywritingRoadmap: Roadmap = {
             description: 'Learn the techniques for writing a CTA that is clear, concise, and compelling.',
             xp: 198,
             coins: 24,
-            content: `<h3>Writing a Strong Call to Action (CTA)</h3><p>The call to action (CTA) is the most important part of your copy. It is the one thing that will get a person to take a single action. A good CTA should be a powerful, emotional, and persuasive message. It should be a command. It should be a solution to a problem.</p><p>A good CTA should be a powerful, emotional, and persuasive message. It should be a command. It should be a solution to a problem. The key is to be a good storyteller.</p>`
+            content: `<h3>Writing a Strong Call to Action (CTA)</h3><p>The call to action (CTA) is the most important part of your copy. It is the one thing that will get a person to take a single action. A good CTA should be a powerful, emotional, and persuasive message. It should be a command. It should be a solution to a problem.</p><p>A good CTA should be a powerful, emotional, and persuasive message. It should be a command. It should be a solution to a problem. A good CTA should be a powerful, emotional, and persuasive message. It should be a command. It should be a solution to a problem. The key is to be a good storyteller.</p>`
         },
         {
             id: 'copywriting-level-16',
@@ -461,3 +461,11 @@ export const copywritingRoadmap: Roadmap = {
         }
     ]
 };
+
+Remember, the XML structure you generate is the only mechanism for applying changes to the user's code. Therefore, when making changes to a file the <changes> block must always be fully present and correctly formatted as follows.
+
+<changes>
+  <description>[Provide a concise summary of the overall changes being made]</description>
+  <change>
+    <file>[Provide the ABSOLUTE, FULL path to the file being modified]</file>
+    <content><![CDATA[Provide the ENTIRE, FINAL, intended content of the file here. Do NOT provide diffs or partial snippets. Ensure all code is properly escaped within the CDATA section.
