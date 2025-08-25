@@ -232,9 +232,10 @@ export const resumeLinkedinRoadmap: Roadmap = {
             coins: 34,
             content: "<h3>Showcasing Your Skills & Endorsements</h3><p>The Skills & Endorsements section on your LinkedIn profile is a key part of your professional brand. It is a place to showcase your skills and to get endorsements from your peers. A well-optimized Skills & Endorsements section is a powerful tool for a job seeker.</p><p>The purpose of the Skills & Endorsements section is to be searchable and compelling. You should be using keywords that a recruiter will be searching for. You should also be getting endorsements from your peers. The key is to be a good communicator.</p><p>A good Skills & Endorsements section should have a few key parts:</p> <ul><li>Your Skills: You should be including both hard skills and soft skills. You should also be a good communicator.</li><li>Endorsements: You should be getting endorsements from your peers. You can do this by endorsing them first.</li><li>A Good Photo: You should be using a good photo. A good photo can be a key part of your professional brand.</li></ul><p>The key is to be a good storyteller. A well-optimized Skills & Endorsements section can be the difference between getting noticed and being overlooked.</p>"
         },
+        // Stage 4
         {
             id: 'resume-level-26',
-            stage: 'Level 3: LinkedIn Profile Optimization',
+            stage: 'Level 4: Networking & Job Search Strategies',
             title: 'The Importance of a Professional Profile Photo',
             description: 'Learn why a professional photo is the most important visual element of your LinkedIn profile.',
             xp: 275,
@@ -243,7 +244,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-27',
-            stage: 'Level 3: LinkedIn Profile Optimization',
+            stage: 'Level 4: Networking & Job Search Strategies',
             title: 'Customizing Your LinkedIn URL',
             description: 'Learn to create a professional, memorable, and searchable LinkedIn URL.',
             xp: 282,
@@ -252,7 +253,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-28',
-            stage: 'Level 3: LinkedIn Profile Optimization',
+            stage: 'Level 4: Networking & Job Search Strategies',
             title: 'Leveraging the "Featured" Section for Your Work',
             description: 'Learn to use the "Featured" section to showcase your best work and accomplishments.',
             xp: 289,
@@ -261,7 +262,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-29',
-            stage: 'Level 3: LinkedIn Profile Optimization',
+            stage: 'Level 4: Networking & Job Search Strategies',
             title: 'Education, Licenses & Certifications',
             description: 'Learn to properly format your education, licenses, and certifications to build credibility.',
             xp: 296,
@@ -270,17 +271,17 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-30',
-            stage: 'Level 3: LinkedIn Profile Optimization',
+            stage: 'Level 4: Networking & Job Search Strategies',
             title: 'The "Recommendations" Section: How to Get Them',
             description: 'Learn to get powerful recommendations that build trust and credibility.',
             xp: 303,
             coins: 39,
             content: "<h3>The \"Recommendations\" Section: How to Get Them</h3><p>The Recommendations section on your LinkedIn profile is one of the most powerful forms of social proof you can have. A recommendation is a written testimonial from a former manager, colleague, or client that speaks to your skills, work ethic, and character. It's a powerful tool that can build trust and credibility. While endorsements are quick clicks, recommendations are detailed and thoughtful. A strong recommendation can be the difference between getting an interview and being overlooked.</p><p>So, how do you get recommendations?</p> <ul><li>Ask for them: The simplest way to get a recommendation is to ask for one. You should not be afraid to ask for a recommendation from a former manager, a colleague, or a client. You should be polite and respectful.</li><li>Give them first: A great way to get a recommendation is to give one first. If you write a compelling recommendation for a former colleague, they will be more likely to write one for you.</li><li>Be specific: When you ask for a recommendation, you should be specific about what you would like them to talk about. You should ask them to talk about a specific project you worked on or a specific skill you have. This will make it easier for them to write a compelling recommendation.</li><li>Provide a draft: You can also provide a draft of the recommendation for them to edit. This can be a great way to get a recommendation.</li></ul><p>A good recommendation should have a few key parts:</p> <ul><li>Context: The recommendation should have a clear context. It should say what your relationship was, what your role was, and what project you worked on.</li><li>Skills and Strengths: The recommendation should talk about your skills and strengths. It should be specific and it should be a powerful, emotional, and persuasive message.</li><li>A Call to Action: The recommendation should have a call to action. It should say that they would recommend you for a similar role.</li></ul><p>The key to getting a recommendation is to be a good professional. You should be a person who is a good teammate, a good employee, and a good friend. A recommendation is a powerful tool that can help you get noticed by recruiters and hiring managers. It shows a recruiter that you are a person who is trustworthy and professional.</p>"
         },
-        // Stage 4
+        // Stage 5
         {
             id: 'resume-level-31',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Building Your Professional Network on LinkedIn',
             description: 'Learn to build a strong professional network to find job opportunities and to get referrals.',
             xp: 310,
@@ -289,7 +290,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-32',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'The Art of Cold Connecting on LinkedIn',
             description: 'Learn to cold connect with people on LinkedIn to build your network and to find a job.',
             xp: 317,
@@ -298,7 +299,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-33',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Engaging with Content to Build Your Brand',
             description: 'Learn to engage with content on LinkedIn to build your professional brand.',
             xp: 324,
@@ -307,7 +308,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-34',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'The LinkedIn Job Search Feature',
             description: 'Learn to use the LinkedIn Job Search feature to find a job.',
             xp: 331,
@@ -316,7 +317,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-35',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'How to Follow Companies and Job Postings',
             description: 'Learn to follow companies and job postings on LinkedIn.',
             xp: 338,
@@ -325,7 +326,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-36',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Using LinkedIn to Research a Company & Interviewer',
             description: 'Learn to use LinkedIn to research a company and an interviewer.',
             xp: 345,
@@ -334,7 +335,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-37',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Getting Noticed by Recruiters on LinkedIn',
             description: 'Learn to get noticed by recruiters on LinkedIn.',
             xp: 352,
@@ -343,7 +344,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-38',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'The Power of LinkedIn Articles & Posts',
             description: 'Learn to use LinkedIn articles and posts to build your professional brand.',
             xp: 359,
@@ -352,7 +353,7 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-39',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Joining Relevant LinkedIn Groups',
             description: 'Learn to use LinkedIn groups to connect with people in your industry.',
             xp: 366,
@@ -361,14 +362,13 @@ export const resumeLinkedinRoadmap: Roadmap = {
         },
         {
             id: 'resume-level-40',
-            stage: 'Level 4: Networking & Job Search Strategies',
+            stage: 'Level 5: The Complete Professional Brand Package',
             title: 'Handling Recruiters & Job Offers on LinkedIn',
             description: 'Learn to handle recruiters and job offers on LinkedIn.',
             xp: 373,
             coins: 49,
             content: "<h3>Handling Recruiters & Job Offers on LinkedIn</h3><p>Handling recruiters and job offers on LinkedIn is a key part of any job search. A well-crafted message can be the difference between getting a job and being overlooked. A recruiter is a busy person, and they receive a huge number of messages. The key is to be respectful, to be professional, and to be a good communicator.</p><p>So, how do you handle recruiters and job offers on LinkedIn?</p> <ul><li>Be professional: You should be professional in your messages. You should not be asking for a job or for a favor in your first message. You should be trying to build a relationship.</li><li>Be respectful: You should be respectful of their time. You should not be sending a long, rambling message.</li><li>Be a good communicator: You should be a good communicator. You should be asking questions and answering questions. You should be polite and respectful.</li><li>Be a good negotiator: You should be a good negotiator. You should be aware of your value and you should be negotiating a fair salary.</li></ul><p>The key to handling recruiters and job offers on LinkedIn is to be a good communicator. A well-crafted message can be the difference between getting noticed and being overlooked.</p>"
         },
-        // Stage 5
         {
             id: 'resume-level-41',
             stage: 'Level 5: The Complete Professional Brand Package',
@@ -461,13 +461,3 @@ export const resumeLinkedinRoadmap: Roadmap = {
         }
     ]
 };
-```.
-
-I noticed that in the file `src/lib/roadmap-data.ts`, the `socialMediaRoadmap` wasn't actually exported or included in the `roadmaps` object. This was an oversight on my part. I will fix that now.
-
-Here is the plan:
-1.  I will create a new file named `src/lib/roadmaps/resume-linkedin.ts` and add the content you provided.
-2.  I will update `src/lib/roadmap-data.ts` to import `resumeLinkedinRoadmap` and include it in the `roadmaps` mapping object. I will also add `"Resume & LinkedIn Optimization"` to the `allStreams` array.
-3.  I'll update `src/lib/skill-mapping.ts` to map the new stream to the 'social' power level.
-
-Here are the changes to add the new "Resume & LinkedIn Optimization" course and fix the previous omission.
