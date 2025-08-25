@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const canvaDesignRoadmap: Roadmap = {
     streamName: 'Canva Design',
     levels: [
+        // Stage 1
         {
             id: 'canva-level-1',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'What is Canva? Signing Up & Interface Overview',
             description: 'Learn what Canva is, what it’s used for, and why it’s a powerful tool for designers and non-designers alike.',
             xp: 100,
@@ -14,6 +16,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-2',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Your First Design: Using Templates',
             description: 'Learn how to find, customize, and effectively use Canva’s vast library of pre-designed templates.',
             xp: 107,
@@ -22,6 +25,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-3',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'The Left-Side Panel: Your Toolbox',
             description: 'Discover the core components of the design editor interface, including elements, text, and uploads.',
             xp: 114,
@@ -30,6 +34,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-4',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Mastering the Top Toolbar: A Deep Dive',
             description: 'Learn how the context-sensitive top toolbar helps you refine and edit any selected element.',
             xp: 121,
@@ -38,6 +43,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-5',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Text Tools: Fonts, Colors, & Basic Effects',
             description: 'Add and style text, understand font pairings, and apply basic text effects like shadows and curves.',
             xp: 135,
@@ -46,6 +52,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-6',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Using Elements: Shapes, Lines, and Icons',
             description: 'Learn to use shapes, lines, and icons to create a professional design.',
             xp: 142,
@@ -54,6 +61,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-7',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Uploading Your Own Media',
             description: 'Learn how to upload and manage your own images, videos, and audio files.',
             xp: 149,
@@ -62,6 +70,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-8',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Page Management & Adding Pages',
             description: 'Learn to create multi-page designs, duplicate pages, and reorder them with ease.',
             xp: 156,
@@ -70,6 +79,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-9',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Sharing & Downloading Your Designs',
             description: 'Learn to share your designs for collaboration or download them in the correct format for your needs.',
             xp: 163,
@@ -78,14 +88,17 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-10',
+            stage: 'Stage 1: Foundational Skills & Interface Navigation',
             title: 'Introduction to Collaboration',
             description: 'Learn the basics of collaborating with others in Canva, from sharing designs to leaving comments.',
             xp: 170,
             coins: 20,
             content: "<h3>Introduction to Collaboration</h3><p>In today’s world, no one works in a vacuum. Canva understands this, which is why its collaboration features are so seamless and intuitive. It's like having all your teammates sitting right next to you, even if they're on the other side of the world. The primary way to invite someone to your design is through the Share button. You can type in their email address and grant them one of two permission levels: Can view or Can edit. Can view is perfect for getting feedback or showing a client a draft, as they can see the design but can’t mess anything up. Can edit is for when you're truly working together on a project, allowing them to make changes, add their own content, and move elements around.</p><p>For more targeted feedback, you can use the commenting feature. Just click on a specific element or area of the design and add a comment, tagging a collaborator to get their attention. It’s a far more efficient way to communicate than sending a series of confusing emails. Canva Pro takes collaboration to the next level with dedicated workspaces for teams, shared folders, and a central Brand Kit that ensures everyone is using the correct logos, fonts, and colors. This level of organization is crucial for maintaining brand consistency across a large team. The entire collaboration system is built to be so simple and efficient that the design process feels like a fluid conversation rather than a series of clunky file transfers.</p>"
         },
+        // Stage 2
         {
             id: 'canva-level-11',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Working with Layers & Layer Order',
             description: 'Master the art of stacking and arranging elements for professional, clean designs.',
             xp: 177,
@@ -94,6 +107,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-12',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Grouping, Locking, and Unlocking Elements',
             description: 'Learn to manage complex designs with ease by grouping and locking elements.',
             xp: 184,
@@ -102,6 +116,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-13',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Using Grids and Frames',
             description: 'Create perfectly aligned photo collages and stylish layouts with grids and frames.',
             xp: 191,
@@ -110,6 +125,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-14',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Creating Color Palettes',
             description: 'Learn the principles of color theory and use Canva’s tools to build stunning color palettes.',
             xp: 198,
@@ -118,6 +134,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-15',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Introduction to Brand Kit (Canva Pro)',
             description: 'Keep your designs consistent by using the Brand Kit to store your logos, colors, and fonts.',
             xp: 205,
@@ -126,6 +143,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-16',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Finding and Using Stock Photos & Videos',
             description: 'Leverage Canva’s massive library of high-quality stock media to enhance your designs.',
             xp: 212,
@@ -134,6 +152,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-17',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Basic Photo Editing: Adjusting & Filtering',
             description: 'Learn to adjust brightness, contrast, and saturation, and apply filters for a consistent look.',
             xp: 219,
@@ -142,6 +161,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-18',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Cropping and Resizing Images',
             description: 'Master the art of cropping to focus on the important parts of an image.',
             xp: 226,
@@ -150,6 +170,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-19',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Transparency and Blending Modes',
             description: 'Learn to use transparency and blending modes to create sophisticated, layered designs.',
             xp: 233,
@@ -158,14 +179,17 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-20',
+            stage: 'Stage 2: Intermediate Design Principles',
             title: 'Working with Gradients',
             description: 'Add depth and dimension to your designs with custom and pre-made gradients.',
             xp: 240,
             coins: 30,
             content: "<h3>Working with Gradients</h3><p>Flat, solid colors are nice, but if you want to add depth, dimension, and a modern feel to your designs, you need to use gradients. A gradient is a smooth transition from one color to another. Canva makes using them incredibly easy, offering a variety of pre-made gradients as well as giving you the power to create your own. The easiest way to find them is to search for \"gradients\" in the Elements tab. You'll find a massive collection of gradient shapes, backgrounds, and graphics.</p><p>To customize a gradient, simply select it, and the color boxes will appear in the top-left toolbar. Click on a color box to change one of the gradient's colors. You can choose from your document colors or create a new custom color. This is a fantastic way to match a gradient to your brand’s color palette. For more advanced users, you can find a Gradient app in the apps tab. This allows you to create your own gradients from scratch, choosing the colors, direction, and type (linear or radial). Gradients are a versatile design tool; you can use a subtle gradient as a background, as a color overlay on a photo, or even as a fill for a text box to make your words pop. Mastering gradients is a fun way to add a dynamic, professional, and visually appealing touch to your designs.</p>"
         },
+        // Stage 3
         {
             id: 'canva-level-21',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'The Power of Magic Eraser (Canva Pro)',
             description: 'Effortlessly remove unwanted objects from your photos with this AI-powered tool.',
             xp: 247,
@@ -174,6 +198,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-22',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'The One-Click Background Remover (Canva Pro)',
             description: 'Instantly remove the background from any photo to create professional product shots and cutouts.',
             xp: 254,
@@ -182,6 +207,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-23',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Text Effects: Curve, Neon, Shadow, and more',
             description: 'Elevate your typography with advanced text effects like curve, neon, and splice.',
             xp: 261,
@@ -190,6 +216,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-24',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Animated Elements & Stickers',
             description: 'Bring your designs to life with animated graphics and stickers.',
             xp: 268,
@@ -198,6 +225,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-25',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Simple Video Creation in Canva',
             description: 'Learn to create short, punchy videos for social media without complex software.',
             xp: 275,
@@ -206,6 +234,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-26',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Adding Audio and Music to Your Designs',
             description: 'Find and add royalty-free music and sound effects to your videos and presentations.',
             xp: 282,
@@ -214,6 +243,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-27',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Understanding and Using Magic Animate',
             description: 'Animate your entire design with a single click using Canva’s intelligent animation presets.',
             xp: 289,
@@ -222,6 +252,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-28',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Introduction to Magic Studio and AI',
             description: 'Explore Canva’s suite of AI-powered tools that supercharge your creativity.',
             xp: 296,
@@ -230,6 +261,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-29',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Magic Write: AI-Powered Text Generation',
             description: 'Overcome writer’s block by using AI to generate headlines, captions, and more.',
             xp: 303,
@@ -238,14 +270,17 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-30',
+            stage: 'Stage 3: Advanced Visuals & Animation',
             title: 'Text to Image: Creating Art with AI',
             description: 'Generate completely unique images from a simple text description with AI.',
             xp: 310,
             coins: 40,
             content: "<h3>Text to Image: Creating Art with AI</h3><p>You have an idea for an image in your head, but you can't find it in Canva's photo library, and you don’t have time to create it from scratch. What if you could just type your idea and have an image magically appear? That's exactly what Text to Image does. This revolutionary AI tool, found in the Apps tab or the Magic Studio suite, allows you to generate completely unique, AI-created images from a simple text description. You can type something as simple as \"a cat wearing a top hat and drinking tea\" or as complex as \"an old-fashioned library with mystical floating books and a moody, dark color palette.\"</p><p>The AI will then generate several different image options based on your prompt, often in styles that you can choose from, such as \"photo,\" \"digital art,\" or \"watercolor.\" While the results can be a little unpredictable (and sometimes delightfully weird), the tool's ability to create custom, unique visuals is a game-changer. It's perfect for when you need a specific, niche image for a blog post, a presentation, or social media that you can't find anywhere else. The Text to Image tool is a glimpse into the future of creativity, where your imagination is the only limit, and AI is the brush. It's a fantastic way to experiment and add a truly unique, artistic touch to your designs.</p>"
         },
+        // Stage 4
         {
             id: 'canva-level-31',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Designing for Social Media: Correct Sizing',
             description: 'Ensure your designs look perfect on every platform by using the correct dimensions.',
             xp: 317,
@@ -254,6 +289,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-32',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Creating Engaging Instagram Stories and Reels',
             description: 'Use Canva’s video and animation tools to create captivating content for Instagram.',
             xp: 324,
@@ -262,6 +298,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-33',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Designing Logos, Brand Boards, and Visual Identity',
             description: 'Create a professional logo and brand board to build a cohesive visual identity.',
             xp: 331,
@@ -270,6 +307,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-34',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Business Cards, Letterheads, and Marketing Materials',
             description: 'Design a consistent suite of marketing materials for your business.',
             xp: 338,
@@ -278,6 +316,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-35',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Creating Professional Presentations',
             description: 'Design visually engaging presentations that captivate your audience.',
             xp: 345,
@@ -286,6 +325,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-36',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Designing E-book and Lead Magnet Covers',
             description: 'Create professional e-book covers that attract subscribers and build your email list.',
             xp: 352,
@@ -294,6 +334,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-37',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Creating Infographics',
             description: 'Turn complex data into visually appealing infographics that are easy to share.',
             xp: 359,
@@ -302,6 +343,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-38',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Working with Charts and Graphs',
             description: 'Bring your data to life with Canva’s built-in chart and graph tools.',
             xp: 366,
@@ -310,6 +352,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-39',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Understanding and Using Mockups',
             description: 'Create realistic mockups to showcase your designs on products and devices.',
             xp: 373,
@@ -318,14 +361,17 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-40',
+            stage: 'Stage 4: Professional & Marketing Applications',
             title: 'Preparing Your Designs for Print',
             description: 'Learn to prepare your designs for professional printing with crop marks and bleed.',
             xp: 380,
             coins: 50,
             content: "<h3>Preparing Your Designs for Print</h3><p>Creating a design for the web is one thing, but preparing a file for professional printing is a completely different beast. Printers require very specific file types, resolutions, and color settings. Thankfully, Canva simplifies this process with its PDF Print download option. When you're ready to download a file for a professional printer (like a business card or a flyer), click Share and then Download. Under File type, choose PDF Print. This option automatically converts your design to a high-quality, high-resolution PDF with the correct color profile (CMYK) that printers require.</p><p>For even more control, you can check the box for Crop marks and bleed. This adds thin lines and a small margin around your design, which tells the printer exactly where to cut the paper and ensures that your design extends to the very edge without any white borders. This is a crucial step for a professional look. Canva also offers a Canva Print service where you can order prints directly from your design, which guarantees that the file is perfectly formatted for their machines. By understanding the basics of print preparation, you can ensure that your beautiful digital design translates flawlessly into a stunning physical product.</p>"
         },
+        // Stage 5
         {
             id: 'canva-level-41',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'The Content Planner for Social Media (Canva Pro)',
             description: 'Schedule your social media posts directly from Canva with the Content Planner.',
             xp: 387,
@@ -334,6 +380,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-42',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Bulk Create: Designing at Scale (Canva Pro)',
             description: 'Automatically generate multiple designs from a single template with the Bulk Create tool.',
             xp: 394,
@@ -342,6 +389,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-43',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Building Simple Websites with Canva',
             description: 'Create and publish a simple, one-page website directly from Canva.',
             xp: 401,
@@ -350,6 +398,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-44',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Creating Interactive PDF Documents',
             description: 'Add clickable links to your PDFs to create interactive e-books and lead magnets.',
             xp: 408,
@@ -358,6 +407,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-45',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Mastering Keyboard Shortcuts',
             description: 'Boost your productivity by learning the most useful keyboard shortcuts.',
             xp: 415,
@@ -366,6 +416,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-46',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Advanced Workflow and Folder Management',
             description: 'Keep your projects organized with folders and advanced workflow techniques.',
             xp: 422,
@@ -374,6 +425,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-47',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Magic Switch: Re-sizing Designs in a Click',
             description: 'Instantly resize a design for multiple platforms with the Magic Switch tool.',
             xp: 429,
@@ -382,6 +434,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-48',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'The Power of Templates: Selling Your Designs',
             description: 'Learn how to create and sell your own Canva templates for passive income.',
             xp: 436,
@@ -390,6 +443,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-49',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Using Canva Apps and Integrations',
             description: 'Supercharge your workflow by connecting Canva to other apps and services.',
             xp: 443,
@@ -398,6 +452,7 @@ export const canvaDesignRoadmap: Roadmap = {
         },
         {
             id: 'canva-level-50',
+            stage: 'Stage 5: Specialization & Productivity',
             title: 'Canva for Teams: Advanced Collaboration',
             description: 'Learn to use Canva’s advanced features for team collaboration and brand management.',
             xp: 450,
@@ -406,4 +461,3 @@ export const canvaDesignRoadmap: Roadmap = {
         }
     ]
 };
-

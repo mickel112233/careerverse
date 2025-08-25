@@ -9,6 +9,7 @@ import { affiliateMarketingRoadmap } from './roadmaps/affiliate-marketing';
 
 export interface RoadmapLevel {
     id: string;
+    stage: string;
     title: string;
     description: string;
     xp: number;

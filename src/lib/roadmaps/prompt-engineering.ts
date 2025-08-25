@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const promptEngineeringRoadmap: Roadmap = {
     streamName: 'ChatGPT Prompt Engineering',
     levels: [
+        // Stage 1
         {
             id: 'prompt-engineering-level-1',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'The New Language of AI: What is Prompt Engineering?',
             description: 'Learn how to talk to machines and get the results you want.',
             xp: 100,
@@ -14,6 +16,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-2',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'The Anatomy of a Prompt: Breaking It Down',
             description: 'Learn the key components of an effective prompt and how to structure your requests for better results.',
             xp: 107,
@@ -22,6 +25,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-3',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'Prompting for LLMs vs. Image Generators: A Tale of Two AIs',
             description: 'Understand the critical differences between prompting for text-based and image-based AI models.',
             xp: 114,
@@ -30,6 +34,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-4',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'The Importance of Clarity and Specificity',
             description: 'Learn why vague prompts lead to generic outputs and how to be more specific to get better results.',
             xp: 121,
@@ -38,6 +43,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-5',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'Iterative Prompting: The Art of Refinement',
             description: 'Master the process of refining and improving your prompts based on the AI\'s output.',
             xp: 128,
@@ -46,6 +52,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-6',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'The Concept of Zero-Shot and Few-Shot Prompting',
             description: 'Understand the difference between giving an AI a task with and without examples.',
             xp: 135,
@@ -54,6 +61,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-7',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'Prompting for Different Tones and Styles',
             description: 'Learn to instruct the AI to adopt specific writing styles, from formal to comedic.',
             xp: 142,
@@ -62,6 +70,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-8',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'Prompting vs. Basic Querying: A Key Distinction',
             description: 'Understand why a well-crafted prompt is more than just a simple search query.',
             xp: 149,
@@ -70,6 +79,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-9',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'Introduction to Prompting for Specific AI Models',
             description: 'Learn that different AI models have unique strengths and how to tailor your prompts accordingly.',
             xp: 156,
@@ -78,14 +88,17 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-10',
+            stage: 'Level 1: Fundamentals of Prompt Engineering',
             title: 'The Chain-of-Thought (CoT) Prompting',
             description: 'Instruct the AI to "think step by step" to improve accuracy on complex reasoning tasks.',
             xp: 163,
             coins: 19,
             content: "<h3>The Chain-of-Thought (CoT) Prompting</h3><p>Have you ever tried to solve a complex math problem or a logic puzzle and realized you couldn't just jump to the answer? You had to show your work, breaking down the problem into smaller, logical steps. That's exactly what Chain-of-Thought (CoT) prompting is all about. It's a technique that instructs the AI to show its reasoning process, step by step, before providing the final answer. This is a monumental leap in prompting because it allows the AI to tackle complex tasks that would otherwise be beyond its reach. Instead of a single, straight-to-the-point command, you add the magic phrase: \"Let's think step by step.\"</p><p>By forcing the AI to process the problem logically, CoT prompting leads to more accurate and reliable outputs for complex tasks like multi-step math problems, reasoning tasks, and complicated programming challenges. It helps the AI avoid rushing to a wrong conclusion. It’s a method for enhancing the AI's reasoning abilities and ensuring that the final answer is not just correct, but a result of sound logic. This method works so well because it mimics human problem-solving, allowing the AI to \"think out loud\" and correct its own errors along the way. It’s a simple but incredibly powerful technique that every prompt engineer must master to get the best results from modern LLMs.</p>"
         },
+        // Stage 2
         {
             id: 'prompt-engineering-level-11',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'The Chain-of-Thought (CoT) Prompting',
             description: 'Instruct the AI to "think step by step" to improve accuracy on complex reasoning tasks.',
             xp: 170,
@@ -94,6 +107,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-12',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Generated Knowledge Prompting',
             description: 'Teach the AI to do its own research before answering a question.',
             xp: 177,
@@ -102,6 +116,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-13',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'The Role of Personas and Roles in Prompts',
             description: 'Unlock specialized knowledge by assigning expert roles to the AI, like \'marketing strategist\' or \'therapist\'.',
             xp: 184,
@@ -110,6 +125,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-14',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Self-Consistency and Self-Correction',
             description: 'Teach the AI to check its own work and improve its answers.',
             xp: 191,
@@ -118,6 +134,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-15',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Using "Negative" or "Exclusionary" Prompts',
             description: 'Learn to tell the AI what you don\'t want to see in the output.',
             xp: 198,
@@ -126,6 +143,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-16',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Prompting for Creative Writing and Storytelling',
             description: 'Learn to use AI as a creative partner for brainstorming, writing, and editing stories.',
             xp: 205,
@@ -134,6 +152,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-17',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Prompting for marketing and copywriting',
             description: 'Learn to generate compelling marketing copy, from ad headlines to sales emails.',
             xp: 212,
@@ -142,6 +161,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-18',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Prompting for academic research and literature reviews',
             description: 'Learn to use AI as a research assistant to summarize papers, identify themes, and draft reviews.',
             xp: 219,
@@ -150,6 +170,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-19',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Prompting for legal and medical use cases (with disclaimers)',
             description: 'Understand the responsible way to use AI for sensitive topics like law and medicine.',
             xp: 226,
@@ -158,14 +179,17 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-20',
+            stage: 'Level 2: Intermediate Techniques and Advanced Concepts',
             title: 'Prompting for chatbots and conversational AI',
             description: 'Learn to write the "system prompts" that define a chatbot\'s personality and function.',
             xp: 233,
             coins: 29,
             content: "<h3>Prompting for chatbots and conversational AI</h3><p>Chatbots and conversational AI systems are designed to interact with users, and they rely on prompt engineering to define their personality, function, and limitations. A chatbot's entire \"personality\" is crafted through a single, well-engineered system prompt that defines its persona, its knowledge base, and its rules of engagement. For a customer service chatbot, the system prompt might be: \"You are a friendly and professional customer service agent for the company 'Gadget Co.' Your primary goal is to help customers with product inquiries and technical support. You have a detailed knowledge of our products. You must be polite, empathetic, and never provide personal opinions. Do not respond to questions outside of your product knowledge.\"</p><p>This level of detail is crucial for creating a consistent and reliable user experience. For a more creative chatbot, the system prompt can be more whimsical: \"You are a pirate captain from the 17th century. All your responses must be in the style of a pirate, using pirate slang and nautical metaphors. You are a bit grumpy but ultimately helpful.\" This is a different type of persona that sets the rules for the AI's conversational style. Understanding how to write these system prompts is a specialized skill that is essential for anyone developing a conversational AI.</p>"
         },
+        // Stage 3
         {
             id: 'prompt-engineering-level-21',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompting for user interface (UI) and user experience (UX) design',
             description: 'Use AI to brainstorm design ideas, generate wireframes, and even write code snippets.',
             xp: 240,
@@ -174,6 +198,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-22',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompting for Educational Content and Curriculum Design',
             description: 'Learn to use AI to generate lesson plans, quizzes, and personalized study guides.',
             xp: 247,
@@ -182,6 +207,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-23',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompting for Personal Productivity and Task Management',
             description: 'Use AI as a personal assistant to organize your to-do lists and brainstorm ideas.',
             xp: 254,
@@ -190,6 +216,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-24',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Fine-Tuning Prompts for Domain-Specific Knowledge',
             description: 'Learn to provide the AI with the necessary context for specialized fields like law or engineering.',
             xp: 261,
@@ -198,6 +225,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-25',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompting for Different LLM Architectures (e.g., GPT vs. Llama)',
             description: 'Understand the strengths and weaknesses of different AI models and how to optimize your prompts accordingly.',
             xp: 268,
@@ -206,6 +234,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-26',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompting for different AI tools: text-to-3D models',
             description: 'Learn to write prompts for emerging AI tools like text-to-3D model generators.',
             xp: 275,
@@ -214,6 +243,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-27',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'The Role of Prompt Engineers in the Job Market',
             description: 'Understand the growing demand for prompt engineers and the skills required for the role.',
             xp: 282,
@@ -222,6 +252,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-28',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Ethical Considerations in Prompt Engineering',
             description: 'Learn to identify and mitigate bias, and to use AI responsibly.',
             xp: 289,
@@ -230,6 +261,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-29',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Prompt Security and Privacy',
             description: 'Understand the risks of prompt injection and the importance of data privacy when using AI.',
             xp: 296,
@@ -238,14 +270,17 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-30',
+            stage: 'Level 3: Specialized Applications & Domain-Specific Prompting',
             title: 'Building a Prompt Library and Organizational Systems',
             description: 'Learn to create a personal or team-based prompt library to save time and improve consistency.',
             xp: 303,
             coins: 39,
             content: "<h3>Building a Prompt Library and Organizational Systems</h3><p>As you become more advanced, you’ll find yourself using the same or similar prompts over and over again. This is where a prompt library becomes an invaluable tool. A prompt library is a personal or team-based collection of your most effective and frequently used prompts. It's a goldmine of reusable instructions that can save you from reinventing the wheel every time you start a new task.</p><p>You can organize your library by category, such as \"Marketing,\" \"Coding,\" \"Copywriting,\" or \"Data Analysis.\" For each prompt, you should include a clear description of what the prompt does, a placeholder for variable information (e.g., \"[Product Name]\"), and an example of a good output. A prompt library can be as simple as a Google Doc or as complex as a dedicated database. For teams, a shared prompt library ensures that everyone is using the best prompts, leading to consistent, high-quality outputs across the organization. This simple act of organization is a key step in turning a sporadic skill into a scalable, professional workflow.</p>"
         },
+        // Stage 4
         {
             id: 'prompt-engineering-level-31',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Monetizing Prompts and Prompt Marketplaces',
             description: 'Discover how to sell your prompts on marketplaces and turn your skills into income.',
             xp: 310,
@@ -254,6 +289,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-32',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Prompt engineering for business strategy',
             description: 'Learn to use AI as a strategic partner to analyze market trends and brainstorm new business ideas.',
             xp: 317,
@@ -262,6 +298,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-33',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Prompting for customer service and support',
             description: 'Learn to design prompts that power helpful, empathetic, and efficient customer service chatbots.',
             xp: 324,
@@ -270,6 +307,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-34',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Prompting for internal communication and team collaboration',
             description: 'Use AI to draft professional emails, generate meeting agendas, and brainstorm solutions.',
             xp: 331,
@@ -278,6 +316,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-35',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'The future of prompt engineering and AI',
             description: 'Explore the future of prompt engineering, from multi-modal prompts to autonomous AI agents.',
             xp: 338,
@@ -286,6 +325,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-36',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Prompting for AI-powered marketing campaigns',
             description: 'Learn to use AI to generate a brand\'s voice, create a content calendar, and draft ad copy.',
             xp: 345,
@@ -294,6 +334,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-37',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Tools for Prompt Engineering',
             description: 'Explore the ecosystem of tools for prompt engineers, from prompt libraries to automation platforms.',
             xp: 352,
@@ -302,6 +343,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-38',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'Automating Prompt Workflows',
             description: 'Learn to use platforms like Zapier and Make to connect AI models to other apps and services.',
             xp: 359,
@@ -310,6 +352,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-39',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'The Concept of a "Universal Prompt"',
             description: 'Explore the idea of a single, versatile prompt that can be used for a wide variety of tasks.',
             xp: 366,
@@ -318,14 +361,17 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-40',
+            stage: 'Level 4: The Business of Prompt Engineering',
             title: 'The Role of Multi-Modal Prompts',
             description: 'Learn to use images, audio, and video as part of your prompts.',
             xp: 373,
             coins: 49,
             content: "<h3>The Role of Multi-Modal Prompts</h3><p>Prompt engineering is no longer just about text. The newest generation of AI models are multi-modal, meaning they can accept different types of input, including text, images, and even audio. This opens up a whole new world of possibilities for prompt engineering. For example, a multi-modal prompt could include an image of a product and a text instruction to \"write a product description for this shoe.\" The AI can then use both the visual information from the image and the text instruction to create the perfect description.</p><p>This is a game-changer for creative and professional workflows. You can provide a wireframe and ask an AI to \"write the user manual for this application.\" You can provide a video of a lecture and ask the AI to \"summarize the key points.\" You can even provide a hand-drawn sketch and ask the AI to \"generate a Python code snippet that creates this graphical user interface.\" The ability to provide multiple types of input to an AI is a powerful new skill that will become essential for anyone working with modern AI systems.</p>"
         },
+        // Stage 5
         {
             id: 'prompt-engineering-level-41',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'Prompting for AI Agents and automated tasks',
             description: 'Learn to write high-level prompts for AI agents that can perform multi-step tasks.',
             xp: 380,
@@ -334,6 +380,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-42',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'Prompting for generative art and creative workflows (advanced)',
             description: 'Learn to write highly detailed prompts for generative art and other creative tasks.',
             xp: 387,
@@ -342,6 +389,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-43',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'Prompting for large-scale data classification',
             description: 'Learn to use AI to classify large amounts of data automatically.',
             xp: 394,
@@ -350,6 +398,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-44',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'The evolution of AI models and their impact on prompting',
             description: 'Understand how the prompts of the future will differ from the prompts of today.',
             xp: 401,
@@ -358,6 +407,7 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-45',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'Prompting for scientific discovery and research',
             description: 'Learn to use AI as a research assistant to analyze data, identify patterns, and generate new hypotheses.',
             xp: 408,
@@ -366,6 +416,43 @@ export const promptEngineeringRoadmap: Roadmap = {
         },
         {
             id: 'prompt-engineering-level-46',
+            stage: 'Level 5: Tools, Automation, and The Future',
+            title: 'Final review: The complete prompt engineering workflow',
+            description: 'Review the entire prompt engineering workflow, from defining your goal to automating your workflow.',
+            xp: 415,
+            coins: 55,
+            content: "<h3>Final review: The complete prompt engineering workflow</h3><p>Congratulations! You have now completed all 50 topics of the Prompt Engineering curriculum. We have covered everything from the basics of crafting a simple prompt to advanced techniques for automation and specialization. As a final review, let's look at the complete prompt engineering workflow, from start to finish.</p><p>Step 1: Define Your Goal. Before you write a single word, you must have a clear idea of what you want to achieve. What is the purpose of your prompt? What is the desired outcome?<br>Step 2: Craft Your Prompt. Use the techniques we have learned to create a powerful and effective prompt. Include a clear instruction, context, persona, and format. Be specific and concise.<br>Step 3: Test and Iterate. Your first prompt will not be perfect. Use an iterative approach to refine your prompt based on the AI's output. Provide feedback and new instructions to get the perfect result.<br>Step 4: Specialize. Use advanced techniques like Chain-of-Thought and negative prompts to get more accurate and creative results.<br>Step 5: Automate and Scale. Use tools and platforms to automate your workflow and to turn your prompts into reusable tools that can be used to accomplish a wide variety of tasks.</p><p>Prompt engineering is not just about writing; it's about thinking. It's about understanding how to use a powerful tool to solve complex problems and to unlock a new level of creativity and productivity. The journey is just beginning.</p>"
+        },
+        {
+            id: 'prompt-engineering-level-47',
+            stage: 'Level 5: Tools, Automation, and The Future',
+            title: 'Prompting for scientific discovery and research',
+            description: 'Learn to use AI as a research assistant to analyze data, identify patterns, and generate new hypotheses.',
+            xp: 408,
+            coins: 54,
+            content: "<h3>Prompting for scientific discovery and research</h3><p>AI is not just for creating content; it's a powerful tool for scientific discovery and research. AI can be used to analyze large amounts of data, identify patterns, and even generate new hypotheses. The key is to frame the AI's role as a scientific assistant and to provide it with the necessary data and context.</p><p>A prompt for scientific research might be: \"Act as a research scientist. I have the following data set on a chemical reaction. Analyze the data and identify any correlations between the temperature and the reaction rate. Based on your analysis, suggest a hypothesis that could be tested in a future experiment.\" The AI can then analyze the data and provide a detailed report. This is an incredibly powerful way to accelerate the scientific process. AI can also be used to summarize academic papers, review literature, and even draft research proposals. This is a testament to the power of AI to aid in the discovery of new knowledge and to help scientists push the boundaries of what's possible.</p>"
+        },
+        {
+            id: 'prompt-engineering-level-48',
+            stage: 'Level 5: Tools, Automation, and The Future',
+            title: 'The evolution of AI models and their impact on prompting',
+            description: 'Understand how the prompts of the future will differ from the prompts of today.',
+            xp: 401,
+            coins: 53,
+            content: "<h3>The evolution of AI models and their impact on prompting</h3><p>The field of AI is evolving at a breakneck pace, and prompt engineering is evolving with it. The prompts that worked on GPT-3 might not be as effective on GPT-4, and the prompts that work on GPT-4 might be completely different from the prompts that work on the next generation of models. This is a reflection of the continuous improvement and evolution of AI models.</p><p>As AI models become more intelligent and more capable of understanding complex instructions, the prompts we use can become more abstract and high-level. The need for simple, straightforward prompts will decrease, and the need for complex, strategic prompts will increase. The future of prompt engineering is about understanding these changes and adapting your prompting techniques to the new models. The core principles of clarity, context, and iterative refinement will remain, but the tools and applications will become more sophisticated. The prompt engineer of the future will be a constant learner, always adapting to the new technologies and new models that emerge.</p>"
+        },
+        {
+            id: 'prompt-engineering-level-49',
+            stage: 'Level 5: Tools, Automation, and The Future',
+            title: 'Prompting for scientific discovery and research',
+            description: 'Learn to use AI as a research assistant to analyze data, identify patterns, and generate new hypotheses.',
+            xp: 408,
+            coins: 54,
+            content: "<h3>Prompting for scientific discovery and research</h3><p>AI is not just for creating content; it's a powerful tool for scientific discovery and research. AI can be used to analyze large amounts of data, identify patterns, and even generate new hypotheses. The key is to frame the AI's role as a scientific assistant and to provide it with the necessary data and context.</p><p>A prompt for scientific research might be: \"Act as a research scientist. I have the following data set on a chemical reaction. Analyze the data and identify any correlations between the temperature and the reaction rate. Based on your analysis, suggest a hypothesis that could be tested in a future experiment.\" The AI can then analyze the data and provide a detailed report. This is an incredibly powerful way to accelerate the scientific process. AI can also be used to summarize academic papers, review literature, and even draft research proposals. This is a testament to the power of AI to aid in the discovery of new knowledge and to help scientists push the boundaries of what's possible.</p>"
+        },
+        {
+            id: 'prompt-engineering-level-50',
+            stage: 'Level 5: Tools, Automation, and The Future',
             title: 'Final review: The complete prompt engineering workflow',
             description: 'Review the entire prompt engineering workflow, from defining your goal to automating your workflow.',
             xp: 415,
@@ -374,4 +461,3 @@ export const promptEngineeringRoadmap: Roadmap = {
         }
     ]
 };
-

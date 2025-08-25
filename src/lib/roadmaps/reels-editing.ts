@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const reelsEditingRoadmap: Roadmap = {
     streamName: 'Reels & Shorts Video Editing',
     levels: [
+        // Stage 1
         {
             id: 'reels-level-1',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Understanding the Short-Form Video Landscape',
             description: 'Learn the key principles of short-form video and why it\'s a powerful tool for creators.',
             xp: 100,
@@ -14,6 +16,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-2',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'The Rule of 3: Hook, Value, CTA',
             description: 'Master the fundamental structure of every viral video: the Hook, Value, and Call to Action.',
             xp: 107,
@@ -22,6 +25,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-3',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Essential Gear: Phone vs. Camera',
             description: 'Learn why your phone is a powerful video tool and when you might consider a dedicated camera.',
             xp: 114,
@@ -30,6 +34,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-4',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Principles of Great Lighting (Natural & Artificial)',
             description: 'Discover how to use natural and artificial light to make your videos look stunning.',
             xp: 121,
@@ -38,6 +43,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-5',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'The Power of Good Audio',
             description: 'Learn why audio is the most critical element and how to capture it cleanly.',
             xp: 128,
@@ -46,6 +52,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-6',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Mastering Your Phone\'s Camera Settings',
             description: 'Learn to lock focus and exposure, and choose the right frame rate for your videos.',
             xp: 135,
@@ -54,6 +61,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-7',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Shot Types: Close-ups, Medium, & Wide',
             description: 'Learn to use different shot types to create a more dynamic and engaging video.',
             xp: 142,
@@ -62,6 +70,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-8',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'The Storyboard: Planning Your Video',
             description: 'Learn to create a storyboard to plan your video and ensure a logical flow.',
             xp: 149,
@@ -70,6 +79,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-9',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Creating a Compelling \"Hook\"',
             description: 'Learn to create a compelling hook to grab a viewer\'s attention in the first 3 seconds.',
             xp: 156,
@@ -78,14 +88,17 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-10',
+            stage: 'Level 1: The Foundations of Video Storytelling',
             title: 'Filming Best Practices: Stability & Angles',
             description: 'Learn to film a stable shot and to use different camera angles to create a more dynamic video.',
             xp: 163,
             coins: 19,
             content: "<h3>Filming Best Practices: Stability & Angles</h3><p>A shaky video is a nightmare to watch. It can make a professional video look amateurish and unprofessional. To get a stable shot, you can use a tripod, which is the best option for a static shot. If you don't have a tripod, you can rest your phone on a book, a table, or any other stable surface. If you need to film a moving shot, try to hold your phone with both hands and keep your elbows tucked in. Walk slowly and steadily, like a ninja. This will help reduce the amount of shake in your video.</p><p>Once you have stability, the next step is to experiment with angles. A high angle can make your subject look small and vulnerable, while a low angle can make them look powerful and dominant. An eye-level shot is the most common and neutral. When filming a person, try to get them to look at the camera, as this creates a more personal connection with the viewer. When filming objects, try to film them from a variety of angles to create a more dynamic and interesting video. By mastering stability and angles, you can instantly improve the quality of your videos.</p>"
         },
+        // Stage 2
         {
             id: 'reels-level-11',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Introduction to Editing Software (CapCut, VN, etc.)',
             description: 'Learn the basics of popular mobile video editing apps.',
             xp: 170,
@@ -94,6 +107,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-12',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Trimming & Cutting: The Core of Editing',
             description: 'Learn to trim and cut your video clips to create a tight, engaging narrative.',
             xp: 177,
@@ -102,6 +116,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-13',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'The Basics of Transitions',
             description: 'Learn to use simple transitions to connect your shots and to avoid common mistakes.',
             xp: 184,
@@ -110,6 +125,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-14',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Adding Music & Sound Effects',
             description: 'Learn to use music and sound effects to add emotion and polish to your videos.',
             xp: 191,
@@ -118,6 +134,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-15',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Working with Text & Captions',
             description: 'Learn to use on-screen text and captions to make your videos more accessible and engaging.',
             xp: 198,
@@ -126,6 +143,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-16',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Syncing Video to Audio (Beat Syncing)',
             description: 'Learn to align your video cuts with the beat of the music to create a more dynamic video.',
             xp: 205,
@@ -134,6 +152,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-17',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Adding Voiceovers & Narration',
             description: 'Learn to record and mix a voiceover to add a new layer of information to your video.',
             xp: 212,
@@ -142,6 +161,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-18',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Speed Ramps & Slow Motion',
             description: 'Learn to use speed changes to add drama and visual interest to your video.',
             xp: 219,
@@ -150,6 +170,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-19',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Working with Green Screen',
             description: 'Learn to use a green screen to create professional-looking backdrops and creative effects.',
             xp: 226,
@@ -158,14 +179,17 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-20',
+            stage: 'Level 2: Essential Editing Techniques & Tools',
             title: 'Export Settings for Different Platforms',
             description: 'Learn to export your video with the correct settings for each social media platform.',
             xp: 233,
             coins: 29,
             content: "<h3>Export Settings for Different Platforms</h3><p>You've spent hours filming and editing a masterpiece, but if you don't export it correctly, all your hard work could be wasted. Export settings are the final step in the video editing process, and they determine the quality, file size, and compatibility of your video. The most important thing to know is that different platforms have different requirements.</p><p>For short-form videos like Reels and TikToks, you want to use a vertical aspect ratio, a high resolution, and a frame rate of 30fps. For a YouTube video, you might want to use a horizontal aspect ratio and a higher resolution. The key is to know your platform's requirements and to export your video accordingly. You can usually find these settings in the export or share menu of your editing app. A good rule of thumb is to always export in the highest quality possible and to adjust the settings only when necessary. By mastering export settings, you can ensure your video looks great no matter where it's posted.</p>"
         },
+        // Stage 3
         {
             id: 'reels-level-21',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'The Anatomy of a Viral Reel',
             description: 'Learn the formula for a viral Reel, from a strong hook to a compelling CTA.',
             xp: 240,
@@ -174,6 +198,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-22',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Understanding and Using Trending Audio',
             description: 'Learn to use trending audio to hack the algorithm and get your video in front of more people.',
             xp: 247,
@@ -182,6 +207,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-23',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Creating Transitions That Hook Viewers',
             description: 'Learn to create seamless transitions that grab a viewer\'s attention and make your video stand out.',
             xp: 254,
@@ -190,6 +216,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-24',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Using Filters & Effects Effectively',
             description: 'Learn to use filters and effects to enhance the look and feel of your video, not to distract from it.',
             xp: 261,
@@ -198,6 +225,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-25',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Interactive Elements: Polls & Quizzes',
             description: 'Learn to use interactive elements to increase engagement and to get valuable feedback from your audience.',
             xp: 268,
@@ -206,6 +234,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-26',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'The Importance of On-Screen Text',
             description: 'Learn to use on-screen text to guide the viewer\'s eye and to deliver your message with impact.',
             xp: 275,
@@ -214,6 +243,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-27',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Creating a Series or Multi-Part Video',
             description: 'Learn to create a multi-part video series to drive watch time and to encourage viewers to follow you.',
             xp: 282,
@@ -222,6 +252,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-28',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Instagram Reels vs. TikTok vs. YouTube Shorts',
             description: 'Learn the key differences between the major short-form video platforms and how to optimize your content for each.',
             xp: 289,
@@ -230,6 +261,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-29',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'Leveraging Duets & Remixes',
             description: 'Learn to use duets and remixes to participate in viral trends and to collaborate with other creators.',
             xp: 296,
@@ -238,14 +270,17 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-30',
+            stage: 'Level 3: Reels & Short-Form Video Mastery',
             title: 'The Art of the "Call to Action"',
             description: 'Learn to use a call to action to turn a viewer into a follower, a customer, or a fan.',
             xp: 303,
             coins: 39,
             content: "<h3>The Art of the \"Call to Action\"</h3><p>You've created a great video with a compelling hook and valuable content. Now what? The final step is to tell your audience what you want them to do next. This is the Call to Action (CTA), and it's the key to turning a viewer into a follower, a customer, or a fan. A CTA can be as simple as \"Follow for more!\" or as specific as \"Click the link in my bio to learn more.\" The key to a good CTA is to make it clear, concise, and to place it at the end of your video.</p><p>You can also add a subtle CTA throughout your video, such as a line of on-screen text that says, \"Don't forget to save this video for later.\" You can also use a vocal CTA, such as \"Comment below and let me know what you think!\" The most effective CTAs are those that are relevant to your video and that encourage engagement. A good CTA is the final piece of the puzzle that ensures your video doesn't just get views, but also drives results.</p>"
         },
+        // Stage 4
         {
             id: 'reels-level-31',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Intermediate Color Grading',
             description: 'Learn to use color grading to create a specific look or mood for your video.',
             xp: 310,
@@ -254,6 +289,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-32',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Advanced Audio Mixing & Sound Design',
             description: 'Learn to use audio mixing and sound design to create a rich and immersive audio experience.',
             xp: 317,
@@ -262,6 +298,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-33',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Motion Graphics & Basic Animation',
             description: 'Learn to use motion graphics to add a new level of professionalism and creativity to your videos.',
             xp: 324,
@@ -270,6 +307,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-34',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Creating a Cohesive Brand Style & Aesthetic',
             description: 'Learn to create a cohesive brand style that runs through all of your videos.',
             xp: 331,
@@ -278,6 +316,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-35',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Designing Custom Templates',
             description: 'Learn to create custom templates to make your workflow more efficient.',
             xp: 338,
@@ -286,6 +325,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-36',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Repurposing Content Across Platforms',
             description: 'Learn to repurpose your content and use it across different platforms.',
             xp: 345,
@@ -294,6 +334,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-37',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Collaboration Workflow',
             description: 'Learn to create a collaboration workflow to ensure that your projects run smoothly.',
             xp: 352,
@@ -302,6 +343,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-38',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Storytelling with Different Video Formats',
             description: 'Learn to tailor your video to the platform and to use the right format for your story.',
             xp: 359,
@@ -310,6 +352,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-39',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Optimizing Videos for Accessibility',
             description: 'Learn to make your videos accessible to everyone, including people with disabilities.',
             xp: 366,
@@ -318,14 +361,17 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-40',
+            stage: 'Level 4: Advanced Production & Branding',
             title: 'Advanced Editing Workflow and Shortcuts',
             description: 'Learn to use an advanced editing workflow to save time and to increase your productivity.',
             xp: 373,
             coins: 49,
             content: "<h3>Advanced Editing Workflow and Shortcuts</h3><p>As you become a more experienced editor, you'll want to optimize your workflow to save time and to increase your productivity. An advanced editing workflow is a set of habits and techniques that help you get the most out of your editing software. The most important thing you can do is to learn the keyboard shortcuts for your editing software. Keyboard shortcuts are a great way to save time and to work more efficiently.</p><p>You should also use a folder structure to organize your video files. A good folder structure will help you find your files quickly and will prevent your projects from becoming a disorganized mess. You should also use proxies to edit your videos. A proxy is a low-resolution version of your video file that you can use to edit your video more quickly. This is a great way to work with large files and to make your editing process smoother. By mastering an advanced editing workflow, you can become a more efficient and productive video creator.</p>"
         },
+        // Stage 5
         {
             id: 'reels-level-41',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Understanding the Creator Economy',
             description: 'Learn to turn your passion for video creation into a profitable business.',
             xp: 380,
@@ -334,6 +380,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-42',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Reading Your Analytics: What to Look For',
             description: 'Learn to use analytics to get valuable insights into your audience and your videos.',
             xp: 387,
@@ -342,6 +389,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-43',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Building a Content Strategy',
             description: 'Learn to create a content strategy to stay organized and to ensure that you are creating content that is relevant to your audience.',
             xp: 394,
@@ -350,6 +398,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-44',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Monetization Strategies',
             description: 'Learn to use different monetization strategies to turn your passion into a profitable business.',
             xp: 401,
@@ -358,6 +407,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-45',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Working with Brands & Sponsorships',
             description: 'Learn to work with brands to turn your videos into a profitable business.',
             xp: 408,
@@ -366,6 +416,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-46',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'The Power of Community Engagement',
             description: 'Learn to build a community to turn your viewers into followers, and your followers into a loyal community.',
             xp: 415,
@@ -374,6 +425,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-47',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Protecting Your Content & Copyrights',
             description: 'Learn to protect your content and copyrights to ensure that your hard work is not stolen.',
             xp: 422,
@@ -382,6 +434,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-48',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'The Future of Short-Form Video',
             description: 'Learn to stay up-to-date with the latest trends and technologies to stay relevant in the future of short-form video.',
             xp: 429,
@@ -390,6 +443,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-49',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Professional Portfolio & Showreel',
             description: 'Learn to create a professional portfolio and showreel to turn your passion into a career.',
             xp: 436,
@@ -398,6 +452,7 @@ export const reelsEditingRoadmap: Roadmap = {
         },
         {
             id: 'reels-level-50',
+            stage: 'Level 5: The Business of Video & Content Creation',
             title: 'Final Review: Your Video Creator Journey',
             description: 'Review the entire video editing curriculum and learn how to take your skills to the next level.',
             xp: 443,
@@ -406,4 +461,3 @@ export const reelsEditingRoadmap: Roadmap = {
         }
     ]
 };
-

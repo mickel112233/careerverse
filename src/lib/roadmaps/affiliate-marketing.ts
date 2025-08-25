@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const affiliateMarketingRoadmap: Roadmap = {
     streamName: 'Affiliate Marketing',
     levels: [
+        // Stage 1
         {
             id: 'affiliate-level-1',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'What is Affiliate Marketing? The Core Concept',
             description: 'Learn the core concept of affiliate marketing and why it\'s a powerful business model.',
             xp: 100,
@@ -14,6 +16,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-2',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'The Key Players: Affiliate, Merchant, Network, & Consumer',
             description: 'Meet the four key players in the affiliate marketing ecosystem.',
             xp: 107,
@@ -22,6 +25,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-3',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'The Affiliate Marketing Business Model & How It Works',
             description: 'Learn the simple but effective four-step process of the affiliate marketing business model.',
             xp: 114,
@@ -30,6 +34,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-4',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Understanding Different Commission Structures (PPC, PPL, PPS)',
             description: 'Learn about the three most common ways affiliates get paid: Pay-Per-Sale, Pay-Per-Lead, and Pay-Per-Click.',
             xp: 121,
@@ -38,6 +43,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-5',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Finding Your Niche: Passion, Profit, & Problem-Solving',
             description: 'Discover how to find a profitable niche that aligns with your passions and solves a problem.',
             xp: 128,
@@ -46,6 +52,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-6',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Researching and Choosing a Profitable Niche',
             description: 'Learn the research methods to validate your niche and ensure it has a high chance of success.',
             xp: 135,
@@ -54,6 +61,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-7',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Understanding Affiliate Networks (Amazon Associates, ClickBank, etc.)',
             description: 'Learn about the most popular affiliate networks and how they connect affiliates with merchants.',
             xp: 142,
@@ -62,6 +70,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-8',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'The Role of Cookies & Tracking in Affiliate Marketing',
             description: 'Discover how cookies work and why they are essential for tracking your sales and commissions.',
             xp: 149,
@@ -70,6 +79,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-9',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Setting Up Your First Affiliate Account',
             description: 'Learn the steps to apply for an affiliate program and get your unique tracking link.',
             xp: 156,
@@ -78,14 +88,17 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-10',
+            stage: 'Level 1: The Foundations of Affiliate Marketing',
             title: 'Common Mistakes to Avoid for Beginners',
             description: 'Learn the common pitfalls for new affiliate marketers and how to avoid them.',
             xp: 163,
             coins: 19,
             content: `<h3>Common Mistakes to Avoid for Beginners</h3><p>As a beginner, it's easy to make a few common mistakes that can hold you back. Here are a few to avoid:</p><ul><li>Choosing the Wrong Niche: Don't choose a niche that you're not passionate about or that isn't profitable. Take your time to do your research and find a niche that is a good fit for you.</li><li>Promoting Too Many Products: As a beginner, it's easy to get overwhelmed and to try to promote too many products at once. This can make you look like a spammer and can hurt your reputation. Focus on a few high-quality products in your niche.</li><li>Not Creating High-Quality Content: A lot of beginners think they can just put up a link and get a commission. This is not the case. You need to create valuable content that helps your audience.</li><li>Not Disclosing Your Affiliate Links: You are legally required to disclose that you are an affiliate. You can do this with a simple line of text at the top of your content that says, "This post may contain affiliate links, which means I may get a commission if you make a purchase."</li></ul><p>By avoiding these common mistakes, you can set yourself up for long-term success.</p>`
         },
+        // Stage 2
         {
             id: 'affiliate-level-11',
+            stage: 'Level 2: Building Your Platform',
             title: 'The Core of Your Business: Building a Website or Blog',
             description: 'Understand why owning a website is the most reliable long-term strategy for affiliate marketing.',
             xp: 170,
@@ -94,6 +107,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-12',
+            stage: 'Level 2: Building Your Platform',
             title: 'Choosing a Domain Name & Web Hosting',
             description: 'Learn how to select a memorable domain name and a reliable web hosting provider.',
             xp: 177,
@@ -102,6 +116,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-13',
+            stage: 'Level 2: Building Your Platform',
             title: 'The Power of a Niche-Specific Blog',
             description: 'Discover how a focused, niche-specific blog can build authority, trust, and a loyal audience.',
             xp: 184,
@@ -110,6 +125,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-14',
+            stage: 'Level 2: Building Your Platform',
             title: 'Creating High-Value "Hub" Pages',
             description: 'Learn to create comprehensive "hub" or "pillar" pages that establish you as an authority.',
             xp: 191,
@@ -118,6 +134,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-15',
+            stage: 'Level 2: Building Your Platform',
             title: 'Social Media as an Affiliate Platform (Instagram, TikTok, YouTube)',
             description: 'Explore how to leverage social media for affiliate marketing without needing a website.',
             xp: 198,
@@ -126,6 +143,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-16',
+            stage: 'Level 2: Building Your Platform',
             title: 'Building an Audience on Social Media',
             description: 'Learn the strategies to build a loyal and engaged audience on social media.',
             xp: 205,
@@ -134,6 +152,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-17',
+            stage: 'Level 2: Building Your Platform',
             title: 'The Role of Email Marketing',
             description: 'Understand why an email list is your most valuable asset as an affiliate marketer.',
             xp: 212,
@@ -142,6 +161,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-18',
+            stage: 'Level 2: Building Your Platform',
             title: 'Building Your Email List from Scratch',
             description: 'Learn the most effective strategies for building an email list, such as using lead magnets.',
             xp: 219,
@@ -150,6 +170,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-19',
+            stage: 'Level 2: Building Your Platform',
             title: 'Understanding Funnels and the Customer Journey',
             description: 'Learn the four stages of the customer journey and how to create a funnel that guides them.',
             xp: 226,
@@ -158,14 +179,17 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-20',
+            stage: 'Level 2: Building Your Platform',
             title: 'Building a Simple Affiliate Marketing Funnel',
             description: 'Learn to build a simple but effective funnel using traffic, a lead magnet, and an email sequence.',
             xp: 233,
             coins: 29,
             content: `<h3>Building a Simple Affiliate Marketing Funnel</h3><p>As a beginner, you should start with a simple affiliate marketing funnel. Here is a simple example:</p><ul><li>Traffic: You get traffic to your website through SEO, social media, or paid ads.</li><li>Lead Magnet: You offer a freebie, such as an e-book or a checklist, in exchange for an email address.</li><li>Email Sequence: You send a series of emails to the person who signed up for your email list. In these emails, you build a relationship with them, provide value, and promote your affiliate products.</li><li>Conversion: The person buys a product through your affiliate link.</li></ul><p>This is a very simple but effective funnel that can help you with your affiliate marketing. You can then add more steps to your funnel as you become more experienced.</p>`
         },
+        // Stage 3
         {
             id: 'affiliate-level-21',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'The Art of a High-Converting Review',
             description: 'Learn the key elements of a product review that persuades readers to buy.',
             xp: 240,
@@ -174,6 +198,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-22',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Creating "Best Of" and "Vs." Comparison Posts',
             description: 'Learn how to create popular and effective "Best Of" and "Vs." comparison posts.',
             xp: 247,
@@ -182,6 +207,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-23',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'The Importance of Long-Form, In-Depth Content',
             description: 'Discover why long-form content is great for SEO and for establishing your authority.',
             xp: 254,
@@ -190,6 +216,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-24',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'SEO for Affiliate Content',
             description: 'Learn to optimize your affiliate content for search engines to get more traffic and sales.',
             xp: 261,
@@ -198,6 +225,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-25',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Generating Free Traffic from SEO (Part 1)',
             description: 'Learn the fundamentals of SEO to get free, organic traffic from search engines.',
             xp: 268,
@@ -206,6 +234,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-26',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Generating Free Traffic from SEO (Part 2)',
             description: 'Go deeper into SEO, focusing on technical SEO and advanced link building strategies.',
             xp: 275,
@@ -214,6 +243,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-27',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Generating Traffic with Pinterest & Visual Platforms',
             description: 'Learn how to use Pinterest as a visual search engine to drive free traffic to your website.',
             xp: 282,
@@ -222,6 +252,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-28',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Driving Traffic with YouTube & Video Content',
             description: 'Discover how to use YouTube, the world\'s second-largest search engine, for affiliate marketing.',
             xp: 289,
@@ -230,6 +261,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-29',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Paid Traffic Strategies (PPC, Social Media Ads)',
             description: 'Learn the basics of paid traffic strategies like Google Ads and Facebook Ads to scale your business.',
             xp: 296,
@@ -238,14 +270,17 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-30',
+            stage: 'Level 3: Content Creation & Traffic Generation',
             title: 'Understanding and Optimizing Ad Campaigns',
             description: 'Learn the fundamentals of running a successful ad campaign, from targeting to A/B testing.',
             xp: 303,
             coins: 39,
             content: `<h3>Understanding and Optimizing Ad Campaigns</h3><p>Running a successful ad campaign is a skill that takes time and practice. The most important thing is to have a clear understanding of your target audience. Who are you trying to reach with your ad? What are their interests? What are their pain points? By having a clear understanding of your audience, you can create an ad that is highly relevant to them.</p><p>You should also be A/B testing your ads. A/B testing is the process of creating two different versions of an ad and then showing them to two different audiences to see which one performs better. You should be testing your ad copy, your images, and your headlines. The key to a good ad campaign is to be constantly testing and optimizing.</p>`
         },
+        // Stage 4
         {
             id: 'affiliate-level-31',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'The Power of Email Sequences & Automation',
             description: 'Discover how to use email automation to build relationships and drive sales on autopilot.',
             xp: 310,
@@ -254,6 +289,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-32',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Advanced Keyword Research for Affiliate Content',
             description: 'Learn advanced strategies for finding low-competition, high-intent keywords.',
             xp: 317,
@@ -262,6 +298,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-33',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Conversion Rate Optimization (CRO)',
             description: 'Learn the fundamentals of CRO to increase the percentage of visitors who take a desired action.',
             xp: 324,
@@ -270,6 +307,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-34',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'A/B Testing Your Content & Landing Pages',
             description: 'Learn how to use A/B testing to improve your content and landing pages.',
             xp: 331,
@@ -278,6 +316,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-35',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'The Role of Link Cloaking',
             description: 'Understand what link cloaking is and how it can be used to make your links more trustworthy.',
             xp: 338,
@@ -286,6 +325,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-36',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Understanding and Using Affiliate Marketing Analytics',
             description: 'Learn the key metrics you need to track to understand your performance and make data-driven decisions.',
             xp: 345,
@@ -294,6 +334,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-37',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Tracking Your Performance with Google Analytics',
             description: 'Learn how to set up goals and track your affiliate marketing performance with Google Analytics.',
             xp: 352,
@@ -302,6 +343,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-38',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Scaling Your Affiliate Business with a Team',
             description: 'Learn when and how to scale your business by building a team.',
             xp: 359,
@@ -310,6 +352,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-39',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Automating Your Content & Marketing',
             description: 'Learn how to use automation to save time and to focus on the more important parts of your business.',
             xp: 366,
@@ -318,14 +361,17 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-40',
+            stage: 'Level 4: Advanced Strategies & Analytics',
             title: 'Optimizing for Mobile & User Experience',
             description: 'Learn the importance of mobile optimization and a great user experience for a successful affiliate website.',
             xp: 373,
             coins: 49,
             content: `<h3>Optimizing for Mobile & User Experience</h3><p>As more people use their phones to access the internet, mobile optimization is becoming more important. You should be sure that your website is mobile-friendly and that it loads quickly on a mobile device. You should also be using a responsive design, which is a type of website design that looks good on any device.</p><p>You should also be focusing on user experience (UX). A good UX is a website that is easy to use, easy to read, and easy to navigate. A good UX can lead to a higher ranking, more traffic, and more conversions. The key is to put your users first.</p>`
         },
+        // Stage 5
         {
             id: 'affiliate-level-41',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Diversifying Your Income Streams',
             description: 'Learn why you should never rely on just one affiliate program and how to diversify your income.',
             xp: 380,
@@ -334,6 +380,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-42',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Finding High-Ticket Affiliate Products',
             description: 'Learn how to find and promote high-ticket products to increase your earnings.',
             xp: 387,
@@ -342,6 +389,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-43',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Building a Strong Brand & Authority',
             description: 'Learn how to build a strong brand and authority to become a trusted expert in your niche.',
             xp: 394,
@@ -350,6 +398,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-44',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'The Legal Side: FTC Disclosure Requirements',
             description: 'Learn how to comply with FTC disclosure requirements to be a responsible and ethical affiliate marketer.',
             xp: 401,
@@ -358,6 +407,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-45',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Taxes and Accounting for Your Affiliate Business',
             description: 'Learn the basics of taxes and accounting to run your affiliate business like a pro.',
             xp: 408,
@@ -366,6 +416,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-46',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Navigating Affiliate Program Changes & Updates',
             description: 'Learn how to stay up-to-date with affiliate program changes to keep your business profitable.',
             xp: 415,
@@ -374,6 +425,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-47',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'The Role of Customer Service in Affiliate Marketing',
             description: 'Learn how to be a helpful guide to your audience and to build a long-term relationship with them.',
             xp: 422,
@@ -382,6 +434,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-48',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'The Future of Affiliate Marketing',
             description: 'Learn about the latest trends in affiliate marketing and how to stay ahead of the curve.',
             xp: 429,
@@ -390,6 +443,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-49',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Case Studies of Successful Affiliate Marketers',
             description: 'Learn from the best by studying the case studies of successful affiliate marketers.',
             xp: 436,
@@ -398,6 +452,7 @@ export const affiliateMarketingRoadmap: Roadmap = {
         },
         {
             id: 'affiliate-level-50',
+            stage: 'Level 5: The Business of Affiliate Marketing & Scaling',
             title: 'Your Affiliate Marketing Action Plan',
             description: 'Learn how to create a comprehensive action plan to build a successful affiliate marketing business.',
             xp: 443,

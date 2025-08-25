@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const basicSeoRoadmap: Roadmap = {
     streamName: 'Basic SEO',
     levels: [
+        // Stage 1
         {
             id: 'seo-level-1',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'What is SEO and Why It Matters',
             description: 'Learn the fundamentals of Search Engine Optimization and its importance for online visibility.',
             xp: 100,
@@ -14,6 +16,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-2',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'How Search Engines Work (Crawling, Indexing, Ranking)',
             description: 'Understand the three core stages of how search engines like Google discover and rank web pages.',
             xp: 107,
@@ -22,6 +25,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-3',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'The Concept of Keywords and Search Intent',
             description: 'Learn the difference between keywords and search intent, and why understanding both is critical for success.',
             xp: 114,
@@ -30,6 +34,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-4',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'Understanding the Search Engine Results Page (SERP)',
             description: 'Learn to identify and optimize for the various features that appear on a search engine results page.',
             xp: 121,
@@ -38,6 +43,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-5',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'The Difference Between White Hat, Black Hat, & Gray Hat SEO',
             description: 'Learn the ethical lines in SEO and why sticking to "White Hat" practices is essential for long-term success.',
             xp: 128,
@@ -46,6 +52,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-6',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'The E-E-A-T Principle (Experience, Expertise, Authority, Trust)',
             description: 'Learn why Google values experience, expertise, authority, and trust, and how to build it.',
             xp: 135,
@@ -54,6 +61,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-7',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'Your First SEO Tool: Google Search Console',
             description: 'Learn to set up and use Google Search Console to monitor your site\'s health and performance.',
             xp: 142,
@@ -62,6 +70,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-8',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'Introduction to SEO Audits',
             description: 'Learn to conduct a basic SEO audit to identify problems and opportunities for your website.',
             xp: 149,
@@ -70,6 +79,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-9',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'Defining Your Niche and Target Audience',
             description: 'Learn to define your niche and target audience to create a laser-focused SEO strategy.',
             xp: 156,
@@ -78,14 +88,17 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-10',
+            stage: 'Level 1: The Foundations of SEO',
             title: 'Setting Up Your Website for SEO Success',
             description: 'Learn to choose a good platform and to ensure that your site is secure, fast, and mobile-friendly.',
             xp: 163,
             coins: 19,
             content: "<h3>Setting Up Your Website for SEO Success</h3><p>Before you can start with any SEO, your website needs to be built on a strong foundation. This means choosing a good platform and ensuring that your site is secure and fast. WordPress is the most popular and SEO-friendly platform, thanks to its flexibility and the availability of plugins like Yoast SEO or Rank Math. A good SEO-friendly platform should allow you to easily edit title tags, meta descriptions, and URL structures.</p><p>You should also make sure your site is secure with an SSL certificate. An SSL certificate encrypts the data between your website and your user, making your site more secure. This is indicated by a little lock icon in the browser bar and a URL that starts with \"https.\" Google sees this as a ranking factor. Finally, your site should be mobile-friendly. A mobile-friendly site is one that looks good and is easy to use on a mobile device. With mobile-first indexing, Google now prioritizes mobile versions of websites. A fast, secure, and mobile-friendly website is a non-negotiable part of any SEO strategy.</p>"
         },
+        // Stage 2
         {
             id: 'seo-level-11',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'The Core of On-Page SEO: Title Tags & Meta Descriptions',
             description: 'Learn to write compelling title tags and meta descriptions that get clicks.',
             xp: 170,
@@ -94,6 +107,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-12',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Keyword Research Strategies & Tools',
             description: 'Learn to use keyword research tools to find high-volume, low-competition keywords.',
             xp: 177,
@@ -102,6 +116,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-13',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Optimizing Your Content for Keywords',
             description: 'Learn to use your keywords naturally throughout your content without "keyword stuffing."',
             xp: 184,
@@ -110,6 +125,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-14',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'The Power of Internal Linking',
             description: 'Learn to use internal links to improve your user experience and to distribute link equity.',
             xp: 191,
@@ -118,6 +134,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-15',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Understanding and Using Header Tags (H1, H2, etc.)',
             description: 'Learn to use header tags to structure your content and to make it more readable.',
             xp: 198,
@@ -126,6 +143,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-16',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Optimizing Images: Alt Text & File Names',
             description: 'Learn to use descriptive file names and alt text to optimize your images for search engines.',
             xp: 205,
@@ -134,6 +152,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-17',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Understanding URLs and Site Structure',
             description: 'Learn to create a good URL and a good site structure to improve your user experience and your ranking.',
             xp: 212,
@@ -142,6 +161,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-18',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Mobile-First Indexing & Responsive Design',
             description: 'Learn to optimize your website for mobile devices and to create a responsive design.',
             xp: 219,
@@ -150,6 +170,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-19',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'Page Speed and Core Web Vitals',
             description: 'Learn to use Core Web Vitals to measure your website\'s user experience and to improve your ranking.',
             xp: 226,
@@ -158,14 +179,17 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-20',
+            stage: 'Level 2: On-Page & Technical SEO',
             title: 'XML Sitemaps and Robots.txt',
             description: 'Learn to use XML sitemaps and robots.txt to help search engines crawl and index your website.',
             xp: 233,
             coins: 29,
             content: "<h3>XML Sitemaps and Robots.txt</h3><p>An XML sitemap and a robots.txt file are two technical SEO elements that help search engines crawl and index your website. An XML sitemap is a file that lists all the pages on your website that you want search engines to crawl. It's like a roadmap for a search engine. Submitting a sitemap to Google Search Console is a great way to ensure that all your pages are being crawled and indexed.</p><p>A robots.txt file is a text file that tells search engines which pages on your website they should or should not crawl. For example, you can use a robots.txt file to block search engines from crawling your \"thank you\" page or your login page. You should be very careful when you use a robots.txt file, as you can accidentally block search engines from crawling important pages on your website. Both of these files are a crucial part of a solid technical SEO foundation.</p>"
         },
+        // Stage 3
         {
             id: 'seo-level-21',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'The Importance of Off-Page SEO',
             description: 'Learn the fundamentals of off-page SEO and how to build your website\'s authority and credibility.',
             xp: 240,
@@ -174,6 +198,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-22',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Understanding Backlinks and Domain Authority',
             description: 'Learn what a backlink is, why it\'s important, and how to measure your website\'s authority.',
             xp: 247,
@@ -182,6 +207,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-23',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Foundational Link Building Strategies',
             description: 'Learn the most effective and ethical link building strategies to get more backlinks.',
             xp: 254,
@@ -190,6 +216,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-24',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Guest Posting as a Link Building Tactic',
             description: 'Learn to use guest posting to get high-quality backlinks and to build your authority.',
             xp: 261,
@@ -198,6 +225,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-25',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Digital PR and Link Earning',
             description: 'Learn to use digital PR to get press coverage and to earn high-quality backlinks.',
             xp: 268,
@@ -206,6 +234,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-26',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'The Role of Social Media in SEO',
             description: 'Learn how social media can indirectly impact your SEO and how to use it to get more backlinks.',
             xp: 275,
@@ -214,6 +243,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-27',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Understanding "NoFollow" vs. "DoFollow" Links',
             description: 'Learn the difference between "nofollow" and "dofollow" links and why both are important for a healthy backlink profile.',
             xp: 282,
@@ -222,6 +252,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-28',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Competitor Backlink Analysis',
             description: 'Learn to use competitor backlink analysis to find new link building opportunities.',
             xp: 289,
@@ -230,6 +261,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-29',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Link Reclamation & Broken Link Building',
             description: 'Learn to use link reclamation and broken link building to get high-quality backlinks.',
             xp: 296,
@@ -238,14 +270,17 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-30',
+            stage: 'Level 3: Off-Page SEO & Link Building',
             title: 'Avoiding Spammy Links & Link Penalties',
             description: 'Learn to avoid spammy links and to use the Google Disavow Tool to protect your ranking.',
             xp: 303,
             coins: 39,
             content: "<h3>Avoiding Spammy Links & Link Penalties</h3><p>Not all links are good links. A spammy link is a link from a low-quality, irrelevant, or spammy website. Spammy links can hurt your ranking and can even result in a manual penalty from Google. A manual penalty is a penalty that is given by a human reviewer at Google, and it can result in your website being removed from search results.</p><p>To avoid spammy links, you should never buy links, never use an automated link building tool, and never participate in link schemes. If you have a lot of spammy links, you can use the Google Disavow Tool to tell Google to ignore those links. The key is to focus on creating high-quality, relevant content and to build links in an ethical, long-term way. By avoiding spammy links, you can ensure that your website's ranking is not negatively affected.</p>"
         },
+        // Stage 4
         {
             id: 'seo-level-31',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'SEO for E-commerce Stores',
             description: 'Learn to optimize your product pages to get more traffic and more sales.',
             xp: 310,
@@ -254,6 +289,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-32',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'The Fundamentals of Local SEO',
             description: 'Learn to optimize your website for local searches and to get more customers.',
             xp: 317,
@@ -262,6 +298,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-33',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Optimizing for Google Business Profile',
             description: 'Learn to optimize your Google Business Profile to get a higher ranking and more customers.',
             xp: 324,
@@ -270,6 +307,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-34',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Introduction to Google Analytics 4',
             description: 'Learn to use Google Analytics 4 to track your website\'s performance and to find opportunities for improvement.',
             xp: 331,
@@ -278,6 +316,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-35',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Analyzing SEO Performance with Data',
             description: 'Learn to use data to analyze your SEO performance and to find opportunities for improvement.',
             xp: 338,
@@ -286,6 +325,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-36',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Understanding Featured Snippets & Schema Markup',
             description: 'Learn to use schema markup and to create content that is a direct answer to a question to get a featured snippet.',
             xp: 345,
@@ -294,6 +334,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-37',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'International SEO & Hreflang Tags',
             description: 'Learn to use International SEO and Hreflang tags to optimize your website for different languages and regions.',
             xp: 352,
@@ -302,6 +343,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-38',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Content Clusters & Pillar Pages',
             description: 'Learn to use content clusters and pillar pages to show Google that you are an authority on a topic.',
             xp: 359,
@@ -310,6 +352,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-39',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'Voice Search Optimization',
             description: 'Learn to optimize your website for voice search to get a ranking in voice search results.',
             xp: 366,
@@ -318,14 +361,17 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-40',
+            stage: 'Level 4: Advanced SEO & Analytics',
             title: 'SEO Automation Tools',
             description: 'Learn to use SEO automation tools to save time and to increase your productivity.',
             xp: 373,
             coins: 49,
             content: "<h3>SEO Automation Tools</h3><p>As you become a more experienced SEO, you'll want to use SEO automation tools to save time and to increase your productivity. SEO automation tools can help you with keyword research, competitor analysis, site audits, and a variety of other tasks. While you should never use a tool that promises to automatically rank your website, you can use a tool to automate your daily tasks.</p><p>Some examples of SEO automation tools are:</p> <ul><li>Semrush: A powerful all-in-one SEO tool that can help you with a variety of tasks.</li><li>Ahrefs: A powerful SEO tool that is great for backlink analysis.</li><li>Surfer SEO: A content optimization tool that can help you with keyword research and content creation.</li></ul><p>The key is to use these tools to make your work more efficient, not to replace your work. By using SEO automation tools, you can save time and can focus on the more important parts of your SEO strategy.</p>"
         },
+        // Stage 5
         {
             id: 'seo-level-41',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'Building an SEO Career: Freelance vs. In-House vs. Agency',
             description: 'Learn to choose the right SEO career path for you and to build a successful career.',
             xp: 380,
@@ -334,6 +380,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-42',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'Monetizing Your SEO Skills',
             description: 'Learn to monetize your SEO skills by freelancing, consulting, or building your own business.',
             xp: 387,
@@ -342,6 +389,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-43',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'How to Pitch & Sell SEO Services',
             description: 'Learn to pitch and sell your SEO services to get more clients and to build a successful career.',
             xp: 394,
@@ -350,6 +398,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-44',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'Managing an SEO Project',
             description: 'Learn to manage an SEO project to ensure that your projects are completed on time and that your clients are happy.',
             xp: 401,
@@ -358,6 +407,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-45',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'Setting Realistic SEO Goals & KPIs',
             description: 'Learn to set realistic SEO goals and KPIs to track your progress and to show your clients the value of your work.',
             xp: 408,
@@ -366,6 +416,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-46',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'The Impact of AI on SEO',
             description: 'Learn how AI is changing the world of SEO and how to use it to get better results.',
             xp: 415,
@@ -374,6 +425,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-47',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'SEO for YouTube & Other Video Platforms',
             description: 'Learn to optimize your videos for YouTube and other video platforms to get a higher ranking.',
             xp: 422,
@@ -382,6 +434,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-48',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'The Rise of Generative AI in Search (SGE)',
             description: 'Learn to prepare for the rise of Generative AI in Search (SGE) and to get a ranking in SGE results.',
             xp: 429,
@@ -390,6 +443,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-49',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'The Role of User Experience (UX) in SEO',
             description: 'Learn to create a great user experience to get a higher ranking, more traffic, and more conversions.',
             xp: 436,
@@ -398,6 +452,7 @@ export const basicSeoRoadmap: Roadmap = {
         },
         {
             id: 'seo-level-50',
+            stage: 'Level 5: The Business of SEO & The Future',
             title: 'Final Review & Your SEO Action Plan',
             description: 'Review the entire SEO curriculum and learn how to create a comprehensive SEO action plan.',
             xp: 443,
@@ -406,4 +461,3 @@ export const basicSeoRoadmap: Roadmap = {
         }
     ]
 };
-

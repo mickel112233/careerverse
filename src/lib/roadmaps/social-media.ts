@@ -4,8 +4,10 @@ import type { Roadmap } from '@/lib/roadmap-data';
 export const socialMediaRoadmap: Roadmap = {
     streamName: 'Social Media Management',
     levels: [
+        // Stage 1
         {
             id: 'social-level-1',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'What is Social Media Management? The Role & Responsibilities',
             description: 'Understand the core responsibilities and strategic importance of a social media manager.',
             xp: 100,
@@ -14,6 +16,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-2',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'The Social Media Landscape: A Guide to Key Platforms',
             description: 'Learn the unique culture, audience, and content formats of major social media platforms.',
             xp: 107,
@@ -22,6 +25,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-3',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Defining Your Audience & Persona',
             description: 'Learn to create detailed audience personas to guide your content and engagement strategy.',
             xp: 114,
@@ -30,6 +34,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-4',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Setting Goals & Key Performance Indicators (KPIs)',
             description: 'Learn to set SMART goals and track the right KPIs to measure your social media success.',
             xp: 121,
@@ -38,6 +43,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-5',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Crafting a Social Media Mission Statement',
             description: 'Learn to create a clear and concise mission statement to guide your social media strategy.',
             xp: 128,
@@ -46,6 +52,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-6',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Competitor Analysis: What\'s Working for Others?',
             description: 'Learn from your competitors by analyzing their social media strategies.',
             xp: 135,
@@ -54,6 +61,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-7',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Choosing the Right Platforms for Your Brand',
             description: 'Focus your efforts by selecting the social media platforms where your audience is most active.',
             xp: 142,
@@ -62,6 +70,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-8',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'The Basics of Profile Optimization',
             description: 'Turn your profile into a powerful conversion tool by optimizing your bio, profile picture, and links.',
             xp: 149,
@@ -70,6 +79,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-9',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Creating a Brand Voice & Tone',
             description: 'Define your brand\'s personality to ensure consistent and authentic communication.',
             xp: 156,
@@ -78,14 +88,17 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-10',
+            stage: 'Level 1: Social Media Fundamentals',
             title: 'Understanding Social Media Algorithms',
             description: 'Learn the basic principles of how social media algorithms work and how to create content that they favor.',
             xp: 163,
             coins: 19,
             content: "<h3>Understanding Social Media Algorithms</h3><p>In the early days of social media, posts were shown to followers in chronological order. Today, every major social media platform uses a complex algorithm to decide what content a user sees. Understanding these algorithms is crucial for a social media manager because they are the gatekeepers to your audience. A great piece of content is useless if the algorithm doesn't show it to anyone. By understanding the core principles of how these algorithms work, you can create a strategy that maximizes your reach and engagement.</p><p>While the exact details of these algorithms are closely guarded secrets, they all share a few common goals:</p> <ul><li>Keep users on the platform: The primary goal of any social media algorithm is to keep users scrolling. The longer a user stays on the platform, the more ads they see, which leads to more revenue for the company.</li> <li>Serve relevant content: The algorithm wants to show users content that they will find interesting and engaging. It uses a variety of signals to determine what a user is interested in, such as the content they've liked, commented on, and shared in the past.</li> <li>Prioritize high-quality content: The algorithm wants to show users high-quality content that is not spammy or clickbait. It looks for signals of quality, such as a high engagement rate, a high watch time on a video, and a high share rate.</li></ul><p>So, how can you use this knowledge to your advantage?</p> <ul><li>Focus on Engagement: The single most important signal to any algorithm is engagement. A post with a high number of likes, comments, and shares will be shown to more people. You should be creating content that encourages conversation and interaction. A good strategy is to end your posts with a question or a call to action.</li> <li>Encourage Sharing: Shares are the most powerful form of engagement because they show the algorithm that a post is so valuable that a person is willing to share it with their own network. You should be creating content that is easy to share, such as infographics, short videos, and educational content.</li> <li>Be a Good Citizen: The algorithm rewards good behavior. You should be active on the platform, you should be engaging with other people's content, and you should be following the platform's rules.</li> <li>Use the Platform's Features: The algorithm rewards brands that use the platform's new features. For example, if a platform launches a new video format, you should be experimenting with it.</li> <li>Understand Recency: While the algorithm is not purely chronological, recency still matters. The algorithm wants to show users new and fresh content. You should be posting regularly and at the right time.</li></ul><p>By understanding these core principles, you can create a social media strategy that works with the algorithm, not against it. It's not about tricking the algorithm; it's about creating content that the algorithm is designed to promote.</p>"
         },
+        // Stage 2
         {
             id: 'social-level-11',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'The Anatomy of a Great Social Media Post',
             description: 'Learn the key elements of a great social media post, from a strong hook to a clear CTA.',
             xp: 170,
@@ -94,6 +107,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-12',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Developing a Content Calendar',
             description: 'Learn to create a content calendar to organize your content, post regularly, and align your content with your goals.',
             xp: 177,
@@ -102,6 +116,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-13',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Visual Content: The Power of Images, Video & Infographics',
             description: 'Learn to use different types of visual content to grab attention and to tell a story.',
             xp: 184,
@@ -110,6 +125,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-14',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'The Art of Storytelling on Social Media',
             description: 'Learn to use storytelling to build a loyal and engaged community.',
             xp: 191,
@@ -118,6 +134,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-15',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Hashtag Strategy: From Basics to Advanced Use',
             description: 'Learn to use hashtags to categorize your content and to make it discoverable to a new audience.',
             xp: 198,
@@ -126,6 +143,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-16',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Creating Engaging Captions & Calls-to-Action',
             description: 'Learn to write compelling captions that turn a simple post into a conversation.',
             xp: 205,
@@ -134,6 +152,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-17',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'User-Generated Content (UGC): How to Encourage & Leverage It',
             description: 'Learn to use UGC to build a loyal community and to drive sales.',
             xp: 212,
@@ -142,6 +161,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-18',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Resharing & Curation: The 80/20 Rule',
             description: 'Learn to use the 80/20 rule to balance your original content with curated content.',
             xp: 219,
@@ -150,6 +170,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-19',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Optimizing Content for Each Platform',
             description: 'Learn to tailor your content to each platform to get the best results.',
             xp: 226,
@@ -158,14 +179,17 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-20',
+            stage: 'Level 2: Content Creation & Strategy',
             title: 'Scheduling & Timing for Maximum Reach',
             description: 'Learn to use analytics and scheduling tools to post at the right time for maximum reach.',
             xp: 233,
             coins: 29,
             content: "<h3>Scheduling & Timing for Maximum Reach</h3><p>A great social media post is useless if it is posted at the wrong time. Scheduling and timing for maximum reach is a key part of any social media strategy. By posting at the right time, you can ensure that your content is seen by the largest possible audience.</p><p>So, how do you schedule and time your posts for maximum reach?</p> <ul><li>Know Your Audience: You should be knowing your audience. You should be looking at their demographics, their location, and their time zone. This can help you determine the best time to post.</li><li>Use Analytics: You should be using social media analytics to determine the best time to post. You can look at your audience's activity and at your post's engagement.</li><li>Use a Scheduling Tool: You should be using a scheduling tool like Sprout Social, Hootsuite, or Buffer. This can help you schedule your posts in advance and to ensure that you are posting regularly.</li><li>Experiment: You should be experimenting with different times and different days. You should be looking at your post's engagement and you should be adjusting your schedule accordingly.</li></ul><p>The key to scheduling and timing is to be a good researcher. A well-crafted content strategy can be the difference between getting noticed and being overlooked.</p>"
         },
+        // Stage 3
         {
             id: 'social-level-21',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Building & Nurturing an Online Community',
             description: 'Learn to use social media to build a loyal and engaged community.',
             xp: 240,
@@ -174,6 +198,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-22',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'The Art of Responding: A Guide to Engagement',
             description: 'Learn to respond to comments and messages in a way that builds a community and drives sales.',
             xp: 247,
@@ -182,6 +207,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-23',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Handling Negative Comments & Online Trolls',
             description: 'Learn to handle negative comments and online trolls in a professional and a strategic way.',
             xp: 254,
@@ -190,6 +216,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-24',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Social Media Customer Service Best Practices',
             description: 'Learn to use social media to provide excellent customer service and to build a loyal community.',
             xp: 261,
@@ -198,6 +225,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-25',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Running Contests, Giveaways & Polls',
             description: 'Learn to use contests, giveaways, and polls to increase engagement and to get valuable feedback.',
             xp: 268,
@@ -206,6 +234,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-26',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'The Role of Live Video in Engagement',
             description: 'Learn to use live video to build authentic connections and to drive real-time engagement.',
             xp: 275,
@@ -214,6 +243,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-27',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Social Listening: What is it & How to Do it?',
             description: 'Learn to use social listening to monitor your brand, your competitors, and your industry.',
             xp: 282,
@@ -222,6 +252,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-28',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Creating a Social Media Crisis Plan',
             description: 'Learn to create a social media crisis plan to handle a crisis in a professional and a strategic way.',
             xp: 289,
@@ -230,6 +261,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-29',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Leveraging Social Media for Brand Collaborations',
             description: 'Learn to use social media to build partnerships and to collaborate with other brands.',
             xp: 296,
@@ -238,14 +270,17 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-30',
+            stage: 'Level 3: Community Management & Engagement',
             title: 'Building an Employee Advocacy Program',
             description: 'Learn to use an employee advocacy program to increase your brand\'s reach and to build a loyal community.',
             xp: 303,
             coins: 39,
             content: "<h3>Building an Employee Advocacy Program</h3><p>Your employees are your most valuable asset, and they can be your most powerful brand advocates. An employee advocacy program is a strategic initiative that encourages and empowers your employees to share content about your brand on their own social media channels. A well-crafted employee advocacy program is a powerful tool that can help you increase your brand's reach, build a loyal community, and get valuable feedback.</p><p>So, how do you build an employee advocacy program?</p> <ul><li>Set a Goal: You should be setting a goal for your employee advocacy program. What do you want to achieve? Do you want to increase brand awareness, drive sales, or get valuable feedback?</li><li>Create a Policy: You should be creating a policy for your employee advocacy program. The policy should be a good fit for your company and a good fit for your employees.</li><li>Create Content: You should be creating content for your employees to share. The content should be a good fit for your brand and a good fit for your employees' audience.</li><li>Train Your Employees: You should be training your employees on how to use social media and on how to share content. You should also be teaching them about the importance of being a good brand advocate.</li><li>Measure the Results: You should be measuring the results of your employee advocacy program. You should be looking at the number of new followers, the number of new leads, and the number of new sales.</li></ul><p>The key to building an employee advocacy program is to be a good communicator. A well-crafted program can be the difference between getting noticed and being overlooked.</p>"
         },
+        // Stage 4
         {
             id: 'social-level-31',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'The Importance of Social Media Analytics',
             description: 'Learn to use social media analytics to understand what is working, what is not, and what you can do better.',
             xp: 310,
@@ -254,6 +289,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-32',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Key Metrics: Reach, Engagement & Conversion',
             description: 'Learn to track the three key metrics that you should be tracking to understand what is working.',
             xp: 317,
@@ -262,6 +298,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-33',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Using Social Media Analytics Tools',
             description: 'Learn to use social media analytics tools to collect, analyze, and report on data from your social media channels.',
             xp: 324,
@@ -270,6 +307,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-34',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'The Basics of Social Media Advertising',
             description: 'Learn to use social media advertising to reach a new audience, drive sales, and get valuable feedback.',
             xp: 331,
@@ -278,6 +316,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-35',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Targeting Your Audience with Paid Ads',
             description: 'Learn to use targeting to reach the right people with the right message at the right time.',
             xp: 338,
@@ -286,6 +325,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-36',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Ad Formats & Creative Best Practices',
             description: 'Learn to use different ad formats and creative best practices to create a great ad.',
             xp: 345,
@@ -294,6 +334,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-37',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'A/B Testing Your Social Media Ads',
             description: 'Learn to use A/B testing to make informed decisions about your advertising campaigns.',
             xp: 352,
@@ -302,6 +343,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-38',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Calculating Your Social Media Return on Investment (ROI)',
             description: 'Learn to calculate your social media ROI to prove the value of your social media efforts.',
             xp: 359,
@@ -310,6 +352,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-39',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Retargeting & The Marketing Funnel',
             description: 'Learn to use retargeting and the marketing funnel to reach the right people with the right message at the right time.',
             xp: 366,
@@ -318,14 +361,17 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-40',
+            stage: 'Level 4: Analytics, Advertising & ROI',
             title: 'Creating a Social Media Report',
             description: 'Learn to create a social media report to prove the value of your social media efforts and to make informed decisions.',
             xp: 373,
             coins: 49,
             content: "<h3>Creating a Social Media Report</h3><p>In the world of social media, a guess is not a strategy. A social media report is a key part of any social media strategy. It is the process of collecting, analyzing, and reporting on data from your social media channels. A well-crafted report is a powerful tool that can help you prove the value of your social media efforts and to make informed decisions.</p><p>So, what should a social media report include?</p> <ul><li>Executive Summary: An executive summary is a short, concise summary of your report. It should be easy to read and easy to understand.</li><li>Key Metrics: You should be including your key metrics, such as your reach, your engagement, and your conversion. You should also be including your goals.</li><li>Key Findings: You should be including your key findings. What did you learn from your data? What is working, what is not, and what can you do better next time?</li><li>Recommendations: You should be including your recommendations. What do you recommend? What should you do next?</li></ul><p>The key to a social media report is to be a good communicator. A well-crafted report can be the difference between getting noticed and being overlooked.</p>"
         },
+        // Stage 5
         {
             id: 'social-level-41',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Influencer Marketing: Finding & Partnering with Influencers',
             description: 'Learn to use influencer marketing to reach a new audience, drive sales, and get valuable feedback.',
             xp: 380,
@@ -334,6 +380,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-42',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Executing an Effective Influencer Campaign',
             description: 'Learn to execute an effective influencer campaign to reach a new audience, drive sales, and get valuable feedback.',
             xp: 387,
@@ -342,6 +389,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-43',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'The Legal & Ethical Considerations of Social Media',
             description: 'Learn to navigate the legal and ethical considerations of social media to build a successful career.',
             xp: 394,
@@ -350,6 +398,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-44',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Social Media Crisis Management: A Step-by-Step Guide',
             description: 'Learn to use a social media crisis management plan to handle a crisis in a professional and a strategic way.',
             xp: 401,
@@ -358,6 +407,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-45',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'The Future of Social Media Marketing',
             description: 'Learn to stay ahead of the curve and to build a successful career in social media marketing.',
             xp: 408,
@@ -366,6 +416,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-46',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Tools of the Trade: A Social Media Manager\'s Toolkit',
             description: 'Learn to use a social media manager\'s toolkit to create content, analyze data, and manage your social media channels.',
             xp: 415,
@@ -374,6 +425,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-47',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Building a Portfolio as a Social Media Manager',
             description: 'Learn to build a portfolio to get a job, build a brand, and get valuable feedback.',
             xp: 422,
@@ -382,6 +434,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-48',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'The Business of Social Media: Freelance vs. Agency',
             description: 'Learn to navigate the business of social media to build a successful career.',
             xp: 429,
@@ -390,6 +443,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-49',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Interviewing for a Social Media Role',
             description: 'Learn to interview for a social media role to get a job, build a brand, and get valuable feedback.',
             xp: 436,
@@ -398,6 +452,7 @@ export const socialMediaRoadmap: Roadmap = {
         },
         {
             id: 'social-level-50',
+            stage: 'Level 5: Advanced Strategies & Professional Development',
             title: 'Your Social Media Management Career Path',
             description: 'Learn to build a successful career in social media management.',
             xp: 443,
@@ -406,4 +461,3 @@ export const socialMediaRoadmap: Roadmap = {
         }
     ]
 };
-

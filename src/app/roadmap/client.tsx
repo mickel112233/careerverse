@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { allStreams, getRoadmapByStream, Roadmap, RoadmapLevel as BaseRoadmapLevel } from '@/lib/roadmap-data';
-import { Check, Lock, ArrowRight, ArrowLeft, Bot } from 'lucide-react';
+import { Check, Lock, ArrowRight, ArrowLeft, Bot, Coins, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -22,6 +23,37 @@ const LoadingSkeleton = () => (
         ))}
     </div>
 );
+
+const LevelRow = ({ level, isClickable }: { level: RoadmapLevel, isClickable: boolean }) => {
+    const Icon = level.status === 'completed' ? Check : level.status === 'unlocked' ? ArrowRight : Lock;
+    const cardContent = (
+        <div
+            className={cn("flex items-center gap-4 p-3 rounded-md transition-colors",
+                isClickable && "hover:bg-muted/50",
+                !isClickable && "cursor-not-allowed opacity-60"
+            )}
+        >
+            <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0",
+                level.status === 'completed' ? 'bg-green-500 text-white' :
+                level.status === 'unlocked' ? 'bg-primary text-primary-foreground' : 'bg-muted'
+            )}>
+                <Icon className="h-5 w-5" />
+            </div>
+            <div className="flex-grow">
+                <p className="font-semibold">{level.title}</p>
+                <p className="text-xs text-muted-foreground">{level.description}</p>
+            </div>
+            <div className="flex items-center gap-4 text-sm font-semibold shrink-0">
+                <Badge variant="secondary" className="flex items-center gap-1"><Zap className="h-3 w-3" />{level.xp} XP</Badge>
+                <Badge variant="secondary" className="flex items-center gap-1"><Coins className="h-3 w-3" />{level.coins}</Badge>
+            </div>
+        </div>
+    );
+    if (isClickable) {
+        return <Link href={`/learning/${level.id}`} key={level.id}>{cardContent}</Link>;
+    }
+    return <div key={level.id}>{cardContent}</div>;
+}
 
 export default function RoadmapClient() {
     const [selectedStream, setSelectedStream] = useState<string | null>(null);
@@ -52,8 +84,6 @@ export default function RoadmapClient() {
             setSelectedStream(streamName);
             setRoadmap(newRoadmap);
             localStorage.setItem('careerClashStream', streamName);
-
-            // Reset progress when changing streams
             localStorage.removeItem('careerClashCompletedLevels');
             setCompletedLevels(new Set());
             
@@ -70,11 +100,11 @@ export default function RoadmapClient() {
         }
     };
 
-    const enhancedLevels = useMemo(() => {
+    const groupedLevels = useMemo(() => {
         if (!roadmap) return [];
         let previousLevelCompleted = true;
 
-        return roadmap.levels.map(level => {
+        const enhancedLevels = roadmap.levels.map(level => {
             const isCompleted = completedLevels.has(level.id);
             let status: RoadmapLevel['status'] = 'locked';
             if (isCompleted) {
@@ -82,14 +112,25 @@ export default function RoadmapClient() {
             } else if (previousLevelCompleted) {
                 status = 'unlocked';
             }
-            // After finding the first unlocked level, all subsequent non-completed levels are locked
             if (status === 'unlocked' && !isCompleted) {
                 previousLevelCompleted = false;
             }
             return { ...level, status };
         });
+
+        return enhancedLevels.reduce((acc, level) => {
+            const stage = level.stage || 'Stage 1';
+            if (!acc[stage]) {
+                acc[stage] = [];
+            }
+            acc[stage].push(level);
+            return acc;
+        }, {} as { [key: string]: RoadmapLevel[] });
+
     }, [roadmap, completedLevels]);
 
+    const stageNames = useMemo(() => Object.keys(groupedLevels), [groupedLevels]);
+    
     if (isLoading) {
         return <LoadingSkeleton />;
     }
@@ -127,7 +168,7 @@ export default function RoadmapClient() {
                 <div className="flex justify-between items-center">
                     <div>
                         <CardTitle className="font-headline text-2xl">{selectedStream} Roadmap</CardTitle>
-                        <CardDescription>Your 100-level path to mastering {selectedStream}.</CardDescription>
+                        <CardDescription>Your path to mastering {selectedStream}.</CardDescription>
                     </div>
                      <Button variant="outline" onClick={() => {
                         setSelectedStream(null);
@@ -139,50 +180,39 @@ export default function RoadmapClient() {
                 </div>
             </CardHeader>
             <CardContent>
-                 <div className="w-full space-y-2">
-                    <AnimatePresence>
-                        {enhancedLevels.map((level, levelIndex) => {
-                            const Icon = level.status === 'completed' ? Check : level.status === 'unlocked' ? ArrowRight : Lock;
-                            const isClickable = level.status !== 'locked';
-                            const cardContent = (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.3, delay: levelIndex * 0.02 }}
-                                    className={cn("flex items-center gap-4 p-3 rounded-md transition-colors",
-                                        isClickable && "hover:bg-muted/50",
-                                        !isClickable && "cursor-not-allowed opacity-60"
-                                    )}
-                                >
-                                    <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-                                        level.status === 'completed' ? 'bg-green-500 text-white' :
-                                        level.status === 'unlocked' ? 'bg-primary text-primary-foreground' : 'bg-muted'
-                                    )}>
-                                        <Icon className="h-5 w-5" />
+                 <Accordion type="single" collapsible className="w-full" defaultValue={stageNames[0]}>
+                    {stageNames.map((stageName) => {
+                        const levelsInStage = groupedLevels[stageName];
+                        const isStageUnlocked = levelsInStage.some(l => l.status !== 'locked');
+                        
+                        return (
+                            <AccordionItem value={stageName} key={stageName} disabled={!isStageUnlocked}>
+                                <AccordionTrigger className="text-lg font-headline disabled:opacity-50">
+                                    {stageName}
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <div className="w-full space-y-2">
+                                        <AnimatePresence>
+                                            {levelsInStage.map((level, levelIndex) => {
+                                                const isClickable = level.status !== 'locked';
+                                                return (
+                                                    <motion.div
+                                                        key={level.id}
+                                                        initial={{ opacity: 0, x: -20 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ duration: 0.3, delay: levelIndex * 0.05 }}
+                                                    >
+                                                        <LevelRow level={level} isClickable={isClickable} />
+                                                    </motion.div>
+                                                )
+                                            })}
+                                        </AnimatePresence>
                                     </div>
-                                    <div className="flex-grow">
-                                        <p className="font-semibold">{level.title}</p>
-                                        <p className="text-xs text-muted-foreground">{level.description}</p>
-                                    </div>
-                                    <div className="flex items-center gap-4 text-sm font-semibold shrink-0">
-                                        <Badge variant="secondary">{level.xp} XP</Badge>
-                                        <Badge variant="secondary">{level.coins} Coins</Badge>
-                                    </div>
-                                </motion.div>
-                            );
-
-                            if (isClickable) {
-                                return (
-                                    <Link href={`/learning/${level.id}`} key={level.id}>
-                                        {cardContent}
-                                    </Link>
-                                );
-                            }
-                            return <div key={level.id}>{cardContent}</div>;
-                        })}
-                    </AnimatePresence>
-                </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        )
+                    })}
+                 </Accordion>
             </CardContent>
         </Card>
     );
