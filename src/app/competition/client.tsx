@@ -185,7 +185,12 @@ export default function CompetitionClient() {
   useEffect(() => {
     if (step === 'finished' && quizData && !rewardsGiven) {
         const playerWon = scores.player > scores.opponent;
-        const xpGained = playerWon ? 150 : (scores.player === scores.opponent ? 50 : 25);
+        const isDraw = scores.player === scores.opponent;
+
+        let xpChange = 0;
+        if(playerWon) xpChange = 150;
+        else if (isDraw) xpChange = 50;
+        else xpChange = -25; // Player loses 25 XP on defeat
 
         let coinReward = 0;
         if (battleConfig.mode === 'rush' && playerWon) {
@@ -193,7 +198,7 @@ export default function CompetitionClient() {
         }
 
         const currentTotalXp = parseInt(localStorage.getItem('careerClashTotalXp') || '0', 10);
-        const newTotalXp = currentTotalXp + xpGained;
+        const newTotalXp = Math.max(0, currentTotalXp + xpChange); // XP can't go below 0
         localStorage.setItem('careerClashTotalXp', newTotalXp.toString());
         
         if (coinReward > 0) {
@@ -600,7 +605,11 @@ export default function CompetitionClient() {
     const playerWon = scores.player > scores.opponent;
     const isDraw = scores.player === scores.opponent;
     const resultText = isDraw ? "It's a Draw!" : playerWon ? "Victory!" : "Defeat!";
-    const xpGained = playerWon ? 150 : isDraw ? 50 : 25;
+    
+    let xpChange = 0;
+    if (playerWon) xpChange = 150;
+    else if (isDraw) xpChange = 50;
+    else xpChange = -25;
     
     let coinReward = 0;
     if (battleConfig.mode === 'rush' && playerWon) {
@@ -628,16 +637,29 @@ export default function CompetitionClient() {
                     </motion.div>
                 </div>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center space-y-2">
-                    <div>
-                        <p className="text-lg">You earned:</p>
-                        <p className="text-3xl sm:text-4xl font-bold text-yellow-400 my-2">+{xpGained} XP</p>
-                    </div>
+                    {xpChange !== 0 && (
+                        <div>
+                            <p className="text-lg">{playerWon || isDraw ? 'You earned:' : 'You lost:'}</p>
+                            <p className={cn("text-3xl sm:text-4xl font-bold my-2", playerWon || isDraw ? 'text-yellow-400' : 'text-destructive')}>
+                                {playerWon || isDraw ? `+${xpChange}` : xpChange} XP
+                            </p>
+                        </div>
+                    )}
                     {coinReward > 0 && (
                         <div>
                             <p className="text-lg">You won:</p>
                              <p className="text-3xl sm:text-4xl font-bold text-primary my-2 flex items-center justify-center gap-2">
                                 <Coins className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400"/>
-                                {coinReward}
+                                {coinReward.toLocaleString()}
+                            </p>
+                        </div>
+                    )}
+                    {!playerWon && !isDraw && battleConfig.mode === 'rush' && (
+                        <div>
+                            <p className="text-lg">You lost your bet:</p>
+                            <p className="text-3xl sm:text-4xl font-bold text-destructive my-2 flex items-center justify-center gap-2">
+                                <Coins className="h-6 w-6 sm:h-8 sm:w-8"/>
+                                -{battleConfig.betAmount.toLocaleString()}
                             </p>
                         </div>
                     )}
