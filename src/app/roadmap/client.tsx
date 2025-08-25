@@ -13,29 +13,34 @@ import { allStreams, getRoadmapByStream, Roadmap, RoadmapLevel as BaseRoadmapLev
 import { Check, Lock, ArrowRight, ArrowLeft, Bot, Coins, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { Progress } from '@/components/ui/progress';
 
 type RoadmapLevel = BaseRoadmapLevel & { status: 'completed' | 'unlocked' | 'locked' };
 
 const LoadingSkeleton = () => (
     <div className="space-y-4">
         {[...Array(5)].map((_, i) => (
-             <Skeleton key={i} className="h-16 w-full" />
+             <Skeleton key={i} className="h-20 w-full" />
         ))}
     </div>
 );
 
 const LevelRow = ({ level, isClickable }: { level: RoadmapLevel, isClickable: boolean }) => {
     const Icon = level.status === 'completed' ? Check : level.status === 'unlocked' ? ArrowRight : Lock;
+    
     const cardContent = (
-        <div
-            className={cn("flex items-center gap-4 p-3 rounded-md transition-colors",
-                isClickable && "hover:bg-muted/50",
-                !isClickable && "cursor-not-allowed opacity-60"
+         <motion.div 
+            whileHover={isClickable ? { scale: 1.02, x: 5 } : {}}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            className={cn("flex items-center gap-4 p-4 rounded-lg transition-colors border",
+                level.status === 'completed' ? "bg-green-500/10 border-green-500/20" : 
+                level.status === 'unlocked' ? "bg-card hover:bg-muted/50 border-border" : 
+                "bg-muted/30 border-muted/50 opacity-60 cursor-not-allowed"
             )}
         >
-            <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0",
-                level.status === 'completed' ? 'bg-green-500 text-white' :
-                level.status === 'unlocked' ? 'bg-primary text-primary-foreground' : 'bg-muted'
+            <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0 text-white",
+                level.status === 'completed' ? 'bg-green-500' :
+                level.status === 'unlocked' ? 'bg-primary' : 'bg-muted-foreground'
             )}>
                 <Icon className="h-5 w-5" />
             </div>
@@ -43,14 +48,19 @@ const LevelRow = ({ level, isClickable }: { level: RoadmapLevel, isClickable: bo
                 <p className="font-semibold">{level.title}</p>
                 <p className="text-xs text-muted-foreground">{level.description}</p>
             </div>
-            <div className="flex items-center gap-4 text-sm font-semibold shrink-0">
-                <Badge variant="secondary" className="flex items-center gap-1"><Zap className="h-3 w-3" />{level.xp} XP</Badge>
-                <Badge variant="secondary" className="flex items-center gap-1"><Coins className="h-3 w-3" />{level.coins}</Badge>
+            <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-4 text-sm font-semibold shrink-0">
+                <Badge variant="secondary" className="flex items-center gap-1 bg-yellow-400/10 text-yellow-400 border-yellow-400/20">
+                    <Zap className="h-3 w-3" />{level.xp} XP
+                </Badge>
+                <Badge variant="secondary" className="flex items-center gap-1 bg-amber-500/10 text-amber-500 border-amber-500/20">
+                    <Coins className="h-3 w-3" />{level.coins}
+                </Badge>
             </div>
-        </div>
+        </motion.div>
     );
+
     if (isClickable) {
-        return <Link href={`/learning/${level.id}`} key={level.id}>{cardContent}</Link>;
+        return <Link href={`/learning/${level.id}`} key={level.id} className="block">{cardContent}</Link>;
     }
     return <div key={level.id}>{cardContent}</div>;
 }
@@ -112,7 +122,7 @@ export default function RoadmapClient() {
             } else if (previousLevelCompleted) {
                 status = 'unlocked';
             }
-            if (status === 'unlocked' && !isCompleted) {
+            if (status !== 'completed') {
                 previousLevelCompleted = false;
             }
             return { ...level, status };
@@ -168,7 +178,7 @@ export default function RoadmapClient() {
                 <div className="flex justify-between items-center">
                     <div>
                         <CardTitle className="font-headline text-2xl">{selectedStream} Roadmap</CardTitle>
-                        <CardDescription>Your path to mastering {selectedStream}.</CardDescription>
+                        <CardDescription>Your {roadmap.levels.length}-level path to mastering {selectedStream}.</CardDescription>
                     </div>
                      <Button variant="outline" onClick={() => {
                         setSelectedStream(null);
@@ -180,18 +190,25 @@ export default function RoadmapClient() {
                 </div>
             </CardHeader>
             <CardContent>
-                 <Accordion type="single" collapsible className="w-full" defaultValue={stageNames[0]}>
+                 <Accordion type="multiple" className="w-full space-y-4" defaultValue={stageNames}>
                     {stageNames.map((stageName) => {
                         const levelsInStage = groupedLevels[stageName];
-                        const isStageUnlocked = levelsInStage.some(l => l.status !== 'locked');
+                        const completedInStage = levelsInStage.filter(l => l.status === 'completed').length;
+                        const progress = (completedInStage / levelsInStage.length) * 100;
                         
                         return (
-                            <AccordionItem value={stageName} key={stageName} disabled={!isStageUnlocked}>
-                                <AccordionTrigger className="text-lg font-headline disabled:opacity-50">
-                                    {stageName}
+                            <AccordionItem value={stageName} key={stageName} className="border-b-0">
+                                <AccordionTrigger className="text-lg font-headline p-4 bg-muted/50 rounded-lg hover:bg-muted data-[state=open]:rounded-b-none">
+                                    <div className="flex-1 text-left space-y-2">
+                                        <span>{stageName}</span>
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={progress} className="h-2 w-full max-w-xs"/>
+                                            <span className="text-sm font-mono text-muted-foreground">{completedInStage}/{levelsInStage.length}</span>
+                                        </div>
+                                    </div>
                                 </AccordionTrigger>
-                                <AccordionContent>
-                                    <div className="w-full space-y-2">
+                                <AccordionContent className="p-4 bg-card border border-t-0 rounded-b-lg">
+                                    <div className="w-full space-y-3">
                                         <AnimatePresence>
                                             {levelsInStage.map((level, levelIndex) => {
                                                 const isClickable = level.status !== 'locked';
@@ -200,6 +217,7 @@ export default function RoadmapClient() {
                                                         key={level.id}
                                                         initial={{ opacity: 0, x: -20 }}
                                                         animate={{ opacity: 1, x: 0 }}
+                                                        exit={{ opacity: 0, x: 20 }}
                                                         transition={{ duration: 0.3, delay: levelIndex * 0.05 }}
                                                     >
                                                         <LevelRow level={level} isClickable={isClickable} />
