@@ -201,6 +201,11 @@ export const aiLiteracyQuiz: LevelQuiz[] = [
                 options: ['Because it is always wrong', 'Because it can generate realistic but fake content', 'Because it is always biased', 'Because it is always too formal'],
                 answer: 'Because it can generate realistic but fake content',
             },
+            {
+                question: 'Which of the following is a task that a large language model can perform?',
+                options: ['Text Generation', 'Summarization', 'Translation', 'All of the above'],
+                answer: 'All of the above',
+            }
         ],
     },
     {
@@ -299,4 +304,8 @@ export const aiLiteracyQuiz: LevelQuiz[] = [
             {
                 question: 'Which of the following is a task that a large language model can perform?',
                 options: ['Text Generation', 'Summarization', 'Translation', 'All of the above'],
-                answer: 'All of a a/>
+                answer: 'All of the above',
+            },
+        ],
+    },
+]
