@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,30 +12,8 @@ import { motion } from 'framer-motion';
 import { updateQuestProgress } from '@/lib/quest-data';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
-
-type QuizQuestion = {
-    question: string;
-    options: string[];
-    answer: string;
-};
-
-const mockQuiz: QuizQuestion[] = [
-    {
-        question: "What is Canva primarily used for?",
-        options: ["Video Editing", "Graphic Design", "Coding", "Music Production"],
-        "answer": "Graphic Design"
-    },
-    {
-        question: "Which file type supports a transparent background?",
-        options: ["JPG", "GIF", "PNG", "MP3"],
-        "answer": "PNG"
-    },
-    {
-        question: "What does the 'Elements' tab in Canva contain?",
-        options: ["Only photos", "Text styles", "Shapes, icons, and illustrations", "Your uploaded files"],
-        "answer": "Shapes, icons, and illustrations"
-    },
-];
+import { getQuizByStream } from '@/lib/quizzes';
+import type { QuizQuestion } from '@/lib/quizzes';
 
 const LoadingSkeleton = () => (
     <div className="space-y-8">
@@ -55,6 +32,7 @@ export default function LearningClient({ slug }: { slug: string }) {
     const router = useRouter();
     const { toast } = useToast();
     const [levelData, setLevelData] = useState<RoadmapLevel | null>(null);
+    const [quiz, setQuiz] = useState<QuizQuestion[] | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [view, setView] = useState<'lesson' | 'quiz' | 'results'>('lesson');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -69,6 +47,9 @@ export default function LearningClient({ slug }: { slug: string }) {
 
         if (level) {
             setLevelData(level);
+            const levelQuiz = getQuizByStream(stream)?.find(q => q.levelId === slug)?.questions;
+            setQuiz(levelQuiz || []);
+
             const completedLevels = new Set(JSON.parse(localStorage.getItem('careerClashCompletedLevels') || '[]'));
             setIsCompleted(completedLevels.has(level.id));
         } else {
@@ -79,14 +60,14 @@ export default function LearningClient({ slug }: { slug: string }) {
     }, [slug, router, toast]);
 
     const handleAnswer = (answer: string) => {
-        if (selectedAnswer) return;
+        if (selectedAnswer || !quiz) return;
         setSelectedAnswer(answer);
-        if (answer === mockQuiz[currentQuestionIndex].answer) {
+        if (answer === quiz[currentQuestionIndex].answer) {
             setScore(s => s + 1);
         }
 
         setTimeout(() => {
-            if (currentQuestionIndex < mockQuiz.length - 1) {
+            if (currentQuestionIndex < quiz.length - 1) {
                 setCurrentQuestionIndex(i => i + 1);
                 setSelectedAnswer(null);
             } else {
@@ -110,7 +91,6 @@ export default function LearningClient({ slug }: { slug: string }) {
         const newTotalCoins = currentCoins + levelData.coins;
         localStorage.setItem('careerClashCoins', newTotalCoins.toString());
         
-        // Update quest progress
         updateQuestProgress('daily2', 1);
         updateQuestProgress('weekly2', 1);
         updateQuestProgress('milestone3', 1);
@@ -126,12 +106,30 @@ export default function LearningClient({ slug }: { slug: string }) {
         router.push('/roadmap');
     };
 
-    const scorePercentage = (score / mockQuiz.length) * 100;
-    const passed = scorePercentage >= 60;
-
     if (isLoading || !levelData) {
         return <LoadingSkeleton />;
     }
+    
+    if (!quiz || quiz.length === 0) {
+        return (
+             <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-3xl">{levelData.title}</CardTitle>
+                    <CardDescription>{levelData.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: levelData.content || '<p>Lesson content coming soon!</p>' }} />
+                    <div className="mt-8 text-center text-muted-foreground italic">Quiz for this lesson is coming soon!</div>
+                </CardContent>
+                <CardFooter>
+                    <Button onClick={() => router.push('/roadmap')} className="w-full">Return to Roadmap</Button>
+                </CardFooter>
+            </Card>
+        )
+    }
+
+    const scorePercentage = (score / quiz.length) * 100;
+    const passed = scorePercentage >= 60;
 
     return (
         <div>
@@ -168,14 +166,14 @@ export default function LearningClient({ slug }: { slug: string }) {
                     <Card className="max-w-2xl mx-auto">
                         <CardHeader>
                             <CardTitle className="font-headline text-center">Quiz: {levelData.title}</CardTitle>
-                            <CardDescription className="text-center">Question {currentQuestionIndex + 1} of {mockQuiz.length}</CardDescription>
+                            <CardDescription className="text-center">Question {currentQuestionIndex + 1} of {quiz.length}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                            <p className="text-lg font-semibold text-center">{mockQuiz[currentQuestionIndex].question}</p>
+                            <p className="text-lg font-semibold text-center">{quiz[currentQuestionIndex].question}</p>
                             <div className="grid grid-cols-1 gap-3">
-                                {mockQuiz[currentQuestionIndex].options.map((option, index) => {
+                                {quiz[currentQuestionIndex].options.map((option, index) => {
                                     const isSelected = selectedAnswer === option;
-                                    const isCorrect = mockQuiz[currentQuestionIndex].answer === option;
+                                    const isCorrect = quiz[currentQuestionIndex].answer === option;
                                     return (
                                         <Button
                                             key={index}
@@ -202,7 +200,7 @@ export default function LearningClient({ slug }: { slug: string }) {
                         <CardHeader>
                             <Award className={cn("h-16 w-16 mx-auto", passed ? "text-yellow-400" : "text-muted-foreground")} />
                             <CardTitle className="font-headline text-4xl">{passed ? "Level Complete!" : "Try Again"}</CardTitle>
-                            <CardDescription>You scored {score} out of {mockQuiz.length} ({scorePercentage.toFixed(0)}%)</CardDescription>
+                            <CardDescription>You scored {score} out of {quiz.length} ({scorePercentage.toFixed(0)}%)</CardDescription>
                         </CardHeader>
                         <CardContent>
                             {passed ? (
