@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -180,8 +181,8 @@ export default function LearningClient({ slug }: { slug: string }) {
                                             variant="outline"
                                             size="lg"
                                             className={cn("h-auto py-3 justify-center text-center",
-                                                selectedAnswer && isCorrect && isSelected && "bg-green-500/20 border-green-500",
-                                                selectedAnswer && !isCorrect && isSelected && "bg-destructive/20 border-destructive"
+                                                selectedAnswer && isCorrect && "bg-green-500/20 border-green-500",
+                                                selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive"
                                             )}
                                             onClick={() => handleAnswer(option)}
                                             disabled={!!selectedAnswer}
