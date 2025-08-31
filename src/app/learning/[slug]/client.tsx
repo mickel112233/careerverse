@@ -180,7 +180,7 @@ export default function LearningClient({ slug }: { slug: string }) {
                                             key={index}
                                             variant="outline"
                                             size="lg"
-                                            className={cn("h-auto py-3 justify-center text-center",
+                                            className={cn("h-auto py-3 justify-start text-left whitespace-normal",
                                                 selectedAnswer && isCorrect && "bg-green-500/20 border-green-500",
                                                 selectedAnswer === option && !isCorrect && "bg-destructive/20 border-destructive"
                                             )}
